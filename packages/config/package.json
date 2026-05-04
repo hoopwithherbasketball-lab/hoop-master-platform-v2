@@ -1,0 +1,11 @@
+{
+  "name": "@hoop-master/config",
+  "version": "0.1.0",
+  "private": true,
+  "main": "tailwind.config.js",
+  "files": [
+    "tailwind.config.js",
+    "postcss.config.js",
+    "tsconfig.base.json"
+  ]
+}
