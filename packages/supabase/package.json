@@ -1,0 +1,6 @@
+{
+  "name": "@hoop-master/supabase",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Consolidated Supabase migrations and schema from all repos"
+}
