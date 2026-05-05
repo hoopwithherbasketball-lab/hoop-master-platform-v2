@@ -7,10 +7,10 @@ export default function UITestPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold">Status Badges</h2>
         <div className="flex gap-2">
-          <StatusBadge status="new" />
-          <StatusBadge status="in_progress" />
-          <StatusBadge status="complete" />
-          <StatusBadge status="needs_assets" />
+          <StatusBadge status="active" />
+          <StatusBadge status="pending" />
+          <StatusBadge status="completed" />
+          <StatusBadge status="error" />
         </div>
       </section>
       <section className="space-y-4">
@@ -18,7 +18,7 @@ export default function UITestPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-4 border rounded-lg">
             <h3 className="mb-4">Readiness Gauge</h3>
-            <ReadinessGauge score={85} />
+            <ReadinessGauge percentage={85} />
           </div>
           <div className="p-4 border rounded-lg">
             <h3 className="mb-4">Score Bars</h3>

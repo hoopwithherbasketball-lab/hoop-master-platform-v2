@@ -1,5 +1,5 @@
 import React from 'react'
-import { User, Star, Instagram, Twitter } from 'lucide-react'
+import { User, Star, Share2, Mail } from 'lucide-react'
 
 export default function AthleteNILProfileList() {
   return (
