@@ -1,0 +1,22 @@
+{
+  "name": "@hoop-master/features",
+  "version": "0.1.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    "./connectgbb/*": "./src/connectgbb/*",
+    "./crm/*": "./src/crm/*",
+    "./coaching/*": "./src/coaching/*",
+    "./nil/*": "./src/nil/*",
+    "./recruiting/*": "./src/recruiting/*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@hoop-master/types": "*",
+    "@hoop-master/ui": "*"
+  }
+}
