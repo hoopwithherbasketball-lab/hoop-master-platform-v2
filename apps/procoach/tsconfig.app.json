@@ -14,7 +14,17 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@hoop-master/ui": ["../../packages/ui/src"],
+      "@hoop-master/ui/*": ["../../packages/ui/src/*"],
+      "@hoop-master/types": ["../../packages/types/src"],
+      "@hoop-master/types/*": ["../../packages/types/src/*"],
+      "@hoop-master/features/*": ["../../packages/features/src/*"],
+      "@hoop-master/supabase": ["../../packages/supabase/src"]
+    }
   },
   "include": ["src"]
 }
