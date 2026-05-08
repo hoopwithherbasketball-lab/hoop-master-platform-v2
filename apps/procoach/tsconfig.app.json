@@ -16,7 +16,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
-    "ignoreDeprecations": "6.0",
     "paths": {
       "@hoop-master/ui": ["../../packages/ui/src"],
       "@hoop-master/ui/*": ["../../packages/ui/src/*"],
