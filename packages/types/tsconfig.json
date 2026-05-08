@@ -2,12 +2,11 @@
   "extends": "@hoop-master/config/tsconfig.base.json",
   "compilerOptions": {
     "noEmit": false,
-    "allowImportingTsExtensions": false,
     "declaration": true,
     "declarationMap": true,
     "outDir": "dist",
     "emitDeclarationOnly": false,
-    "ignoreDeprecations": "6.0",
+    "skipLibCheck": true,
     "rootDir": "./src"
   },
   "include": ["src/**/*"],

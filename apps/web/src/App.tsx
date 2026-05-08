@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { AuthProvider, useAuth } from './lib/auth'
+import { AuthProvider, ProtectedRoute } from './lib/auth'
 import type { UserRole } from './types/database'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
@@ -41,14 +41,6 @@ import ComplianceQueue from "./pages/nil/ComplianceQueue"
 import TaskBoard from "./pages/nil/TaskBoard"
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
 
-function RequireAuth({ children, role }: { children: React.ReactNode; role?: UserRole }) {
-  const { user, loading, hasRole } = useAuth()
-  if (loading) return (<div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-4 border-royal-500 border-t-transparent rounded-full animate-spin" /></div>)
-  if (!user) return <Navigate to="/login" replace />
-  if (role && !hasRole(role)) return <Navigate to="/dashboard" replace />
-  return <>{children}</>
-}
-
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (<div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1">{children}</div><Footer /></div>)
 }
@@ -67,32 +59,32 @@ function AppRoutes() {
       <Route path="/checkout/:slug" element={<PublicLayout><CheckoutPage /></PublicLayout>} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
-      <Route path="/dashboard" element={<RequireAuth><DashboardOverview /></RequireAuth>} />
-      <Route path="/dashboard/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
-      <Route path="/dashboard/profile/optimizer" element={<RequireAuth><ProfileOptimizerPage /></RequireAuth>} />
-      <Route path="/dashboard/readiness" element={<RequireAuth><ReadinessPage /></RequireAuth>} />
-      <Route path="/dashboard/events" element={<RequireAuth><EventsPage /></RequireAuth>} />
-      <Route path="/dashboard/services" element={<RequireAuth><ServicesOrdersPage /></RequireAuth>} />
-      <Route path="/dashboard/services/:orderId" element={<RequireAuth><ServiceOrderDetailPage /></RequireAuth>} />
-      <Route path="/dashboard/services/:orderId/intake" element={<RequireAuth><ServiceIntakePage /></RequireAuth>} />
-      <Route path="/dashboard/resources" element={<RequireAuth><ResourcesDashboardPage /></RequireAuth>} />
-      <Route path="/dashboard/parent" element={<RequireAuth><ParentDashboardPage /></RequireAuth>} />
-      <Route path="/coach" element={<RequireAuth><CoachDashboard /></RequireAuth>} />
-      <Route path="/coach/search" element={<RequireAuth><CoachSearchPage /></RequireAuth>} />
-      <Route path="/coach/shortlist" element={<RequireAuth><CoachShortlistPage /></RequireAuth>} />
-      <Route path="/coach/events" element={<RequireAuth><CoachEventsPage /></RequireAuth>} />
-      <Route path="/admin" element={<RequireAuth role="admin"><AdminOverview /></RequireAuth>} />
-      <Route path="/admin/leads" element={<RequireAuth role="admin"><AdminLeadsPage /></RequireAuth>} />
-      <Route path="/admin/orders" element={<RequireAuth role="admin"><AdminOrdersPage /></RequireAuth>} />
-      <Route path="/admin/audits" element={<RequireAuth role="admin"><AdminAuditsPage /></RequireAuth>} />
-      <Route path="/admin/players" element={<RequireAuth role="admin"><AdminPlayersPage /></RequireAuth>} />
-      <Route path="/nil" element={<RequireAuth role="admin"><NILOverview /></RequireAuth>} />
-      <Route path="/nil/companies" element={<RequireAuth role="admin"><CompanyList /></RequireAuth>} />
-      <Route path="/nil/opportunities" element={<RequireAuth role="admin"><OpportunityList /></RequireAuth>} />
-      <Route path="/nil/athletes" element={<RequireAuth role="admin"><AthleteNILProfileList /></RequireAuth>} />
-      <Route path="/nil/outreach" element={<RequireAuth role="admin"><OutreachInbox /></RequireAuth>} />
-      <Route path="/nil/compliance" element={<RequireAuth role="admin"><ComplianceQueue /></RequireAuth>} />
-      <Route path="/nil/tasks" element={<RequireAuth role="admin"><TaskBoard /></RequireAuth>} />
+      <Route path="/dashboard" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
+      <Route path="/dashboard/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+      <Route path="/dashboard/profile/optimizer" element={<ProtectedRoute><ProfileOptimizerPage /></ProtectedRoute>} />
+      <Route path="/dashboard/readiness" element={<ProtectedRoute><ReadinessPage /></ProtectedRoute>} />
+      <Route path="/dashboard/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
+      <Route path="/dashboard/services" element={<ProtectedRoute><ServicesOrdersPage /></ProtectedRoute>} />
+      <Route path="/dashboard/services/:orderId" element={<ProtectedRoute><ServiceOrderDetailPage /></ProtectedRoute>} />
+      <Route path="/dashboard/services/:orderId/intake" element={<ProtectedRoute><ServiceIntakePage /></ProtectedRoute>} />
+      <Route path="/dashboard/resources" element={<ProtectedRoute><ResourcesDashboardPage /></ProtectedRoute>} />
+      <Route path="/dashboard/parent" element={<ProtectedRoute><ParentDashboardPage /></ProtectedRoute>} />
+      <Route path="/coach" element={<ProtectedRoute><CoachDashboard /></ProtectedRoute>} />
+      <Route path="/coach/search" element={<ProtectedRoute><CoachSearchPage /></ProtectedRoute>} />
+      <Route path="/coach/shortlist" element={<ProtectedRoute><CoachShortlistPage /></ProtectedRoute>} />
+      <Route path="/coach/events" element={<ProtectedRoute><CoachEventsPage /></ProtectedRoute>} />
+      <Route path="/admin" element={<ProtectedRoute role="admin"><AdminOverview /></ProtectedRoute>} />
+      <Route path="/admin/leads" element={<ProtectedRoute role="admin"><AdminLeadsPage /></ProtectedRoute>} />
+      <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrdersPage /></ProtectedRoute>} />
+      <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
+      <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
+      <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
+      <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
+      <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
+      <Route path="/nil/athletes" element={<ProtectedRoute role="admin"><AthleteNILProfileList /></ProtectedRoute>} />
+      <Route path="/nil/outreach" element={<ProtectedRoute role="admin"><OutreachInbox /></ProtectedRoute>} />
+      <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
+      <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

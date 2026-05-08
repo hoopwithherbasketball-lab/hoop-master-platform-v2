@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { usePlayerProfiles } from '@hoop-master/features/crm'
+import type { Database } from '@hoop-master/types'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 
-export default function AdminPlayersPage() {
-  const [players, setPlayers] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+type PlayerProfile = Database['public']['Tables']['player_profiles']['Row']
 
-  useEffect(() => {
-    supabase.from('player_profiles').select('*').order('created_at', { ascending: false }).then(({ data }) => { setPlayers(data ?? []); setLoading(false) })
-  }, [])
+export default function AdminPlayersPage() {
+  const { profiles: players, loading } = usePlayerProfiles()
 
   return (
     <DashboardLayout variant="admin" title="Players" subtitle="All registered player profiles">
@@ -24,7 +21,7 @@ export default function AdminPlayersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
-              {players.map((p: any) => (
+              {players.map((p: PlayerProfile) => (
                 <tr key={p.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3 font-medium text-slate-800">{p.first_name} {p.last_name}</td>
                   <td className="px-4 py-3 text-slate-500">{p.class_year ?? '-'}</td>

@@ -1,8 +1,6 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, ReactNode } from 'react';
 
-interface ContentContextType {
-  // Add your context state here
-}
+type ContentContextType = object;
 
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
 
@@ -19,10 +17,3 @@ export const ContentProvider: React.FC<{ children: ReactNode }> = ({ children })
   );
 };
 
-export const useContent = () => {
-  const context = useContext(ContentContext);
-  if (context === undefined) {
-    throw new Error('useContent must be used within a ContentProvider');
-  }
-  return context;
-};

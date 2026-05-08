@@ -1,9 +1,27 @@
-import React from 'react'
+import { useParams } from 'react-router-dom'
+import DashboardLayout from '../../components/layout/DashboardLayout'
 
 export default function ServiceOrderDetailPage() {
+  const { orderId } = useParams()
+
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold">Service Order Detail Page</h1>
-    </div>
+    <DashboardLayout variant="player" title="Order Detail" subtitle={`Review the details for ${orderId || 'this order'}.`}>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="card p-6 space-y-4">
+          <h2 className="text-lg font-semibold text-navy-900">Order {orderId}</h2>
+          <p className="text-slate-500">This request includes recruiting strategy, video review, and follow-up planning.</p>
+          <div className="space-y-3 text-sm text-slate-600">
+            <div className="flex justify-between"><span>Status</span><span className="font-semibold text-navy-900">Active</span></div>
+            <div className="flex justify-between"><span>Submitted</span><span className="text-slate-600">May 2</span></div>
+            <div className="flex justify-between"><span>Due</span><span className="text-slate-600">May 18</span></div>
+          </div>
+        </div>
+        <div className="card p-6 space-y-4">
+          <h3 className="text-base font-semibold text-navy-900">Next step</h3>
+          <p className="text-slate-500">Review the recommendations and schedule your follow-up call with the service team.</p>
+          <button className="btn btn-primary">Message advisor</button>
+        </div>
+      </div>
+    </DashboardLayout>
   )
 }

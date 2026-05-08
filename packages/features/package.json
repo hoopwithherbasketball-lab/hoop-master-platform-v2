@@ -2,21 +2,37 @@
   "name": "@hoop-master/features",
   "version": "0.1.0",
   "private": true,
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "type": "module",
+  "main": "dist/features/src/index.js",
+  "types": "dist/features/src/index.d.ts",
   "exports": {
-    "./connectgbb/*": "./src/connectgbb/*",
-    "./crm/*": "./src/crm/*",
-    "./coaching/*": "./src/coaching/*",
-    "./nil/*": "./src/nil/*",
-    "./recruiting/*": "./src/recruiting/*"
+    ".": {
+      "import": "./dist/features/src/index.js",
+      "types": "./dist/features/src/index.d.ts"
+    },
+    "./crm": {
+      "import": "./dist/features/src/crm/index.js",
+      "types": "./dist/features/src/crm/index.d.ts"
+    },
+    "./connectgbb/*": "./dist/features/src/connectgbb/*",
+    "./crm/*": "./dist/features/src/crm/*",
+    "./coaching/*": "./dist/features/src/coaching/*",
+    "./nil/*": "./dist/features/src/nil/*",
+    "./recruiting/*": "./dist/features/src/recruiting/*"
   },
-  "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "clean": "rm -rf dist"
   },
-  "dependencies": {
-    "@hoop-master/types": "*",
-    "@hoop-master/ui": "*"
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "eslint": "^9.9.0",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "globals": "^15.9.0",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.3.0"
   }
 }

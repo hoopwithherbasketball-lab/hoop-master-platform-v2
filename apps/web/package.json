@@ -14,7 +14,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.14.2",
-    "@hoop-master/ui": "*"
+    "@hoop-master/ui": "*",
+    "@hoop-master/features": "*"
   },
   "devDependencies": {
     "@types/react": "^18.3.1",

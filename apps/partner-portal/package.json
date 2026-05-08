@@ -3,17 +3,23 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.105.1",
+    "@hoop-master/ui": "*",
+    "@hoop-master/types": "*",
+    "@hoop-master/supabase": "*",
+    "@hoop-master/features": "*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {
+    "@craco/craco": "^7.0.0",
     "autoprefixer": "^10.4.18",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1"
