@@ -1,31 +1,41 @@
 # AGENTS
 
-## Purpose
-This file defines the HoopWithHer **Agent Command Center** operating rules for this repository.
+## HoopWithHer Agent Command Center
 
-## Scope
-- Repository root (`/workspace/hoop-master-platform-v2`) and all subdirectories.
+This repository uses a phased multi-agent operating model documented under `agents/` and `prompt-packs/`.
 
-## Ground rules for coding agents
-1. **Do not guess feature ownership**. Confirm ownership in `CROSS_REPO_MAP.md` first.
-2. **Use MVP statuses consistently**:
-   - `BUILT`, `PARTIAL`, `MISSING`, `BROKEN`, `BELONGS_IN_OTHER_REPO`, `LATER`.
-3. **Document-first for planning tasks**:
-   - Update `REPO_AUDIT.md`, `GAP_ANALYSIS.md`, and `IMPLEMENTATION_PLAN.md` before implementing major cross-cutting features.
-4. **Preserve shared package boundaries**:
-   - Shared auth/profile logic stays in `packages/features/src/crm/*`.
-   - Shared Supabase client/migrations stay under `packages/supabase/*`.
-5. **Role-sensitive routes** must use `ProtectedRoute` from `packages/features/src/crm/components/ProtectedRoute.tsx`.
-6. **No silent schema drift**:
-   - Any DB schema changes require a new SQL migration in `packages/supabase/migrations/*` and corresponding updates to shared types when applicable.
-7. **Command-center docs to keep current**:
-   - `AGENTS.md`
-   - `CROSS_REPO_MAP.md`
-   - `MVP_SPEC.md`
-   - `REPO_AUDIT.md`
-   - `GAP_ANALYSIS.md`
-   - `IMPLEMENTATION_PLAN.md`
+## Required behavior
+1. Overseer controls phase order.
+2. Codex Task Dispatcher chooses the correct prompt and repo.
+3. GitHub Repo Navigator replaces browser-based repo inspection.
+4. PR Review Coordinator manages PR review prompts.
+5. CI/Workflow Agent inspects workflow jobs and failed steps.
+6. Page Builder Agent manages structured block-based page creation.
+7. Security/Privacy Agent blocks unsafe player/minor data exposure.
+8. Release Manager summarizes phase completion.
 
-## MVP authority
-- `MVP_SPEC.md` is the source of truth for MVP feature definitions.
-- `GAP_ANALYSIS.md` is the source of truth for current implementation status.
+## Repositories and roles
+- Target consolidation repo: `hoopwithherbasketball-lab/hoop-master-platform-v2`
+- Legacy implementation repo: `lrevell8-arch/elitegbb`
+
+## Required phase order
+1. Bootstrap target docs.
+2. Audit target monorepo.
+3. Audit legacy repo.
+4. Create cross-repo migration plan.
+5. Add agent/Codex/Gemini guardrails.
+6. Build MCP + agent command center.
+7. Build public MVP shell.
+8. Build Page Builder MVP.
+9. Migrate ConnectGBB.
+10. Build data/forms workflows.
+11. Build evaluation/scouting workflow.
+
+## Hard constraints for current command-center PR
+- Documentation/instruction only.
+- No product app code changes.
+- No route changes.
+- No database schema changes.
+- No runtime dependency additions.
+- No MCP runtime code, OpenAI SDK code, GitHub write tools, or Supabase mutation tools.
+- No secrets, external service calls, auto-merge actions.
