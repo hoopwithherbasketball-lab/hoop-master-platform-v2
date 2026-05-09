@@ -4,67 +4,75 @@
 - Monorepo root with primary product surfaces in `apps/web`, `apps/procoach`, `apps/partner-portal`, shared packages in `packages/*`.
 
 ## 1) Framework and package manager
-- Monorepo tool: Turborepo (`turbo.json`, root scripts).  
-- Workspace package manager: npm workspaces (`packageManager: npm@10.0.0`).  
+- Monorepo tool: Turborepo (`turbo.json`, root scripts).
+- Workspace package manager: npm workspaces (`packageManager: npm@10.0.0`).
 - Frontend frameworks:
   - `apps/web`: React + TypeScript + Vite.
   - `apps/procoach`: React + TypeScript + Vite.
   - `apps/partner-portal`: React (CRA via CRACO, JS).
-- Additional backend code exists as Python stubs/services under `apps/partner-portal/backend` and `apps/player-advantage/backend`.
+- Additional backend code exists under `apps/partner-portal/backend` and `apps/player-advantage/backend`.
 
 ## 2) All routes and pages
-- `apps/web` routes are explicitly defined in `apps/web/src/App.tsx`.
+- `apps/web` routes are defined in `apps/web/src/App.tsx`:
   - Public: `/`, `/services`, `/recruiting-readiness`, `/nil-readiness`, `/audit`, `/browse`, `/workshops`, `/ui-test`, `/checkout/:slug`, `/login`, `/signup`.
-  - Authenticated dashboard: `/dashboard`, `/dashboard/profile`, `/dashboard/profile/optimizer`, `/dashboard/readiness`, `/dashboard/events`, `/dashboard/services`, `/dashboard/services/:orderId`, `/dashboard/services/:orderId/intake`, `/dashboard/resources`, `/dashboard/parent`.
+  - Dashboard: `/dashboard`, `/dashboard/profile`, `/dashboard/profile/optimizer`, `/dashboard/readiness`, `/dashboard/events`, `/dashboard/services`, `/dashboard/services/:orderId`, `/dashboard/services/:orderId/intake`, `/dashboard/resources`, `/dashboard/parent`.
   - Coach: `/coach`, `/coach/search`, `/coach/shortlist`, `/coach/events`.
   - Admin + NIL: `/admin`, `/admin/leads`, `/admin/orders`, `/admin/audits`, `/admin/players`, `/nil`, `/nil/companies`, `/nil/opportunities`, `/nil/athletes`, `/nil/outreach`, `/nil/compliance`, `/nil/tasks`.
-- `apps/procoach`: currently single-page marketing shell, no route table beyond BrowserRouter wrapper.
-- `apps/partner-portal`: single-page auth shell, no route table.
+- `apps/procoach`: BrowserRouter-wrapped single screen in `apps/procoach/src/App.tsx`.
+- `apps/partner-portal`: single-screen auth shell in `apps/partner-portal/src/App.js`.
 
 ## 3) Components
-- Web app layout/UI components under `apps/web/src/components/*`.
-- Most auth/profile domain components are shared from `packages/features/src/crm/components/*`.
-- Shared presentational UI in `packages/ui/src/components/*`.
+- Web layout/UI components: `apps/web/src/components/layout/*`, `apps/web/src/components/ui/*`.
+- Shared CRM components: `packages/features/src/crm/components/*`.
+- Shared UI package components: `packages/ui/src/components/*`.
 
 ## 4) API routes / server actions
-- No Next.js-style API routes or server actions detected.
-- Frontend calls Supabase directly from client-side contexts/hooks.
-- Separate Python backend entrypoint present: `apps/partner-portal/backend/server.py`.
+- No Next.js API routes/server actions found.
+- Frontends call Supabase from client-side context/hooks.
+- Python backend entrypoint exists at `apps/partner-portal/backend/server.py`.
 
 ## 5) Supabase / database setup
-- Supabase client is centralized in `packages/supabase/src/index.ts` and re-exported in `apps/web/src/lib/supabase.ts`.
-- Env vars required: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`; missing vars throw at startup.
-- SQL migrations currently present under `packages/supabase/migrations/procoach/migrations/*`.
+- Shared Supabase client: `packages/supabase/src/index.ts`.
+- Web client re-export: `apps/web/src/lib/supabase.ts`.
+- Required env vars: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (throws if missing).
+- SQL migrations present under `packages/supabase/migrations/procoach/migrations/*`.
 
 ## 6) Auth system
-- Auth provider/context from `packages/features/src/crm/contexts/AuthContext.tsx`.
-- Uses Supabase auth session + `user_roles` table lookup.
-- Route protection via `ProtectedRoute` component with optional role (`admin`) checks.
+- Auth context/provider in `packages/features/src/crm/contexts/AuthContext.tsx`.
+- Role lookup via `user_roles` table.
+- Route protection via `packages/features/src/crm/components/ProtectedRoute.tsx` (used throughout `apps/web/src/App.tsx`).
 
 ## 7) Forms
-- Login/Signup forms in `packages/features/src/crm/components/LoginForm.tsx` and `SignupForm.tsx`.
-- Editable player profile form in `ProfileCard.tsx`.
-- Service intake flow page exists in `apps/web/src/pages/dashboard/ServiceIntakePage.tsx`.
+- Auth forms: `packages/features/src/crm/components/LoginForm.tsx`, `SignupForm.tsx`.
+- Profile form/edit flow: `packages/features/src/crm/components/ProfileCard.tsx`.
+- Intake page: `apps/web/src/pages/dashboard/ServiceIntakePage.tsx`.
 
 ## 8) Admin/dashboard features
-- Admin pages exist and are role-gated (`/admin/*`).
-- Dashboard pages exist for profile, readiness, services, resources, parent center.
-- NIL admin workflow pages exist (`/nil/*`).
+- Admin routes/pages: `apps/web/src/pages/admin/*` + corresponding route bindings in `apps/web/src/App.tsx`.
+- Dashboard routes/pages: `apps/web/src/pages/dashboard/*`.
+- NIL admin routes/pages: `apps/web/src/pages/nil/*`.
 
 ## 9) Deployment config
-- Build orchestration via `turbo build`.
-- App-level builds:
-  - `web`: `tsc && vite build`
-  - `procoach`: `vite build`
-  - `partner-portal`: `craco build`
-- No explicit IaC/deployment manifests (e.g., Vercel/Netlify/GHA deploy workflow) identified in repo root.
+- Top-level build orchestration: `turbo.json` and root `package.json` scripts.
+- App builds:
+  - `apps/web/package.json`: `tsc && vite build`.
+  - `apps/procoach/package.json`: `vite build`.
+  - `apps/partner-portal/package.json`: `craco build`.
+- No explicit deploy workflow/manifests detected in repository root.
 
 ## 10) Broken imports or build issues
 - `npm run build` succeeds across workspaces.
-- Warning in `web` build: bundle chunk exceeds 500 kB threshold (optimization warning, not hard failure).
-- Potential runtime placeholder issue: `/api/placeholder/150/150` image paths in browse cards without corresponding API route in Vite app.
+- Web build emits a non-failing chunk-size warning (>500kB minified).
+- Potential runtime image issue: `apps/web/src/pages/public/BrowsePage.tsx` uses `/api/placeholder/150/150` without a matching Vite API route.
 
-## 11) Placeholder/stub pages
-- `apps/procoach/src/App.tsx` contains `href: '#'` CTA links and feature cards only (marketing stub).
-- `apps/web/src/pages/public/BrowsePage.tsx` uses placeholder image paths.
-- `apps/partner-portal/src/App.js` is a basic auth shell with limited feature surface.
+## 11) Placeholder/stub pages and modules
+- `apps/procoach/src/App.tsx` uses `href: '#'` links and functions as a shell.
+- `apps/partner-portal/src/App.js` is minimal auth shell UI.
+- Placeholder feature modules:
+  - `packages/features/src/connectgbb/index.ts`
+  - `packages/features/src/recruiting/index.ts`
+  - `packages/features/src/nil/index.ts`
+  - `packages/features/src/coaching/index.ts`
+
+## 12) Agent command center docs
+- Present at repo root: `AGENTS.md`, `CROSS_REPO_MAP.md`, `MVP_SPEC.md`, `REPO_AUDIT.md`, `GAP_ANALYSIS.md`, `IMPLEMENTATION_PLAN.md`.

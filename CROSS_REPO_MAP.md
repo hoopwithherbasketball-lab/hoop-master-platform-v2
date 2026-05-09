@@ -1,27 +1,30 @@
 # CROSS_REPO_MAP
 
-## Source-to-target mapping (from monorepo README)
+## Source-to-target mapping (from `README.md`)
 | Source repo | Target location in this repo | Current maturity |
 |---|---|---|
-| `hoopwithherbasketball-lab/ELITEGBBHNIL` | `apps/web` | Active, multi-route app |
-| `hoopwithherbasketball-lab/lightblueportal` | `packages/ui` | Shared UI components active |
-| `hoopwithherbasketball-lab/PROCOACH` | `apps/procoach` | Mostly landing shell/stub |
-| `hoopwithherbasketball-lab/HWH-PARNTER-PORTAL` | `apps/partner-portal` | Basic auth shell + Python backend folder |
-| `hoopwithherbasketball-lab/hwh-player-advantage` | `apps/player-advantage` | Backend model file only (limited) |
-| `hoopwithherbasketball-lab/hwh-player-advantage-app` | `apps/player-advantage-app` | Not present in current file listing |
-| `lrevell8-arch/elitegbb` | `packages/features/src/connectgbb` | Package export placeholder surface |
-| `lrevell8-arch/HWHLEAGUECRM` | `packages/features/src/crm` | Active auth/profile components + hooks |
+| `hoopwithherbasketball-lab/ELITEGBBHNIL` | `apps/web` | Active multi-route React/Vite app (`apps/web/src/App.tsx`). |
+| `hoopwithherbasketball-lab/lightblueportal` | `packages/ui` | Shared UI component package (`packages/ui/src/components/*`). |
+| `hoopwithherbasketball-lab/PROCOACH` | `apps/procoach` | Single-screen shell (`apps/procoach/src/App.tsx`). |
+| `hoopwithherbasketball-lab/HWH-PARNTER-PORTAL` | `apps/partner-portal` | Basic auth shell + Python backend (`apps/partner-portal/src/App.js`, `apps/partner-portal/backend/server.py`). |
+| `hoopwithherbasketball-lab/hwh-player-advantage` | `apps/player-advantage` | Backend model file present (`apps/player-advantage/backend/models.py`). |
+| `hoopwithherbasketball-lab/hwh-player-advantage-app` | `apps/player-advantage-app` | Not currently present in tracked files. |
+| `lrevell8-arch/elitegbb` | `packages/features/src/connectgbb` | Placeholder package export (`packages/features/src/connectgbb/index.ts`). |
+| `lrevell8-arch/HWHLEAGUECRM` | `packages/features/src/crm` | Active auth/profile module (`packages/features/src/crm/*`). |
 
-## Command-center documents status
-| Document | Status | Notes |
-|---|---|---|
-| `AGENTS.md` | Missing in repo tree | No agent instructions file found via filesystem scan. |
-| `CROSS_REPO_MAP.md` | Built in this change | This file. |
-| `MVP_SPEC.md` | Missing | Not found at repo root. |
+## Agent command center documents
+| Document | Status |
+|---|---|
+| `AGENTS.md` | Present |
+| `CROSS_REPO_MAP.md` | Present |
+| `MVP_SPEC.md` | Present |
+| `REPO_AUDIT.md` | Present |
+| `GAP_ANALYSIS.md` | Present |
+| `IMPLEMENTATION_PLAN.md` | Present |
 
-## Ownership guidance by feature area
-- `apps/web`: public marketing + member/dashboard + admin/NIL control panels.
-- `packages/features/src/crm`: auth, role gating, profile CRUD hooks/components.
-- `packages/supabase`: shared client and SQL migrations.
-- `apps/procoach`: pro-coach product line surface (currently mostly placeholder).
-- `apps/partner-portal` and `apps/player-advantage`: external/adjacent products that may hold functionality marked BELONGS_IN_OTHER_REPO for the main MVP.
+## Ownership guidance
+- `apps/web`: public site, dashboard/member experience, coach/admin/NIL surfaces.
+- `packages/features/src/crm`: auth, role checks, profile workflows.
+- `packages/supabase`: shared client + SQL migrations.
+- `apps/procoach`: pro-coach product line (currently early shell).
+- `apps/partner-portal`, `apps/player-advantage`: adjacent product surfaces that can justify `BELONGS_IN_OTHER_REPO` status where applicable.
