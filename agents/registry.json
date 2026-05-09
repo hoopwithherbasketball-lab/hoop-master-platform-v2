@@ -1,6 +1,5 @@
 {
-  "version": "1.0.0",
-  "overseer": "agents/overseer.md",
+  "version": "1.1.0",
   "target_repo": "hoopwithherbasketball-lab/hoop-master-platform-v2",
   "legacy_repo": "lrevell8-arch/elitegbb",
   "phase_order": [
@@ -17,9 +16,31 @@
     "phase_5_evaluations"
   ],
   "agents": [
-    "github-repo-navigator","github-code-search","codex-task-dispatcher","pr-review-coordinator","ci-workflow",
-    "target-repo-auditor","legacy-repo-auditor","cross-repo-migration-architect","documentation-agent",
-    "frontend-ui","page-builder","supabase-data","forms-crm","content-brand","evaluation-scouting",
-    "qa-test","security-privacy","release-manager"
+    {
+      "id": "hwh-ecosystem-overseer",
+      "name": "HWH Ecosystem Overseer",
+      "type": "control-plane",
+      "instructions_file": "agents/overseer.md",
+      "responsibility_summary": "Controls phase order, approvals, and cross-agent handoffs."
+    },
+    {"id":"prompt-pack","name":"Prompt Pack Controller","type":"control-plane","instructions_file":"agents/prompt-pack.md","responsibility_summary":"Defines approved prompt packs and usage by phase."},
+    {"id":"github-repo-navigator","name":"GitHub Repo Navigator","type":"tooling","instructions_file":"agents/github-repo-navigator.md","responsibility_summary":"Replaces browser-based repo inspection with repository-native navigation."},
+    {"id":"github-code-search","name":"GitHub Code Search","type":"tooling","instructions_file":"agents/github-code-search.md","responsibility_summary":"Performs targeted symbol/path discovery for evidence collection."},
+    {"id":"codex-task-dispatcher","name":"Codex Task Dispatcher","type":"control-plane","instructions_file":"agents/codex-task-dispatcher.md","responsibility_summary":"Chooses correct prompt and repo context, then routes tasks."},
+    {"id":"pr-review-coordinator","name":"PR Review Coordinator","type":"quality","instructions_file":"agents/pr-review-coordinator.md","responsibility_summary":"Coordinates PR review prompts, findings, and remediation tracking."},
+    {"id":"ci-workflow","name":"CI Workflow Agent","type":"quality","instructions_file":"agents/ci-workflow.md","responsibility_summary":"Inspects CI jobs, failed steps, and rerun strategy."},
+    {"id":"target-repo-auditor","name":"Target Repo Auditor","type":"audit","instructions_file":"agents/target-repo-auditor.md","responsibility_summary":"Audits consolidation repo architecture and feature readiness."},
+    {"id":"legacy-repo-auditor","name":"Legacy Repo Auditor","type":"audit","instructions_file":"agents/legacy-repo-auditor.md","responsibility_summary":"Audits legacy repo for migration candidates and dependencies."},
+    {"id":"cross-repo-migration-architect","name":"Cross-Repo Migration Architect","type":"planning","instructions_file":"agents/cross-repo-migration-architect.md","responsibility_summary":"Designs migration waves, sequencing, and cutover plans."},
+    {"id":"documentation-agent","name":"Documentation Agent","type":"documentation","instructions_file":"agents/documentation-agent.md","responsibility_summary":"Maintains command-center docs, evidence, and decision logs."},
+    {"id":"frontend-ui","name":"Frontend UI Agent","type":"delivery-planning","instructions_file":"agents/frontend-ui.md","responsibility_summary":"Defines shared UI standards and implementation readiness plans."},
+    {"id":"page-builder","name":"Page Builder Agent","type":"delivery-planning","instructions_file":"agents/page-builder.md","responsibility_summary":"Plans structured block-based page composition workflows."},
+    {"id":"supabase-data","name":"Supabase Data Agent","type":"data-planning","instructions_file":"agents/supabase-data.md","responsibility_summary":"Plans data access/migration constraints and schema-read analysis."},
+    {"id":"forms-crm","name":"Forms CRM Agent","type":"delivery-planning","instructions_file":"agents/forms-crm.md","responsibility_summary":"Plans forms, CRM workflows, and validation strategy."},
+    {"id":"content-brand","name":"Content Brand Agent","type":"documentation","instructions_file":"agents/content-brand.md","responsibility_summary":"Maintains brand-safe content guidance and publishing constraints."},
+    {"id":"evaluation-scouting","name":"Evaluation Scouting Agent","type":"delivery-planning","instructions_file":"agents/evaluation-scouting.md","responsibility_summary":"Plans scouting/evaluation flows and data expectations."},
+    {"id":"qa-test","name":"QA Test Agent","type":"quality","instructions_file":"agents/qa-test.md","responsibility_summary":"Defines test plans, quality gates, and regression coverage."},
+    {"id":"security-privacy","name":"Security Privacy Agent","type":"safety","instructions_file":"agents/security-privacy.md","responsibility_summary":"Blocks unsafe player/minor data exposure and privacy violations."},
+    {"id":"release-manager","name":"Release Manager","type":"release","instructions_file":"agents/release-manager.md","responsibility_summary":"Summarizes phase completion, release readiness, and open risks."}
   ]
 }

@@ -16,6 +16,26 @@ Legend: `BUILT` / `PARTIAL` / `MISSING` / `BROKEN` / `BELONGS_IN_OTHER_REPO` / `
 | HWH Elite arm | LATER | No dedicated route group or feature module named `elite`/`hwh-elite` in `apps/web/src/App.tsx` or `packages/features/src/*`. |
 | Agent command center (`AGENTS.md`, `CROSS_REPO_MAP.md`, `MVP_SPEC.md`) | BUILT | Command-center definition docs are now present at repo root: `AGENTS.md`, `CROSS_REPO_MAP.md`, `MVP_SPEC.md`. |
 
+## Agent Command Center Gap Status
+
+| Area | Status | Files Added | Remaining Gap | Next Phase |
+|---|---|---|---|---|
+| Agent registry | BUILT | `agents/registry.json` | Keep entries synchronized with future agent files | Phase 6 |
+| Agent definitions | BUILT | `agents/overseer.md`, `agents/prompt-pack.md`, `agents/github-repo-navigator.md`, `agents/github-code-search.md`, `agents/codex-task-dispatcher.md`, `agents/pr-review-coordinator.md`, `agents/ci-workflow.md`, `agents/target-repo-auditor.md`, `agents/legacy-repo-auditor.md`, `agents/cross-repo-migration-architect.md`, `agents/documentation-agent.md`, `agents/frontend-ui.md`, `agents/page-builder.md`, `agents/supabase-data.md`, `agents/forms-crm.md`, `agents/content-brand.md`, `agents/evaluation-scouting.md`, `agents/qa-test.md`, `agents/security-privacy.md`, `agents/release-manager.md` | Convert instruction agents into executable runtimes later | Phase 6+ |
+| Prompt packs | BUILT | `prompt-packs/01_bootstrap_target_docs.prompt.md` .. `prompt-packs/11_phase_5_evaluations.prompt.md` | Add per-phase acceptance test templates | Phase 1-11 execution |
+| Phase gates | BUILT | `AGENT_PHASE_GATES.md` | Add gate evidence checklist templates | Phase 1 |
+| Codex dispatch rules | BUILT | `CODEX_TASK_DISPATCH_RULES.md` | Automate rule validation in CI later | Phase 5 |
+| GitHub agent tools | BUILT | `GITHUB_AGENT_TOOLS.md` | Implement runtime API tooling later | Phase 6+ |
+| Gemini review workflow | BUILT | `GEMINI_REVIEW_WORKFLOW.md` | Add standardized rubric templates | Phase 5 |
+| Operating model | BUILT | `AGENT_OPERATING_MODEL.md`, `AGENTS.md` | Add runbook examples for each handoff | Phase 5 |
+| Security/privacy guardrails | PARTIAL | `agents/security-privacy.md`, `AGENTS.md` | Runtime policy enforcement tooling not implemented | Phase 6+ |
+| Page Builder Agent planning | PARTIAL | `agents/page-builder.md`, `prompt-packs/08_phase_2_page_builder.prompt.md` | No executable page-builder runtime yet | Phase 8 |
+| MCP runtime | NOT_STARTED | None (documentation-only) | Build executable MCP server | Phase 6 |
+| Agent runner runtime | NOT_STARTED | None (documentation-only) | Build executable agent orchestrator/runner | Phase 6 |
+| GitHub API/MCP integration | NOT_STARTED | Policy docs only | Implement GitHub tool integrations | Phase 6 |
+| Supabase MCP integration | NOT_STARTED | Policy docs only | Implement Supabase MCP tooling | Phase 10 |
+| Pica MCP integration | NOT_STARTED | Policy docs only | Implement Pica MCP integrations | Later phase |
+
 ## Broken / risk hotspots
 1. `apps/web/src/pages/public/BrowsePage.tsx` references `/api/placeholder/150/150` images, but no matching API endpoint exists in this Vite app.
 2. `apps/procoach/src/App.tsx` uses `href: '#'` feature links and currently acts as a stub shell.

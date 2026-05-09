@@ -4,8 +4,33 @@
 - No new application features implemented in this pass.
 - Documentation/audit only.
 
+## Current Phase Status
+- **Phase:** Agent Command Center Definitions
+- **Status:** PARTIAL / FOUNDATION COMPLETE
+
+### Completed
+- Agent instruction files under `agents/*.md`
+- Prompt packs under `prompt-packs/*.prompt.md`
+- Phase gates in `AGENT_PHASE_GATES.md`
+- Dispatch rules in `CODEX_TASK_DISPATCH_RULES.md`
+- GitHub agent tool policy in `GITHUB_AGENT_TOOLS.md`
+- Gemini review workflow in `GEMINI_REVIEW_WORKFLOW.md`
+- Operating model docs in `AGENT_OPERATING_MODEL.md` and `AGENTS.md`
+
+### Not completed
+- Executable MCP server
+- Executable OpenAI Agents SDK runner
+- GitHub API tool implementation
+- Supabase tool implementation
+- Pica MCP integration
+- Production automation
+- App/product feature changes
+
+### Next recommended phase
+Bootstrap target docs **or** audit target monorepo, depending on whether `BRAND_CONTEXT.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `CROSS_REPO_MAP.md`, and `CROSS_REPO_PHASES.md` already exist and are complete.
+
 ## Phase 1: Stabilize repository operations (short-term)
-1. Create `AGENTS.md` and `MVP_SPEC.md` at root to formalize agent workflow and MVP acceptance criteria.
+1. Create/complete target bootstrap docs and acceptance templates.
 2. Replace runtime placeholder assets (`/api/placeholder/...`) with local/static assets or valid remote URLs.
 3. Add CI checks: `turbo build`, lint, and typecheck where available.
 
