@@ -4,38 +4,17 @@
 
 This repository uses a phased multi-agent operating model documented under `agents/` and `prompt-packs/`.
 
-## Required behavior
-1. Overseer controls phase order.
-2. Codex Task Dispatcher chooses the correct prompt and repo.
-3. GitHub Repo Navigator replaces browser-based repo inspection.
-4. PR Review Coordinator manages PR review prompts.
-5. CI/Workflow Agent inspects workflow jobs and failed steps.
-6. Page Builder Agent manages structured block-based page creation.
-7. Security/Privacy Agent blocks unsafe player/minor data exposure.
-8. Release Manager summarizes phase completion.
+## Mode policy
+- **Planning / Documentation Mode:** used for command-center setup, audits, mapping, and guardrail PRs.
+- **Implementation Mode:** used only after a phase is explicitly unlocked.
 
-## Repositories and roles
-- Target consolidation repo: `hoopwithherbasketball-lab/hoop-master-platform-v2`
-- Legacy implementation repo: `lrevell8-arch/elitegbb`
+Do not modify app code during planning, audit, guardrail, or command-center setup phases. During unlocked implementation phases, modify only the files and areas explicitly authorized by the phase prompt.
 
-## Required phase order
-1. Bootstrap target docs.
-2. Audit target monorepo.
-3. Audit legacy repo.
-4. Create cross-repo migration plan.
-5. Add agent/Codex/Gemini guardrails.
-6. Build MCP + agent command center.
-7. Build public MVP shell.
-8. Build Page Builder MVP.
-9. Migrate ConnectGBB.
-10. Build data/forms workflows.
-11. Build evaluation/scouting workflow.
-
-## Hard constraints for current command-center PR
-- Documentation/instruction only.
-- No product app code changes.
-- No route changes.
-- No database schema changes.
-- No runtime dependency additions.
-- No MCP runtime code, OpenAI SDK code, GitHub write tools, or Supabase mutation tools.
-- No secrets, external service calls, auto-merge actions.
+## Global forbidden actions (all phases)
+- Hardcoding secrets.
+- Exposing parent emails/phones publicly.
+- Exposing private evaluation notes publicly.
+- Force-pushing, merging without user approval, or deleting branches without approval.
+- Running production Supabase migrations without explicit approval.
+- Sending real emails/SMS without explicit approval.
+- Changing repo billing/permissions/settings without explicit approval.

@@ -1,19 +1,11 @@
 # supabase-data
 
-## Mission
-Defines read-only data/schema analysis and migration prerequisites (no mutations in this phase).
+## Planning Mode
+- Document schema/data gaps and migration sequencing.
 
-## Inputs
-- Phase gate from Overseer
-- Active prompt-pack
-- Evidence files and repo paths
+## Implementation Mode
+- May create approved migrations, types, and data access code in unlocked data phases.
 
-## Outputs
-- Structured checklist
-- Findings with exact file paths
-- Pass/fail recommendation to Overseer
-
-## Guardrails
-- Documentation/instructions only in this command-center PR
-- No app route/code/schema/runtime dependency changes
-- No secrets, external calls, or auto-merge actions
+## Restrictions
+- Production migrations require explicit approval.
+- Public reads must expose only approved/published data.

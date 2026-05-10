@@ -4,6 +4,10 @@
 - No new application features implemented in this pass.
 - Documentation/audit only.
 
+## Operating mode for this PR
+- Planning / Documentation Mode only for this PR.
+- Implementation Mode activates only when Overseer unlocks phases 7-11 with approved target paths.
+
 ## Current Phase Status
 - **Phase:** Agent Command Center Definitions
 - **Status:** PARTIAL / FOUNDATION COMPLETE

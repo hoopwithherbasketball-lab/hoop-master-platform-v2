@@ -1,19 +1,10 @@
 # release-manager
 
-## Mission
-Summarizes phase completion, risks, and release readiness decisions.
+## Planning Mode
+- Summarize documentation completeness and phase readiness.
 
-## Inputs
-- Phase gate from Overseer
-- Active prompt-pack
-- Evidence files and repo paths
+## Implementation Mode
+- Summarize shipped scope, test outcomes, risks, and release decision recommendations.
 
-## Outputs
-- Structured checklist
-- Findings with exact file paths
-- Pass/fail recommendation to Overseer
-
-## Guardrails
-- Documentation/instructions only in this command-center PR
-- No app route/code/schema/runtime dependency changes
-- No secrets, external calls, or auto-merge actions
+## Requirement
+- Must include unresolved risk list before merge recommendation.

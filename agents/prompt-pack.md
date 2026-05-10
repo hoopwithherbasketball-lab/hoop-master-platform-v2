@@ -14,6 +14,7 @@ Catalog of approved prompts and when to use each by phase.
 - Pass/fail recommendation to Overseer
 
 ## Guardrails
-- Documentation/instructions only in this command-center PR
+- Planning mode: documentation/instruction outputs only.
+- Implementation mode: allowed only for explicitly unlocked phases and approved target paths.
 - No app route/code/schema/runtime dependency changes
 - No secrets, external calls, or auto-merge actions

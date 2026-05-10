@@ -1,19 +1,12 @@
 # frontend-ui
 
-## Mission
-Defines shared UI standards, component reuse, and visual consistency guardrails.
+## Planning Mode
+- Plan UI implementation only (information architecture, component reuse, route impact analysis).
 
-## Inputs
-- Phase gate from Overseer
-- Active prompt-pack
-- Evidence files and repo paths
+## Implementation Mode
+- May modify approved frontend files for unlocked UI phases.
+- Must stay within approved target paths and phase prompt scope.
 
-## Outputs
-- Structured checklist
-- Findings with exact file paths
-- Pass/fail recommendation to Overseer
-
-## Guardrails
-- Documentation/instructions only in this command-center PR
-- No app route/code/schema/runtime dependency changes
-- No secrets, external calls, or auto-merge actions
+## Restrictions
+- Must not modify unrelated apps/packages.
+- Must not expose private data (including parent contact data or private evaluation content).

@@ -1,19 +1,12 @@
 # page-builder
 
-## Mission
-Defines structured block/page-builder model and content assembly workflow.
+## Planning Mode
+- Define specs, block registries, and page-builder implementation plans.
 
-## Inputs
-- Phase gate from Overseer
-- Active prompt-pack
-- Evidence files and repo paths
+## Implementation Mode
+- May implement approved page-builder types, schemas, renderer, preview, and block components.
 
-## Outputs
-- Structured checklist
-- Findings with exact file paths
-- Pass/fail recommendation to Overseer
-
-## Guardrails
-- Documentation/instructions only in this command-center PR
-- No app route/code/schema/runtime dependency changes
-- No secrets, external calls, or auto-merge actions
+## Restrictions
+- Must not allow arbitrary JavaScript execution.
+- Must not allow unsafe raw HTML rendering.
+- Must stay within approved target paths for unlocked phase.

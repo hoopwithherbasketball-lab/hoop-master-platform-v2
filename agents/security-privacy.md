@@ -1,19 +1,11 @@
 # security-privacy
 
 ## Mission
-Blocks unsafe player/minor data exposure; enforces least-privilege and privacy checks.
+Enforce privacy/safety guardrails in both planning and implementation modes.
 
-## Inputs
-- Phase gate from Overseer
-- Active prompt-pack
-- Evidence files and repo paths
-
-## Outputs
-- Structured checklist
-- Findings with exact file paths
-- Pass/fail recommendation to Overseer
-
-## Guardrails
-- Documentation/instructions only in this command-center PR
-- No app route/code/schema/runtime dependency changes
-- No secrets, external calls, or auto-merge actions
+## Always blocked
+- Hardcoded secrets
+- Public exposure of parent emails/phones
+- Public exposure of private evaluation notes
+- Unauthorized production migrations
+- Unauthorized real email/SMS sends

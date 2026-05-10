@@ -40,3 +40,6 @@ Legend: `BUILT` / `PARTIAL` / `MISSING` / `BROKEN` / `BELONGS_IN_OTHER_REPO` / `
 1. `apps/web/src/pages/public/BrowsePage.tsx` references `/api/placeholder/150/150` images, but no matching API endpoint exists in this Vite app.
 2. `apps/procoach/src/App.tsx` uses `href: '#'` feature links and currently acts as a stub shell.
 3. Feature packages `connectgbb`, `recruiting`, `nil`, and `coaching` are placeholder descriptors only (`packages/features/src/*/index.ts`).
+
+
+Guardrails are phase-scoped: docs-only restrictions apply to planning/audit/guardrail/command-center setup phases, not to unlocked implementation phases.

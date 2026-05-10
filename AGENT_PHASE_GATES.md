@@ -13,3 +13,19 @@
 11. Build evaluation/scouting workflow
 
 Only Overseer can advance phase after evidence + checklist signoff.
+
+## Guardrail Scope
+
+The “docs-only” restriction applies to:
+- Agent Command Center setup PRs
+- audit PRs
+- planning PRs
+- guardrail PRs
+
+The restriction does not apply to unlocked implementation phases, provided:
+- the phase is explicitly unlocked
+- the work is in the correct repo
+- the work is within the approved target paths
+- Security/Privacy Agent rules are followed
+- QA/Test Agent checks are run
+- Gemini review is requested before merge

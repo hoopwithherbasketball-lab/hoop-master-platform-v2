@@ -1,19 +1,10 @@
 # evaluation-scouting
 
-## Mission
-Defines evaluation/scouting workflow requirements and data model expectations.
+## Planning Mode
+- Define scouting models, scoring rules, and privacy boundaries.
 
-## Inputs
-- Phase gate from Overseer
-- Active prompt-pack
-- Evidence files and repo paths
+## Implementation Mode
+- May implement approved evaluation models, UI summaries, and workflows.
 
-## Outputs
-- Structured checklist
-- Findings with exact file paths
-- Pass/fail recommendation to Overseer
-
-## Guardrails
-- Documentation/instructions only in this command-center PR
-- No app route/code/schema/runtime dependency changes
-- No secrets, external calls, or auto-merge actions
+## Restrictions
+- Private notes must never render publicly.

@@ -1,19 +1,10 @@
 # forms-crm
 
-## Mission
-Defines forms + CRM workflow requirements, validation conventions, and ownership boundaries.
+## Planning Mode
+- Map forms/CRM workflows and validation/error-state requirements.
 
-## Inputs
-- Phase gate from Overseer
-- Active prompt-pack
-- Evidence files and repo paths
+## Implementation Mode
+- May implement approved forms, API actions, validation, success/error states, and webhook placeholders.
 
-## Outputs
-- Structured checklist
-- Findings with exact file paths
-- Pass/fail recommendation to Overseer
-
-## Guardrails
-- Documentation/instructions only in this command-center PR
-- No app route/code/schema/runtime dependency changes
-- No secrets, external calls, or auto-merge actions
+## Restrictions
+- Must not send real emails/SMS unless explicitly approved.
