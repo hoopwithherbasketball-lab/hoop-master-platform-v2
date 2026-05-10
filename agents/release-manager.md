@@ -3,6 +3,9 @@
 ## Planning Mode
 - Summarize documentation completeness and phase readiness.
 
+## Command Center Tooling Mode
+- Summarize command-center infrastructure readiness, tool availability, and registry synchronization.
+
 ## Implementation Mode
 - Summarize shipped scope, test outcomes, risks, and release decision recommendations.
 
