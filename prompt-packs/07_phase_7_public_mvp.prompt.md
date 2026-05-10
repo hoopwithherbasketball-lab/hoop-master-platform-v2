@@ -86,14 +86,8 @@ Allowed purpose:
 - public private evaluation note exposure
 
 ## Prohibited
-- No hardcoded secrets
-- No parent email/phone exposed publicly
-- No private evaluation notes exposed publicly
-- No private recruiting notes exposed publicly
-- No production Supabase migrations without explicit approval
-- No real email/SMS sending without explicit approval
-- No unrelated app/package changes
-- No merging PRs automatically
+- Hardcoded secrets or external service invocation
+- Public exposure of parent email/phone, private evaluation notes, or private recruiting notes
+- Production Supabase migrations or real email/SMS sending without explicit approval
+- Unrelated app/package changes, auto-merge, or destructive repo changes
 - Runtime dependency additions
-- Secrets or external service invocation
-- Auto-merge or destructive repo changes
