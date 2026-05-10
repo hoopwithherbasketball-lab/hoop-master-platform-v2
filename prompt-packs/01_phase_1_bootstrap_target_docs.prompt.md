@@ -11,6 +11,6 @@ Execute **Phase 1: Bootstrap target docs** for the correct repository context.
 
 ## Restrictions
 
-- No runtime dependency additions unless explicitly authorized by the active phase prompt
-- No secrets or external service invocation
-- No auto-merge or destructive repo changes
+- Runtime dependency additions unless explicitly authorized by the active phase prompt
+- Secrets or external service invocation
+- Auto-merge or destructive repo changes
