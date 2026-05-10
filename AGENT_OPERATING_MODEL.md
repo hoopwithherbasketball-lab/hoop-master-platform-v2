@@ -1,6 +1,6 @@
 # AGENT_OPERATING_MODEL
 
-## Runtime maturity (current PR)
+## Runtime maturity
 - Agents in this PR are instruction/documentation agents.
 - MCP server/runtime orchestration comes in a later phase.
 
