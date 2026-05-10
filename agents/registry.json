@@ -126,7 +126,7 @@
       "responsibility_summary": "Designs migration waves, sequencing, and cutover plans.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -203,7 +203,7 @@
       "responsibility_summary": "Plans scouting/evaluation flows and data expectations.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {

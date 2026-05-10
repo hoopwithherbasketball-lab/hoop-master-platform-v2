@@ -28,9 +28,3 @@ Future implementation phases:
 - Codex Task Dispatcher replaces manual prompt guessing.
 - PR Review Coordinator replaces manual PR review coordination.
 - CI/Workflow Agent handles workflow job and step inspection.
-
-
-## Overseer coordination vs specialist implementation
-- Overseer coordination permission: the Overseer may operate in `implementation` and `implementation_review` phases to coordinate, validate, dispatch, block, and unlock phases.
-- Specialist implementation permission: Frontend UI, Page Builder, Supabase/Data, Forms & CRM, and Evaluation/Scouting perform scoped code/schema/UI changes only when the phase is unlocked.
-- Global restrictions remain active across all phases.

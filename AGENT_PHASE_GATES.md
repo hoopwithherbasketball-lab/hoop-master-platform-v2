@@ -29,7 +29,3 @@ The restriction does not apply to unlocked implementation phases, provided:
 - Security/Privacy Agent rules are followed
 - QA/Test Agent checks are run
 - Gemini review is requested before merge
-
-
-## Overseer runtime role
-The Overseer is active in planning, implementation, and implementation_review phases to validate gates, coordinate dispatch, and authorize phase unlocks/closure.

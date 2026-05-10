@@ -20,4 +20,3 @@ Do not modify app code during planning, audit, guardrail, or command-center setu
 - Changing repo billing/permissions/settings without explicit approval.
 
 
-This PR is documentation-only.
