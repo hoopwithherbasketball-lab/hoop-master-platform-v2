@@ -6,7 +6,7 @@ Execute **Phase 7: Build public MVP shell** for the correct repository context.
 ## Required behavior
 1. Confirm repo context (target vs legacy).
 2. Collect evidence with exact file paths.
-3. Update command-center docs only unless phase explicitly allows implementation.
+3. Modify only the files and areas explicitly authorized by this phase prompt.
 4. Report blockers, risks, and next handoff.
 
 ## Prohibited
