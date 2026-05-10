@@ -1,7 +1,7 @@
-# 04_cross_repo_migration_plan
+# Phase 4: Create cross-repo migration plan
 
 ## Objective
-Execute phase `04_cross_repo_migration_plan` for the correct repository context.
+Execute **Phase 4: Create cross-repo migration plan** for the correct repository context.
 
 ## Required behavior
 1. Confirm repo context (target vs legacy).

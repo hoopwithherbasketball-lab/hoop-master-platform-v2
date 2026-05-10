@@ -1,7 +1,7 @@
-# 02_audit_target_monorepo
+# Phase 2: Audit target monorepo
 
 ## Objective
-Execute phase `02_audit_target_monorepo` for the correct repository context.
+Execute **Phase 2: Audit target monorepo** for the correct repository context.
 
 ## Required behavior
 1. Confirm repo context (target vs legacy).

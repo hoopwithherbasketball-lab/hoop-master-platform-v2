@@ -8,6 +8,26 @@
 - Planning / Documentation Mode only for this PR.
 - Implementation Mode activates only when Overseer unlocks phases 7-11 with approved target paths.
 
+## Guardrail Update
+The Agent Command Center is currently documentation/instruction-only. Future implementation phases are explicitly allowed to modify scoped code areas once phase gates are unlocked.
+
+Phase implementation permissions are now controlled by:
+- `AGENT_PHASE_GATES.md`
+- `CODEX_TASK_DISPATCH_RULES.md`
+- individual agent instruction files
+- Security/Privacy Agent rules
+- QA/Test Agent checks
+
+## Foundation Context Docs
+
+This PR now includes placeholder foundation docs required by the Agent Command Center:
+
+- `BRAND_CONTEXT.md`
+- `FEATURE_REGISTRY.md`
+- `CROSS_REPO_PHASES.md`
+
+These are intentionally lightweight and should be expanded during Phase 1 and Phase 2.
+
 ## Current Phase Status
 - **Phase:** Agent Command Center Definitions
 - **Status:** PARTIAL / FOUNDATION COMPLETE
@@ -60,3 +80,11 @@ Bootstrap target docs **or** audit target monorepo, depending on whether `BRAND_
 1. Add explicit deployment manifests/workflows per app target.
 2. Document environment variable matrix for each app.
 3. Set bundle budgets and code-splitting goals to address current large web chunk warning.
+
+
+## Consistency Fixes Applied
+
+- Removed duplicate misspelled partner portal mapping.
+- Standardized execution mode naming on `implementation_review`.
+- Standardized phase IDs across registry, prompt packs, phase gates, and dispatcher docs.
+- Confirmed `CROSS_REPO_PHASES.md` is the canonical source for phase numbering.

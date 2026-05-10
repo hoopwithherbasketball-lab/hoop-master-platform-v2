@@ -1,7 +1,7 @@
-# 05_agent_guardrails
+# Phase 5: Add agent/Codex/Gemini guardrails
 
 ## Objective
-Execute phase `05_agent_guardrails` for the correct repository context.
+Execute **Phase 5: Add agent/Codex/Gemini guardrails** for the correct repository context.
 
 ## Required behavior
 1. Confirm repo context (target vs legacy).

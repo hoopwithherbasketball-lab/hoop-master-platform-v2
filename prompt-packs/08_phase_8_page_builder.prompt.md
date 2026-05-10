@@ -1,7 +1,7 @@
-# Phase 1: Bootstrap target docs
+# Phase 8: Build Page Builder MVP
 
 ## Objective
-Execute **Phase 1: Bootstrap target docs** for the correct repository context.
+Execute **Phase 8: Build Page Builder MVP** for the correct repository context.
 
 ## Required behavior
 1. Confirm repo context (target vs legacy).

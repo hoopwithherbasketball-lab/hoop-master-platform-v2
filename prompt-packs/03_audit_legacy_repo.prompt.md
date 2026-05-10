@@ -1,7 +1,7 @@
-# 03_audit_legacy_repo
+# Phase 3: Audit legacy repo
 
 ## Objective
-Execute phase `03_audit_legacy_repo` for the correct repository context.
+Execute **Phase 3: Audit legacy repo** for the correct repository context.
 
 ## Required behavior
 1. Confirm repo context (target vs legacy).

@@ -1,7 +1,7 @@
-# Phase 1: Bootstrap target docs
+# Phase 11: Build evaluation/scouting workflow
 
 ## Objective
-Execute **Phase 1: Bootstrap target docs** for the correct repository context.
+Execute **Phase 11: Build evaluation/scouting workflow** for the correct repository context.
 
 ## Required behavior
 1. Confirm repo context (target vs legacy).

@@ -1,7 +1,7 @@
-# 06_mcp_agent_command_center
+# Phase 6: Build MCP + agent command center
 
 ## Objective
-Execute phase `06_mcp_agent_command_center` for the correct repository context.
+Execute **Phase 6: Build MCP + agent command center** for the correct repository context.
 
 ## Required behavior
 1. Confirm repo context (target vs legacy).
