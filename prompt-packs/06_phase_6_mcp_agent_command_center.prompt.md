@@ -42,13 +42,13 @@ During Phase 6, agents may modify only command-center tooling and documentation 
 
 ## Restrictions
 
-- No hardcoded secrets
-- No parent email/phone exposed publicly
-- No private evaluation notes exposed publicly
-- No private recruiting notes exposed publicly
-- No production Supabase migrations without explicit approval
-- No real email/SMS sending without explicit approval
-- No unrelated app/package changes
-- No auto-merge or destructive repo changes
-- No runtime dependency additions unless explicitly authorized by the active phase prompt
-- No secrets or external service invocation
+- Hardcoded secrets
+- Parent email/phone exposed publicly
+- Private evaluation notes exposed publicly
+- Private recruiting notes exposed publicly
+- Production Supabase migrations without explicit approval
+- Real email/SMS sending without explicit approval
+- Unrelated app/package changes
+- Auto-merge or destructive repo changes
+- Runtime dependency additions unless explicitly authorized by the active phase prompt
+- Secrets or external service invocation
