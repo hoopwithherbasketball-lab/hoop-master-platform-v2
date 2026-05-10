@@ -21,33 +21,21 @@
       "name": "HWH Ecosystem Overseer",
       "type": "control-plane",
       "instructions_file": "agents/overseer.md",
-      "responsibility_summary": "Controls phase order, approvals, and cross-agent handoffs.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Controls phase order, approvals, and cross-agent handoffs."
     },
     {
       "id": "prompt-pack",
       "name": "Prompt Pack Controller",
       "type": "control-plane",
       "instructions_file": "agents/prompt-pack.md",
-      "responsibility_summary": "Defines approved prompt packs and usage by phase.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Defines approved prompt packs and usage by phase."
     },
     {
       "id": "github-repo-navigator",
       "name": "GitHub Repo Navigator",
       "type": "tooling",
       "instructions_file": "agents/github-repo-navigator.md",
-      "responsibility_summary": "Replaces browser-based repo inspection with repository-native navigation.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Replaces browser-based repo inspection with repository-native navigation."
     },
     {
       "id": "github-code-search",
@@ -59,6 +47,7 @@
         "planning",
         "review"
       ]
+     
     },
     {
       "id": "codex-task-dispatcher",
@@ -70,6 +59,7 @@
         "planning",
         "review"
       ]
+     
     },
     {
       "id": "pr-review-coordinator",
@@ -81,39 +71,28 @@
         "planning",
         "review"
       ]
+     
     },
     {
       "id": "ci-workflow",
       "name": "CI Workflow Agent",
       "type": "quality",
       "instructions_file": "agents/ci-workflow.md",
-      "responsibility_summary": "Inspects CI jobs, failed steps, and rerun strategy.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Inspects CI jobs, failed steps, and rerun strategy."
     },
     {
       "id": "target-repo-auditor",
       "name": "Target Repo Auditor",
       "type": "audit",
       "instructions_file": "agents/target-repo-auditor.md",
-      "responsibility_summary": "Audits consolidation repo architecture and feature readiness.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Audits consolidation repo architecture and feature readiness."
     },
     {
       "id": "legacy-repo-auditor",
       "name": "Legacy Repo Auditor",
       "type": "audit",
       "instructions_file": "agents/legacy-repo-auditor.md",
-      "responsibility_summary": "Audits legacy repo for migration candidates and dependencies.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Audits legacy repo for migration candidates and dependencies."
     },
     {
       "id": "cross-repo-migration-architect",
@@ -123,7 +102,7 @@
       "responsibility_summary": "Designs migration waves, sequencing, and cutover plans.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -131,11 +110,7 @@
       "name": "Documentation Agent",
       "type": "documentation",
       "instructions_file": "agents/documentation-agent.md",
-      "responsibility_summary": "Maintains command-center docs, evidence, and decision logs.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Maintains command-center docs, evidence, and decision logs."
     },
     {
       "id": "frontend-ui",
@@ -145,7 +120,7 @@
       "responsibility_summary": "Defines shared UI standards and implementation readiness plans.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -156,7 +131,7 @@
       "responsibility_summary": "Plans structured block-based page composition workflows.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -167,7 +142,7 @@
       "responsibility_summary": "Plans data access/migration constraints and schema-read analysis.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -178,7 +153,7 @@
       "responsibility_summary": "Plans forms, CRM workflows, and validation strategy.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -186,11 +161,7 @@
       "name": "Content Brand Agent",
       "type": "documentation",
       "instructions_file": "agents/content-brand.md",
-      "responsibility_summary": "Maintains brand-safe content guidance and publishing constraints.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Maintains brand-safe content guidance and publishing constraints."
     },
     {
       "id": "evaluation-scouting",
@@ -200,7 +171,7 @@
       "responsibility_summary": "Plans scouting/evaluation flows and data expectations.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -219,22 +190,14 @@
       "name": "Security Privacy Agent",
       "type": "safety",
       "instructions_file": "agents/security-privacy.md",
-      "responsibility_summary": "Blocks unsafe player/minor data exposure and privacy violations.",
-      "execution_modes": [
-        "planning",
-        "implementation_review"
-      ]
+      "responsibility_summary": "Blocks unsafe player/minor data exposure and privacy violations."
     },
     {
       "id": "release-manager",
       "name": "Release Manager",
       "type": "release",
       "instructions_file": "agents/release-manager.md",
-      "responsibility_summary": "Summarizes phase completion, release readiness, and open risks.",
-      "execution_modes": [
-        "planning",
-        "review"
-      ]
+      "responsibility_summary": "Summarizes phase completion, release readiness, and open risks."
     }
   ]
 }
