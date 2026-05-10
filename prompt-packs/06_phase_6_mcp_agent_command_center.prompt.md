@@ -40,7 +40,7 @@ During Phase 6, agents may modify only command-center tooling and documentation 
 - production infrastructure
 - production secrets
 
-## Prohibited
+## Restrictions
 
 - No hardcoded secrets
 - No parent email/phone exposed publicly
