@@ -5,7 +5,7 @@
 
 ## Runtime availability
 - Available in `planning`, `implementation`, and `implementation_review` modes.
-
+- Available in planning, command_center_tooling, implementation, and implementation_review modes.
 ## Coordination scope
 The Overseer does not directly build product features by default. During implementation phases, the Overseer may:
 - verify phase gates
