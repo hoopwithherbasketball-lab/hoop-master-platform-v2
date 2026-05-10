@@ -85,7 +85,7 @@ Allowed purpose:
 - public parent email/phone exposure
 - public private evaluation note exposure
 
-## Prohibited
+## Restrictions
 
 - No hardcoded secrets
 - No parent email/phone exposed publicly
@@ -95,5 +95,5 @@ Allowed purpose:
 - No real email/SMS sending without explicit approval
 - No unrelated app/package changes
 - No runtime dependency additions unless explicitly authorized by the active phase prompt
-- Secrets or external service invocation
+- No secrets or external service invocation
 - No auto-merge or destructive repo changes
