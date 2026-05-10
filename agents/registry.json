@@ -42,21 +42,36 @@
       "name": "GitHub Code Search",
       "type": "tooling",
       "instructions_file": "agents/github-code-search.md",
-      "responsibility_summary": "Performs targeted symbol/path discovery for evidence collection."
+      "responsibility_summary": "Performs targeted symbol/path discovery for evidence collection.",
+      "execution_modes": [
+        "planning",
+        "review"
+      ]
+     
     },
     {
       "id": "codex-task-dispatcher",
       "name": "Codex Task Dispatcher",
       "type": "control-plane",
       "instructions_file": "agents/codex-task-dispatcher.md",
-      "responsibility_summary": "Chooses correct prompt and repo context, then routes tasks."
+      "responsibility_summary": "Chooses correct prompt and repo context, then routes tasks.",
+      "execution_modes": [
+        "planning",
+        "review"
+      ]
+     
     },
     {
       "id": "pr-review-coordinator",
       "name": "PR Review Coordinator",
       "type": "quality",
       "instructions_file": "agents/pr-review-coordinator.md",
-      "responsibility_summary": "Coordinates PR review prompts, findings, and remediation tracking."
+      "responsibility_summary": "Coordinates PR review prompts, findings, and remediation tracking.",
+      "execution_modes": [
+        "planning",
+        "review"
+      ]
+     
     },
     {
       "id": "ci-workflow",

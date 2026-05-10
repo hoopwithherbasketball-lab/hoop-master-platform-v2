@@ -6,6 +6,7 @@
 | `hoopwithherbasketball-lab/ELITEGBBHNIL` | `apps/web` | Active multi-route React/Vite app (`apps/web/src/App.tsx`). |
 | `hoopwithherbasketball-lab/lightblueportal` | `packages/ui` | Shared UI component package (`packages/ui/src/components/*`). |
 | `hoopwithherbasketball-lab/PROCOACH` | `apps/procoach` | Single-screen shell (`apps/procoach/src/App.tsx`). |
+| `hoopwithherbasketball-lab/HWH-PARTNER-PORTAL` | `apps/partner-portal` | Basic auth shell + Python backend (`apps/partner-portal/src/App.js`, `apps/partner-portal/backend/server.py`). |
 | `hoopwithherbasketball-lab/HWH-PARNTER-PORTAL` | `apps/partner-portal` | Basic auth shell + Python backend (`apps/partner-portal/src/App.js`, `apps/partner-portal/backend/server.py`). |
 | `hoopwithherbasketball-lab/hwh-player-advantage` | `apps/player-advantage` | Backend model file present (`apps/player-advantage/backend/models.py`). |
 | `hoopwithherbasketball-lab/hwh-player-advantage-app` | `apps/player-advantage-app` | Not currently present in tracked files. |

@@ -43,3 +43,26 @@ Legend: `BUILT` / `PARTIAL` / `MISSING` / `BROKEN` / `BELONGS_IN_OTHER_REPO` / `
 
 
 Guardrails are phase-scoped: docs-only restrictions apply to planning/audit/guardrail/command-center setup phases, not to unlocked implementation phases.
+
+
+## Guardrail Scope Gap
+- **Status:** PARTIAL before this fix, RESOLVED after this fix.
+- **Finding:** Initial agent docs made docs-only restrictions appear permanent.
+- **Resolution:** Guardrails are now phase-scoped. This PR is documentation-only, while future unlocked implementation phases allow scoped code/schema/UI changes by the correct agents.
+
+
+## Missing Referenced Docs Gap
+
+Status:
+RESOLVED
+
+Finding:
+Several required context files were referenced by agent instructions but were not present in the repo or PR.
+
+Resolution:
+Added foundation placeholder versions of:
+- BRAND_CONTEXT.md
+- FEATURE_REGISTRY.md
+- CROSS_REPO_PHASES.md
+
+These files will be expanded in later audit/planning phases.
