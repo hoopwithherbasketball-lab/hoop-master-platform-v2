@@ -21,11 +21,11 @@ Legacy implementation repo:
 | Phase 4 | phase_4_cross_repo_migration_plan | prompt-packs/04_cross_repo_migration_plan.prompt.md | hoop-master-platform-v2 | planning |
 | Phase 5 | phase_5_agent_guardrails | prompt-packs/05_agent_guardrails.prompt.md | hoop-master-platform-v2 | planning |
 | Phase 6 | phase_6_mcp_agent_command_center | prompt-packs/06_mcp_agent_command_center.prompt.md | hoop-master-platform-v2 | planning |
-| Phase 7 | phase_7_public_mvp | prompt-packs/07_phase_7_public_mvp.prompt.md | hoop-master-platform-v2 | implementation |
-| Phase 8 | phase_8_page_builder | prompt-packs/08_phase_8_page_builder.prompt.md | hoop-master-platform-v2 | implementation |
-| Phase 9 | phase_9_connectgbb_migration | prompt-packs/09_phase_9_connectgbb_migration.prompt.md | hoop-master-platform-v2 | implementation |
-| Phase 10 | phase_10_data_forms | prompt-packs/10_phase_10_data_forms.prompt.md | hoop-master-platform-v2 | implementation |
-| Phase 11 | phase_11_evaluations | prompt-packs/11_phase_11_evaluations.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 7 | phase_7_public_mvp | prompt-packs/07_public_mvp.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 8 | phase_8_page_builder | prompt-packs/08_page_builder.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 9 | phase_9_connectgbb_migration | prompt-packs/09_connectgbb_migration.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 10 | phase_10_data_forms | prompt-packs/10_data_forms.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 11 | phase_11_evaluations | prompt-packs/11_evaluations.prompt.md | hoop-master-platform-v2 | implementation |
 
 
 Implementation prompt packs for Phases 7-11 must define explicit `Phase-Authorized Paths`; otherwise dispatch must be blocked until corrected.
