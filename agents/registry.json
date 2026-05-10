@@ -35,7 +35,9 @@
       "instructions_file": "agents/prompt-pack.md",
       "responsibility_summary": "Defines approved prompt packs and usage by phase.",
       "execution_modes": [
-        "planning"
+        "planning",
+        "implementation",
+        "implementation_review"
       ]
     },
     {
@@ -67,7 +69,9 @@
       "instructions_file": "agents/codex-task-dispatcher.md",
       "responsibility_summary": "Chooses correct prompt and repo context, then routes tasks.",
       "execution_modes": [
-        "planning"
+        "planning",
+        "implementation",
+        "implementation_review"
       ]
     },
     {
