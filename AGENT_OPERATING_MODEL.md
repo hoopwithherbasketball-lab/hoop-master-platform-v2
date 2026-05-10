@@ -13,6 +13,7 @@ Allowed execution modes:
 | Mode | Purpose |
 |---|---|
 | `planning` | Documentation, audits, mapping, prompt preparation, and phase planning |
+| `command-center tooling` | Build and modify command-center tooling, MCP servers, and agent runners (Phase 6 only) |
 | `implementation` | Scoped implementation work explicitly authorized by an unlocked phase prompt |
 | `implementation_review` | Review remediation, Gemini feedback handling, QA/security follow-up, and closure validation within the already-approved phase scope |
 | `release` | Final release readiness, release notes, closure summaries, deployment checklist preparation, and post-approval release coordination |
