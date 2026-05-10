@@ -20,3 +20,10 @@ Execute **Phase 7: Build public MVP shell** for the correct repository context.
 - Runtime dependency additions
 - Secrets or external service invocation
 - Auto-merge or destructive repo changes
+- No production Supabase migrations without explicit approval
+- No real email/SMS sending without explicit approval
+- No unrelated app/package changes
+- No merging PRs automatically
+- Runtime dependency additions
+- Secrets or external service invocation
+- Auto-merge or destructive repo changes
