@@ -9,8 +9,8 @@ Execute **Phase 1: Bootstrap target docs** for the correct repository context.
 3. Update command-center docs only unless phase explicitly allows implementation.
 4. Report blockers, risks, and next handoff.
 
-## Prohibited
+## Restrictions
 
 - No runtime dependency additions unless explicitly authorized by the active phase prompt
-- Secrets or external service invocation
+- No secrets or external service invocation
 - No auto-merge or destructive repo changes
