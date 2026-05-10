@@ -17,7 +17,7 @@
   ],
   "agents": [
     {
-      "id": "hwh-ecosystem-overseer",
+      "id": "overseer",
       "name": "HWH Ecosystem Overseer",
       "type": "control-plane",
       "instructions_file": "agents/overseer.md",
