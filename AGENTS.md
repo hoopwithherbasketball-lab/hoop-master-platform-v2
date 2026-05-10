@@ -18,6 +18,3 @@ Do not modify app code during planning, audit, guardrail, or command-center setu
 - Running production Supabase migrations without explicit approval.
 - Sending real emails/SMS without explicit approval.
 - Changing repo billing/permissions/settings without explicit approval.
-
-
-Status: Active (Planning Mode)

@@ -120,7 +120,7 @@
       "responsibility_summary": "Designs migration waves, sequencing, and cutover plans.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -142,7 +142,7 @@
       "responsibility_summary": "Defines shared UI standards and implementation readiness plans.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -153,7 +153,7 @@
       "responsibility_summary": "Plans structured block-based page composition workflows.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -164,7 +164,7 @@
       "responsibility_summary": "Plans data access/migration constraints and schema-read analysis.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -175,7 +175,7 @@
       "responsibility_summary": "Plans forms, CRM workflows, and validation strategy.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {
@@ -197,7 +197,7 @@
       "responsibility_summary": "Plans scouting/evaluation flows and data expectations.",
       "execution_modes": [
         "planning",
-        "implementation"
+        "implementation_review"
       ]
     },
     {

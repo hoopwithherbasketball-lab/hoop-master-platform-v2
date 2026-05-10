@@ -1,10 +1,6 @@
 # CROSS_REPO_PHASES
 
-# Canonical Phase Source
-
-This file is the source of truth for phase numbering, phase IDs, and prompt-pack filenames.
-
-All agent registry entries, dispatcher rules, phase gates, implementation plans, and prompt-pack filenames must match this file.
+> This file is the canonical cross-repo phase map. Agent dispatch rules and prompt-pack IDs should align with this numbering.
 
 ## Repo roles
 Target consolidation repo:
