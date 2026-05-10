@@ -11,7 +11,7 @@ hoop-master-platform/
 │   │                           # Player profiles, services, readiness scoring
 │   ├── procoach/               # Pro coaching platform (from PROCOACH)
 │   │                           # Tournaments, events, video library, dev assistant
-│   ├── partner-portal/         # Partner portal (from HWH-PARNTER-PORTAL)
+│   ├── partner-portal/         # Partner portal (from HWH-PARTNER-PORTAL)
 │   │                           # Frontend + Python backend
 │   ├── player-advantage/       # Player advantage v1 (from hwh-player-advantage)
 │   │                           # Frontend + Python backend
@@ -53,7 +53,7 @@ hoop-master-platform/
 | 1 | `hoopwithherbasketball-lab/ELITEGBBHNIL` | `apps/web` | Foundation shell, player profiles, services |
 | 2 | `hoopwithherbasketball-lab/lightblueportal` | `packages/ui` | Design system, UI components |
 | 3 | `hoopwithherbasketball-lab/PROCOACH` | `apps/procoach` | Pro coaching, tournaments, video library |
-| 4 | `hoopwithherbasketball-lab/HWH-PARNTER-PORTAL` | `apps/partner-portal` | Partner management portal |
+| 4 | `hoopwithherbasketball-lab/HWH-PARTNER-PORTAL` | `apps/partner-portal` | Partner management portal |
 | 5 | `hoopwithherbasketball-lab/hwh-player-advantage` | `apps/player-advantage` | Player advantage features v1 |
 | 6 | `hoopwithherbasketball-lab/hwh-player-advantage-app` | `apps/player-advantage-app` | Player advantage features v2 |
 | 7 | `lrevell8-arch/elitegbb` | `packages/features/src/connectgbb` | ConnectGBB social/networking |
