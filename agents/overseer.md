@@ -1,4 +1,4 @@
-# overseer
+# hwh-ecosystem-overseer
 
 ## Responsibility
 - Own phase unlocking and enforce planning vs implementation mode.
