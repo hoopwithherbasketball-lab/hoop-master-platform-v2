@@ -9,7 +9,7 @@
 | HoopWithHer Elite | LATER | `apps/procoach` or `apps/web` | High-performance portal deferred. |
 | Elite GBB evaluations | MISSING | `packages/features/src/coaching/*` | Target package is a placeholder. |
 | HoopWithHer Academy | MISSING | TBD | Learning workflows are currently absent. |
-| ConnectGBB | MISSING | packages/features/src/connectgbb/* | Target package is a placeholder. Member platform routing missing. |
+| ConnectGBB | MISSING | `packages/features/src/connectgbb/*` | Target package is a placeholder. Member platform routing missing. |
 | Page Builder | MISSING | `apps/web/src/pages/admin/builder/*` | No package or schema engine found. |
 | Data/forms workflows | PARTIAL | `packages/features/src/crm/components/*` | Basic auth/profile forms exist; full form pipeline absent. |
 | Evaluation/scouting workflow | MISSING | `packages/features/src/coaching/*` | Target package is a placeholder. |
