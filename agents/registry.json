@@ -174,8 +174,8 @@
       "responsibility_summary": "Plans structured block-based page composition workflows.",
       "execution_modes": [
         "planning",
-        "implementation_review",
-        "implementation"
+        "implementation",
+        "implementation_review"
       ]
     },
     {
