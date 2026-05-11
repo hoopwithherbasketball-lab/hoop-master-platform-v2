@@ -27,7 +27,7 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - `CROSS_REPO_PHASES.md`
 
 ## Current Phase Status
-- **Phase:** Phase 2: Audit Target Monorepo
+- **Phase:** Phase 4: Cross-Repo Migration Plan
 - **Status:** COMPLETE
 
 ### Completed
@@ -41,6 +41,12 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - **Phase 1 expansion of Target Docs (`BRAND_CONTEXT.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `CROSS_REPO_MAP.md`, `CROSS_REPO_PHASES.md`)**
 - **Phase 2 audit of target monorepo (`REPO_AUDIT.md`, `GAP_ANALYSIS.md`, `FEATURE_REGISTRY.md`)**
 
+### Completed in this phase
+- `CROSS_REPO_IMPLEMENTATION_PLAN.md` created with repo-role decision, ownership table, implementation sequencing, and risk framing.
+- `CROSS_REPO_DEPENDENCIES.md` created with cross-repo dependency matrix.
+- `MIGRATION_BACKLOG.md` created with epic-level backlog and PR sizing guidance.
+- `GAP_ANALYSIS.md` updated with explicit Phase 4 blocker note for missing Phase 3 artifacts.
+
 ### Not completed
 - Executable MCP server
 - Executable OpenAI Agents SDK runner
@@ -51,7 +57,7 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - App/product feature changes
 
 ### Next recommended phase
-**Phase 3: Audit Legacy Repo**. The target monorepo gaps have been audited. Agents must now audit `lrevell8-arch/elitegbb` to identify the legacy codebase elements required to fill the gaps.
+**Phase 5: Agent/Codex/Gemini guardrail refinement**. Phase 4 planning is complete; guardrail hardening is next before Phase 6 tooling and Phase 7+ implementation.
 
 ## Phase 1: Bootstrap target docs
 - Create/complete target bootstrap docs and acceptance templates. **(COMPLETED)**
