@@ -16,7 +16,7 @@ Legacy implementation repo:
 | Phase 3 | phase_3_audit_legacy_repo | prompt-packs/03_audit_legacy_repo.prompt.md | elitegbb | planning |
 | Phase 4 | phase_4_cross_repo_migration_plan | prompt-packs/04_cross_repo_migration_plan.prompt.md | hoop-master-platform-v2 | planning |
 | Phase 5 | phase_5_agent_guardrails | prompt-packs/05_agent_guardrails.prompt.md | hoop-master-platform-v2 | planning |
-| Phase 6 | phase_6_mcp_agent_command_center | prompt-packs/06_mcp_agent_command_center.prompt.md | hoop-master-platform-v2 | planning / implementation |
+| Phase 6 | phase_6_mcp_agent_command_center | prompt-packs/06_phase_6_mcp_agent_command_center.prompt.md | hoop-master-platform-v2 | planning / implementation |
 | Phase 7 | phase_7_public_mvp | prompt-packs/07_phase_7_public_mvp.prompt.md | hoop-master-platform-v2 | implementation |
 | Phase 8 | phase_8_page_builder | prompt-packs/08_phase_8_page_builder.prompt.md | hoop-master-platform-v2 | implementation |
 | Phase 9 | phase_9_connectgbb_migration | prompt-packs/09_phase_9_connectgbb_migration.prompt.md | hoop-master-platform-v2 | implementation |
