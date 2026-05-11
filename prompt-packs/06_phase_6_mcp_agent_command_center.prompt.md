@@ -9,7 +9,7 @@ Execute **Phase 6: Build MCP + agent command center** for the correct repository
 ## Required behavior
 1. Confirm repo context (target vs legacy).
 2. Collect evidence with exact file paths.
-3. Update command-center docs and tooling only. Phase 6 is command-center tooling only, not product/app implementation. Product/app implementation begins at Phase 7.
+3. Update command-center docs and tooling only. Product/app implementation begins at Phase 7.
 4. Report blockers, risks, and next handoff.
 
 ## Prohibited
