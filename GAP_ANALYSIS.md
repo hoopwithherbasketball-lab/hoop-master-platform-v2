@@ -21,7 +21,7 @@ Legend: `BUILT` / `PARTIAL` / `MISSING` / `BROKEN` / `BELONGS_IN_OTHER_REPO` / `
 | Area | Status | Files Added | Remaining Gap | Next Phase |
 |---|---|---|---|---|
 | Agent registry | BUILT | `agents/registry.json` | Keep entries synchronized with future agent files | Phase 6 |
-| Agent definitions | BUILT | `agents/overseer.md`, `agents/prompt-pack.md`, etc. | Convert instruction agents into executable runtimes later | Phase 6+ |
+| Agent definitions | BUILT | agents/overseer.md .. agents/release-manager.md (20 files) | Convert instruction agents into executable runtimes later | Phase 6+ |
 | Prompt packs | BUILT | `prompt-packs/01_phase_1_bootstrap_target_docs.prompt.md` .. `prompt-packs/11_phase_11_evaluations.prompt.md` | Add per-phase acceptance test templates | Phase 3+ execution |
 | Phase gates | BUILT | `AGENT_PHASE_GATES.md` | Add gate evidence checklist templates | Phase 3 |
 | Codex dispatch rules | BUILT | `CODEX_TASK_DISPATCH_RULES.md` | Automate rule validation in CI later | Phase 5 |
