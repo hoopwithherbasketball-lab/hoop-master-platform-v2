@@ -221,8 +221,8 @@
       "responsibility_summary": "Plans scouting/evaluation flows and data expectations.",
       "execution_modes": [
         "planning",
-        "implementation_review",
-        "implementation"
+        "implementation",
+        "implementation_review"
       ]
     },
     {
