@@ -9,9 +9,10 @@ This is a planning artifact only. No product app code is changed in this phase.
 
 ## 1) Repo role decision
 
-- **Target repo (canonical destination):** `hoopwithherbasketball-lab/hoop-master-platform-v2`
-- **Legacy repo (migration source):** `lrevell8-arch/elitegbb`
+- **Target repo (canonical destination):** hoopwithherbasketball-lab/hoop-master-platform-v2
+- **Legacy repo (migration source):** lrevell8-arch/elitegbb
 - **Migration direction:** one-way migration from legacy feature implementations into target monorepo packages/apps, followed by staged deprecation of legacy runtime surfaces after parity and data validation.
+- **Internalized apps:** apps/partner-portal and apps/player-advantage will remain within the target monorepo to maintain a consolidated platform architecture.
 
 ## Phase 3 artifact availability check
 The following Phase 3 artifacts were not found in this repository at planning time:
