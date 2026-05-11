@@ -27,7 +27,7 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - `CROSS_REPO_PHASES.md`
 
 ## Current Phase Status
-- **Phase:** Phase 2: Audit Target Monorepo
+- **Phase:** Phase 4: Cross-Repo Migration Plan
 - **Status:** COMPLETE
 
 ### Completed
@@ -41,6 +41,12 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - **Phase 1 expansion of Target Docs (`BRAND_CONTEXT.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `CROSS_REPO_MAP.md`, `CROSS_REPO_PHASES.md`)**
 - **Phase 2 audit of target monorepo (`REPO_AUDIT.md`, `GAP_ANALYSIS.md`, `FEATURE_REGISTRY.md`)**
 
+### Completed in this phase
+- `CROSS_REPO_IMPLEMENTATION_PLAN.md` created with repo-role decision, ownership table, implementation sequencing, and risk framing.
+- `CROSS_REPO_DEPENDENCIES.md` created with cross-repo dependency matrix.
+- `MIGRATION_BACKLOG.md` created with epic-level backlog and PR sizing guidance.
+- `GAP_ANALYSIS.md` updated with explicit Phase 4 blocker note for missing Phase 3 artifacts.
+
 ### Not completed
 - Executable MCP server
 - Executable OpenAI Agents SDK runner
@@ -51,7 +57,7 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - App/product feature changes
 
 ### Next recommended phase
-**Phase 3: Audit Legacy Repo**. The target monorepo gaps have been audited. Agents must now audit `lrevell8-arch/elitegbb` to identify the legacy codebase elements required to fill the gaps.
+**Phase 5: Agent/Codex/Gemini guardrail refinement**. Phase 4 planning is complete; guardrail hardening is next before Phase 6 tooling and Phase 7+ implementation.
 
 ## Phase 1: Bootstrap target docs
 - Create/complete target bootstrap docs and acceptance templates. **(COMPLETED)**
@@ -63,8 +69,8 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - Identify code to migrate from `lrevell8-arch/elitegbb` and other legacy repositories.
 
 ## Phase 4: Cross repo migration plan
-- Decide which surfaces remain in this monorepo vs. stay external (`partner-portal`, `player-advantage`).
-- Add cross-repo contract docs for shared auth roles, Supabase schema ownership, and deployment responsibilities.
+- ✅ Decided external-surface status: `partner-portal` and `player-advantage` remain external/adjacent to the core MVP migration track (with integration contracts only during Phases 7-11).
+- ✅ Added cross-repo contract planning docs for shared auth roles, Supabase schema ownership, and deployment responsibilities.
 
 ## Phase 5: Agent guardrails
 - Define and implement strict agent policies for privacy and security.
@@ -82,17 +88,17 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 ## Phase 9: ConnectGBB migration
 - Wire `packages/features/src/connectgbb` into routed screens in `apps/web`.
 
-## Phase 10: Data forms
+## Phase 10: Data forms + payments
 - **Events registration completion**: Define event registration data model in Supabase migrations, implement form persistence and confirmation flow.
+- **Stripe integration (MVP scope)**: Implement secure checkout session creation, webhook fulfillment, and idempotent order/event reconciliation in target-owned runtime services.
 
 ## Phase 11: Evaluations
 - **Player recruiting workflows**: Expand recruiting package from placeholder exports into concrete flows (search/filter/messaging/readiness signals).
 
 ## Future Phases (Post-MVP)
 ### Revenue + communications
-1. Implement Stripe checkout/session creation and webhook fulfillment using secure server endpoint(s).
-2. Add transactional notifications (email + in-app) tied to events/orders/profile milestones.
-3. Define audit logs for admin actions.
+1. Add transactional notifications (email + in-app) tied to events/orders/profile milestones.
+2. Define audit logs for admin actions.
 
 ### Deployment readiness
 1. Add explicit deployment manifests/workflows per app target.
