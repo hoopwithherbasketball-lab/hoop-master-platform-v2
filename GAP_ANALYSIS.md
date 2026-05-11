@@ -23,7 +23,7 @@ Legend: `BUILT` / `PARTIAL` / `MISSING` / `BROKEN` / `BELONGS_IN_OTHER_REPO` / `
 | Agent registry | BUILT | `agents/registry.json` | Keep entries synchronized with future agent files | Phase 6 |
 | Agent definitions | BUILT | `agents/overseer.md`, `agents/prompt-pack.md`, `agents/github-repo-navigator.md`, `agents/github-code-search.md`, `agents/codex-task-dispatcher.md`, `agents/pr-review-coordinator.md`, `agents/ci-workflow.md`, `agents/target-repo-auditor.md`, `agents/legacy-repo-auditor.md`, `agents/cross-repo-migration-architect.md`, `agents/documentation-agent.md`, `agents/frontend-ui.md`, `agents/page-builder.md`, `agents/supabase-data.md`, `agents/forms-crm.md`, `agents/content-brand.md`, `agents/evaluation-scouting.md`, `agents/qa-test.md`, `agents/security-privacy.md`, `agents/release-manager.md` | Convert instruction agents into executable runtimes later | Phase 6+ |
 | Prompt packs | BUILT | `prompt-packs/01_phase_1_bootstrap_target_docs.prompt.md` .. `prompt-packs/11_phase_11_evaluations.prompt.md` | Add per-phase acceptance test templates | Phase 2+ execution |
-| Phase gates | BUILT | `AGENT_PHASE_GATES.md` | Add gate evidence checklist templates | Phase 1 |
+| Phase gates | BUILT | AGENT_PHASE_GATES.md | Add gate evidence checklist templates | Phase 2 |
 | Codex dispatch rules | BUILT | `CODEX_TASK_DISPATCH_RULES.md` | Automate rule validation in CI later | Phase 5 |
 | GitHub agent tools | BUILT | `GITHUB_AGENT_TOOLS.md` | Implement runtime API tooling later | Phase 6+ |
 | Gemini review workflow | BUILT | `GEMINI_REVIEW_WORKFLOW.md` | Add standardized rubric templates | Phase 5 |
