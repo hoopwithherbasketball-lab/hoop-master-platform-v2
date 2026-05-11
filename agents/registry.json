@@ -162,8 +162,8 @@
       "responsibility_summary": "Defines shared UI standards and implementation readiness plans.",
       "execution_modes": [
         "planning",
-        "implementation_review",
-        "implementation"
+        "implementation",
+        "implementation_review"
       ]
     },
     {
