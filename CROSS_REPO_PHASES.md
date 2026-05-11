@@ -21,9 +21,9 @@ Legacy implementation repo:
 | Phase 6 | phase_6_mcp_agent_command_center | prompt-packs/06_phase_6_mcp_agent_command_center.prompt.md | hoop-master-platform-v2 | command_center_tooling |
 | Phase 7 | phase_7_public_mvp | prompt-packs/07_phase_7_public_mvp.prompt.md | hoop-master-platform-v2 | implementation |
 | Phase 8 | phase_8_page_builder | prompt-packs/08_phase_8_page_builder.prompt.md | hoop-master-platform-v2 | implementation |
-| Phase 9 | phase_9_connectgbb_migration | prompt-packs/09_connectgbb_migration.prompt.md | hoop-master-platform-v2 | implementation |
-| Phase 10 | phase_10_data_forms | prompt-packs/10_data_forms.prompt.md | hoop-master-platform-v2 | implementation |
-| Phase 11 | phase_11_evaluations | prompt-packs/11_evaluations.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 9 | phase_9_connectgbb_migration | prompt-packs/09_phase_9_connectgbb_migration.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 10 | phase_10_data_forms | prompt-packs/10_phase_10_data_forms.prompt.md | hoop-master-platform-v2 | implementation |
+| Phase 11 | phase_11_evaluations | prompt-packs/11_phase_11_evaluations.prompt.md | hoop-master-platform-v2 | implementation |
 
 ## Milestone Definitions
 - **Phase 1-5 (Planning)**: Successful completion establishes structural guardrails, documentation, and the migration strategy. No product code implementation occurs.
