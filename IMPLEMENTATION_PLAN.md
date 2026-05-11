@@ -82,6 +82,6 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 
 ## Consistency Fixes Applied
 - Removed duplicate misspelled partner portal mapping.
-- Standardized execution mode naming on `implementation_review`.
+- Standardized execution mode naming on implementation.
 - Standardized phase IDs across registry, prompt packs, phase gates, and dispatcher docs.
 - Confirmed `CROSS_REPO_PHASES.md` is the canonical source for phase numbering.
