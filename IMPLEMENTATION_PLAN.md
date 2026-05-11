@@ -38,7 +38,7 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - GitHub agent tool policy in `GITHUB_AGENT_TOOLS.md`
 - Gemini review workflow in `GEMINI_REVIEW_WORKFLOW.md`
 - Operating model docs in `AGENT_OPERATING_MODEL.md` and `AGENTS.md`
-- Phase 1 expansion of Target Docs (`BRAND_CONTEXT.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `CROSS_REPO_MAP.md`, `CROSS_REPO_PHASES.md`)
+- **Phase 1 expansion of Target Docs (`BRAND_CONTEXT.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `CROSS_REPO_MAP.md`, `CROSS_REPO_PHASES.md`)**
 - **Phase 2 audit of target monorepo (`REPO_AUDIT.md`, `GAP_ANALYSIS.md`, `FEATURE_REGISTRY.md`)**
 
 ### Not completed
