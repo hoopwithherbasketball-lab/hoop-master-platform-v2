@@ -19,7 +19,7 @@
 8. **Stripe or payment integration**: Must support secure checkout sessions and handle webhooks for event registration and product purchases.
 9. **Email/notifications**: Must support transactional emails for registration confirmations, profile updates, and critical system alerts.
 10. **HWH Elite arm**: Must provide a high-performance portal for evaluation readiness and direct scouting.
-11. **Agent command center**: Must complete setup of `AGENTS.md`, `CROSS_REPO_MAP.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `GAP_ANALYSIS.md`, `CROSS_REPO_PHASES.md`, `AGENT_PHASE_GATES.md`, `CODEX_TASK_DISPATCH_RULES.md`, and MCP runtimes for automated workflows.
+11. **Agent command center**: Must complete setup of AGENTS.md, CROSS_REPO_MAP.md, MVP_SPEC.md, FEATURE_REGISTRY.md, GAP_ANALYSIS.md, CROSS_REPO_PHASES.md, AGENT_PHASE_GATES.md, CODEX_TASK_DISPATCH_RULES.md, BRAND_CONTEXT.md, IMPLEMENTATION_PLAN.md, and MCP runtimes for automated workflows.
 12. **Page Builder**: Must provide a block-based schema and renderer for the admin dashboard to manage dynamic content.
 13. **Data/forms workflows**: Must implement robust form pipelines, validation architecture, and webhook handling.
 14. **Evaluation/scouting workflow**: Must provide role-based access control and review workflows for athlete evaluations.
