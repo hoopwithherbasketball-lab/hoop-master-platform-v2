@@ -15,5 +15,7 @@ Execute **Phase 11: Build evaluation/scouting workflow** for the correct reposit
 - Auto-merge or destructive repo changes
 
 ## Phase-Authorized Paths
-- Allowed paths for this phase must be listed here before implementation begins.
+- `packages/features/src/evaluations/*`
+- `packages/features/src/scouting/*`
+- `apps/web/src/pages/coach/*`
 

@@ -15,5 +15,7 @@ Execute **Phase 9: Migrate ConnectGBB** for the correct repository context.
 - Auto-merge or destructive repo changes
 
 ## Phase-Authorized Paths
-- Allowed paths for this phase must be listed here before implementation begins.
+- `packages/features/src/connectgbb/*`
+- `apps/web/src/pages/connectgbb/*`
+- `apps/web/src/App.tsx`
 
