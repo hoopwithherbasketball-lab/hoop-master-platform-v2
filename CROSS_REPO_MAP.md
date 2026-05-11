@@ -1,5 +1,9 @@
 # CROSS_REPO_MAP
 
+## Migration Direction
+- **Final Consolidation Target**: `hoopwithherbasketball-lab/hoop-master-platform-v2` is the canonical monorepo. All legacy features, components, and data structures will ultimately be migrated into this repository.
+- **Legacy Repositories**: All source repositories listed in the mapping table below (including lrevell8-arch/* and hoopwithherbasketball-lab/* sources) are intended for deprecation post-migration. Code should be audited and moved to the consolidation target.
+
 ## Source-to-target mapping (from `README.md`)
 | Source repo | Target location in this repo | Current maturity |
 |---|---|---|
@@ -23,8 +27,8 @@
 | `IMPLEMENTATION_PLAN.md` | Present |
 
 ## Ownership guidance
-- `apps/web`: public site, dashboard/member experience, coach/admin/NIL surfaces.
+- `apps/web`: core application housing the public site, dashboard/member experience, coach/admin/NIL surfaces.
 - `packages/features/src/crm`: auth, role checks, profile workflows.
 - `packages/supabase`: shared client + SQL migrations.
 - `apps/procoach`: pro-coach product line (currently early shell).
-- `apps/partner-portal`, `apps/player-advantage`: adjacent product surfaces that can justify `BELONGS_IN_OTHER_REPO` status where applicable.
+- `apps/partner-portal`, `apps/player-advantage`: adjacent product surfaces that can justify `BELONGS_IN_OTHER_REPO` status where applicable, separated from the core `web` app.
