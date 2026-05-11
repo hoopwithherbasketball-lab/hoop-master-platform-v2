@@ -82,9 +82,3 @@ Bootstrap target docs **or** audit target monorepo, depending on whether `BRAND_
 3. Set bundle budgets and code-splitting goals to address current large web chunk warning.
 
 
-## Consistency Fixes Applied
-
-- Removed duplicate misspelled partner portal mapping.
-- Standardized execution mode naming on `implementation_review`.
-- Standardized phase IDs across registry, prompt packs, phase gates, and dispatcher docs.
-- Confirmed `CROSS_REPO_PHASES.md` is the canonical source for phase numbering.

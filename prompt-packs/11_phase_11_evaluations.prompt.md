@@ -13,3 +13,7 @@ Execute **Phase 11: Build evaluation/scouting workflow** for the correct reposit
 - Runtime dependency additions
 - Secrets or external service invocation
 - Auto-merge or destructive repo changes
+
+## Phase-Authorized Paths
+- Allowed paths for this phase must be listed here before implementation begins.
+

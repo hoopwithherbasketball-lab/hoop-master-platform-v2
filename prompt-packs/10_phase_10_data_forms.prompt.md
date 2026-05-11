@@ -13,3 +13,7 @@ Execute **Phase 10: Build data/forms workflows** for the correct repository cont
 - Runtime dependency additions
 - Secrets or external service invocation
 - Auto-merge or destructive repo changes
+
+## Phase-Authorized Paths
+- Allowed paths for this phase must be listed here before implementation begins.
+
