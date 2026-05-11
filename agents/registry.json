@@ -186,8 +186,8 @@
       "responsibility_summary": "Plans data access/migration constraints and schema-read analysis.",
       "execution_modes": [
         "planning",
-        "implementation_review",
-        "implementation"
+        "implementation",
+        "implementation_review"
       ]
     },
     {
