@@ -38,7 +38,7 @@
 
 ## 4) API routes / server actions
 - **Not found**: No Next.js API routes or server action directories exist. Frontends call Supabase directly from client-side hooks.
-- Python backend entrypoints exist in `partner-portal` and `player-advantage`.
+- Python backend entrypoint exists in partner-portal; player-advantage contains data models.
 
 ## 5) Supabase / database setup
 - **Client setup**: `packages/supabase/src/index.ts`. Web client re-export in `apps/web/src/lib/supabase.ts`.
