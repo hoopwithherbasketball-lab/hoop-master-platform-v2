@@ -137,8 +137,8 @@
       "responsibility_summary": "Designs migration waves, sequencing, and cutover plans.",
       "execution_modes": [
         "planning",
-        "implementation_review",
-        "implementation"
+        "implementation",
+        "implementation_review"
       ]
     },
     {
