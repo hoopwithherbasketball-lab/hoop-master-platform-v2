@@ -198,8 +198,8 @@
       "responsibility_summary": "Plans forms, CRM workflows, and validation strategy.",
       "execution_modes": [
         "planning",
-        "implementation_review",
-        "implementation"
+        "implementation",
+        "implementation_review"
       ]
     },
     {
