@@ -2,7 +2,7 @@
 
 ## Migration Direction
 - **Final Consolidation Target**: `hoopwithherbasketball-lab/hoop-master-platform-v2` is the canonical monorepo. All legacy features, components, and data structures will ultimately be migrated into this repository.
-- **Legacy Repositories**: Repositories such as `lrevell8-arch/elitegbb` and `lrevell8-arch/HWHLEAGUECRM` are sources intended for deprecation post-migration. Code should be audited and moved to the consolidation target.
+- **Legacy Repositories**: All source repositories listed in the mapping table below (including lrevell8-arch/* and hoopwithherbasketball-lab/* sources) are intended for deprecation post-migration. Code should be audited and moved to the consolidation target.
 
 ## Source-to-target mapping (from `README.md`)
 | Source repo | Target location in this repo | Current maturity |
