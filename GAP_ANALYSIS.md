@@ -7,7 +7,7 @@ Legend: `BUILT` / `PARTIAL` / `MISSING` / `BROKEN` / `BELONGS_IN_OTHER_REPO` / `
 | Public marketing site | BUILT | Public routes defined in `apps/web/src/App.tsx` (`/`, `/services`, `/workshops`); UI implemented in `apps/web/src/pages/public/*`. |
 | Events listing and registration | PARTIAL | UI routes exist at `/dashboard/events` (`apps/web/src/pages/dashboard/EventsPage.tsx`); missing dedicated backend registration logic in `packages/supabase/migrations/*`. |
 | Player profiles / recruiting | PARTIAL | Profile UI exists in `packages/features/src/crm/components/ProfileCard.tsx`; recruiting package is a placeholder `packages/features/src/recruiting/index.ts`. |
-| ConnectGBB member platform | PARTIAL | Package is a placeholder `packages/features/src/connectgbb/index.ts`; no explicit `connectgbb` route appears in `apps/web/src/App.tsx`. |
+| ConnectGBB member platform | MISSING | Package is a placeholder packages/features/src/connectgbb/index.ts; no explicit connectgbb route appears in apps/web/src/App.tsx. |
 | HoopWithHer TV / media section | MISSING | No TV/media route entry in `apps/web/src/App.tsx`; no matching pages under `apps/web/src/pages/`. |
 | Admin dashboard | BUILT | Admin routes (`/admin`, `/admin/leads`, `/admin/orders`) defined in `apps/web/src/App.tsx` and implemented in `apps/web/src/pages/admin/*`. |
 | Supabase auth and RLS | PARTIAL | Client setup in `packages/supabase/src/index.ts`; Auth context in `packages/features/src/crm/contexts/AuthContext.tsx`; incomplete RLS policy coverage across feature tables. |
