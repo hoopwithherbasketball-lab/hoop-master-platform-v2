@@ -10,8 +10,9 @@ Agents operate in one of two modes:
 
 | Mode | Used For | Code Changes Allowed? |
 |---|---|---|
-| Planning / Documentation Mode | Docs, audits, prompt packs, command-center setup | No app/product code changes |
-| Implementation Mode | Approved build phases | Yes, but only within phase scope |
+| Planning / Documentation Mode | Docs, audits, prompt packs | No app/product code changes |
+| Command Center Tooling Mode | Phase 6 tooling/docs only | No app/product code changes |
+| Implementation Mode | Approved build phases (Phase 7+) | Yes, but only within phase scope |
 
 Current command-center PR status:
 - Planning / Documentation Mode only

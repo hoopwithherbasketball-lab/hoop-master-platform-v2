@@ -13,3 +13,10 @@ Execute **Phase 7: Build public MVP shell** for the correct repository context.
 - Runtime dependency additions
 - Secrets or external service invocation
 - Auto-merge or destructive repo changes
+
+## Phase-Authorized Paths
+- `apps/web/src/App.tsx`
+- `apps/web/src/pages/public/*`
+- `packages/ui/src/components/*`
+- `packages/ui/src/layouts/*`
+

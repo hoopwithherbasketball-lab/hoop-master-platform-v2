@@ -23,7 +23,10 @@
       "instructions_file": "agents/overseer.md",
       "responsibility_summary": "Controls phase order, approvals, and cross-agent handoffs.",
       "execution_modes": [
-        "planning"
+        "planning",
+        "command_center_tooling",
+        "implementation",
+        "implementation_review"
       ]
     },
     {
@@ -33,7 +36,10 @@
       "instructions_file": "agents/prompt-pack.md",
       "responsibility_summary": "Defines approved prompt packs and usage by phase.",
       "execution_modes": [
-        "planning"
+        "planning",
+        "command_center_tooling",
+        "implementation",
+        "implementation_review"
       ]
     },
     {
@@ -44,6 +50,8 @@
       "responsibility_summary": "Replaces browser-based repo inspection with repository-native navigation.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -55,6 +63,8 @@
       "responsibility_summary": "Performs targeted symbol/path discovery for evidence collection.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -65,7 +75,10 @@
       "instructions_file": "agents/codex-task-dispatcher.md",
       "responsibility_summary": "Chooses correct prompt and repo context, then routes tasks.",
       "execution_modes": [
-        "planning"
+        "planning",
+        "command_center_tooling",
+        "implementation",
+        "implementation_review"
       ]
     },
     {
@@ -76,6 +89,8 @@
       "responsibility_summary": "Coordinates PR review prompts, findings, and remediation tracking.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -87,6 +102,8 @@
       "responsibility_summary": "Inspects CI jobs, failed steps, and rerun strategy.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -120,6 +137,7 @@
       "responsibility_summary": "Designs migration waves, sequencing, and cutover plans.",
       "execution_modes": [
         "planning",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -131,6 +149,8 @@
       "responsibility_summary": "Maintains command-center docs, evidence, and decision logs.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -142,6 +162,7 @@
       "responsibility_summary": "Defines shared UI standards and implementation readiness plans.",
       "execution_modes": [
         "planning",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -153,6 +174,7 @@
       "responsibility_summary": "Plans structured block-based page composition workflows.",
       "execution_modes": [
         "planning",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -164,6 +186,7 @@
       "responsibility_summary": "Plans data access/migration constraints and schema-read analysis.",
       "execution_modes": [
         "planning",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -175,6 +198,7 @@
       "responsibility_summary": "Plans forms, CRM workflows, and validation strategy.",
       "execution_modes": [
         "planning",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -197,6 +221,7 @@
       "responsibility_summary": "Plans scouting/evaluation flows and data expectations.",
       "execution_modes": [
         "planning",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -208,6 +233,8 @@
       "responsibility_summary": "Defines test plans, quality gates, and regression coverage.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -219,6 +246,8 @@
       "responsibility_summary": "Blocks unsafe player/minor data exposure and privacy violations.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review"
       ]
     },
@@ -230,6 +259,8 @@
       "responsibility_summary": "Summarizes phase completion, release readiness, and open risks.",
       "execution_modes": [
         "planning",
+        "command_center_tooling",
+        "implementation",
         "implementation_review",
         "release"
       ]
