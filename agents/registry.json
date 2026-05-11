@@ -38,7 +38,8 @@
       "execution_modes": [
         "planning",
         "command_center_tooling",
-        "implementation_review"
+        "implementation_review",
+        "implementation"
       ]
     },
     {
