@@ -9,17 +9,17 @@
 - `LATER`: Explicitly deferred post-MVP.
 
 ## HoopWithHer MVP features
-1. Public marketing site
-2. Events listing and registration
-3. Player profiles / recruiting
-4. ConnectGBB member platform
-5. HoopWithHer TV / media section
-6. Admin dashboard
-7. Supabase auth and RLS
-8. Stripe or payment integration
-9. Email/notifications
-10. HWH Elite arm
-11. Agent command center (`AGENTS.md`, `CROSS_REPO_MAP.md`, `MVP_SPEC.md`)
+1. **Public marketing site**: Must include the core landing page (`/`), services (`/services`), workshops (`/workshops`), and SEO metadata. Responsive design is required.
+2. **Events listing and registration**: Must allow users to view upcoming events and securely register. Requires dedicated API routes and database persistence for attendees.
+3. **Player profiles / recruiting**: Must support public-facing player stats and private evaluation notes (gated by role). Includes messaging and search/filter capabilities.
+4. **ConnectGBB member platform**: Must provide authenticated social connectivity, allowing players and coaches to interact within a managed ecosystem.
+5. **HoopWithHer TV / media section**: Must aggregate video content, highlights, and educational materials. Requires a dedicated route and media playback components.
+6. **Admin dashboard**: Must provide secure access (`/admin`) for staff to manage users, audits, leads, orders, and player data.
+7. **Supabase auth and RLS**: Must correctly enforce Row Level Security (RLS) across all tables, ensuring users only see data they are authorized to access.
+8. **Stripe or payment integration**: Must support secure checkout sessions and handle webhooks for event registration and product purchases.
+9. **Email/notifications**: Must support transactional emails for registration confirmations, profile updates, and critical system alerts.
+10. **HWH Elite arm**: Must provide a high-performance portal for evaluation readiness and direct scouting.
+11. **Agent command center**: Must complete setup of `AGENTS.md`, `CROSS_REPO_MAP.md`, `MVP_SPEC.md`, and MCP runtimes for automated workflows.
 
 ## Evidence requirements
 For each feature status update in `GAP_ANALYSIS.md`:

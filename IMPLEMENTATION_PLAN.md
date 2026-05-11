@@ -19,18 +19,16 @@ Phase implementation permissions are now controlled by:
 - QA/Test Agent checks
 
 ## Foundation Context Docs
-
-This PR now includes placeholder foundation docs required by the Agent Command Center:
-
+This PR includes the expanded foundation docs required by the Agent Command Center:
 - `BRAND_CONTEXT.md`
+- `MVP_SPEC.md`
 - `FEATURE_REGISTRY.md`
+- `CROSS_REPO_MAP.md`
 - `CROSS_REPO_PHASES.md`
 
-These are intentionally lightweight and should be expanded during Phase 1 and Phase 2.
-
 ## Current Phase Status
-- **Phase:** Agent Command Center Definitions
-- **Status:** PARTIAL / FOUNDATION COMPLETE
+- **Phase:** Phase 1: Bootstrap Target Docs
+- **Status:** COMPLETE
 
 ### Completed
 - Agent instruction files under `agents/*.md`
@@ -40,6 +38,7 @@ These are intentionally lightweight and should be expanded during Phase 1 and Ph
 - GitHub agent tool policy in `GITHUB_AGENT_TOOLS.md`
 - Gemini review workflow in `GEMINI_REVIEW_WORKFLOW.md`
 - Operating model docs in `AGENT_OPERATING_MODEL.md` and `AGENTS.md`
+- **Phase 1 expansion of Target Docs (`BRAND_CONTEXT.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `CROSS_REPO_MAP.md`, `CROSS_REPO_PHASES.md`)**
 
 ### Not completed
 - Executable MCP server
@@ -51,10 +50,10 @@ These are intentionally lightweight and should be expanded during Phase 1 and Ph
 - App/product feature changes
 
 ### Next recommended phase
-Bootstrap target docs **or** audit target monorepo, depending on whether `BRAND_CONTEXT.md`, `MVP_SPEC.md`, `FEATURE_REGISTRY.md`, `CROSS_REPO_MAP.md`, and `CROSS_REPO_PHASES.md` already exist and are complete.
+**Phase 2: Audit Target Monorepo**. Now that the foundation docs are expanded, the agents must audit the `hoopwithherbasketball-lab/hoop-master-platform-v2` repository to verify the actual codebase state against the `FEATURE_REGISTRY.md` and `GAP_ANALYSIS.md`.
 
 ## Phase 1: Stabilize repository operations (short-term)
-1. Create/complete target bootstrap docs and acceptance templates.
+1. Create/complete target bootstrap docs and acceptance templates. **(COMPLETED)**
 2. Replace runtime placeholder assets (`/api/placeholder/...`) with local/static assets or valid remote URLs.
 3. Add CI checks: `turbo build`, lint, and typecheck where available.
 
@@ -81,4 +80,8 @@ Bootstrap target docs **or** audit target monorepo, depending on whether `BRAND_
 2. Document environment variable matrix for each app.
 3. Set bundle budgets and code-splitting goals to address current large web chunk warning.
 
-
+## Consistency Fixes Applied
+- Removed duplicate misspelled partner portal mapping.
+- Standardized execution mode naming on `implementation_review`.
+- Standardized phase IDs across registry, prompt packs, phase gates, and dispatcher docs.
+- Confirmed `CROSS_REPO_PHASES.md` is the canonical source for phase numbering.

@@ -1,6 +1,6 @@
 # CROSS_REPO_PHASES
 
-> This file is the canonical cross-repo phase map. Agent dispatch rules and prompt-pack IDs should align with this numbering.
+> This file is the canonical cross-repo phase map. Agent dispatch rules and prompt-pack IDs must strictly align with this numbering.
 
 ## Repo roles
 Target consolidation repo:
@@ -8,6 +8,8 @@ Target consolidation repo:
 
 Legacy implementation repo:
 - `lrevell8-arch/elitegbb`
+
+## Global Phases
 
 | Global Phase | Phase ID | Prompt Pack | Primary Repo | Mode |
 |---|---|---|---|---|
@@ -22,3 +24,8 @@ Legacy implementation repo:
 | Phase 9 | phase_9_connectgbb_migration | prompt-packs/09_phase_9_connectgbb_migration.prompt.md | hoop-master-platform-v2 | implementation |
 | Phase 10 | phase_10_data_forms | prompt-packs/10_phase_10_data_forms.prompt.md | hoop-master-platform-v2 | implementation |
 | Phase 11 | phase_11_evaluations | prompt-packs/11_phase_11_evaluations.prompt.md | hoop-master-platform-v2 | implementation |
+
+## Milestone Definitions
+- **Phase 1-5 (Planning)**: Successful completion establishes structural guardrails, documentation, and the migration strategy. No product code implementation occurs.
+- **Phase 6 (Tooling)**: Successful completion results in active, automated agent routing and MCP capabilities for the repository.
+- **Phase 7-11 (Implementation)**: Successful completion delivers production-ready features directly serving the MVP scope.
