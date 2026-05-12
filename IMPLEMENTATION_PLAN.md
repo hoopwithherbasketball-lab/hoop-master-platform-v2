@@ -110,3 +110,8 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - Standardized execution mode naming on implementation.
 - Standardized phase IDs across registry, prompt packs, phase gates, and dispatcher docs.
 - Confirmed `CROSS_REPO_PHASES.md` is the canonical source for phase numbering.
+
+## Conflict-resolution update (Phase 4 branch consolidation)
+- Resolved planning conflicts in `CROSS_REPO_DEPENDENCIES.md` and `MIGRATION_BACKLOG.md` using `run-phase-4-cross-repo-migration-plan-prhg6p` as canonical source.
+- Retained admin and media migration epics in the Phase 4 backlog.
+- Confirmed this remains documentation/planning-only work with no product code modifications.
