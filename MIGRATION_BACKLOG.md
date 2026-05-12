@@ -20,3 +20,9 @@
 - No code migration performed in Phase 4.
 - No app routes/components/schema changes performed in Phase 4.
 - Backlog items are intentionally structured for Phase 7+ execution only.
+
+
+## Phase 4 conflict-resolution confirmation
+- Preserved canonical backlog direction from `run-phase-4-cross-repo-migration-plan-prhg6p`.
+- Confirmed inclusion of both **Admin dashboard hardening** and **Media/TV section rollout** epics.
+- Kept this backlog documentation-only for Phase 4 (no code migration or schema work).
