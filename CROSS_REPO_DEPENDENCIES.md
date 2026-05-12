@@ -18,6 +18,7 @@ Track cross-repo/platform dependencies that must be reconciled before and during
 | Player profiles | Partial target implementation | Legacy profile model/features likely richer and must be mapped | PII leakage, inconsistent profile outputs | Phase 9-11 |
 | Rankings/watchlists | Missing in target | Likely legacy-owned logic/features | Incorrect public/private visibility | Phase 11 |
 | Page Builder | Missing in target | May reuse patterns, but implementation is target-owned | Scope creep and schema instability | Phase 8 |
+| Media/TV section | Missing in target | Legacy media content integration paths must be mapped | Content delivery gaps, playback issues | Phase 11 |
 
 ## Phase 3 artifact dependency notice
 The required Phase 3 files are not present in this repo:
