@@ -13,6 +13,8 @@
 | Admin dashboard hardening | Consolidate and migrate remaining admin operational workflows, RBAC checks, and tooling parity from legacy into target admin surfaces | `elitegbb` admin/ops modules (pending artifacts) | `apps/web/src/pages/admin/*`, supporting feature packages in `packages/features/*` | Medium | Auth/RBAC contracts, Supabase policy alignment, Phase 5 guardrails | M |
 | Media/TV section rollout | Implement HoopWithHer TV/media route group, content model, and playback integration with privacy-safe publishing defaults | Legacy media/content paths (pending artifacts) + target content specs | `apps/web/src/pages/public/*` (or `apps/web/src/pages/media/*`) + optional media feature package | Medium | CMS/Page Builder decisions, deployment/media hosting contracts | M |
 | Deployment contract convergence | Consolidate environment matrix and deployment responsibilities across apps | Legacy deployment/env docs (pending artifacts) | Root deployment docs + CI/CD configs (Phase 6/7 scope) | Medium | Phase 6 command center tooling | S-M |
+| Player profiles migration | Port legacy profile models and features into target recruiting/CRM packages | `elitegbb` profile/evaluation paths (pending artifacts) | `packages/features/src/recruiting/*`, `packages/features/src/crm/*`, `apps/web` profile routes | High | Phase 5 policy, Phase 6 runtime, auth/RBAC mapping | M-L |
+| Rankings/watchlists migration | Implement ranking and watchlist features in the recruiting package | `elitegbb` ranking/watchlist modules (pending artifacts) | `packages/features/src/recruiting/*` | Medium | Phase 5 policy, Phase 6 runtime | M |
 
 ## Planning constraints
 - No code migration performed in Phase 4.
