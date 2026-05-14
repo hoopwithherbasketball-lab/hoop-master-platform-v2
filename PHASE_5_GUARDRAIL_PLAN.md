@@ -40,7 +40,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 | Schema | Agents must not modify Supabase migration files without explicit Phase 7 authorization |
 | Config | Agents must not modify turbo.json, package.json workspace roots, lockfiles, or Cloudflare config without explicit authorization in the PR description |
 
-### 3. RBAC and Privacy Guardrails
+### 3. Security, RBAC, and Privacy Guardrails
 
 | Rule | Applies To |
 |------|------------|
