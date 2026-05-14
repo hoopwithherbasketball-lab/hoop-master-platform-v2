@@ -42,13 +42,13 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 
 ### 3. Security, RBAC, and Privacy Guardrails
 
-| Rule | Applies To |
-|------|------------|
-| Eval records are coach/admin-only — never player-visible without explicit gate | Evaluation/scouting workflow (Phase 4 slices 2-3) |
-| Member profiles require auth session — no unauthenticated reads | ConnectGBB (Phase 4 slice 1-2) |
-| Media/TV content defaults to privacy-safe publishing — no PII in public routes | Media/TV rollout |
-| Payment webhooks require idempotency keys and secret validation | Payments hardening |
-| All admin routes must validate RBAC role before rendering | Admin dashboard hardening |
+| Rule | Applies To | Enforcement |
+|------|------------|-------------|
+| Eval records are coach/admin-only — never player-visible without explicit gate | Evaluation/scouting workflow (Phase 4 slices 2-3) | RLS / Middleware |
+| Member profiles require auth session — no unauthenticated reads | ConnectGBB (Phase 4 slice 1-2) | RLS / Auth Guard |
+| Media/TV content defaults to privacy-safe publishing — no PII in public routes | Media/TV rollout | PR Review / CI |
+| Payment webhooks require idempotency keys and secret validation | Payments hardening | Code Review / Integration Test |
+| All admin routes must validate RBAC role before rendering | Admin dashboard hardening | RBAC Middleware |
 
 ### 4. Rollback Safety Policies
 
