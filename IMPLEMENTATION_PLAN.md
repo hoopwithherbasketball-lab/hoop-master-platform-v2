@@ -92,8 +92,9 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 - **Events registration completion**: Define event registration data model in Supabase migrations, implement form persistence and confirmation flow.
 - **Stripe integration (MVP scope)**: Implement secure checkout session creation, webhook fulfillment, and idempotent order/event reconciliation in target-owned runtime services.
 
-## Phase 11: Evaluations
+## Phase 11: Evaluations + Media/TV
 - **Player recruiting workflows**: Expand recruiting package from placeholder exports into concrete flows (search/filter/messaging/readiness signals).
+- **Media/TV section**: Implement route group, content model, and playback integration.
 
 ## Future Phases (Post-MVP)
 ### Revenue + communications
