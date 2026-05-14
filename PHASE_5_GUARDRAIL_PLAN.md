@@ -55,7 +55,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 | Policy | Rule | Enforcement |
 |--------|------|-------------|
 | Migration Slices | Each migration slice must be independently revertible | Slice PR structure (Phase 4) |
-| PR Bundling | No multi-epic bundling in a single PR | Max 1 epic slice per PR during implementation |
+| PR Bundling | No multi-epic bundling in a single PR | PR Review |
 | DB Schema | All changes must have a corresponding down migration (e.g., .down.sql) | Supabase migration policy |
 | Previews | Cloudflare deployment previews required before merging to main | Existing CI/CD check |
 
