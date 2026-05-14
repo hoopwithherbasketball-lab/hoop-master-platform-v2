@@ -66,8 +66,8 @@ Phase gates block agents from advancing until conditions are met. These align wi
 | Gate | Condition to Advance |
 |------|---------------------|
 | Phase 5 → Phase 6 | All guardrail policies documented, reviewed, and merged to main |
-| Phase 6 → Phase 7 | MCP command center runtime is stable and agent scope contracts are signed off |
-| Phase 7 → Implementation | Phase 5 guardrails enforced in CI, no open guardrail violations |
+| Phase 6 → Phase 7 | MCP runtime stable, agent contracts signed, and CI guardrails enforced |
+| Phase 7 → Phase 8 | Phase 7 (Public MVP shell) deliverables complete and verified |
 
 ---
 
