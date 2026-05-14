@@ -8,7 +8,7 @@ Planning only. No product app code changes in this phase.
 
 ### Purpose
 
-Before granting agents and MCP servers runtime power (Phase 6), this phase locks in the rules, boundaries, and enforcement policies that govern what agents can and cannot do across the monorepo. This prevents automation from becoming uncontrolled or hard to rollback.
+Before granting agents and MCP servers runtime power (Phase 6), this phase locks in the rules, boundaries, and enforcement policies that govern what agents can and cannot do across the monorepo. This prevents automation from becoming uncontrolled or hard to roll back.
 
 ### Prerequisites
 
