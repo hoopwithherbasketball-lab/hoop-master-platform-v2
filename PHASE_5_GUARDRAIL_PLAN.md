@@ -56,7 +56,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 |--------|------|
 | Each migration slice must be independently revertible | Enforced by slice PR structure from Phase 4 |
 | No multi-epic bundling in a single PR | Max 1 epic slice per PR during implementation |
-| All DB schema changes must have a corresponding down migration | Supabase migration policy |
+| All DB schema changes must have a corresponding down migration (e.g., .down.sql) | Supabase migration policy |
 | Cloudflare deployment previews required before merging to main | Enforced by existing CI/CD check |
 
 ### 5. Phase Gate Rules (Agent Phase Gates)
