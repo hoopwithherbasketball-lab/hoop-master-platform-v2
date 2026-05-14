@@ -52,12 +52,12 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 
 ### 4. Rollback Safety Policies
 
-| Policy | Rule |
-|--------|------|
-| Each migration slice must be independently revertible | Enforced by slice PR structure from Phase 4 |
-| No multi-epic bundling in a single PR | Max 1 epic slice per PR during implementation |
-| All DB schema changes must have a corresponding down migration (e.g., .down.sql) | Supabase migration policy |
-| Cloudflare deployment previews required before merging to main | Enforced by existing CI/CD check |
+| Policy | Rule | Enforcement |
+|--------|------|-------------|
+| Migration Slices | Each migration slice must be independently revertible | Slice PR structure (Phase 4) |
+| PR Bundling | No multi-epic bundling in a single PR | Max 1 epic slice per PR during implementation |
+| DB Schema | All changes must have a corresponding down migration (e.g., .down.sql) | Supabase migration policy |
+| Previews | Cloudflare deployment previews required before merging to main | Existing CI/CD check |
 
 ### 5. Phase Gate Rules (Agent Phase Gates)
 
