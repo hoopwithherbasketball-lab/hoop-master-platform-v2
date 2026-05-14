@@ -43,3 +43,13 @@ Legend: `BUILT` / `PARTIAL` / `MISSING` / `BROKEN` / `BELONGS_IN_OTHER_REPO` / `
 3. Feature packages `connectgbb`, `recruiting`, `nil`, and `coaching` are placeholder descriptors only (`packages/features/src/*/index.ts`).
 
 Guardrails are phase-scoped: docs-only restrictions apply to planning/audit/guardrail/command-center setup phases, not to unlocked implementation phases.
+
+## Phase 4 Cross-Repo Planning Blockers
+- Phase 3 legacy audit artifacts are not yet present in this repository: `LEGACY_REPO_AUDIT.md`, `LEGACY_FEATURE_EXPORT.md`, `LEGACY_TO_MONOREPO_MAP.md`, and `LEGACY_RISK_REGISTER.md`.
+- Until those artifacts are copied/referenced from the approved legacy-repo Phase 3 PR, source-path-level migration commitments remain provisional.
+- Implementation phases (7-11) should treat Phase 3 artifact import as a hard prerequisite gate.
+
+
+## Phase 4 Branch Consolidation Note
+- Phase 4 planning documents were consolidated with `run-phase-4-cross-repo-migration-plan-prhg6p` as source-of-truth for current migration planning state.
+- Consolidation was documentation-only and did not alter application routes, components, schema, or dependency graph.
