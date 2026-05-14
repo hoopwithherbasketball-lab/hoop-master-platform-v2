@@ -79,6 +79,9 @@ Phase gates block agents from advancing until conditions are met. These align wi
 | Updated branch protection rules (documented) | docs/protected-files-policy.md | Complete |
 | Agent scope contract | docs/agent-guardrails.md | Complete |
 | RBAC policy matrix | docs/agent-permissions-matrix.md | Complete |
+| Agent guardrail configuration | config/agent-guardrails.json | Complete |
+| PR Template with guardrail checks | .github/pull_request_template.md | Complete |
+| Phase 5 refinement documentation | docs/phases/phase-5-guardrail-refinement.md | Complete |
 | Rollback policy confirmation | MIGRATION_BACKLOG.md annotation | Complete |
 
 ---
