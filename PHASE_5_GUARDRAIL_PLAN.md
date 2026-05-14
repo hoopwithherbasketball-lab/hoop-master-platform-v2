@@ -27,7 +27,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 | `main` branch | Require PR + passing checks before merge | GitHub branch protection |
 | `main` branch | No direct pushes | GitHub branch protection |
 | Agent branches | Must follow codex/ prefix naming convention | CI check / PR Review |
-| Agent branches | Must be scoped to a single phase or epic slice | CODEX_TASK_DISPATCH_RULES.md |
+| Agent branches | Must be scoped to a single phase or epic slice | Codex Dispatcher / PR Review |
 | Merge strategy | Must use squash merges — merge commits and rebase merging disabled on main | GitHub merge settings |
 
 ### 2. Agent Scope Boundaries
