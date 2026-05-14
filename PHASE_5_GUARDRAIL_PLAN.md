@@ -79,7 +79,7 @@ Phase gates block agents from advancing until conditions are met. These align wi
 | Updated branch protection rules (documented) | `GITHUB_AGENT_TOOLS.md` update | Pending |
 | Agent scope contract | `AGENT_OPERATING_MODEL.md` update | Pending |
 | RBAC policy matrix | `AGENT_PHASE_GATES.md` update or new `RBAC_POLICY.md` | Pending |
-| Rollback policy confirmation | `MIGRATION_BACKLOG.md` annotation | Pending |
+| Rollback policy confirmation | MIGRATION_BACKLOG.md annotation | Complete |
 
 ---
 
