@@ -65,8 +65,9 @@ This satisfies the Phase 4 requirement to explicitly decide which non-core surfa
 6. **Phase 10: Data/forms workflows + payments integration**
    - Complete intake, registration, CRM, and workflow persistence contracts.
    - Implement Stripe checkout session creation, webhook fulfillment, and idempotency in the target runtime.
-7. **Phase 11: Evaluation/scouting workflow**
+7. **Phase 11: Evaluation/scouting workflow + Media/TV section**
    - Migrate or rewrite evaluation/scouting pipeline with strict RBAC and privacy-by-default.
+   - Implement Media/TV route group, content model, and playback integration.
 
 ## Legacy feature disposition policy (to validate with Phase 3 artifacts)
 - **Migrate as-is (low rewrite):** modules already aligned to target data contracts and UX.
