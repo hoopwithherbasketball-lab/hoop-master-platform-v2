@@ -47,7 +47,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 | Eval records are coach/admin-only — never player-visible without explicit gate | Evaluation/scouting workflow (Phase 4 slices 2-3) | RLS / Middleware |
 | Member profiles require auth session — no unauthenticated reads | ConnectGBB (Phase 4 slice 1-2) | RLS / Auth Guard |
 | Media/TV content defaults to privacy-safe publishing — no PII in public routes | Media/TV rollout | PR Review / CI |
-| Payment webhooks require idempotency keys and secret validation | Payments hardening | Code Review / Integration Test |
+| Payment webhooks require idempotency keys and webhook signature verification | Payments hardening | Code Review / Integration Test |
 | All admin routes must validate RBAC role before rendering | Admin dashboard hardening | RBAC Middleware |
 
 ### 4. Rollback Safety Policies
