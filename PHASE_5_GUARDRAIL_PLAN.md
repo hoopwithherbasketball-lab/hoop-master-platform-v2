@@ -34,8 +34,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 
 | Boundary | Rule | Enforcement |
 |----------|------|-------------|
-| Phase scope | Agents must not make product app code changes during Phases 1-6 | CI check / PR Review |
-| File scope | Agents must not modify apps/ or packages/ source during planning phases | CI check / PR Review |
+| Agent Scope | Agents must not modify apps/ or packages/ source or make product app code changes during planning phases (Phases 1-6) | CI check / PR Review |
 | Secrets | Agents must never commit .env, secrets, tokens, or credentials | Secret scanning / CI |
 | Schema | Agents must not modify Supabase migration files without explicit Phase 7 authorization | CI check / PR Review |
 | Config | Agents must not modify turbo.json, package.json workspace roots, lockfiles, .github/workflows, or Cloudflare config without explicit authorization (e.g., via agent-config-auth label) | CI check / PR Review |
