@@ -32,13 +32,13 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 
 ### 2. Agent Scope Boundaries
 
-| Boundary | Rule |
-|----------|------|
-| Phase scope | Agents must not make product app code changes during Phases 1-6 |
-| File scope | Agents must not modify `apps/` or `packages/` source during planning phases |
-| Secrets | Agents must never commit `.env`, secrets, tokens, or credentials |
-| Schema | Agents must not modify Supabase migration files without explicit Phase 7 authorization |
-| Config | Agents must not modify turbo.json, package.json workspace roots, lockfiles, or Cloudflare config without explicit authorization in the PR description |
+| Boundary | Rule | Enforcement |
+|----------|------|-------------|
+| Phase scope | Agents must not make product app code changes during Phases 1-6 | CI check / PR Review |
+| File scope | Agents must not modify apps/ or packages/ source during planning phases | CI check / PR Review |
+| Secrets | Agents must never commit .env, secrets, tokens, or credentials | Secret scanning / CI |
+| Schema | Agents must not modify Supabase migration files without explicit Phase 7 authorization | CI check / PR Review |
+| Config | Agents must not modify turbo.json, package.json workspace roots, lockfiles, or Cloudflare config without explicit authorization in the PR description | CI check / PR Review |
 
 ### 3. Security, RBAC, and Privacy Guardrails
 
