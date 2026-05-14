@@ -38,7 +38,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 | File scope | Agents must not modify `apps/` or `packages/` source during planning phases |
 | Secrets | Agents must never commit `.env`, secrets, tokens, or credentials |
 | Schema | Agents must not modify Supabase migration files without explicit Phase 7 authorization |
-| Config | Agents must not modify `turbo.json`, `package.json` workspace roots, or Cloudflare config without explicit PR scope |
+| Config | Agents must not modify turbo.json, package.json workspace roots, lockfiles, or Cloudflare config without explicit PR scope |
 
 ### 3. RBAC and Privacy Guardrails
 
