@@ -12,7 +12,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 
 ### Prerequisites
 
-- Phase 4 merged (MIGRATION_BACKLOG.md, CROSS_REPO_IMPLEMENTATION_PLAN.md, CROSS_REPO_DEPENDENCIES.md all in main) ✅
+- Phase 4 merged (`MIGRATION_BACKLOG.md`, `CROSS_REPO_IMPLEMENTATION_PLAN.md`, `CROSS_REPO_DEPENDENCIES.md` all in `main`) ✅
 - No premature product app code changes
 - AGENT_PHASE_GATES.md and AGENT_OPERATING_MODEL.md reviewed and confirmed accurate
 
