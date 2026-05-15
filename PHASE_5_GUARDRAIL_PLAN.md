@@ -55,7 +55,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 |--------|------|-------------|
 | Migration Slices | Each migration slice must be independently revertible | Slice PR structure (Phase 4) |
 | PR Bundling | No multi-epic bundling in a single PR | PR Review |
-| DB Schema | All changes must have a corresponding rollback strategy (e.g., a revert migration or documented rollback steps) | CI check / PR Review |
+| DB Schema | All changes must have a corresponding rollback strategy (e.g., a revert migration file or documented rollback steps) | CI check / PR Review |
 | Previews | Cloudflare deployment previews required before merging to main | Existing CI/CD check |
 
 ### 5. Phase Gate Rules (Agent Phase Gates)
