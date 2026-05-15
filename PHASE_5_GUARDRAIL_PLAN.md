@@ -37,7 +37,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 | Agent Scope | Agents must not modify `apps/` or `packages/` source (excluding config files authorized via the `agent-config-auth` label applied by human maintainers and designated Phase 6 command-center tooling paths) or make product app code changes before Phase 7 | CI check / PR Review |
 | Secrets | Agents must never commit `.env`, secrets, tokens, or credentials | Secret scanning / CI |
 | Schema | Agents must not modify Supabase migration files without explicit Phase 7 authorization (e.g., via `agent-schema-auth` label applied by human maintainers) | CI check / PR Review |
-| Config | Agents must not modify critical configuration files (e.g., turbo.json, pnpm-workspace.yaml, all package.json and tsconfig.json files, .gitignore, supabase/config.toml, config/agent-guardrails.json), .github/workflows, or Cloudflare configs (e.g., wrangler.toml) without explicit authorization (e.g., via agent-config-auth label applied by human maintainers). Lockfiles are permitted to change if triggered by authorized package updates. | CI check / PR Review |
+| Config | Agents must not modify critical configuration files (e.g., `turbo.json`, `pnpm-workspace.yaml`, all `package.json` and `tsconfig.json` files, `.gitignore`, `supabase/config.toml`, `config/agent-guardrails.json`), `.github/workflows`, or Cloudflare configs (e.g., `wrangler.toml`) without explicit authorization (e.g., via `agent-config-auth` label applied by human maintainers). Lockfiles are permitted to change if triggered by authorized package updates. | CI check / PR Review |
 
 ### 3. Security, RBAC, and Privacy Guardrails
 
