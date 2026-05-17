@@ -4,7 +4,7 @@
   "enabledAgents": [
     "documentation-agent",
     "pr-review-coordinator",
-    "overseer"
+    "hwh-ecosystem-overseer"
   ],
   "disabledActions": [
     "production_deploy",
