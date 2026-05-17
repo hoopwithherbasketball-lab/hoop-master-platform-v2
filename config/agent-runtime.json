@@ -10,6 +10,7 @@
     "production_deploy",
     "supabase_migration_apply",
     "supabase_migration_rollback",
+    "supabase_migration_create",
     "secret_create",
     "secret_read",
     "secret_rotate",
