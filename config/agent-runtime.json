@@ -1,0 +1,36 @@
+{
+  "phase": "phase-6",
+  "runtimeStatus": "scaffold",
+  "enabledAgents": [
+    "documentation-agent",
+    "pr-review-coordinator",
+    "overseer"
+  ],
+  "disabledActions": [
+    "production_deploy",
+    "supabase_migration_apply",
+    "supabase_migration_rollback",
+    "secret_create",
+    "secret_read",
+    "secret_rotate",
+    "billing_permissions_change",
+    "autonomous_destructive_execution"
+  ],
+  "approvalRequiredActions": [
+    "protected_config_change",
+    "branch_protection_change",
+    "merge_to_main",
+    "external_side_effect_action",
+    "rbac_policy_change"
+  ],
+  "readOnlyActions": [
+    "repo_read",
+    "docs_read",
+    "static_analysis",
+    "non_destructive_validation"
+  ],
+  "auditLogRequired": true,
+  "mcpRuntimeMode": "bounded_read_with_approval_gate",
+  "protectedActionPolicy": "default_deny_until_human_approval",
+  "guardrailConfigReference": "config/agent-guardrails.json"
+}

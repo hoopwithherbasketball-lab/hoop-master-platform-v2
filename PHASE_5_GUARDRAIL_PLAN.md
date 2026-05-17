@@ -89,5 +89,6 @@ Phase gates block agents from advancing until conditions are met. These align wi
 
 After all Phase 5 deliverables are merged to main:
 
+- **Phase 6 kickoff artifacts (this branch):** `docs/phases/phase-6-mcp-agent-command-center-runtime.md`, `docs/mcp-runtime-boundaries.md`, `docs/agent-command-center.md`, `config/agent-runtime.json`
 - **Phase 6:** MCP + Agent Command Center runtime — agents gain structured tool access with guardrails enforced
 - Product/app implementation remains blocked until Phase 7
