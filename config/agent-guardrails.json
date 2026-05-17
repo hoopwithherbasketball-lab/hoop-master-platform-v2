@@ -1,0 +1,50 @@
+{
+  "artifact": "phase-5-agent-guardrails",
+  "artifactVersion": "1.0.0",
+  "artifactStatus": "complete",
+  "artifactCommitted": true,
+  "phase": "phase-5",
+  "modePolicy": {
+    "planningDocumentationMode": {
+      "allowed": true,
+      "appCodeChangesAllowed": false
+    },
+    "commandCenterToolingMode": {
+      "allowed": true,
+      "appCodeChangesAllowed": false,
+      "phaseScope": "phase-6-only"
+    },
+    "implementationMode": {
+      "requiresPhaseUnlock": true,
+      "minUnlockedPhase": 7
+    }
+  },
+  "forbiddenActions": [
+    "hardcode_secrets",
+    "expose_parent_contact_information",
+    "expose_private_evaluation_notes",
+    "force_push_without_approval",
+    "merge_without_user_approval",
+    "delete_branch_without_approval",
+    "run_production_supabase_migrations_without_approval",
+    "send_real_email_sms_without_approval",
+    "change_repo_billing_permissions_without_approval"
+  ],
+  "protectedFiles": [
+    "turbo.json",
+    "pnpm-workspace.yaml",
+    "**/package.json",
+    "**/tsconfig.json",
+    ".gitignore",
+    "supabase/config.toml",
+    "config/agent-guardrails.json",
+    ".github/workflows/**",
+    "wrangler.toml"
+  ],
+  "enforcement": {
+    "ciChecksRequired": true,
+    "requiredReviews": true,
+    "branchProtectionRequired": true,
+    "secretScanningRequired": true
+  }
+}
