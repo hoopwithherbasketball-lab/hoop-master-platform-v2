@@ -14,7 +14,12 @@
     "billing_changes",
     "auth_rbac_changes",
     "schema_mutations",
-    "destructive_file_operations"
+    "destructive_file_operations",
+    "modify_supabase_schema",
+    "create_migrations",
+    "modify_auth_or_rbac",
+    "modify_billing_or_stripe",
+    "modify_deployment_config"
   ],
   "readOnlyActions": [
     "read_documentation",
@@ -28,11 +33,6 @@
     "modify_product_code",
     "modify_routes",
     "modify_ui",
-    "modify_supabase_schema",
-    "create_migrations",
-    "modify_auth_or_rbac",
-    "modify_billing_or_stripe",
-    "modify_deployment_config",
     "modify_github_actions",
     "modify_mcp_runtime_config"
   ],
