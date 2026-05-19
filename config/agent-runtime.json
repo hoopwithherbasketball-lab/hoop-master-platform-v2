@@ -32,7 +32,7 @@
     "run_test",
     "run_build"
   ],
-  "approvalRequiredActions": [
+  "protectedActions": [
     "modify_product_code",
     "modify_routes",
     "modify_ui",
