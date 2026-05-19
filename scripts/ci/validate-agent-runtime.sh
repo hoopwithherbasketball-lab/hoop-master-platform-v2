@@ -27,8 +27,12 @@ try {
 echo "Validating agent-guardrails.json..."
 node -e "
 try {
-  JSON.parse(require('fs').readFileSync('config/agent-guardrails.json','utf8'));
+  const guardrails = JSON.parse(require('fs').readFileSync('config/agent-guardrails.json','utf8'));
   console.log('agent-guardrails.json is valid JSON.');
+  if (guardrails.artifactCommitted !== true) {
+    console.error('Error: artifactCommitted must be true in agent-guardrails.json');
+    process.exit(1);
+  }
 } catch (e) {
   console.error('Failed to parse agent-guardrails.json:', e.message);
   process.exit(1);
