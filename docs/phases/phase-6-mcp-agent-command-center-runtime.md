@@ -13,9 +13,6 @@ This document defines the Phase 6 scaffolding for the MCP (Model Context Protoco
 Phase 6 does not override Phase 5. All runtime scaffolding must comply with the guardrail policies defined in:
 
 - `config/agent-guardrails.json`
-- `docs/agent-guardrails.md`
-- `docs/agent-permissions-matrix.md`
-- `docs/protected-files-policy.md`
 
 `config/agent-runtime.json` defines runtime behavior, but it must inherit the approval requirements, protected-path restrictions, deployment restrictions, and human-review rules established in Phase 5.
 
