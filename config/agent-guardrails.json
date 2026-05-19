@@ -3,7 +3,7 @@
   "artifactVersion": "1.0.0",
   "artifactStatus": "complete",
   "artifactCommitted": true,
-  "phase": "phase-5",
+  "phase": 5,
   "modePolicy": {
     "planningDocumentationMode": {
       "allowed": true,
@@ -12,7 +12,7 @@
     "commandCenterToolingMode": {
       "allowed": true,
       "appCodeChangesAllowed": false,
-      "phaseScope": "phase-6-only"
+      "phaseScope": 6
     },
     "implementationMode": {
       "requiresPhaseUnlock": true,

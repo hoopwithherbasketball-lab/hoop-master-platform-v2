@@ -1,5 +1,5 @@
 {
-  "phase": "6",
+  "phase": 6,
   "runtimeStatus": "scaffold_only",
   "mcpRuntimeMode": "disabled",
   "guardrailConfigReference": "config/agent-guardrails.json",
@@ -52,6 +52,6 @@
   "phaseSevenReadiness": {
     "autonomousExecutionAllowed": false,
     "implementationAgentsAllowed": false,
-    "nextPhase": "Phase 7: Build Public MVP Shell"
+    "nextPhase": 7
   }
 }
