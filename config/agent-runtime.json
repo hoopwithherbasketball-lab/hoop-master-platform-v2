@@ -3,7 +3,7 @@
   "runtimeStatus": "scaffold_only",
   "mcpRuntimeMode": "disabled",
   "guardrailConfigReference": "config/agent-guardrails.json",
-  "phaseGateReference": "agents/AGENT_PHASE_GATES.md",
+  "phaseGateReference": "AGENT_PHASE_GATES.md",
   "enabledAgents": [],
   "disabledActions": [
     "autonomous_code_execution",
