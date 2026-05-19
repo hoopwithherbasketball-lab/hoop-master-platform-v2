@@ -24,7 +24,6 @@
 
 ## Approval-required Actions
 
-- Pull request merge execution.
 - Environment or infra configuration changes.
 - Changes to protected policy/config files.
 - Any external side-effecting integration execution.
@@ -32,6 +31,7 @@
 ## Blocked Actions
 
 - Production deploy/release execution.
+- Pull request merge execution.
 - Supabase production migrations.
 - Secret value reads/writes.
 - Direct IAM/RBAC elevation.
