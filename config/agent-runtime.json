@@ -27,7 +27,10 @@
     "analyze_project_structure",
     "prepare_implementation_plans",
     "draft_pull_request_summaries",
-    "validate_json_configs"
+    "validate_json_configs",
+    "run_lint",
+    "run_test",
+    "run_build"
   ],
   "approvalRequiredActions": [
     "modify_product_code",
