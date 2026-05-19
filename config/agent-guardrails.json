@@ -37,7 +37,9 @@
     "**/tsconfig.json",
     ".gitignore",
     "supabase/config.toml",
+    "supabase/migrations/**",
     "config/agent-guardrails.json",
+    "config/agent-runtime.json",
     ".github/workflows/**",
     "wrangler.toml"
   ],
