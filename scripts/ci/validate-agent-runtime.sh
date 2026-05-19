@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# Ensure the script runs from the repository root
+cd "$(dirname "$0")/../.."
+
 echo "Validating agent-runtime.json..."
 node -e "
 try {
