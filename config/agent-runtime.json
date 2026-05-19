@@ -1,48 +1,57 @@
 {
-  "phase": "phase-6",
-  "runtimeStatus": "scaffold",
-  "enabledAgents": [
-    "documentation-agent",
-    "pr-review-coordinator",
-    "hwh-ecosystem-overseer"
-  ],
+  "phase": "6",
+  "runtimeStatus": "scaffold_only",
+  "mcpRuntimeMode": "disabled",
+  "guardrailConfigReference": "config/agent-guardrails.json",
+  "phaseGateReference": "agents/AGENT_PHASE_GATES.md",
+  "enabledAgents": [],
   "disabledActions": [
-    "production_deploy",
-    "supabase_migration_apply",
-    "supabase_migration_rollback",
-    "secret_create",
-    "secret_read",
-    "secret_rotate",
-    "billing_permissions_change",
-    "autonomous_destructive_execution"
-  ],
-  "approvalRequiredActions": [
-    "protected_config_change",
-    "branch_protection_change",
-    "merge_to_main",
-    "external_side_effect_action",
-    "rbac_policy_change"
+    "autonomous_code_execution",
+    "database_migrations",
+    "production_deployments",
+    "secret_access",
+    "environment_file_edits",
+    "billing_changes",
+    "auth_rbac_changes",
+    "schema_mutations",
+    "destructive_file_operations"
   ],
   "readOnlyActions": [
-    "repo_read",
-    "docs_read",
-    "static_analysis",
-    "non_destructive_validation"
+    "read_documentation",
+    "read_repository_files",
+    "analyze_project_structure",
+    "prepare_implementation_plans",
+    "draft_pull_request_summaries",
+    "validate_json_configs"
   ],
-  "auditLogRequired": true,
-  "mcpRuntimeMode": "bounded_read_with_approval_gate",
-  "protectedActionPolicy": "default_deny_until_human_approval",
-  "guardrailConfigReference": "config/agent-guardrails.json",
-  "enforcementMappings": {
-    "ciGuardrailCheck": "CI workflow validates blocked/protected actions and path-based restrictions for Phase 6.",
-    "branchProtection": "Protected branch rules require PR, reviews, and status checks before merge.",
-    "codeownersApproval": "Protected policy/config paths require designated reviewer approval.",
-    "secretScanning": "Secret scanning and push protection detect and block credential exposure.",
-    "policyEngine": "Command Center classifies actions against runtime policy before any execution.",
-    "auditLogging": "All approval-required and blocked actions must be logged with correlation IDs."
+  "approvalRequiredActions": [
+    "modify_product_code",
+    "modify_routes",
+    "modify_ui",
+    "modify_supabase_schema",
+    "create_migrations",
+    "modify_auth_or_rbac",
+    "modify_billing_or_stripe",
+    "modify_deployment_config",
+    "modify_github_actions",
+    "modify_mcp_runtime_config"
+  ],
+  "protectedActionPolicy": {
+    "default": "deny",
+    "requiresHumanApproval": true,
+    "requiresPullRequest": true,
+    "requiresReview": true,
+    "requiresRollbackPlan": true
   },
-  "guardrailConfigRequired": true,
-  "guardrailConfigFailMode": "fail_closed",
-  "guardrailConfigExpectedArtifact": "phase-5-agent-guardrails",
-  "guardrailConfigExpectedStatus": "complete"
+  "auditLogRequired": true,
+  "rollbackPolicy": {
+    "requiredForProtectedActions": true,
+    "mustDocumentChangedFiles": true,
+    "mustDocumentRevertPath": true
+  },
+  "phaseSevenReadiness": {
+    "autonomousExecutionAllowed": false,
+    "implementationAgentsAllowed": false,
+    "nextPhase": "Phase 7: Build Public MVP Shell"
+  }
 }
