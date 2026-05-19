@@ -32,6 +32,29 @@ Phase 5 documented baseline guardrails and phase gates. Phase 6 consumes those g
 4. Explicit action classification (read-only, approval-required, blocked).
 5. Full auditability for command origin, approvals, and outcomes.
 
+
+## Technical Enforcement Mapping
+
+Phase 6 policies must map to explicit automation controls so they are enforceable:
+
+- **CI guardrail checks:** enforce blocked actions and protected file path constraints.
+- **Branch protection rules:** enforce no direct pushes/force pushes to protected branches and require passing checks.
+- **CODEOWNERS + required reviews:** enforce human approval for policy/config and protected workflow changes.
+- **Secret scanning and push protection:** prevent credential leakage and `.env`-class secret exposure.
+- **Command Center policy engine classification:** evaluate requested actions against `config/agent-runtime.json` before execution.
+- **Audit log pipeline:** record command request, classification, approval decision, and outcome for traceability.
+
+Detailed per-rule mappings are defined in `docs/mcp-runtime-boundaries.md`.
+
+
+## Guardrail Reference Resolution
+
+The runtime policy reference (`guardrailConfigReference`) must resolve to a committed file at load time.
+
+- Loaders/validators must **fail closed** if the referenced guardrail file is missing or unreadable.
+- Loaders/validators must verify the guardrail artifact identity/status before enabling command execution paths.
+- Phase 6 runtime startup should be considered invalid when guardrail reference validation fails.
+
 ## MCP Server Boundaries
 
 - MCP integrations are limited to bounded tooling contracts.

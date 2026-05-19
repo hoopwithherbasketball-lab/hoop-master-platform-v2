@@ -4,13 +4,12 @@
   "enabledAgents": [
     "documentation-agent",
     "pr-review-coordinator",
-    "hwh-ecosystem-overseer"
+    "overseer"
   ],
   "disabledActions": [
     "production_deploy",
     "supabase_migration_apply",
     "supabase_migration_rollback",
-    "supabase_migration_create",
     "secret_create",
     "secret_read",
     "secret_rotate",
@@ -33,5 +32,17 @@
   "auditLogRequired": true,
   "mcpRuntimeMode": "bounded_read_with_approval_gate",
   "protectedActionPolicy": "default_deny_until_human_approval",
-  "guardrailConfigReference": "config/agent-guardrails.json"
+  "guardrailConfigReference": "config/agent-guardrails.json",
+  "enforcementMappings": {
+    "ciGuardrailCheck": "CI workflow validates blocked/protected actions and path-based restrictions for Phase 6.",
+    "branchProtection": "Protected branch rules require PR, reviews, and status checks before merge.",
+    "codeownersApproval": "Protected policy/config paths require designated reviewer approval.",
+    "secretScanning": "Secret scanning and push protection detect and block credential exposure.",
+    "policyEngine": "Command Center classifies actions against runtime policy before any execution.",
+    "auditLogging": "All approval-required and blocked actions must be logged with correlation IDs."
+  },
+  "guardrailConfigRequired": true,
+  "guardrailConfigFailMode": "fail_closed",
+  "guardrailConfigExpectedArtifact": "phase-5-agent-guardrails",
+  "guardrailConfigExpectedStatus": "complete"
 }

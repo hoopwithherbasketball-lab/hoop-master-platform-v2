@@ -72,16 +72,16 @@ Phase gates block agents from advancing until conditions are met. These align wi
 
 ## Deliverables for This Phase
 
-| Deliverable | File | Status |
-|-------------|------|--------|
-| This guardrail plan | `PHASE_5_GUARDRAIL_PLAN.md` | Complete |
-| Updated branch protection rules (documented) | `docs/protected-files-policy.md` | Complete |
-| Agent scope contract | `docs/agent-guardrails.md` | Complete |
-| RBAC policy matrix | `docs/agent-permissions-matrix.md` | Complete |
-| Agent guardrail configuration | `config/agent-guardrails.json` | Complete |
-| PR Template with guardrail checks | `.github/pull_request_template.md` | Complete |
-| Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Complete |
-| Rollback policy confirmation | `MIGRATION_BACKLOG.md` annotation | Complete |
+| Deliverable | File | Status | Inclusion Marker |
+|-------------|------|--------|------------------|
+| This guardrail plan | `PHASE_5_GUARDRAIL_PLAN.md` | Complete | N/A |
+| Updated branch protection rules (documented) | `docs/protected-files-policy.md` | Complete | Document present in Phase 5 merge |
+| Agent scope contract | `docs/agent-guardrails.md` | Complete | Document present in Phase 5 merge |
+| RBAC policy matrix | `docs/agent-permissions-matrix.md` | Complete | Document present in Phase 5 merge |
+| Agent guardrail configuration | `config/agent-guardrails.json` | Complete | ✅ `artifactCommitted: true` |
+| PR Template with guardrail checks | `.github/pull_request_template.md` | Complete | Template present in Phase 5 merge |
+| Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Complete | Document present in Phase 5 merge |
+| Rollback policy confirmation | `MIGRATION_BACKLOG.md` annotation | Complete | Annotation present in Phase 5 merge |
 
 ---
 
