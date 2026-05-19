@@ -33,6 +33,10 @@ node -e "
 try {
   const guardrails = JSON.parse(require('fs').readFileSync('config/agent-guardrails.json','utf8'));
   console.log('agent-guardrails.json is valid JSON.');
+  if (guardrails.phase !== 5) {
+    console.error('Error: phase must be 5 in agent-guardrails.json');
+    process.exit(1);
+  }
   if (guardrails.artifactCommitted !== true) {
     console.error('Error: artifactCommitted must be true in agent-guardrails.json');
     process.exit(1);
