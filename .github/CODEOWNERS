@@ -1,0 +1,8 @@
+# Default code owner
+* @hoopwithherbasketball-lab/maintainers
+
+# Protected configs and guardrail docs
+config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+docs/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+agents/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+.github/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
