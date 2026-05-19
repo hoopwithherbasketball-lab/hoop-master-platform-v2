@@ -14,8 +14,8 @@ try {
     process.exit(1);
   }
   if (runtime.mcpRuntimeMode !== 'disabled') {
-    console.error('Error: mcpRuntimeMode must be "disabled" in Phase 6.');
     console.error('Error: mcpRuntimeMode must be \"disabled\" in Phase 6.');
+    process.exit(1);
   }
   if (!Array.isArray(runtime.enabledAgents) || runtime.enabledAgents.length > 0) {
     console.error('Error: enabledAgents must be an empty array in Phase 6.');
