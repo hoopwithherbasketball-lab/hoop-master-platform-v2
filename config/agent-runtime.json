@@ -1,4 +1,8 @@
 {
+  "artifact": "phase-6-agent-runtime",
+  "artifactVersion": "1.0.0",
+  "artifactStatus": "scaffold_only",
+  "artifactCommitted": true,
   "phase": 6,
   "runtimeStatus": "scaffold_only",
   "mcpRuntimeMode": "disabled",
