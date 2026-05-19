@@ -52,7 +52,7 @@
 
 - Schema/migration create/apply/rollback actions are blocked in Phase 6.
 - Database access is read-only unless explicitly unlocked in a later phase.
-- **Rollback Definition**: Revert ("rollback") migrations must be implemented as forward-only changes (new migrations that undo previous changes) rather than using `.down.sql` files, to maintain a linear history unless manual intervention is specifically intended.
+- **Rollback Definition**: Revert ("rollback") migrations must be implemented as forward-only changes (new migrations that undo previous changes) rather than using .down.sql files, to maintain a linear history. If manual intervention is specifically intended, manual rollback scripts must follow a strict naming convention (e.g., <timestamp>_<name>.rollback.sql) and include a clear rationale.
 
 ## Logging and Audit Expectations
 
