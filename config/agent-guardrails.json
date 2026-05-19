@@ -23,12 +23,12 @@
     "hardcode_secrets",
     "expose_parent_contact_information",
     "expose_private_evaluation_notes",
-    "force_push_without_approval",
-    "merge_without_user_approval",
-    "delete_branch_without_approval",
-    "run_production_supabase_migrations_without_approval",
-    "send_real_email_sms_without_approval",
-    "change_repo_billing_permissions_without_approval"
+    "force_push",
+    "merge_pull_request",
+    "delete_branch",
+    "run_production_supabase_migrations",
+    "send_real_email_sms",
+    "change_repo_billing_permissions"
   ],
   "protectedFiles": [
     "turbo.json",
