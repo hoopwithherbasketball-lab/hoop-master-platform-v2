@@ -24,7 +24,7 @@ Phase 6 does not override Phase 5. All runtime scaffolding must comply with the 
 - **No Product Code Changes**: This phase focuses exclusively on the orchestration tooling. It does not touch product features, frontend routes, UI blocks, Supabase schemas, or migrations.
 - **Config Format**: Configuration files must be plain JSON to remain human- and machine-readable. Tools like TypeScript configuration files, Zod, YAML, or TOML are prohibited.
 - **Security**: No secrets, tokens, URLs, or real credentials may be included in the scaffolding.
-- **No Autonomous Execution**: All agents remain disabled from executing implementation code autonomously until Phase 7.
+- **No Autonomous Execution**: All agents remain disabled from executing implementation code autonomously until a future approved phase explicitly enables phase-scoped execution under the Phase 5 guardrails.
 
 ## Required Artifacts
 The artifacts generated during this phase form the boundary constraints:
