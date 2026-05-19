@@ -77,7 +77,6 @@ This PR includes the expanded foundation docs required by the Agent Command Cent
 
 ## Phase 6: MCP agent command center
 - Set up automated tool execution and command center policies.
-- Implement custom CI validation scripts (e.g., `scripts/ci/validate-agent-runtime.sh`) to verify artifact presence, filename pairing, and internal structure.
 
 ## Phase 7: Public MVP
 - Replace runtime placeholder assets (`/api/placeholder/...`) with local/static assets or valid remote URLs.

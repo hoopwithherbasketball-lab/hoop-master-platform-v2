@@ -70,7 +70,7 @@
 | Block force-push and branch deletion on protected branches | GitHub branch protection settings on `main` | Branch protection settings and audit log entries |
 | Require human approval for protected config changes | CODEOWNERS review requirement on `config/**` and guardrail docs + required approving review | Required reviewer approvals in PR timeline |
 | Require approval for merge to main | Protected branch required status checks + required reviews before merge | Merged PR status checks and reviewer approvals |
-| Restrict runtime to read-only validation paths | Command Center policy engine classification check using `config/agent-runtime.json` + CI validation script (`scripts/ci/validate-agent-runtime.sh`) | Policy decision log with action classification |
+| Restrict runtime to read-only validation paths | Command Center policy engine classification check using `config/agent-runtime.json` | Policy decision log with action classification |
 | Ensure audit logs for approval-required/blocked commands | Structured command log sink with immutable append-only records | Command logs including correlation IDs and approver metadata |
 | Ensure machine-executable rollback migrations | Custom CI validation script (verifying artifact presence, filename pairing, and internal structure) | CI validation logs and artifact presence markers |
 
