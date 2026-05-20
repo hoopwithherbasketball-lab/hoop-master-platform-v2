@@ -5,9 +5,14 @@ set -e
 cd "$(dirname "$0")/../.."
 
 echo "Validating artifact presence..."
-for doc in "docs/phases/phase-6-mcp-agent-command-center-runtime.md" "docs/mcp-runtime-boundaries.md" "docs/agent-command-center.md"; do
-  if [ ! -f "$doc" ]; then
-    echo "Error: Required artifact $doc is missing."
+for artifact in \
+  "docs/phases/phase-6-mcp-agent-command-center-runtime.md" \
+  "docs/mcp-runtime-boundaries.md" \
+  "docs/agent-command-center.md" \
+  "config/agent-runtime.json" \
+  "config/agent-guardrails.json"; do
+  if [ ! -f "$artifact" ]; then
+    echo "Error: Required artifact $artifact is missing."
     exit 1
   fi
 done
