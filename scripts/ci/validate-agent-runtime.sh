@@ -4,6 +4,14 @@ set -e
 # Ensure the script runs from the repository root
 cd "$(dirname "$0")/../.."
 
+echo "Validating artifact presence..."
+for doc in "docs/phases/phase-6-mcp-agent-command-center-runtime.md" "docs/mcp-runtime-boundaries.md" "docs/agent-command-center.md"; do
+  if [ ! -f "$doc" ]; then
+    echo "Error: Required artifact $doc is missing."
+    exit 1
+  fi
+done
+
 echo "Validating agent-runtime.json..."
 node -e "
 try {
