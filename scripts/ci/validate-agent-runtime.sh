@@ -62,5 +62,11 @@ try {
   process.exit(1);
 }
 "
+echo "Checking for forbidden .down.sql files..."
+if find supabase/migrations -name "*.down.sql" 2>/dev/null | grep -q .; then
+  echo "Error: .down.sql files are forbidden. Use forward-only migrations."
+  find supabase/migrations -name "*.down.sql"
+  exit 1
+fi
 
 echo "Validation complete."
