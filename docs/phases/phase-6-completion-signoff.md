@@ -17,7 +17,7 @@ Branch: codex/phase-6-1-governance-cleanup -> merged to main
 | 4 | `docs/agent-command-center.md` | Command Center workflow — approval flow, task queue, activity log, protected action warnings | Committed |
 | 5 | `docs/phases/phase-6-mcp-agent-command-center-runtime.md` | Phase 6 definition — objectives, constraints, exit criteria, handoff to Phase 7 | Committed |
 | 6 | `scripts/ci/validate-agent-runtime.sh` | CI validator — checks artifact presence, JSON validity, phase values, forward-only migrations | Committed |
-| 7 | .github/CODEOWNERS | Governance — overseer review required on all Phase 6 paths (*, config/**, packages/config/**, docs/**, agents/**, .github/**, scripts/**, **/*.md, AGENT_PHASE_GATES.md) | Committed |
+| 7 | .github/CODEOWNERS | Governance — overseer review required on all Phase 6 paths (*, config/**, packages/config/**, docs/**, agents/**, .github/**, scripts/**, **/*.md, AGENT_PHASE_GATES.md, .github/CODEOWNERS) | Committed |
 
 ---
 
