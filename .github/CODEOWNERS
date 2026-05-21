@@ -4,11 +4,8 @@
 # Protected configs and guardrail docs
 AGENT_PHASE_GATES.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
-packages/config/ @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+packages/config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 docs/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 agents/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 .github/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 scripts/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
-
-# Critical phase-gate documentation (recursive)
-**/*.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers

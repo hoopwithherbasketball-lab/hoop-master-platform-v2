@@ -1,8 +1,8 @@
-# Phase 5: Guardrail Refinement
+# Phase 5 Guardrail Refinement
 
 ## Purpose
 
-Phase 5 records the governance, review, and safety policies required before Phase 6 command-center tooling and later implementation work.
+Phase 5 records the governance, review, and safety policies required before Phase 6 command-center tooling and later implementation work. This document also records the final refinement pass before Phase 7 implementation begins.
 
 ## Scope
 
@@ -26,6 +26,28 @@ Phase 5 is documentation and configuration only. It does not modify product app 
 - Secrets, credentials, private player data, parent contact information, and private evaluation notes must not be exposed.
 - Production migrations, deployment actions, billing changes, and auth/RBAC changes require explicit approval.
 - Each implementation slice must remain independently reviewable and revertible.
+
+## Refinements Applied (Phase 6.1)
+
+### 1. CODEOWNERS Strengthening
+
+- Default catch-all (`*`) now requires both `@maintainers` and `@overseers` review.
+- Added explicit `packages/config/**` path coverage for shared build/config packages.
+
+### 2. PR Template Guardrail Checklist
+
+- `.github/pull_request_template.md` includes mandatory guardrail checklist items.
+- Checklist covers: secrets, contact info exposure, production migrations, email/SMS, billing changes, phase scope compliance, CI validation, and CODEOWNERS requirements.
+
+### 3. Runtime Reference Validation
+
+- `scripts/ci/validate-agent-runtime.sh` verifies that `phaseGateReference` and `guardrailConfigReference` files exist on disk.
+- Prevents silent failures when referenced governance files are renamed or deleted.
+
+### 4. Enforcement Accuracy Corrections
+
+- Removed unsupported "CI path filter" claim from `docs/mcp-runtime-boundaries.md`; replaced with actual controls.
+- Changed merge action from "Require approval" to "Forbid" to match `forbiddenActions`.
 
 ## Phase 5 to Phase 6 Gate
 
