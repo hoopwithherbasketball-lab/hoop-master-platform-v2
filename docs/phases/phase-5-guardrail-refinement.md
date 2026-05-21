@@ -24,7 +24,7 @@ Phase 5 is documentation and configuration only. It does not modify product app 
 | Policy Rule | Technical Enforcement Mechanism | Evidence |
 |---|---|---|
 | All PRs include guardrail checklist | `.github/pull_request_template.md` — mandatory checkboxes rendered in every PR | GitHub PR UI, template presence in diff |
-| Protected paths require overseer review | `.github/CODEOWNERS` — `*`, `config/**`, `docs/**`, `scripts/**`, `**/*.md`, `.github/CODEOWNERS` all require `@overseers` | CODEOWNERS review requirement in PR timeline |
+| Protected paths require overseer review | .github/CODEOWNERS — *, config/**, packages/config/**, docs/**, agents/**, .github/**, scripts/**, **/*.md, AGENT_PHASE_GATES.md, .github/CODEOWNERS all require @overseers | CODEOWNERS review requirement in PR timeline |
 | Runtime config validates phase scope | `scripts/ci/validate-agent-runtime.sh` — checks `phase`, `mcpRuntimeMode`, `enabledAgents`, `artifactCommitted`, file references | CI check output |
 | Forward-only migrations enforced | `scripts/ci/validate-agent-runtime.sh` — scans for forbidden `.down.sql` files | CI check output |
 | No secrets or credentials committed | GitHub secret scanning + branch protection | Secret scanning alerts |
