@@ -79,8 +79,8 @@ Phase gates block agents from advancing until conditions are met. These align wi
 | Agent scope contract | `docs/agent-guardrails.md` | Complete | Document present in Phase 5 merge |
 | RBAC policy matrix | `docs/agent-permissions-matrix.md` | Complete | Document present in Phase 5 merge |
 | Agent guardrail configuration | `config/agent-guardrails.json` | Complete | ✅ `artifactCommitted: true` |
-| PR Template with guardrail checks | `.github/pull_request_template.md` | Complete | Template present in Phase 5 merge |
-| Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Complete | Document present in Phase 5 merge |
+| PR Template with guardrail checks | `.github/pull_request_template.md` | Incomplete | File missing from commit tree |
+| Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Incomplete | File missing from commit tree |
 | Rollback policy confirmation | `MIGRATION_BACKLOG.md` annotation | Complete | Annotation present in Phase 5 merge |
 
 ---
