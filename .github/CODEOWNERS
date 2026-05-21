@@ -9,3 +9,6 @@ docs/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overse
 agents/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 .github/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 scripts/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+
+# Critical phase-gate documentation (recursive)
+**/*.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers

@@ -42,23 +42,29 @@
 | Control | Mechanism | Status |
 |---|---|---|
 | CI validation | `scripts/ci/validate-agent-runtime.sh` — validates JSON, phase values, artifact existence, forward-only migrations | Active |
-| CODEOWNERS review | `@maintainers` + `@overseers` required on `config/**`, `docs/**`, `scripts/**`, `AGENT_PHASE_GATES.md`, `**/*.md` | Active |
+| CODEOWNERS review | `@maintainers` + `@overseers` required on `config/**`, `docs/**`, `scripts/**`, `AGENT_PHASE_GATES.md`, `packages/config/**`, `**/*.md` | Active |
 | Branch protection | `main` protected; merges require status checks + reviews | Active |
 | Forbidden actions | 8 hard-blocked actions in `agent-guardrails.json` (secrets, force-push, merge, migrations, etc.) | Active |
 | Protected files | 12 patterns in `agent-guardrails.json` including runtime configs, workflows, migrations | Active |
 
 ---
 
-## Session Fixes Applied
+## Governance Fixes (Across Sessions)
 
-| Fix | File | Description |
-|---|---|---|
-| Recursive md protection | `.github/CODEOWNERS` | Changed `*.md` → `**/*.md` to protect nested markdown files |
-| Phase gate file ownership | `.github/CODEOWNERS` | Added explicit `AGENT_PHASE_GATES.md` rule requiring overseer review |
-| Runtime reference validation | `scripts/ci/validate-agent-runtime.sh` | Added file existence checks for `phaseGateReference` and `guardrailConfigReference` |
-| Guardrail audit accuracy | `PHASE_5_GUARDRAIL_PLAN.md` | Marked missing PR template and refinement doc as Incomplete |
-| Enforcement accuracy | `docs/mcp-runtime-boundaries.md` | Removed false "CI path filter" claim; replaced with actual controls |
-| Merge action alignment | `docs/mcp-runtime-boundaries.md` | Changed "Require approval for merge" → "Forbid merge" (matches `forbiddenActions`) |
+These fixes were applied across multiple PRs during Phase 6 and Phase 6.1 work.
+
+| Fix | File | Applied In | Description |
+|---|---|---|---|
+| Default catch-all includes overseers | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Changed `*` from maintainers-only to maintainers + overseers |
+| Recursive md protection | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Added `**/*.md` recursive glob for nested markdown files |
+| packages/config/ coverage | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Added explicit `packages/config/**` rule |
+| PR template with guardrail checklist | `.github/pull_request_template.md` | Phase 6.1 (this PR) | New file with mandatory guardrail checklist |
+| Phase 5 refinement doc | `docs/phases/phase-5-guardrail-refinement.md` | Phase 6.1 (this PR) | New file closing missing Phase 5 deliverable |
+| Phase gate file ownership | `.github/CODEOWNERS` | Phase 6 (prior PR) | Added explicit `AGENT_PHASE_GATES.md` rule |
+| Runtime reference validation | `scripts/ci/validate-agent-runtime.sh` | Phase 6 (prior PR) | Added file existence checks for `phaseGateReference` and `guardrailConfigReference` |
+| Guardrail audit accuracy | `PHASE_5_GUARDRAIL_PLAN.md` | Phase 6 (prior PR) | Marked missing PR template and refinement doc as Incomplete |
+| Enforcement accuracy | `docs/mcp-runtime-boundaries.md` | Phase 6 (prior PR) | Removed false "CI path filter" claim; replaced with actual controls |
+| Merge action alignment | `docs/mcp-runtime-boundaries.md` | Phase 6 (prior PR) | Changed "Require approval for merge" → "Forbid merge" |
 
 ---
 
