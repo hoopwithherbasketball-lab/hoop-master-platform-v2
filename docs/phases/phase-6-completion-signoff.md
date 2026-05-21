@@ -49,23 +49,18 @@
 
 ---
 
-## Governance Fixes (Across Sessions)
+## Phase 6.1 Governance Changes
 
-These fixes were applied across multiple PRs during Phase 6 and Phase 6.1 work.
+Changes introduced in this PR (`codex/phase-6-1-governance-cleanup`).
 
-| Fix | File | Applied In | Description |
+| # | Change | File | Description |
 |---|---|---|---|
-| Default catch-all includes overseers | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Changed `*` from maintainers-only to maintainers + overseers |
-| Recursive md protection retained | `.github/CODEOWNERS` | Phase 6 (prior PR) | `**/*.md` recursive glob already on main; retained as defense-in-depth |
-| CODEOWNERS self-referencing rule | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Added explicit `.github/CODEOWNERS` rule to control ownership changes |
-| packages/config/ coverage | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Added explicit `packages/config/**` rule |
-| PR template with guardrail checklist | `.github/pull_request_template.md` | Phase 6.1 (this PR) | New file with mandatory guardrail checklist |
-| Phase 5 refinement doc | `docs/phases/phase-5-guardrail-refinement.md` | Phase 6.1 (this PR) | New file closing missing Phase 5 deliverable |
-| Phase gate file ownership | `.github/CODEOWNERS` | Phase 6 (prior PR) | Added explicit `AGENT_PHASE_GATES.md` rule |
-| Runtime reference validation | `scripts/ci/validate-agent-runtime.sh` | Phase 6 (prior PR) | Added file existence checks for `phaseGateReference` and `guardrailConfigReference` |
-| Guardrail audit accuracy | `PHASE_5_GUARDRAIL_PLAN.md` | Phase 6 (prior PR) | Marked missing PR template and refinement doc as Incomplete |
-| Enforcement accuracy | `docs/mcp-runtime-boundaries.md` | Phase 6 (prior PR) | Removed false "CI path filter" claim; replaced with actual controls |
-| Merge action alignment | `docs/mcp-runtime-boundaries.md` | Phase 6 (prior PR) | Changed "Require approval for merge" → "Forbid merge" |
+| 1 | Default catch-all includes overseers | `.github/CODEOWNERS` | Changed `*` from `@maintainers` to `@maintainers @overseers` |
+| 2 | packages/config/ coverage | `.github/CODEOWNERS` | Added explicit `packages/config/** @maintainers @overseers` rule |
+| 3 | CODEOWNERS self-referencing rule | `.github/CODEOWNERS` | Added explicit `.github/CODEOWNERS @maintainers @overseers` at end of file |
+| 4 | PR template with guardrail checklist | `.github/pull_request_template.md` | New file — mandatory checkboxes for secrets, migrations, phase scope, CODEOWNERS |
+| 5 | Phase 5 refinement doc | `docs/phases/phase-5-guardrail-refinement.md` | New file — closes missing Phase 5 deliverable, includes enforcement mapping table |
+| 6 | Audit table updated to Complete | `PHASE_5_GUARDRAIL_PLAN.md` | PR template and refinement doc rows changed from Incomplete to Complete |
 
 ---
 
@@ -85,7 +80,7 @@ These fixes were applied across multiple PRs during Phase 6 and Phase 6.1 work.
 
 - [ ] All 9 exit criteria verified
 - [ ] Governance controls active and tested
-- [ ] Session fixes reviewed and accepted
+- [ ] Phase 6.1 changes reviewed and accepted
 - [ ] Phase 7 readiness confirmed
 
 **Signed**: ________________________ **Date**: ____________
