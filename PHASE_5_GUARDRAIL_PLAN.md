@@ -4,7 +4,7 @@
 
 ### Status
 
-Planning only. No product app code changes in this phase.
+Complete. No product app code changes in this phase.
 
 ### Purpose
 
@@ -13,8 +13,8 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 ### Prerequisites
 
 - Phase 4 merged (`MIGRATION_BACKLOG.md`, `CROSS_REPO_IMPLEMENTATION_PLAN.md`, `CROSS_REPO_DEPENDENCIES.md` all in `main`) ✅
-- No premature product app code changes
-- AGENT_PHASE_GATES.md and AGENT_OPERATING_MODEL.md reviewed and confirmed accurate
+- No premature product app code changes ✅
+- AGENT_PHASE_GATES.md and AGENT_OPERATING_MODEL.md reviewed and confirmed accurate ✅
 
 ---
 
@@ -79,16 +79,29 @@ Phase gates block agents from advancing until conditions are met. These align wi
 | Agent scope contract | `docs/agent-guardrails.md` | Complete | Document present in Phase 5 merge |
 | RBAC policy matrix | `docs/agent-permissions-matrix.md` | Complete | Document present in Phase 5 merge |
 | Agent guardrail configuration | `config/agent-guardrails.json` | Complete | ✅ `artifactCommitted: true` |
-| PR Template with guardrail checks | `.github/pull_request_template.md` | Incomplete | File missing from commit tree |
-| Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Incomplete | File missing from commit tree |
+| PR Template with guardrail checks | .github/pull_request_template.md | Complete | ✅ artifactCommitted: true |
+| Phase 5 refinement documentation | docs/phases/phase-5-guardrail-refinement.md | Complete | ✅ artifactCommitted: true |
 | Rollback policy confirmation | `MIGRATION_BACKLOG.md` annotation | Complete | Annotation present in Phase 5 merge |
+
+---
+
+## Phase 6.1 Governance Cleanup
+
+This cleanup closes the remaining pre-Phase 7 governance gaps:
+
+- Strengthens `.github/CODEOWNERS` with maintainers and overseers on the default catch-all rule.
+- Adds explicit `packages/config/` CODEOWNERS coverage.
+- Adds `.github/pull_request_template.md` with guardrail checklist items.
+- Adds `docs/phases/phase-5-guardrail-refinement.md` as the missing Phase 5 refinement artifact.
+
+No product app code, routes, UI, schema, migrations, dependencies, or deployment behavior are changed by this cleanup.
 
 ---
 
 ## Next Phase
 
-After all Phase 5 deliverables are merged to main:
+After all Phase 5 and Phase 6.1 governance deliverables are merged to main:
 
-- Phase 6 kickoff artifacts (this branch): docs/phases/phase-6-mcp-agent-command-center-runtime.md, docs/mcp-runtime-boundaries.md, docs/agent-command-center.md, config/agent-runtime.json, scripts/ci/validate-agent-runtime.sh
-- **Phase 6:** MCP + Agent Command Center runtime — agents gain structured tool access with guardrails enforced
-- Product/app implementation remains blocked until Phase 7
+- Phase 6 kickoff artifacts remain complete: `docs/phases/phase-6-mcp-agent-command-center-runtime.md`, `docs/mcp-runtime-boundaries.md`, `docs/agent-command-center.md`, `config/agent-runtime.json`, `scripts/ci/validate-agent-runtime.sh`
+- **Phase 7:** Public MVP Shell may begin with explicit phase-scoped authorized paths and guardrail-compliant implementation rules.
+- Product/app implementation remains blocked until Phase 7 is opened and explicitly scoped.

@@ -1,9 +1,10 @@
-# Default code owner
-* @hoopwithherbasketball-lab/maintainers
+# Default deny-by-default oversight owner
+* @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 
 # Protected configs and guardrail docs
 AGENT_PHASE_GATES.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+packages/config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 docs/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 agents/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 .github/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
@@ -11,3 +12,6 @@ scripts/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/ove
 
 # Critical phase-gate documentation (recursive)
 **/*.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+
+# Ensure changes to ownership rules are strictly controlled
+.github/CODEOWNERS @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
