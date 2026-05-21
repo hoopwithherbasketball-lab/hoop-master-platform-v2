@@ -7,6 +7,7 @@ config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/over
 docs/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 agents/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 .github/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+scripts/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 
 # Critical phase-gate documentation (recursive)
 **/*.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
