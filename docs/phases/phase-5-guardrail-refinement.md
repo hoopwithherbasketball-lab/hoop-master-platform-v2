@@ -6,21 +6,29 @@
 
 ## Purpose
 
-Phase 5 records the governance, review, and safety policies required before Phase 6 command-center tooling and later implementation work. This document also records the final refinement pass before Phase 7 implementation begins.
+This document closes the two missing Phase 5 deliverables identified in the `PHASE_5_GUARDRAIL_PLAN.md` audit table: the PR template and the Phase 5 refinement doc itself.
 
 ## Scope
 
 Phase 5 is documentation and configuration only. It does not modify product app routes, product UI, Supabase schema, migrations, deployment behavior, or runtime dependencies.
 
-## Completed Guardrail Artifacts
+## Deliverables in This PR
 
-- `PHASE_5_GUARDRAIL_PLAN.md`
-- `docs/agent-guardrails.md`
-- `docs/agent-permissions-matrix.md`
-- `docs/protected-files-policy.md`
-- `config/agent-guardrails.json`
-- `.github/pull_request_template.md`
-- `.github/CODEOWNERS`
+| # | Artifact | Path | Status |
+|---|---|---|---|
+| 1 | PR Template with guardrail checklist | `.github/pull_request_template.md` | Complete — committed in this PR |
+| 2 | Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Complete — this file |
+
+## Guardrail Policy to Enforcement Mapping
+
+| Policy Rule | Technical Enforcement Mechanism | Evidence |
+|---|---|---|
+| All PRs include guardrail checklist | `.github/pull_request_template.md` — mandatory checkboxes rendered in every PR | GitHub PR UI, template presence in diff |
+| Protected paths require overseer review | `.github/CODEOWNERS` — `*`, `config/**`, `docs/**`, `scripts/**`, `**/*.md`, `.github/CODEOWNERS` all require `@overseers` | CODEOWNERS review requirement in PR timeline |
+| Runtime config validates phase scope | `scripts/ci/validate-agent-runtime.sh` — checks `phase`, `mcpRuntimeMode`, `enabledAgents`, `artifactCommitted`, file references | CI check output |
+| Forward-only migrations enforced | `scripts/ci/validate-agent-runtime.sh` — scans for forbidden `.down.sql` files | CI check output |
+| No secrets or credentials committed | GitHub secret scanning + branch protection | Secret scanning alerts |
+| No merge in Phase 6 | `config/agent-guardrails.json` `forbiddenActions` includes `merge_pull_request` | Guardrail config, agent rejection logs |
 
 ## Core Policies
 
@@ -30,32 +38,6 @@ Phase 5 is documentation and configuration only. It does not modify product app 
 - Secrets, credentials, private player data, parent contact information, and private evaluation notes must not be exposed.
 - Production migrations, deployment actions, billing changes, and auth/RBAC changes require explicit approval.
 - Each implementation slice must remain independently reviewable and revertible.
-
-## Refinements Applied in This PR (Phase 6.1)
-
-### 1. CODEOWNERS Strengthening
-
-- Default catch-all (`*`) now requires both `@maintainers` and `@overseers` review.
-- Added explicit `packages/config/**` path coverage for shared build/config packages.
-
-### 2. PR Template Guardrail Checklist
-
-- `.github/pull_request_template.md` includes mandatory guardrail checklist items.
-- Checklist covers: secrets, contact info exposure, production migrations, email/SMS, billing changes, phase scope compliance, CI validation, and CODEOWNERS requirements.
-
-## Previously Applied Refinements (Prior PRs)
-
-These refinements were applied in earlier PRs and are already present on `main`. They are documented here for completeness.
-
-### 3. Runtime Reference Validation
-
-- `scripts/ci/validate-agent-runtime.sh` verifies that `phaseGateReference` and `guardrailConfigReference` files exist on disk.
-- Prevents silent failures when referenced governance files are renamed or deleted.
-
-### 4. Enforcement Accuracy Corrections
-
-- Removed unsupported "CI path filter" claim from `docs/mcp-runtime-boundaries.md`; replaced with actual controls.
-- Changed merge action from "Require approval" to "Forbid" to match `forbiddenActions`.
 
 ## Phase 5 to Phase 6 Gate
 
@@ -68,4 +50,4 @@ Phase 7 may proceed only after the Phase 6 runtime scaffold is merged, runtime e
 ## Status
 
 <!-- artifactCommitted: true -->
-Complete. This artifact closes the missing Phase 5 refinement documentation deliverable and supports the Phase 6.1 governance cleanup before Phase 7.
+Complete. This artifact closes the missing Phase 5 refinement documentation deliverable.
