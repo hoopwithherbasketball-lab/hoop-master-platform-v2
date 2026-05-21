@@ -44,7 +44,7 @@ Branch: codex/phase-6-1-governance-cleanup -> merged to main
 | CI validation | `scripts/ci/validate-agent-runtime.sh` — validates JSON, phase values, artifact existence, forward-only migrations | Active |
 | CODEOWNERS review | @maintainers + @overseers required on *, config/**, docs/**, scripts/**, AGENT_PHASE_GATES.md, packages/config/**, agents/**, .github/**, **/*.md, .github/CODEOWNERS | Active |
 | Branch protection | `main` protected; merges require status checks + reviews | Active |
-| Forbidden actions | 8 hard-blocked actions in `agent-guardrails.json` (secrets, force-push, merge, migrations, etc.) | Active |
+| Forbidden actions | 9 hard-blocked actions in agent-guardrails.json (secrets, force-push, merge, migrations, etc.) | Active |
 | Protected files | 12 patterns in `agent-guardrails.json` including runtime configs, workflows, migrations | Active |
 
 ---
