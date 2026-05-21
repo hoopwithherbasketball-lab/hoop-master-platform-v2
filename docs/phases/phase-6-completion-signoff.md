@@ -1,6 +1,6 @@
 # Phase 6 Completion Summary & Overseer Signoff Checklist
 
-**Branch**: `codex/create-phase-6-mcp-agent-runtime-scaffolding` → merged to `main`
+Branch: codex/phase-6-1-governance-cleanup -> merged to main
 **Date**: 2026-05-21
 **Phase**: 6 — Build MCP + Agent Command Center
 **Scope**: Docs/config-only setup (no implementation)
