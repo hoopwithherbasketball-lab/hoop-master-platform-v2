@@ -54,7 +54,6 @@ try {
     console.error('Error: artifactCommitted must be true in agent-runtime.json');
     process.exit(1);
   }
-  }
 } catch (e) {
   console.error('Failed to parse agent-runtime.json:', e.message);
   process.exit(1);
