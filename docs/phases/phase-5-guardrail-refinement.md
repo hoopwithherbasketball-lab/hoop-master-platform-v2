@@ -1,5 +1,9 @@
 # Phase 5 Guardrail Refinement
 
+<!-- artifact: phase-5-guardrail-refinement -->
+<!-- status: complete -->
+<!-- committed-in: phase-6.1-governance-cleanup -->
+
 ## Purpose
 
 Phase 5 records the governance, review, and safety policies required before Phase 6 command-center tooling and later implementation work. This document also records the final refinement pass before Phase 7 implementation begins.
@@ -27,7 +31,7 @@ Phase 5 is documentation and configuration only. It does not modify product app 
 - Production migrations, deployment actions, billing changes, and auth/RBAC changes require explicit approval.
 - Each implementation slice must remain independently reviewable and revertible.
 
-## Refinements Applied (Phase 6.1)
+## Refinements Applied in This PR (Phase 6.1)
 
 ### 1. CODEOWNERS Strengthening
 
@@ -38,6 +42,10 @@ Phase 5 is documentation and configuration only. It does not modify product app 
 
 - `.github/pull_request_template.md` includes mandatory guardrail checklist items.
 - Checklist covers: secrets, contact info exposure, production migrations, email/SMS, billing changes, phase scope compliance, CI validation, and CODEOWNERS requirements.
+
+## Previously Applied Refinements (Prior PRs)
+
+These refinements were applied in earlier PRs and are already present on `main`. They are documented here for completeness.
 
 ### 3. Runtime Reference Validation
 
@@ -59,4 +67,5 @@ Phase 7 may proceed only after the Phase 6 runtime scaffold is merged, runtime e
 
 ## Status
 
+<!-- artifactCommitted: true -->
 Complete. This artifact closes the missing Phase 5 refinement documentation deliverable and supports the Phase 6.1 governance cleanup before Phase 7.

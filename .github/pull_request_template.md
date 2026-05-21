@@ -1,3 +1,7 @@
+<!-- artifact: pull-request-template -->
+<!-- status: complete -->
+<!-- committed-in: phase-6.1-governance-cleanup -->
+
 ## Summary
 
 Describe the purpose of this PR and the phase it supports.
