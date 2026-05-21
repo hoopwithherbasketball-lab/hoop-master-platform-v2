@@ -42,7 +42,7 @@
 | Control | Mechanism | Status |
 |---|---|---|
 | CI validation | `scripts/ci/validate-agent-runtime.sh` — validates JSON, phase values, artifact existence, forward-only migrations | Active |
-| CODEOWNERS review | `@maintainers` + `@overseers` required on `config/**`, `docs/**`, `scripts/**`, `AGENT_PHASE_GATES.md`, `packages/config/**`, `**/*.md` | Active |
+| CODEOWNERS review | `@maintainers` + `@overseers` required on `config/**`, `docs/**`, `scripts/**`, `AGENT_PHASE_GATES.md`, `packages/config/**`, `**/*.md`, `.github/CODEOWNERS` | Active |
 | Branch protection | `main` protected; merges require status checks + reviews | Active |
 | Forbidden actions | 8 hard-blocked actions in `agent-guardrails.json` (secrets, force-push, merge, migrations, etc.) | Active |
 | Protected files | 12 patterns in `agent-guardrails.json` including runtime configs, workflows, migrations | Active |
@@ -56,7 +56,8 @@ These fixes were applied across multiple PRs during Phase 6 and Phase 6.1 work.
 | Fix | File | Applied In | Description |
 |---|---|---|---|
 | Default catch-all includes overseers | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Changed `*` from maintainers-only to maintainers + overseers |
-| Recursive md protection | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Added `**/*.md` recursive glob for nested markdown files |
+| Recursive md protection retained | `.github/CODEOWNERS` | Phase 6 (prior PR) | `**/*.md` recursive glob already on main; retained as defense-in-depth |
+| CODEOWNERS self-referencing rule | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Added explicit `.github/CODEOWNERS` rule to control ownership changes |
 | packages/config/ coverage | `.github/CODEOWNERS` | Phase 6.1 (this PR) | Added explicit `packages/config/**` rule |
 | PR template with guardrail checklist | `.github/pull_request_template.md` | Phase 6.1 (this PR) | New file with mandatory guardrail checklist |
 | Phase 5 refinement doc | `docs/phases/phase-5-guardrail-refinement.md` | Phase 6.1 (this PR) | New file closing missing Phase 5 deliverable |

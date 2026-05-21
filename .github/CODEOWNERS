@@ -12,3 +12,6 @@ scripts/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/ove
 
 # Critical phase-gate documentation (recursive)
 **/*.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+
+# Ensure changes to ownership rules are strictly controlled
+.github/CODEOWNERS @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
