@@ -2,7 +2,7 @@
 
 ## Summary
 
-Completed Phase 6 governance cleanup, resolved merge conflicts across multiple branches, unlocked Phase 7 via Overseer approval, and established CI guardrail enforcement for all protected paths.
+Completed Phase 6 governance cleanup, resolved merge conflicts across multiple branches, unlocked Phase 7 via Overseer approval, established CI guardrail enforcement, and executed Phase 7 D1–D5 deliverables.
 
 ## State of Play
 
@@ -19,11 +19,11 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
   - `docs/phases/phase-6-completion-and-phase-7-transition.md`: Transition protocol
 
 ### Open PRs
-- **PR #27** — `codex/create-phase-6-mcp-agent-runtime-scaffolding` → `main` (needs merge)
+- **PR #27** — `codex/create-phase-6-mcp-agent-runtime-scaffolding` → `main` — merged
+- **PR — Phase 7 Implementation** — `codex/phase-7-public-mvp` → `main` (needs review + merge)
 
 ### Outstanding Branches
-- `codex/create-phase-6-mcp-agent-runtime-scaffolding` — needs merge to main
-- `codex/fix-high-priority-bugs-from-codex-review` — merged via #25 into scaffolding branch
+- `codex/phase-7-public-mvp` — Phase 7 D1 + D2 implementation (needs PR + merge)
 - Various old `codex/update-documentation-for-repo-audit-*` branches — stale, can be cleaned up
 
 ## Key Decisions
@@ -32,19 +32,31 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 2. **Validator enforces across all phases** — six safety-critical actions always blocked: `production_deployments`, `secret_access`, `destructive_file_operations`, `modify_auth_or_rbac`, `modify_billing_or_stripe`, `modify_deployment_config`
 3. **Migration scanning is recursive** — scans `packages/supabase/migrations/**` at all depths for `.down.sql` files and filename format compliance
 4. **CI triggers** on all protected paths including `packages/**` and `apps/**`
+5. **Phase 7 D1–D5 scoping** — all 5 deliverables assessed: D1+D2 implemented, D3 stable, D4 N/A, D5 confirmed
+6. **D1 approach** — inline SVG data URI replaced with served SVG from `apps/web/public/images/`
+
+## Phase 7 Deliverable Status
+
+| # | Deliverable | Status | Notes |
+|---|---|---|---|
+| D1 | Replace placeholder assets | ✅ Done | `apps/web/public/images/placeholder-player.svg` created; 3 URLs in `BrowsePage.tsx` updated |
+| D2 | CI build/lint checks | ✅ Done (branch) | Added `npm ci`, `npm run lint`, `npm run build` to `guardrail-validation.yml` — on `codex/phase-7-public-mvp` |
+| D3 | Stabilize public routes | ✅ Done | All 32 imports in `App.tsx` resolve to existing files |
+| D4 | Replace placeholder deps | ✅ N/A | No placeholder runtime dependencies exist |
+| D5 | Confirm auth edge flow | ✅ Done | `LoginPage` → `lib/auth.tsx` → `@hoop-master/features/crm` → supabase client; `LoginForm`, `SignupForm`, `AuthProvider`, `ProtectedRoute` all confirmed |
 
 ## Urgent Next Steps
 
-1. **Merge PR #27** — `codex/create-phase-6-mcp-agent-runtime-scaffolding` → `main` via GitHub UI
+1. **Create PR for Phase 7** — `codex/phase-7-public-mvp` → `main`, request review, merge
 2. **Fix npm/PowerShell execution policy** on local dev machine to enable local builds
-3. **Begin Phase 7 implementation** — Public MVP Shell (authorized paths documented in `config/agent-runtime.json`)
+3. **Clean up stale branches** — old `codex/update-documentation-for-repo-audit-*` and `genspark_ai_developer` branches
 
 ## Known Issues
 
 - `gh` CLI not authenticated — cannot manage PRs from command line
 - npm blocked by Windows PowerShell execution policy — CI-only builds for now
-- Cloudflare Pages deployment triggered on every PR push (observable in PR #26)
-- `codex/` and `genspark_ai_developer` branches can be cleaned up after PR #27 merges
+- Cloudflare Pages deployment triggered on every PR push
+- `codex/` and `genspark_ai_developer` branches can be cleaned up
 
 ## Guardrail Enforcement Summary
 
@@ -58,3 +70,4 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 | CI triggers on protected paths | `guardrail-validation.yml` | ✅ |
 | Protected paths require review | `CODEOWNERS` | ✅ |
 | PR template with guardrail checklist | `.github/pull_request_template.md` | ✅ |
+| Build + lint pass before merge | `guardrail-validation.yml` (D2) | 🔄 on branch |
