@@ -104,14 +104,28 @@ try {
     }
   }
 
-  const migrationsDir = 'supabase/migrations';
-  if (fs.existsSync(migrationsDir)) {
-    const files = fs.readdirSync(migrationsDir).filter((name) => fs.statSync(path.join(migrationsDir, name)).isFile());
-    const downSqlFiles = files.filter((name) => name.endsWith('.down.sql'));
-    if (downSqlFiles.length > 0) throw new Error('Found forbidden .down.sql migration files: ' + downSqlFiles.join(', '));
+  const migrationDirs = ['packages/supabase/migrations'];
+  for (const migrationsDir of migrationDirs) {
+    if (!fs.existsSync(migrationsDir)) continue;
+    const collectFiles = (dir) => {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      const files = [];
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) files.push(...collectFiles(fullPath));
+        else if (entry.isFile()) files.push(fullPath);
+      }
+      return files;
+    };
+    const files = collectFiles(migrationsDir);
+    const relFiles = files.map((f) => path.relative(migrationsDir, f));
 
-    const invalidNames = files.filter((name) => !/^\\d{14}_[a-z0-9_]+\\.sql$/.test(name));
-    if (invalidNames.length > 0) throw new Error('Invalid migration filename(s). Expected YYYYMMDDHHMMSS_snake_case.sql: ' + invalidNames.join(', '));
+    const downSqlFiles = relFiles.filter((name) => name.endsWith('.down.sql'));
+    if (downSqlFiles.length > 0) throw new Error('Found forbidden .down.sql migration files in ' + migrationsDir + ': ' + downSqlFiles.join(', '));
+
+    const sqlFiles = relFiles.filter((name) => name.endsWith('.sql'));
+    const invalidNames = sqlFiles.filter((name) => !/^\\d{14}_[a-z0-9_]+\\.sql$/.test(name));
+    if (invalidNames.length > 0) throw new Error('Invalid migration filename(s) in ' + migrationsDir + '. Expected YYYYMMDDHHMMSS_snake_case.sql: ' + invalidNames.join(', '));
   }
 } catch (error) {
   console.error('Validation failed:', error.message);
