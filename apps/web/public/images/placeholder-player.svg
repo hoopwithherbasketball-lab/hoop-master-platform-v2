@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 150 150">
   <rect width="150" height="150" fill="#e2e8f0" rx="75"/>
   <circle cx="75" cy="60" r="25" fill="#94a3b8"/>
-  <ellipse cx="75" cy="125" rx="40" ry="30" fill="#94a3b8"/>
-  <text x="75" y="140" text-anchor="middle" fill="#64748b" font-size="10" font-family="sans-serif">PLAYER</text>
+  <ellipse cx="75" cy="125" rx="40" ry="25" fill="#94a3b8"/>
 </svg>
