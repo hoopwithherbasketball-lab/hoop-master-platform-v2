@@ -46,3 +46,12 @@ Phase 6 is complete when:
 
 ## Handoff to Phase 7
 Completion of Phase 6 ensures that the environment is strictly defined, making it safe to proceed to Phase 7 (Build Public MVP Shell), where implementation agents will finally be granted phase-scoped runtime power.
+
+
+## Completion Record and Transition
+
+Phase 6 completion evidence and the overseer-governed Phase 7 transition protocol are recorded in:
+
+- `docs/phases/phase-6-completion-and-phase-7-transition.md`
+
+Phase 7 implementation scope remains overseer-gated; this repository is marked ready for unlock, but the final unlock action requires explicit overseer approval per `AGENT_PHASE_GATES.md`.
