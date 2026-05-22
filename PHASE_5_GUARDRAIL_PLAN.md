@@ -1,4 +1,4 @@
-# PHASE_5_GUARDRAIL_PLAN
+﻿# PHASE_5_GUARDRAIL_PLAN
 
 ## Phase 5: Agent guardrail refinement and protected workflow policies
 
@@ -12,9 +12,9 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 
 ### Prerequisites
 
-- Phase 4 merged (`MIGRATION_BACKLOG.md`, `CROSS_REPO_IMPLEMENTATION_PLAN.md`, `CROSS_REPO_DEPENDENCIES.md` all in `main`) ✅
-- No premature product app code changes ✅
-- AGENT_PHASE_GATES.md and AGENT_OPERATING_MODEL.md reviewed and confirmed accurate ✅
+- Phase 4 merged (`MIGRATION_BACKLOG.md`, `CROSS_REPO_IMPLEMENTATION_PLAN.md`, `CROSS_REPO_DEPENDENCIES.md` all in `main`) Γ£à
+- No premature product app code changes Γ£à
+- AGENT_PHASE_GATES.md and AGENT_OPERATING_MODEL.md reviewed and confirmed accurate Γ£à
 
 ---
 
@@ -28,7 +28,7 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 | `main` branch | No direct pushes | GitHub branch protection |
 | Agent branches | Must follow `codex/` prefix naming convention | CI check / PR Review |
 | Agent branches | Must be scoped to a single phase or migration slice | Codex Dispatcher / PR Review |
-| Merge strategy | Must use squash merges — merge commits and rebase merging disabled on `main` | GitHub settings / Branch protection |
+| Merge strategy | Must use squash merges ΓÇö merge commits and rebase merging disabled on `main` | GitHub settings / Branch protection |
 
 ### 2. Agent Scope Boundaries
 
@@ -43,9 +43,9 @@ Before granting agents and MCP servers runtime power (Phase 6), this phase locks
 
 | Rule | Applies To | Enforcement |
 |------|------------|-------------|
-| Eval records are coach/admin-only — never player-visible without explicit gate | Evaluation/scouting workflow (Phase 11 slices 1-3) | RLS / Middleware |
-| Member profiles require auth session — no unauthenticated reads | ConnectGBB (Phase 9 slices 1-3) | RLS / Auth Guard |
-| Media/TV content defaults to privacy-safe publishing — no PII in public routes | Media/TV rollout | PR Review / CI |
+| Eval records are coach/admin-only ΓÇö never player-visible without explicit gate | Evaluation/scouting workflow (Phase 11 slices 1-3) | RLS / Middleware |
+| Member profiles require auth session ΓÇö no unauthenticated reads | ConnectGBB (Phase 9 slices 1-3) | RLS / Auth Guard |
+| Media/TV content defaults to privacy-safe publishing ΓÇö no PII in public routes | Media/TV rollout | PR Review / CI |
 | All external webhooks require idempotency keys and webhook signature verification | Webhook integrations | Code Review / Integration Test |
 | All admin routes (UI and API) must validate RBAC role before processing or rendering | Admin dashboard hardening | RBAC Middleware |
 
@@ -64,9 +64,9 @@ Phase gates block agents from advancing until conditions are met. These align wi
 
 | Gate | Condition to Advance |
 |------|---------------------|
-| Phase 5 → Phase 6 | All guardrail policies documented, reviewed, merged to main, and signed off by Overseer |
-| Phase 6 → Phase 7 | MCP runtime stable, agent contracts signed, and CI guardrails enforced |
-| Phase 7 → Phase 8 | Phase 7 (Public MVP shell) deliverables complete and verified |
+| Phase 5 ΓåÆ Phase 6 | All guardrail policies documented, reviewed, merged to main, and signed off by Overseer |
+| Phase 6 ΓåÆ Phase 7 | MCP runtime stable, agent contracts signed, and CI guardrails enforced |
+| Phase 7 ΓåÆ Phase 8 | Phase 7 (Public MVP shell) deliverables complete and verified |
 
 ---
 
@@ -75,12 +75,12 @@ Phase gates block agents from advancing until conditions are met. These align wi
 | Deliverable | File | Status | Inclusion Marker |
 |-------------|------|--------|------------------|
 | This guardrail plan | `PHASE_5_GUARDRAIL_PLAN.md` | Complete | N/A |
-| Updated branch protection rules (documented) | `docs/protected-files-policy.md` | Complete | ✅ Present in repository |
-| Agent scope contract | `docs/agent-guardrails.md` | Complete | ✅ Present in repository |
-| RBAC policy matrix | `docs/agent-permissions-matrix.md` | Complete | ✅ Present in repository |
-| Agent guardrail configuration | `config/agent-guardrails.json` | Complete | ✅ `artifactCommitted: true` |
-| PR Template with guardrail checks | `.github/pull_request_template.md` | Complete | ✅ Present in repository |
-| Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Complete | ✅ Present in repository |
+| Updated branch protection rules (documented) | `docs/protected-files-policy.md` | Complete | Γ£à Present in repository |
+| Agent scope contract | `docs/agent-guardrails.md` | Complete | Γ£à Present in repository |
+| RBAC policy matrix | `docs/agent-permissions-matrix.md` | Complete | Γ£à Present in repository |
+| Agent guardrail configuration | `config/agent-guardrails.json` | Complete | Γ£à `artifactCommitted: true` |
+| PR Template with guardrail checks | `.github/pull_request_template.md` | Complete | Γ£à Present in repository |
+| Phase 5 refinement documentation | `docs/phases/phase-5-guardrail-refinement.md` | Complete | Γ£à Present in repository |
 | Rollback policy confirmation | `MIGRATION_BACKLOG.md` annotation | Complete | Annotation present in Phase 5 merge |
 
 ---

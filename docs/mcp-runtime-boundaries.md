@@ -82,6 +82,11 @@ The guardrail workflow intentionally uses `*.md` in GitHub Actions path filters 
 
 ## Rule-to-Enforcement Mapping
 
+# MCP Runtime Boundaries
+
+## Database and Migration Restrictions
+- Rollback Definition: Revert (rollback) migrations must be implemented as forward-only changes (new migrations that undo previous changes) rather than using .down.sql files, to maintain a linear history.
+
 | Policy Rule | Enforcement Mechanism | Evidence / Audit Artifact |
 |---|---|---|
 | Block production deploy actions | CI guardrail workflow check + protected deployment environments requiring reviewer approval | CI run logs and environment protection approval logs |
