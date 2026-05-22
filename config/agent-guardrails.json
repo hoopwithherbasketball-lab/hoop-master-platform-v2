@@ -42,7 +42,11 @@
     "config/agent-runtime.json",
     "AGENT_PHASE_GATES.md",
     ".github/workflows/**",
-    "wrangler.toml"
+    "wrangler.toml",
+    "scripts/**",
+    "PHASE_5_GUARDRAIL_PLAN.md",
+    "packages/supabase/migrations/**",
+    "IMPLEMENTATION_PLAN.md"
   ],
   "enforcement": {
     "ciChecksRequired": true,
