@@ -55,13 +55,34 @@ try {
       if (data.mcpRuntimeMode !== 'disabled') throw new Error('mcpRuntimeMode must be \"disabled\" in Phase 6.');
       if (!Array.isArray(data.enabledAgents) || data.enabledAgents.length > 0) throw new Error('enabledAgents must be an empty array in Phase 6.');
     }
+    if (data.phase === 7) {
+      if (data.mcpRuntimeMode !== 'restricted_enabled') throw new Error('mcpRuntimeMode must be \"restricted_enabled\" in Phase 7.');
+      if (!data.phaseTransition) throw new Error('phaseTransition block is required in agent-runtime.json for Phase 7.');
+      if (data.phaseTransition.transitionStatus !== 'overseer_approved_ready_for_phase_7') throw new Error('phaseTransition.transitionStatus must be \"overseer_approved_ready_for_phase_7\" in Phase 7.');
+      if (data.phaseTransition.overseerApprovalRequired !== true) throw new Error('phaseTransition.overseerApprovalRequired must be true in Phase 7.');
+      if (data.phaseTransition.overseerApprovalRecorded !== true) throw new Error('phaseTransition.overseerApprovalRecorded must be true — Overseer approval is required to unlock Phase 7.');
+    }
+
+    // Safety-critical blocked actions enforced regardless of phase
+    const requiredBlockedActions = [
+      'production_deployments',
+      'secret_access',
+      'destructive_file_operations',
+      'modify_auth_or_rbac',
+      'modify_billing_or_stripe',
+      'modify_deployment_config'
+    ];
+    if (!Array.isArray(data.disabledActions)) throw new Error('disabledActions must be an array in agent-runtime.json');
+    for (const action of requiredBlockedActions) {
+      if (!data.disabledActions.includes(action)) throw new Error('Required blocked action missing from disabledActions: ' + action);
+    }
 
     if (!data.guardrailConfigReference) throw new Error('guardrailConfigReference is required in agent-runtime.json');
     if (!fs.existsSync(data.guardrailConfigReference)) throw new Error('guardrailConfigReference file missing: ' + data.guardrailConfigReference);
-    if (path.normalize(data.guardrailConfigReference) !== path.normalize('config/agent-guardrails.json')) throw new Error('guardrailConfigReference must point to config/agent-guardrails.json in Phase 6');
+    if (path.normalize(data.guardrailConfigReference) !== path.normalize('config/agent-guardrails.json')) throw new Error('guardrailConfigReference must point to config/agent-guardrails.json');
     if (!data.phaseGateReference) throw new Error('phaseGateReference is required in agent-runtime.json');
     if (!fs.existsSync(data.phaseGateReference)) throw new Error('phaseGateReference file missing: ' + data.phaseGateReference);
-    if (path.normalize(data.phaseGateReference) !== path.normalize('AGENT_PHASE_GATES.md')) throw new Error('phaseGateReference must point to AGENT_PHASE_GATES.md in Phase 6');
+    if (path.normalize(data.phaseGateReference) !== path.normalize('AGENT_PHASE_GATES.md')) throw new Error('phaseGateReference must point to AGENT_PHASE_GATES.md');
   });
 
   console.log('agent-runtime.json is valid.');
