@@ -6,9 +6,11 @@ on:
       - 'config/**'
       - 'docs/**'
       - 'agents/**'
-      - '.github/**'
       - 'scripts/**'
-      - '*.md'
+      - 'apps/**'
+      - 'packages/**'
+      - '.github/**'
+      - '**/*.md'
   push:
     branches:
       - main
@@ -16,9 +18,11 @@ on:
       - 'config/**'
       - 'docs/**'
       - 'agents/**'
-      - '.github/**'
       - 'scripts/**'
-      - '*.md'
+      - 'apps/**'
+      - 'packages/**'
+      - '.github/**'
+      - '**/*.md'
 
 jobs:
   validate-agent-runtime:
