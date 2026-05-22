@@ -44,7 +44,6 @@
     ".github/workflows/**",
     "wrangler.toml",
     "scripts/**",
-    "scripts/ci/**",
     "PHASE_5_GUARDRAIL_PLAN.md",
     "packages/supabase/migrations/**",
     "IMPLEMENTATION_PLAN.md"
