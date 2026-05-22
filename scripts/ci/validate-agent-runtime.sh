@@ -58,7 +58,7 @@ try {
 
     if (!data.guardrailConfigReference) throw new Error('guardrailConfigReference is required in agent-runtime.json');
     if (!fs.existsSync(data.guardrailConfigReference)) throw new Error('guardrailConfigReference file missing: ' + data.guardrailConfigReference);
-    if (path.normalize(data.guardrailConfigReference) !== path.normalize('config/agent-guardrails.json')) throw new Error('guardrailConfigReference must point to config/agent-guardrails.json in Phase 6');
+    if (path.normalize(data.guardrailConfigReference) !== path.normalize('config/agent-guardrails.json')) throw new Error('guardrailConfigReference must point to config/agent-guardrails.json');
     if (!data.phaseGateReference) throw new Error('phaseGateReference is required in agent-runtime.json');
     if (!fs.existsSync(data.phaseGateReference)) throw new Error('phaseGateReference file missing: ' + data.phaseGateReference);
     if (path.normalize(data.phaseGateReference) !== path.normalize('AGENT_PHASE_GATES.md')) throw new Error('phaseGateReference must point to AGENT_PHASE_GATES.md in Phase 6');
