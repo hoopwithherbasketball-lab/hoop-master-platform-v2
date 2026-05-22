@@ -1,14 +1,16 @@
 {
-  "artifact": "phase-6-agent-runtime",
+  "artifact": "phase-7-agent-runtime",
   "artifactVersion": "1.0.0",
-  "artifactStatus": "scaffold_only",
+  "artifactStatus": "implementation_active",
   "artifactCommitted": true,
-  "phase": 6,
-  "runtimeStatus": "scaffold_only",
-  "mcpRuntimeMode": "disabled",
+  "phase": 7,
+  "runtimeStatus": "implementation_active",
+  "mcpRuntimeMode": "restricted_enabled",
   "guardrailConfigReference": "config/agent-guardrails.json",
   "phaseGateReference": "AGENT_PHASE_GATES.md",
-  "enabledAgents": [],
+  "enabledAgents": [
+    "phase_7_public_mvp"
+  ],
   "disabledActions": [
     "autonomous_code_execution",
     "run_production_supabase_migrations",
@@ -54,13 +56,15 @@
   "phaseSevenReadiness": {
     "autonomousExecutionAllowed": false,
     "implementationAgentsAllowed": true,
-    "nextPhase": 7
+    "nextPhase": 8
   },
   "phaseTransition": {
     "fromPhase": 6,
     "toPhase": 7,
     "transitionStatus": "overseer_approved_ready_for_phase_7",
     "overseerApprovalRequired": true,
-    "overseerApprovalRecorded": true
+    "overseerApprovalRecorded": true,
+    "overseerApprovedAt": "2026-05-22",
+    "phaseStartedAt": "2026-05-22"
   }
 }
