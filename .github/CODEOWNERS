@@ -1,14 +1,22 @@
 # Default deny-by-default oversight owner
 * @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 
-# Protected configs and guardrail docs
-AGENT_PHASE_GATES.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+# Root-level markdown documents
+*.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+
+# Core application and configuration directories
 config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 packages/config/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 docs/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 agents/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
-.github/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 scripts/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+apps/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+packages/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+AGENT_PHASE_GATES.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
+
+# Repository governance and CI/CD.
+# Rules are processed top-to-bottom, with the last match taking precedence.
+.github/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 
 # Critical phase-gate documentation (recursive)
 **/*.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers

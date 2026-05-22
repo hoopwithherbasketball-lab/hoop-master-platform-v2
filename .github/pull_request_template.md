@@ -24,6 +24,7 @@ Describe the purpose of this PR and the phase it supports.
 - [ ] Protected file changes are identified and justified.
 - [ ] Rollback/revert path is documented for protected actions.
 - [ ] Gemini review is requested before merge when required by phase gate.
+- [ ] `./scripts/ci/validate-agent-runtime.sh` executed (or CI run linked).
 
 ## Changed Files
 
