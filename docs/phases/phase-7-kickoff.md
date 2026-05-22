@@ -15,11 +15,11 @@
 ## Deliverables
 | # | Deliverable | Status |
 |---|---|---|
-| D1 | Replace runtime placeholder assets (`/api/placeholder/...`) with local/static assets or valid remote URLs | Pending |
-| D2 | Add CI checks: `turbo build`, lint, typecheck | Pending |
-| D3 | Stabilize public routes | Pending |
-| D4 | Replace placeholder runtime dependencies | Pending |
-| D5 | Confirm auth edge flow | Pending |
+| D1 | Replace runtime placeholder assets (`/api/placeholder/...`) with local/static assets or valid remote URLs | Done |
+| D2 | Add CI checks: `turbo build`, lint, typecheck | Done (branch `codex/phase-7-public-mvp`) |
+| D3 | Stabilize public routes | Done — all 32 imports resolve |
+| D4 | Replace placeholder runtime dependencies | N/A — no placeholder deps exist |
+| D5 | Confirm auth edge flow | Done — `LoginPage` → `@hoop-master/features/crm` → supabase client, all components exist |
 
 ## Restrictions
 - No runtime dependency additions
