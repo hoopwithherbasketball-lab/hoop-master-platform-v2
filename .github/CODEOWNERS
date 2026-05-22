@@ -12,7 +12,6 @@ agents/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/over
 scripts/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 apps/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 packages/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
-packages/supabase/migrations/** @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 AGENT_PHASE_GATES.md @hoopwithherbasketball-lab/maintainers @hoopwithherbasketball-lab/overseers
 
 # Repository governance and CI/CD.
