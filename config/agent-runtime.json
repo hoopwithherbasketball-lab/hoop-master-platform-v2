@@ -1,4 +1,8 @@
 {
+  "artifact": "phase-6-agent-runtime",
+  "artifactVersion": "1.0.0",
+  "artifactStatus": "scaffold_only",
+  "artifactCommitted": true,
   "phase": 7,
   "runtimeStatus": "implementation_unlocked",
   "mcpRuntimeMode": "restricted_enabled",
@@ -27,7 +31,7 @@
     "run_test",
     "run_build"
   ],
-  "approvalRequiredActions": [
+  "protectedActions": [
     "modify_product_code",
     "modify_routes",
     "modify_ui",

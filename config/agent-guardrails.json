@@ -41,14 +41,12 @@
     "config/agent-guardrails.json",
     "config/agent-runtime.json",
     "AGENT_PHASE_GATES.md",
-    "agents/AGENT_PHASE_GATES.md",
     ".github/workflows/**",
     "wrangler.toml",
     "scripts/**",
     "scripts/ci/**",
     "PHASE_5_GUARDRAIL_PLAN.md",
     "packages/supabase/migrations/**",
-    "packages/supabase/migrations/",
     "IMPLEMENTATION_PLAN.md"
   ],
   "enforcement": {

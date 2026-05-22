@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# Ensure the script runs from the repository root
+cd "$(dirname "$0")/../.."
+
 echo "Verifying required Phase 6 artifacts..."
 REQUIRED_FILES=(
   "config/agent-runtime.json"
