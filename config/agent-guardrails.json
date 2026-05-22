@@ -48,7 +48,6 @@
     "scripts/ci/**",
     "PHASE_5_GUARDRAIL_PLAN.md",
     "packages/supabase/migrations/**",
-    "packages/supabase/migrations/",
     "IMPLEMENTATION_PLAN.md"
   ],
   "enforcement": {
