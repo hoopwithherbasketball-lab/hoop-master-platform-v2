@@ -8,22 +8,14 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 
 ### Merged to `main`
 - **PR #24** — Phase 6.1 governance cleanup (CODEOWNERS, PR template)
-- **PR #26** — Phase 7 unlock (reconcile-phase-7-unlock → main):
-  - `config/agent-runtime.json`: Phase 7 config with `restricted_enabled` mode, `phaseTransition` block, Overseer approval recorded
-  - `config/agent-guardrails.json`: Clean protected files list (removed redundant entries)
-  - `.github/CODEOWNERS`: Combined path coverage with no redundancies
-  - `.github/workflows/guardrail-validation.yml`: Path filters covering `config/**`, `docs/**`, `agents/**`, `scripts/**`, `apps/**`, `packages/**`, `.github/**`, `**/*.md`
-  - `scripts/ci/validate-agent-runtime.js`: Modular validator with recursive migration scanning, Phase 7 enforcement, doc content verification
-  - `scripts/ci/validate-agent-runtime.sh`: Thin wrapper calling the JS module
-  - `docs/mcp-runtime-boundaries.md`: Full document with rollback definition, canonical identifiers, enforcement mapping
-  - `docs/phases/phase-6-completion-and-phase-7-transition.md`: Transition protocol
+- **PR #26** — Phase 7 unlock (reconcile-phase-7-unlock → main)
+- **PR #27** — `codex/create-phase-6-mcp-agent-runtime-scaffolding` → `main`
+- **PR #28** — `codex/phase-7-public-mvp` → `main` (Phase 7 D1 + D2: placeholder SVG, BrowsePage URL update, CI build/lint checks)
 
 ### Open PRs
-- **PR #27** — `codex/create-phase-6-mcp-agent-runtime-scaffolding` → `main` — merged
-- **PR — Phase 7 Implementation** — `codex/phase-7-public-mvp` → `main` (needs review + merge)
+- None
 
 ### Outstanding Branches
-- `codex/phase-7-public-mvp` — Phase 7 D1 + D2 implementation (needs PR + merge)
 - Various old `codex/update-documentation-for-repo-audit-*` branches — stale, can be cleaned up
 
 ## Key Decisions
