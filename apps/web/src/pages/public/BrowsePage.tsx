@@ -11,7 +11,7 @@ const players = [
     division: 'D1',
     location: 'Tennessee',
     tags: ['All-State', 'Team Captain', 'Academic Excellence'],
-    image: '/api/placeholder/150/150'
+    image: '/images/placeholder-player.svg'
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const players = [
     division: 'D2',
     location: 'California',
     tags: ['3-Point Specialist', 'Leadership', 'NIL Ready'],
-    image: '/api/placeholder/150/150'
+    image: '/images/placeholder-player.svg'
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const players = [
     division: 'D1',
     location: 'Texas',
     tags: ['Dominant Rebounder', 'Block Specialist', 'Scholar Athlete'],
-    image: '/api/placeholder/150/150'
+    image: '/images/placeholder-player.svg'
   }
 ]
 
