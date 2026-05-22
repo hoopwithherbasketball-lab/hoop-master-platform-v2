@@ -45,13 +45,17 @@ Phase 6 is complete when:
 - Phase 7 can begin with guardrail-compliant implementation boundaries.
 
 ## Handoff to Phase 7
+
 Completion of Phase 6 ensures that the environment is strictly defined, making it safe to proceed to Phase 7 (Build Public MVP Shell), where implementation agents will finally be granted phase-scoped runtime power.
 
+### Phase 6 Completion & Transition Record
 
-## Completion Record and Transition
+The formal Phase 6 closeout and Overseer-governed transition protocol is documented in [`docs/phases/phase-6-completion-and-phase-7-transition.md`](./phase-6-completion-and-phase-7-transition.md). This record consolidates exit-criteria evidence, governance-control verification, and the step-by-step unlock procedure.
 
-Phase 6 completion evidence and the overseer-governed Phase 7 transition protocol are recorded in:
+### Phase 7 Unlock Is Overseer-Gated
 
-- `docs/phases/phase-6-completion-and-phase-7-transition.md`
+Phase 7 **may not begin** until an authorized Overseer:
+1. Reviews and signs the completion record.
+2. Updates `config/agent-runtime.json` to reflect `phase: 7` and sets `overseerApprovalRecorded: true` in the `phaseTransition` block.
 
-Phase 7 implementation scope remains overseer-gated; this repository is marked ready for unlock, but the final unlock action requires explicit overseer approval per `AGENT_PHASE_GATES.md`.
+The machine-readable transition status is tracked in `config/agent-runtime.json` under `phaseTransition`. While `transitionStatus` is not `overseer_approved_ready_for_phase_7` and `overseerApprovalRecorded` is not `true`, Phase 7 remains locked regardless of any other readiness markers.
