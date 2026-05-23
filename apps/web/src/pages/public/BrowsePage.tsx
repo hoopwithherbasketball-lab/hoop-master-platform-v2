@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { PlayerCard } from '@hoop-master/ui/components/PlayerCard'
+import { useNavigate } from 'react-router-dom'
+import { PlayerCard, CTABanner, PageSection } from '@hoop-master/ui'
 import PageShell from '../../components/ui/PageShell'
 import { players } from './players-data'
 
@@ -12,6 +12,9 @@ export default function BrowsePage() {
     position: '',
     division: '',
   })
+
+  const currentYear = new Date().getFullYear()
+  const gradYears = Array.from({ length: 7 }, (_, i) => currentYear + i)
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }))
@@ -33,7 +36,6 @@ export default function BrowsePage() {
       description="Discover top girls basketball talent ready for college recruiting."
       badge="Player Database"
     >
-      {/* Search Filters */}
       <section className="bg-white p-6 rounded-lg shadow-md mb-8">
         <h2 className="text-2xl font-bold text-[#121B47] mb-4">Find Your Next Recruit</h2>
         <div className="grid gap-4 md:grid-cols-4">
@@ -55,14 +57,9 @@ export default function BrowsePage() {
               className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
             >
               <option value="">All Years</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-              <option value="2028">2028</option>
-              <option value="2029">2029</option>
-              <option value="2030">2030</option>
-              <option value="2031">2031</option>
-              <option value="2032">2032</option>
-
+              {gradYears.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
             </select>
           </div>
           <div>
@@ -96,9 +93,7 @@ export default function BrowsePage() {
         </div>
       </section>
 
-      {/* Player Profiles */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-bold text-[#121B47] mb-6">Featured Players</h2>
+      <PageSection title="Featured Players">
         {filteredPlayers.length === 0 ? (
           <div className="text-center py-12 bg-white rounded-lg shadow-md">
             <p className="text-gray-500 text-lg mb-2">No players match your filters</p>
@@ -120,29 +115,16 @@ export default function BrowsePage() {
             ))}
           </div>
         )}
-      </section>
+      </PageSection>
 
-      {/* Coach CTA Banner */}
-      <section className="bg-gradient-to-r from-[#0134BD] to-[#121B47] text-white p-8 rounded-lg text-center">
-        <h2 className="text-3xl font-bold mb-4">Are You a Coach Looking for Talent?</h2>
-        <p className="text-xl mb-6 max-w-2xl mx-auto">
-          Access our complete player database, advanced search filters, and recruiting tools designed for college coaches.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/signup"
-            className="bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-          >
-            Create Coach Account
-          </Link>
-          <Link
-            to="/services"
-            className="bg-white text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            View Recruiting Services
-          </Link>
-        </div>
-      </section>
+      <CTABanner
+        title="Are You a Coach Looking for Talent?"
+        description="Access our complete player database, advanced search filters, and recruiting tools designed for college coaches."
+        actions={[
+          { label: 'Create Coach Account', href: '/signup' },
+          { label: 'View Recruiting Services', href: '/services', variant: 'secondary' },
+        ]}
+      />
     </PageShell>
   )
 }
