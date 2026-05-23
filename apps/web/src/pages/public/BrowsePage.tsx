@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { PlayerCard } from '@hoop-master/ui/components/PlayerCard'
 import PageShell from '../../components/ui/PageShell'
 import { players } from './players-data'
 
 export default function BrowsePage() {
+  const navigate = useNavigate()
   const [filters, setFilters] = useState({
+    search: '',
     gradYear: '',
     position: '',
-    division: ''
+    division: '',
   })
 
   const handleFilterChange = (key: string, value: string) => {
@@ -15,7 +18,9 @@ export default function BrowsePage() {
   }
 
   const filteredPlayers = players.filter(player => {
+    const query = filters.search.toLowerCase()
     return (
+      (!filters.search || player.name.toLowerCase().includes(query) || player.location.toLowerCase().includes(query) || player.position.toLowerCase().includes(query)) &&
       (!filters.gradYear || player.gradYear.toString() === filters.gradYear) &&
       (!filters.position || player.position === filters.position) &&
       (!filters.division || player.division === filters.division)
@@ -31,7 +36,17 @@ export default function BrowsePage() {
       {/* Search Filters */}
       <section className="bg-white p-6 rounded-lg shadow-md mb-8">
         <h2 className="text-2xl font-bold text-[#121B47] mb-4">Find Your Next Recruit</h2>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
+            <input
+              type="text"
+              placeholder="Name, position, or location..."
+              value={filters.search}
+              onChange={(e) => handleFilterChange('search', e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
+            />
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Graduation Year</label>
             <select
@@ -77,45 +92,30 @@ export default function BrowsePage() {
         </div>
       </section>
 
-      {/* Featured Player Profiles */}
+      {/* Player Profiles */}
       <section className="mb-8">
         <h2 className="text-2xl font-bold text-[#121B47] mb-6">Featured Players</h2>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredPlayers.map((player) => (
-            <div key={player.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
-              <div className="p-6">
-                <div className="flex items-center mb-4">
-                  <img
-                    src={player.image}
-                    alt={player.name}
-                    className="w-16 h-16 rounded-full mr-4 object-cover"
-                  />
-                  <div>
-                    <h3 className="text-xl font-semibold text-[#121B47]">{player.name}</h3>
-                    <p className="text-gray-600">{player.position} • Class of {player.gradYear}</p>
-                  </div>
-                </div>
-                <p className="text-gray-600 mb-3">{player.location}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {player.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-[#0134BD] text-white px-2 py-1 rounded-full text-xs font-medium"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <Link
-                  to={`/browse/${player.id}`}
-                  className="block w-full bg-[#FB6C1D] hover:bg-[#e55a1a] text-white py-2 px-4 rounded-md font-semibold transition-colors text-center"
-                >
-                  View Profile
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+        {filteredPlayers.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-lg shadow-md">
+            <p className="text-gray-500 text-lg mb-2">No players match your filters</p>
+            <p className="text-gray-400">Try adjusting your search criteria</p>
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredPlayers.map((player) => (
+              <PlayerCard
+                key={player.id}
+                name={player.name}
+                position={player.position}
+                gradYear={player.gradYear}
+                location={player.location}
+                tags={player.tags}
+                image={player.image}
+                onViewProfile={() => navigate(`/browse/${player.id}`)}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Coach CTA Banner */}
