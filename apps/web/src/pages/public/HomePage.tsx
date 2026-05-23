@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { IconTarget, IconMoney, IconChart } from '@hoop-master/ui'
+import { IconTarget, IconMoney, IconChart, PageSection, CTABanner, StatsGrid } from '@hoop-master/ui'
 import PageShell from '../../components/ui/PageShell'
 
 export default function HomePage() {
@@ -9,7 +9,6 @@ export default function HomePage() {
       description="All-in-one player readiness, recruiting visibility, NIL opportunities, and partner services for elite female athletes."
       badge="Player Development"
     >
-      {/* Hero Section */}
       <section className="text-center py-16 bg-gradient-to-r from-[#121B47] to-[#0134BD] text-white rounded-lg mb-12">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Elevate Your Game, Own Your Future
@@ -27,7 +26,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Audience Cards */}
       <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-12">
         <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#0134BD]">
           <h3 className="text-xl font-semibold text-[#121B47] mb-3">For Players</h3>
@@ -51,9 +49,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Platform Pillars */}
-      <section className="bg-gray-50 p-8 rounded-lg mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Why Choose Elite GBB?</h2>
+      <PageSection title="Why Choose Elite GBB?">
         <div className="grid gap-6 md:grid-cols-3">
           <div className="text-center">
             <div className="w-16 h-16 bg-[#0134BD] rounded-full flex items-center justify-center mx-auto mb-4">
@@ -77,11 +73,9 @@ export default function HomePage() {
             <p className="text-gray-600">Monitor your development with comprehensive analytics and readiness assessments.</p>
           </div>
         </div>
-      </section>
+      </PageSection>
 
-      {/* Testimonials */}
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Success Stories</h2>
+      <PageSection title="Success Stories">
         <div className="grid gap-6 md:grid-cols-2">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <p className="text-gray-600 mb-4 italic">"Elite GBB helped me get recruited to my dream school. The platform made it easy to showcase my skills and connect with coaches."</p>
@@ -108,40 +102,25 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </PageSection>
 
-      {/* Stats */}
-      <section className="bg-[#121B47] text-white p-8 rounded-lg mb-12">
-        <div className="grid gap-6 md:grid-cols-4 text-center">
-          <div>
-            <div className="text-3xl font-bold text-[#C8A24A] mb-2">500+</div>
-            <p className="text-gray-300">Players Recruited</p>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-[#FB6C1D] mb-2">$2M+</div>
-            <p className="text-gray-300">NIL Earnings</p>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-[#0134BD] mb-2">200+</div>
-            <p className="text-gray-300">Partner Coaches</p>
-          </div>
-          <div>
-            <div className="text-3xl font-bold text-[#C8A24A] mb-2">50+</div>
-            <p className="text-gray-300">Workshops Hosted</p>
-          </div>
-        </div>
-      </section>
+      <StatsGrid
+        stats={[
+          { value: '500+', label: 'Players Recruited', color: 'text-[#C8A24A]' },
+          { value: '$2M+', label: 'NIL Earnings', color: 'text-[#FB6C1D]' },
+          { value: '200+', label: 'Partner Coaches', color: 'text-[#0134BD]' },
+          { value: '50+', label: 'Workshops Hosted', color: 'text-[#C8A24A]' },
+        ]}
+      />
 
-      {/* Final CTA */}
-      <section className="text-center py-16 bg-gradient-to-r from-[#FB6C1D] to-[#C8A24A] text-white rounded-lg">
-        <h2 className="text-3xl font-bold mb-4">Ready to Take Your Game to the Next Level?</h2>
-        <p className="text-xl mb-8 max-w-2xl mx-auto">
-          Join thousands of elite athletes who are building their future with Elite GBB.
-        </p>
-        <Link to="/signup" className="bg-white text-[#0134BD] px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors">
-          Join Elite GBB Today
-        </Link>
-      </section>
+      <CTABanner
+        title="Ready to Take Your Game to the Next Level?"
+        description="Join thousands of elite athletes who are building their future with Elite GBB."
+        gradient="from-[#FB6C1D] to-[#C8A24A]"
+        actions={[
+          { label: 'Join Elite GBB Today', href: '/signup', variant: 'secondary' },
+        ]}
+      />
     </PageShell>
   )
 }
