@@ -21,5 +21,13 @@ export function useCommunityFeed() {
     setPosts(prev => prev.map(p => p.id === postId ? { ...p, likedByUser: !p.likedByUser, likeCount: p.likedByUser ? p.likeCount - 1 : p.likeCount + 1 } : p))
   }
 
-  return { posts, loading, toggleLike }
+  const createPost = (content: string) => {
+    const newPost: CommunityPost = {
+      id: Date.now().toString(), authorId: 'me', authorName: 'You', authorRole: 'player',
+      content, createdAt: new Date().toISOString(), likeCount: 0, commentCount: 0, likedByUser: false,
+    }
+    setPosts(prev => [newPost, ...prev])
+  }
+
+  return { posts, loading, toggleLike, createPost }
 }

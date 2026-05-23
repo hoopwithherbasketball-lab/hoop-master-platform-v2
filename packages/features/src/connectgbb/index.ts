@@ -1,3 +1,6 @@
 export { useCommunityFeed } from './useCommunityFeed'
 export { useTrainingTracks } from './useTrainingTracks'
-export type { CommunityPost, TrainingTrack, Connection } from './types'
+export { useConnections } from './useConnections'
+export { useMemberProfile } from './useMemberProfile'
+export { useMessages } from './useMessages'
+export type { CommunityPost, TrainingTrack, Connection, MemberProfile, Message, Conversation } from './types'

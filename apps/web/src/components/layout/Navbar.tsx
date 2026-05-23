@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
+import NotificationBell from '../ui/NotificationBell'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -29,6 +30,7 @@ export default function Navbar() {
           </div>
           <div className="hidden md:flex items-center gap-3">
             {user ? (
+              <><NotificationBell />
               <div className="relative">
                 <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-2 text-white text-sm font-medium hover:text-orange-400 transition-colors">
                   <div className="w-7 h-7 bg-royal-500 rounded-full flex items-center justify-center text-xs font-bold">{user.email?.[0].toUpperCase()}</div>
@@ -41,6 +43,7 @@ export default function Navbar() {
                   </div>
                 )}
               </div>
+              </>
             ) : (
               <><Link to="/login" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">Sign In</Link><Link to="/signup" className="btn-primary py-2 text-sm">Get Started</Link></>
             )}

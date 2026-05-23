@@ -26,12 +26,18 @@ import EventsPage from './pages/dashboard/EventsPage'
 import ServicesOrdersPage from './pages/dashboard/ServicesOrdersPage'
 import ServiceOrderDetailPage from './pages/dashboard/ServiceOrderDetailPage'
 import ServiceIntakePage from './pages/dashboard/ServiceIntakePage'
+import IntakeFormPage from './pages/dashboard/IntakeFormPage'
+import PlayerPortalPage from './pages/dashboard/PlayerPortalPage'
+import OnePagerPage from './pages/dashboard/OnePagerPage'
+import ClassTrackingPage from './pages/dashboard/ClassTrackingPage'
 import ResourcesDashboardPage from './pages/dashboard/ResourcesDashboardPage'
 import ParentDashboardPage from './pages/dashboard/ParentDashboardPage'
 import CoachDashboard from './pages/coach/CoachDashboard'
 import CoachSearchPage from './pages/coach/CoachSearchPage'
 import CoachShortlistPage from './pages/coach/CoachShortlistPage'
 import CoachEventsPage from './pages/coach/CoachEventsPage'
+import PlayerEvaluationPage from './pages/coach/PlayerEvaluationPage'
+import ProspectComparisonPage from './pages/coach/ProspectComparisonPage'
 import AdminOverview from './pages/admin/AdminOverview'
 import AdminLeadsPage from './pages/admin/AdminLeadsPage'
 import AdminOrdersPage from './pages/admin/AdminOrdersPage'
@@ -44,8 +50,17 @@ import OutreachInbox from "./pages/nil/OutreachInbox"
 import ComplianceQueue from "./pages/nil/ComplianceQueue"
 import TaskBoard from "./pages/nil/TaskBoard"
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
+import ConnectGBBHubPage from './pages/connectgbb/ConnectGBBHubPage'
 import CommunityFeedPage from './pages/connectgbb/CommunityFeedPage'
 import TrainingHubPage from './pages/connectgbb/TrainingHubPage'
+import ConnectionsPage from './pages/connectgbb/ConnectionsPage'
+import MemberProfilePage from './pages/connectgbb/MemberProfilePage'
+import MessagesPage from './pages/connectgbb/MessagesPage'
+import FilmIndexPage from './pages/dashboard/FilmIndexPage'
+import AnalyticsPage from './pages/dashboard/AnalyticsPage'
+import AdminEvaluationsPage from './pages/admin/AdminEvaluationsPage'
+import AdminPlayerDetailPage from './pages/admin/AdminPlayerDetailPage'
+import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (<div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1">{children}</div><Footer /></div>)
@@ -77,17 +92,27 @@ function AppRoutes() {
       <Route path="/dashboard/services" element={<ProtectedRoute><ServicesOrdersPage /></ProtectedRoute>} />
       <Route path="/dashboard/services/:orderId" element={<ProtectedRoute><ServiceOrderDetailPage /></ProtectedRoute>} />
       <Route path="/dashboard/services/:orderId/intake" element={<ProtectedRoute><ServiceIntakePage /></ProtectedRoute>} />
+      <Route path="/dashboard/intake" element={<ProtectedRoute><IntakeFormPage /></ProtectedRoute>} />
+      <Route path="/dashboard/portal" element={<ProtectedRoute><PlayerPortalPage /></ProtectedRoute>} />
+      <Route path="/dashboard/onepager" element={<ProtectedRoute><OnePagerPage /></ProtectedRoute>} />
+      <Route path="/dashboard/class-tracking" element={<ProtectedRoute><ClassTrackingPage /></ProtectedRoute>} />
+      <Route path="/dashboard/film-index" element={<ProtectedRoute><FilmIndexPage /></ProtectedRoute>} />
+      <Route path="/dashboard/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
       <Route path="/dashboard/resources" element={<ProtectedRoute><ResourcesDashboardPage /></ProtectedRoute>} />
       <Route path="/dashboard/parent" element={<ProtectedRoute><ParentDashboardPage /></ProtectedRoute>} />
       <Route path="/coach" element={<ProtectedRoute><CoachDashboard /></ProtectedRoute>} />
       <Route path="/coach/search" element={<ProtectedRoute><CoachSearchPage /></ProtectedRoute>} />
       <Route path="/coach/shortlist" element={<ProtectedRoute><CoachShortlistPage /></ProtectedRoute>} />
       <Route path="/coach/events" element={<ProtectedRoute><CoachEventsPage /></ProtectedRoute>} />
+      <Route path="/coach/evaluation/:id" element={<ProtectedRoute><PlayerEvaluationPage /></ProtectedRoute>} />
+      <Route path="/coach/compare" element={<ProtectedRoute><ProspectComparisonPage /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute role="admin"><AdminOverview /></ProtectedRoute>} />
       <Route path="/admin/leads" element={<ProtectedRoute role="admin"><AdminLeadsPage /></ProtectedRoute>} />
       <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrdersPage /></ProtectedRoute>} />
       <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
+      <Route path="/admin/evaluations" element={<ProtectedRoute role="admin"><AdminEvaluationsPage /></ProtectedRoute>} />
       <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
+      <Route path="/admin/players/:id" element={<ProtectedRoute role="admin"><AdminPlayerDetailPage /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
@@ -95,8 +120,13 @@ function AppRoutes() {
       <Route path="/nil/outreach" element={<ProtectedRoute role="admin"><OutreachInbox /></ProtectedRoute>} />
       <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
       <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
-      <Route path="/connectgbb" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
+      <Route path="/connectgbb" element={<ProtectedRoute><ConnectGBBHubPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
       <Route path="/connectgbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/member/:id" element={<ProtectedRoute><MemberProfilePage /></ProtectedRoute>} />
+      <Route path="/connectgbb/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
