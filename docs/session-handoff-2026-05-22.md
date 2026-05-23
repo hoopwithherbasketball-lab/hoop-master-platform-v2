@@ -10,16 +10,14 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 - **PR #24** — Phase 6.1 governance cleanup (CODEOWNERS, PR template)
 - **PR #26** — Phase 7 unlock (reconcile-phase-7-unlock → main)
 - **PR #27** — `codex/create-phase-6-mcp-agent-runtime-scaffolding` → `main`
-- **PR #28** — `codex/phase-7-public-mvp` → `main` (Phase 7 D1 + D2: placeholder SVG, BrowsePage URL update, CI build/lint checks)
-- **PR #29** — `codex/phase-7-player-detail-page` → `main` (PlayerDetailPage, shared players-data, BrowsePage + App.tsx updates)
+- **PR #28** — `codex/phase-7-public-mvp` → `main` (placeholder SVG, BrowsePage URL update, CI build/lint checks)
+- **PR #29** — `codex/phase-7-player-detail-page` → `main` (PlayerDetailPage, shared players-data)
 - **PR #30** — `codex/phase-7-player-card-and-detail` → `main` (PlayerCard component, text search, empty state)
+- **PR #31** — `codex/phase-7-svg-icons` → `main` (IconTarget, IconMoney, IconChart, HomePage emoji replacement)
+- **PR #32** — `codex/phase-7-dynamic-grad-year` → `main` (dynamic graduation year dropdown)
 
 ### Open PRs
-- **PR — SVG Icons** — `codex/phase-7-svg-icons` → `main` (IconTarget, IconMoney, IconChart, HomePage emoji replacement)
-
-### Outstanding Branches
-- `codex/phase-7-svg-icons` — SVG icon components + HomePage update
-- `codex/phase-7-svg-icons` — SVG icon components + HomePage update
+- **PR — Service/Workshop Cards** — `codex/phase-7-dynamic-grad-year` → `main` (ServiceCard, WorkshopCard, ServicesPage/WorkshopsPage updates, encoding fixes)
 - Various old `codex/update-documentation-for-repo-audit-*` branches — stale, can be cleaned up
 
 ## Key Decisions
