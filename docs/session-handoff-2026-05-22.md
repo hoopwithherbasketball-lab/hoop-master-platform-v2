@@ -13,9 +13,10 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 - **PR #28** — `codex/phase-7-public-mvp` → `main` (Phase 7 D1 + D2: placeholder SVG, BrowsePage URL update, CI build/lint checks)
 
 ### Open PRs
-- None
+- **PR — Player Detail Page** — `codex/phase-7-player-detail-page` → `main` (needs review + merge)
 
 ### Outstanding Branches
+- `codex/phase-7-player-detail-page` — Player detail page with shared data, 9 expanded mock players
 - Various old `codex/update-documentation-for-repo-audit-*` branches — stale, can be cleaned up
 
 ## Key Decisions
