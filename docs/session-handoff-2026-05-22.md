@@ -12,13 +12,13 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 - **PR #27** — `codex/create-phase-6-mcp-agent-runtime-scaffolding` → `main`
 - **PR #28** — `codex/phase-7-public-mvp` → `main` (Phase 7 D1 + D2: placeholder SVG, BrowsePage URL update, CI build/lint checks)
 - **PR #29** — `codex/phase-7-player-detail-page` → `main` (PlayerDetailPage, shared players-data, BrowsePage + App.tsx updates)
+- **PR #30** — `codex/phase-7-player-card-and-detail` → `main` (PlayerCard component, text search, empty state)
 
 ### Open PRs
-- **PR — Player Card UI** — `codex/phase-7-player-card-and-detail` → `main` (PlayerCard component, text search, empty state)
 - **PR — SVG Icons** — `codex/phase-7-svg-icons` → `main` (IconTarget, IconMoney, IconChart, HomePage emoji replacement)
 
 ### Outstanding Branches
-- `codex/phase-7-player-card-and-detail` — PlayerCard UI component, text search, empty state
+- `codex/phase-7-svg-icons` — SVG icon components + HomePage update
 - `codex/phase-7-svg-icons` — SVG icon components + HomePage update
 - Various old `codex/update-documentation-for-repo-audit-*` branches — stale, can be cleaned up
 
