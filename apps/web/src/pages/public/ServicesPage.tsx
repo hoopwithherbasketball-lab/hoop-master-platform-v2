@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { ServiceCard } from '@hoop-master/ui'
 import PageShell from '../../components/ui/PageShell'
 
 const services = [
@@ -48,38 +49,25 @@ export default function ServicesPage() {
       description="Accelerate your recruiting and NIL journey with our premium services designed for serious athletes."
       badge="Premium Services"
     >
-      {/* Individual Services */}
       <section className="mb-12">
         <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Individual Services</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {services.map((service, index) => (
-            <div key={service.title} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-[#0134BD]">
-              <div className="text-center mb-4">
-                <h3 className="text-xl font-semibold text-[#121B47]">{service.title}</h3>
-                <div className="text-3xl font-bold text-[#FB6C1D] mt-2">{service.price}</div>
-              </div>
-              <p className="text-gray-600 mb-4 text-center">{service.description}</p>
-              <ul className="text-sm text-gray-600 mb-6 space-y-1">
-                {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center">
-                    <span className="text-[#0134BD] mr-2">✓</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <button className="w-full bg-[#0134BD] hover:bg-[#002a80] text-white py-2 px-4 rounded-md font-semibold transition-colors">
-                Get Started
-              </button>
-            </div>
+          {services.map((service) => (
+            <ServiceCard
+              key={service.title}
+              title={service.title}
+              price={service.price}
+              description={service.description}
+              features={service.features}
+            />
           ))}
         </div>
       </section>
 
-      {/* Team Packages */}
       <section className="mb-12">
         <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Team Packages</h2>
         <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-          {teamPackages.map((pkg, index) => (
+          {teamPackages.map((pkg) => (
             <div key={pkg.title} className="bg-gradient-to-br from-[#C8A24A] to-[#FB6C1D] p-6 rounded-lg text-white">
               <h3 className="text-2xl font-semibold mb-2">{pkg.title}</h3>
               <div className="text-3xl font-bold mb-4">{pkg.price}</div>
@@ -92,7 +80,6 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Free Consultation CTA */}
       <section className="bg-[#121B47] text-white p-8 rounded-lg text-center">
         <h2 className="text-3xl font-bold mb-4">Not Sure Which Service is Right for You?</h2>
         <p className="text-xl mb-6 max-w-2xl mx-auto">
