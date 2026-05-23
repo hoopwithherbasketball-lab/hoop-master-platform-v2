@@ -19,9 +19,12 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 ### Open PRs
 - **PR — Service/Workshop Cards** — `codex/phase-7-dynamic-grad-year` → `main` (ServiceCard, WorkshopCard, ServicesPage/WorkshopsPage updates, encoding fixes)
 - **PR — Audit/Checkout** — `codex/phase-7-audit-checkout` → `main` (AuditCard component, expanded CheckoutPage with form, fixed Tailwind classes)
+- **PR — Layout Components** — `codex/phase-7-layout-components` → `main` (PageSection, CTABanner, StatsGrid; updated HomePage, BrowsePage, PlayerDetailPage)
 
 ### Outstanding Branches
 - `codex/phase-7-dynamic-grad-year` — ServiceCard, WorkshopCard, updated ServicesPage/WorkshopsPage
+- `codex/phase-7-audit-checkout` — AuditCard, expanded CheckoutPage
+- `codex/phase-7-layout-components` — PageSection, CTABanner, StatsGrid layouts
 - `codex/phase-7-audit-checkout` — AuditCard, expanded CheckoutPage
 
 ## Key Decisions
