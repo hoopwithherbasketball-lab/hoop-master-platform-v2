@@ -1,8 +1,11 @@
-// Export shared UI components
 export { ReadinessGauge } from './components/ReadinessGauge';
 export { ScoreBar } from './components/ScoreBar';
 export { StatusBadge } from './components/StatusBadge';
 export { PlayerCard } from './components/PlayerCard';
+export { AuditCard } from './components/AuditCard';
 export { IconTarget } from './components/IconTarget';
 export { IconMoney } from './components/IconMoney';
 export { IconChart } from './components/IconChart';
+export { PageSection } from './layouts/PageSection';
+export { CTABanner } from './layouts/CTABanner';
+export { StatsGrid } from './layouts/StatsGrid';

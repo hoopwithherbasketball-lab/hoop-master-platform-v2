@@ -11,6 +11,9 @@ import AuditPage from './pages/public/AuditPage'
 import BrowsePage from './pages/public/BrowsePage'
 import PlayerDetailPage from './pages/public/PlayerDetailPage'
 import WorkshopsPage from './pages/public/WorkshopsPage'
+import ContactPage from './pages/public/ContactPage'
+import FAQPage from './pages/public/FAQPage'
+import PublicEventsPage from './pages/public/EventsPage'
 import CheckoutPage from './pages/public/CheckoutPage'
 import UITestPage from "./pages/UITestPage"
 import LoginPage from './pages/LoginPage'
@@ -51,6 +54,9 @@ function AppRoutes() {
     <Routes>
       <Route path="/" element={<PublicLayout><HomePage /></PublicLayout>} />
       <Route path="/services" element={<PublicLayout><ServicesPage /></PublicLayout>} />
+      <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
+      <Route path="/faq" element={<PublicLayout><FAQPage /></PublicLayout>} />
+      <Route path="/events" element={<PublicLayout><PublicEventsPage /></PublicLayout>} />
       <Route path="/recruiting-readiness" element={<PublicLayout><RecruitingReadinessPage /></PublicLayout>} />
       <Route path="/nil-readiness" element={<PublicLayout><NILReadinessPage /></PublicLayout>} />
       <Route path="/audit" element={<PublicLayout><AuditPage /></PublicLayout>} />
