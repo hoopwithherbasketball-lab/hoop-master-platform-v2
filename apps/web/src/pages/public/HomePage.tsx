@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { IconTarget, IconMoney, IconChart } from '@hoop-master/ui'
 import PageShell from '../../components/ui/PageShell'
 
 export default function HomePage() {
@@ -56,21 +57,21 @@ export default function HomePage() {
         <div className="grid gap-6 md:grid-cols-3">
           <div className="text-center">
             <div className="w-16 h-16 bg-[#0134BD] rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white text-2xl">🎯</span>
+              <IconTarget size={28} className="text-white" />
             </div>
             <h3 className="text-xl font-semibold text-[#121B47] mb-2">Targeted Recruiting</h3>
             <p className="text-gray-600">Get seen by the right coaches with data-driven recruiting tools and personalized strategies.</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-[#FB6C1D] rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white text-2xl">💰</span>
+              <IconMoney size={28} className="text-white" />
             </div>
             <h3 className="text-xl font-semibold text-[#121B47] mb-2">NIL Opportunities</h3>
             <p className="text-gray-600">Build your personal brand and connect with sponsors for name, image, and likeness deals.</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-[#C8A24A] rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white text-2xl">📈</span>
+              <IconChart size={28} className="text-white" />
             </div>
             <h3 className="text-xl font-semibold text-[#121B47] mb-2">Performance Tracking</h3>
             <p className="text-gray-600">Monitor your development with comprehensive analytics and readiness assessments.</p>
