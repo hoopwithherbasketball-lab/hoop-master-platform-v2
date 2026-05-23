@@ -1,2 +1,3 @@
-export const name = 'connectgbb';
-export function describe() { return 'Placeholder module for connectgbb feature.' }
+export { useCommunityFeed } from './useCommunityFeed'
+export { useTrainingTracks } from './useTrainingTracks'
+export type { CommunityPost, TrainingTrack, Connection } from './types'

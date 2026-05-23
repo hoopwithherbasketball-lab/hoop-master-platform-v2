@@ -14,6 +14,10 @@
       "import": "./dist/features/src/crm/index.js",
       "types": "./dist/features/src/crm/index.d.ts"
     },
+    "./connectgbb": {
+      "import": "./dist/features/src/connectgbb/index.js",
+      "types": "./dist/features/src/connectgbb/index.d.ts"
+    },
     "./connectgbb/*": "./dist/features/src/connectgbb/*",
     "./crm/*": "./dist/features/src/crm/*",
     "./coaching/*": "./dist/features/src/coaching/*",

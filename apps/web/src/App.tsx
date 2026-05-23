@@ -44,6 +44,8 @@ import OutreachInbox from "./pages/nil/OutreachInbox"
 import ComplianceQueue from "./pages/nil/ComplianceQueue"
 import TaskBoard from "./pages/nil/TaskBoard"
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
+import CommunityFeedPage from './pages/connectgbb/CommunityFeedPage'
+import TrainingHubPage from './pages/connectgbb/TrainingHubPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (<div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1">{children}</div><Footer /></div>)
@@ -93,6 +95,8 @@ function AppRoutes() {
       <Route path="/nil/outreach" element={<ProtectedRoute role="admin"><OutreachInbox /></ProtectedRoute>} />
       <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
       <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
+      <Route path="/connectgbb" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
