@@ -1,39 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import PageShell from '../../components/ui/PageShell'
-
-const players = [
-  {
-    id: 1,
-    name: 'Sarah Johnson',
-    position: 'Point Guard',
-    gradYear: 2025,
-    division: 'D1',
-    location: 'Tennessee',
-    tags: ['All-State', 'Team Captain', 'Academic Excellence'],
-    image: '/images/placeholder-player.svg'
-  },
-  {
-    id: 2,
-    name: 'Maria Rodriguez',
-    position: 'Shooting Guard',
-    gradYear: 2026,
-    division: 'D2',
-    location: 'California',
-    tags: ['3-Point Specialist', 'Leadership', 'NIL Ready'],
-    image: '/images/placeholder-player.svg'
-  },
-  {
-    id: 3,
-    name: 'Emma Davis',
-    position: 'Center',
-    gradYear: 2024,
-    division: 'D1',
-    location: 'Texas',
-    tags: ['Dominant Rebounder', 'Block Specialist', 'Scholar Athlete'],
-    image: '/images/placeholder-player.svg'
-  }
-]
+import { players } from './players-data'
 
 export default function BrowsePage() {
   const [filters, setFilters] = useState({
@@ -138,9 +106,12 @@ export default function BrowsePage() {
                     </span>
                   ))}
                 </div>
-                <button className="w-full bg-[#FB6C1D] hover:bg-[#e55a1a] text-white py-2 px-4 rounded-md font-semibold transition-colors">
+                <Link
+                  to={`/browse/${player.id}`}
+                  className="block w-full bg-[#FB6C1D] hover:bg-[#e55a1a] text-white py-2 px-4 rounded-md font-semibold transition-colors text-center"
+                >
                   View Profile
-                </button>
+                </Link>
               </div>
             </div>
           ))}
