@@ -20,7 +20,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   onViewProfile,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+    <article className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
       <div className="p-6">
         <div className="flex items-center mb-4">
           <img
@@ -35,9 +35,9 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
         </div>
         <p className="text-gray-600 mb-3">{location}</p>
         <div className="flex flex-wrap gap-2 mb-4">
-          {tags.map((tag, index) => (
+          {tags.map((tag) => (
             <span
-              key={index}
+              key={tag}
               className="bg-[#0134BD] text-white px-2 py-1 rounded-full text-xs font-medium"
             >
               {tag}
@@ -53,6 +53,6 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
           </button>
         )}
       </div>
-    </div>
+    </article>
   );
 };
