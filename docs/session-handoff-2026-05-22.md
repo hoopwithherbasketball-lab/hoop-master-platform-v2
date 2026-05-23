@@ -13,9 +13,10 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 - **PR #28** — `codex/phase-7-public-mvp` → `main` (Phase 7 D1 + D2: placeholder SVG, BrowsePage URL update, CI build/lint checks)
 
 ### Open PRs
-- None
+- **PR — Player Card + Detail** — `codex/phase-7-player-card-and-detail` → `main` (needs review + merge)
 
 ### Outstanding Branches
+- `codex/phase-7-player-card-and-detail` — PlayerCard UI component, text search, 9 expanded players, player detail page, empty state
 - Various old `codex/update-documentation-for-repo-audit-*` branches — stale, can be cleaned up
 
 ## Key Decisions
@@ -39,7 +40,7 @@ Completed Phase 6 governance cleanup, resolved merge conflicts across multiple b
 
 ## Urgent Next Steps
 
-1. **Create PR for Phase 7** — `codex/phase-7-public-mvp` → `main`, request review, merge
+1. **Review & merge PR** — `codex/phase-7-player-card-and-detail` → `main`
 2. **Fix npm/PowerShell execution policy** on local dev machine to enable local builds
 3. **Clean up stale branches** — old `codex/update-documentation-for-repo-audit-*` and `genspark_ai_developer` branches
 
