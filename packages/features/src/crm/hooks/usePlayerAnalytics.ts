@@ -23,6 +23,6 @@ const MOCK: PlayerAnalytics = {
   ],
 }
 
-export function usePlayerAnalytics(_playerId?: string) {
+export function usePlayerAnalytics() {
   return { analytics: MOCK, loading: false }
 }

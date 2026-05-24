@@ -8,7 +8,7 @@ export interface ReferralNote {
   date: string
 }
 
-export function useCoachReferral(_playerId: string) {
+export function useCoachReferral() {
   const [notes, setNotes] = useState<ReferralNote[]>([])
   const [newNote, setNewNote] = useState('')
 
