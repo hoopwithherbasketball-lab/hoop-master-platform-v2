@@ -107,7 +107,7 @@ function AppRoutes() {
       <Route path="/coach/events" element={<ProtectedRoute><CoachEventsPage /></ProtectedRoute>} />
       <Route path="/coach/evaluation/:id" element={<ProtectedRoute><PlayerEvaluationPage /></ProtectedRoute>} />
       <Route path="/coach/compare" element={<ProtectedRoute><ProspectComparisonPage /></ProtectedRoute>} />
-      <Route path="/admin" element={<ProtectedRoute role="admin"><ErrorBoundary><AdminOverview /></ErrorBoundary></ProtectedRoute>} />
+      <Route path="/admin" element={<ProtectedRoute role="admin"><AdminOverview /></ProtectedRoute>} />
       <Route path="/admin/leads" element={<ProtectedRoute role="admin"><AdminLeadsPage /></ProtectedRoute>} />
       <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrdersPage /></ProtectedRoute>} />
       <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
@@ -134,5 +134,5 @@ function AppRoutes() {
 }
 
 export default function App() {
-  return (<BrowserRouter><AuthProvider><AppRoutes /></AuthProvider></BrowserRouter>)
+  return (<BrowserRouter><AuthProvider><ErrorBoundary><AppRoutes /></ErrorBoundary></AuthProvider></BrowserRouter>)
 }
