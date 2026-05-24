@@ -14,7 +14,7 @@ export default function DashboardOverview() {
         {stats.map((item) => (
           <div key={item.label} className="card p-6 space-y-3">
             <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{item.label}</p>
-            <p className="text-3xl font-bold text-navy-900">{item.value}</p>
+            <p className="text-3xl font-bold text-white">{item.value}</p>
             <p className="text-sm text-slate-500">{item.note}</p>
           </div>
         ))}

@@ -28,7 +28,7 @@ export default function PlayerPortalPage() {
     <DashboardLayout variant="player" title="Player Portal" subtitle="Your central hub for stats, network, and recruiting materials.">
       <div className="flex gap-1 bg-navy-900 rounded-xl p-1 overflow-x-auto mb-8">
         {TABS.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${activeTab === tab.id ? 'bg-white text-navy-900 shadow-sm' : 'text-white/70 hover:text-white'}`}>
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${activeTab === tab.id ? 'bg-navy-800 text-white shadow-sm' : 'text-white/70 hover:text-white'}`}>
             <tab.icon size={16} /> {tab.label}
           </button>
         ))}
@@ -38,7 +38,7 @@ export default function PlayerPortalPage() {
         <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
           {statBlocks.map(s => (
             <div key={s.label} className="card p-4 text-center">
-              <p className="text-2xl font-bold text-navy-900">{s.value}</p>
+              <p className="text-2xl font-bold text-white">{s.value}</p>
               <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">{s.label}</p>
             </div>
           ))}
@@ -56,9 +56,9 @@ export default function PlayerPortalPage() {
             <div key={c.name} className="card p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-[#0134BD] rounded-full flex items-center justify-center text-white font-semibold text-sm">{c.name[0]}</div>
-                <div><p className="font-semibold text-navy-900">{c.name}</p><p className="text-xs text-slate-500">{c.role} • {c.org}</p></div>
+                <div><p className="font-semibold text-white">{c.name}</p><p className="text-xs text-slate-500">{c.role} • {c.org}</p></div>
               </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${c.status === 'Connected' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{c.status}</span>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${c.status === 'Connected' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-100 text-yellow-700'}`}>{c.status}</span>
             </div>
           ))}
         </div>
@@ -76,9 +76,9 @@ export default function PlayerPortalPage() {
             <div key={d.name} className="card p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{d.icon}</span>
-                <div><p className="font-semibold text-navy-900">{d.name}</p><p className="text-xs text-slate-500">{d.date}</p></div>
+                <div><p className="font-semibold text-white">{d.name}</p><p className="text-xs text-slate-500">{d.date}</p></div>
               </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${d.status === 'Ready' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>{d.status}</span>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${d.status === 'Ready' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-100 text-yellow-700'}`}>{d.status}</span>
             </div>
           ))}
         </div>
@@ -88,17 +88,17 @@ export default function PlayerPortalPage() {
         <div className="card p-6 max-w-xl space-y-4">
           <p className="text-sm text-slate-500">Manage your account security and privacy settings.</p>
           <div className="space-y-2">
-            <label className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-              <span className="text-sm font-medium text-navy-900">Two-Factor Authentication</span>
-              <input type="checkbox" className="w-5 h-5 text-[#0134BD] border-gray-300 rounded" />
+            <label className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+              <span className="text-sm font-medium text-white">Two-Factor Authentication</span>
+              <input type="checkbox" className="w-5 h-5 text-[#0134BD] border-white/20 rounded" />
             </label>
-            <label className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-              <span className="text-sm font-medium text-navy-900">Profile Visibility (Coaches)</span>
-              <input type="checkbox" defaultChecked className="w-5 h-5 text-[#0134BD] border-gray-300 rounded" />
+            <label className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+              <span className="text-sm font-medium text-white">Profile Visibility (Coaches)</span>
+              <input type="checkbox" defaultChecked className="w-5 h-5 text-[#0134BD] border-white/20 rounded" />
             </label>
-            <label className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-              <span className="text-sm font-medium text-navy-900">Show Stats Publicly</span>
-              <input type="checkbox" defaultChecked className="w-5 h-5 text-[#0134BD] border-gray-300 rounded" />
+            <label className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+              <span className="text-sm font-medium text-white">Show Stats Publicly</span>
+              <input type="checkbox" defaultChecked className="w-5 h-5 text-[#0134BD] border-white/20 rounded" />
             </label>
           </div>
         </div>

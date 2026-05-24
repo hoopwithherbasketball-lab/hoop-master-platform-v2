@@ -50,16 +50,16 @@ export default function ServicesPage() {
     >
       {/* Individual Services */}
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Individual Services</h2>
+        <h2 className="text-3xl font-bold text-center text-white mb-8">Individual Services</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {services.map((service, index) => (
-            <div key={service.title} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-[#0134BD]">
+            <div key={service.title} className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-t-4 border-[#0134BD]">
               <div className="text-center mb-4">
-                <h3 className="text-xl font-semibold text-[#121B47]">{service.title}</h3>
+                <h3 className="text-xl font-semibold text-white">{service.title}</h3>
                 <div className="text-3xl font-bold text-[#FB6C1D] mt-2">{service.price}</div>
               </div>
-              <p className="text-gray-600 mb-4 text-center">{service.description}</p>
-              <ul className="text-sm text-gray-600 mb-6 space-y-1">
+              <p className="text-slate-400 mb-4 text-center">{service.description}</p>
+              <ul className="text-sm text-slate-400 mb-6 space-y-1">
                 {service.features.map((feature, idx) => (
                   <li key={idx} className="flex items-center">
                     <span className="text-[#0134BD] mr-2">✓</span>
@@ -77,14 +77,14 @@ export default function ServicesPage() {
 
       {/* Team Packages */}
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Team Packages</h2>
+        <h2 className="text-3xl font-bold text-center text-white mb-8">Team Packages</h2>
         <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
           {teamPackages.map((pkg, index) => (
             <div key={pkg.title} className="bg-gradient-to-br from-[#C8A24A] to-[#FB6C1D] p-6 rounded-lg text-white">
               <h3 className="text-2xl font-semibold mb-2">{pkg.title}</h3>
               <div className="text-3xl font-bold mb-4">{pkg.price}</div>
               <p className="mb-6">{pkg.description}</p>
-              <button className="bg-white text-[#0134BD] py-2 px-6 rounded-md font-semibold hover:bg-gray-100 transition-colors">
+              <button className="bg-navy-800 text-[#0134BD] py-2 px-6 rounded-md font-semibold hover:bg-white/10 transition-colors">
                 Learn More
               </button>
             </div>
@@ -107,7 +107,7 @@ export default function ServicesPage() {
           </Link>
           <Link
             to="/workshops"
-            className="bg-white text-[#0134BD] px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors"
+            className="bg-navy-800 text-[#0134BD] px-8 py-3 rounded-lg font-semibold text-lg hover:bg-white/10 transition-colors"
           >
             View Workshops
           </Link>

@@ -11,7 +11,7 @@ export default function OpportunityList() {
     <DashboardLayout variant="admin" title="Opportunities" subtitle="Track active NIL partner opportunities." >
       <div className="card overflow-hidden">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50 border-b border-slate-200">
+          <thead className="bg-white/5 border-b border-white/10">
             <tr>
               <th className="px-4 py-3 text-left uppercase text-slate-500 text-xs">Athlete</th>
               <th className="px-4 py-3 text-left uppercase text-slate-500 text-xs">Brand</th>
@@ -19,13 +19,13 @@ export default function OpportunityList() {
               <th className="px-4 py-3 text-left uppercase text-slate-500 text-xs">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-white/10">
             {opportunities.map((entry) => (
-              <tr key={`${entry.athlete}-${entry.brand}`} className="hover:bg-slate-50">
-                <td className="px-4 py-4 text-slate-800">{entry.athlete}</td>
-                <td className="px-4 py-4 text-slate-600">{entry.brand}</td>
-                <td className="px-4 py-4 text-slate-600">{entry.value}</td>
-                <td className="px-4 py-4 text-slate-600">{entry.status}</td>
+              <tr key={`${entry.athlete}-${entry.brand}`} className="hover:bg-white/5">
+                <td className="px-4 py-4 text-gray-200">{entry.athlete}</td>
+                <td className="px-4 py-4 text-slate-400">{entry.brand}</td>
+                <td className="px-4 py-4 text-slate-400">{entry.value}</td>
+                <td className="px-4 py-4 text-slate-400">{entry.status}</td>
               </tr>
             ))}
           </tbody>

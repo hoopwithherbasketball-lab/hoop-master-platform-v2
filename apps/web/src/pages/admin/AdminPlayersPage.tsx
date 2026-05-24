@@ -12,7 +12,7 @@ export default function AdminPlayersPage() {
       {loading ? (<div className="animate-pulse space-y-3">{[...Array(5)].map((_, i) => <div key={i} className="card h-14" />)}</div>) : (
         <div className="card overflow-hidden p-0">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-100">
+            <thead className="bg-white/5 border-b border-white/10">
               <tr>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Name</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Class</th>
@@ -22,8 +22,8 @@ export default function AdminPlayersPage() {
             </thead>
             <tbody className="divide-y divide-slate-50">
               {players.map((p: PlayerProfile) => (
-                <tr key={p.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-medium text-slate-800">{p.first_name} {p.last_name}</td>
+                <tr key={p.id} className="hover:bg-white/5">
+                  <td className="px-4 py-3 font-medium text-gray-200">{p.first_name} {p.last_name}</td>
                   <td className="px-4 py-3 text-slate-500">{p.class_year ?? '-'}</td>
                   <td className="px-4 py-3 text-slate-500">{p.position ?? '-'}</td>
                   <td className="px-4 py-3 text-slate-500">{p.gpa ?? '-'}</td>

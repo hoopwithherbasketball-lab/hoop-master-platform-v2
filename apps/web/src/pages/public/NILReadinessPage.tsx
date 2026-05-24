@@ -84,15 +84,15 @@ export default function NILReadinessPage() {
           to monetize their achievements and build their future careers.
         </p>
         <div className="grid gap-4 md:grid-cols-3">
-          <div className="bg-white bg-opacity-10 p-4 rounded-lg">
+          <div className="bg-navy-800 bg-opacity-10 p-4 rounded-lg">
             <h3 className="font-semibold mb-2">Name</h3>
             <p>Your personal identity and reputation as an athlete</p>
           </div>
-          <div className="bg-white bg-opacity-10 p-4 rounded-lg">
+          <div className="bg-navy-800 bg-opacity-10 p-4 rounded-lg">
             <h3 className="font-semibold mb-2">Image</h3>
             <p>Your visual presence and brand representation</p>
           </div>
-          <div className="bg-white bg-opacity-10 p-4 rounded-lg">
+          <div className="bg-navy-800 bg-opacity-10 p-4 rounded-lg">
             <h3 className="font-semibold mb-2">Likeness</h3>
             <p>Your right to profit from your athletic achievements</p>
           </div>
@@ -101,12 +101,12 @@ export default function NILReadinessPage() {
 
       {/* Myth Busting */}
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">NIL Myths vs Reality</h2>
+        <h2 className="text-3xl font-bold text-center text-white mb-8">NIL Myths vs Reality</h2>
         <div className="grid gap-6 md:grid-cols-2">
           {myths.map((item, index) => (
-            <div key={index} className="bg-red-50 border-l-4 border-red-400 p-6 rounded-lg">
+            <div key={index} className="bg-red-500/10 border-l-4 border-red-400 p-6 rounded-lg">
               <h3 className="font-semibold text-red-800 mb-2">Myth: {item.myth}</h3>
-              <p className="text-gray-700"><strong>Reality:</strong> {item.truth}</p>
+              <p className="text-gray-300"><strong>Reality:</strong> {item.truth}</p>
             </div>
           ))}
         </div>
@@ -114,30 +114,30 @@ export default function NILReadinessPage() {
 
       {/* Brand Pillars */}
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">4 Pillars of NIL Success</h2>
+        <h2 className="text-3xl font-bold text-center text-white mb-8">4 Pillars of NIL Success</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {brandPillars.map((pillar, index) => (
-            <div key={pillar.title} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
+            <div key={pillar.title} className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
               <div className="text-4xl mb-4">{pillar.icon}</div>
-              <h3 className="text-xl font-semibold text-[#121B47] mb-3">{pillar.title}</h3>
-              <p className="text-gray-600">{pillar.description}</p>
+              <h3 className="text-xl font-semibold text-white mb-3">{pillar.title}</h3>
+              <p className="text-slate-400">{pillar.description}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Social Media Expectations */}
-      <section className="bg-gray-50 p-8 rounded-lg mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Social Media Expectations</h2>
+      <section className="bg-white/5 p-8 rounded-lg mb-12">
+        <h2 className="text-3xl font-bold text-center text-white mb-8">Social Media Expectations</h2>
         <div className="max-w-2xl mx-auto">
-          <p className="text-gray-600 mb-6 text-center">
+          <p className="text-slate-400 mb-6 text-center">
             Building a strong social media presence is crucial for NIL success. Here's what sponsors expect:
           </p>
           <div className="grid gap-3 md:grid-cols-2">
             {socialExpectations.map((expectation, index) => (
-              <div key={index} className="flex items-start bg-white p-4 rounded-lg shadow-sm">
+              <div key={index} className="flex items-start bg-navy-800 p-4 rounded-lg shadow-sm">
                 <span className="text-[#0134BD] mr-3 mt-1">✓</span>
-                <span className="text-gray-700">{expectation}</span>
+                <span className="text-gray-300">{expectation}</span>
               </div>
             ))}
           </div>
@@ -146,7 +146,7 @@ export default function NILReadinessPage() {
 
       {/* Parent Action Plan */}
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Parent Action Plan</h2>
+        <h2 className="text-3xl font-bold text-center text-white mb-8">Parent Action Plan</h2>
         <div className="bg-[#C8A24A] text-white p-8 rounded-lg">
           <p className="text-lg mb-6 text-center">
             Parents play a crucial role in supporting their athlete's NIL journey. Here's how to help:
@@ -154,7 +154,7 @@ export default function NILReadinessPage() {
           <div className="grid gap-4 md:grid-cols-2">
             {parentActionPlan.map((action, index) => (
               <div key={index} className="flex items-start">
-                <span className="text-[#121B47] mr-3 mt-1 text-xl">•</span>
+                <span className="text-white mr-3 mt-1 text-xl">•</span>
                 <span>{action}</span>
               </div>
             ))}
@@ -171,7 +171,7 @@ export default function NILReadinessPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/signup"
-            className="bg-white text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            className="bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
           >
             Create NIL Profile
           </Link>

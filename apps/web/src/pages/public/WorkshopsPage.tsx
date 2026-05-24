@@ -41,23 +41,23 @@ export default function WorkshopsPage() {
     >
       {/* Workshop Types */}
       <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Workshop Offerings</h2>
+        <h2 className="text-3xl font-bold text-center text-white mb-8">Workshop Offerings</h2>
         <div className="grid gap-8 md:grid-cols-2">
           {workshops.map((workshop, index) => (
-            <div key={workshop.title} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#0134BD]">
+            <div key={workshop.title} className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#0134BD]">
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-semibold text-[#121B47]">{workshop.title}</h3>
+                <h3 className="text-2xl font-semibold text-white">{workshop.title}</h3>
                 <span className="bg-[#FB6C1D] text-white px-3 py-1 rounded-full text-sm font-medium">
                   {workshop.duration}
                 </span>
               </div>
-              <p className="text-gray-600 mb-4">{workshop.description}</p>
+              <p className="text-slate-400 mb-4">{workshop.description}</p>
               <div className="mb-4">
-                <span className="font-semibold text-[#121B47]">Format:</span> {workshop.format}
+                <span className="font-semibold text-white">Format:</span> {workshop.format}
               </div>
               <div className="mb-6">
-                <h4 className="font-semibold text-[#121B47] mb-2">What You'll Learn:</h4>
-                <ul className="text-sm text-gray-600 space-y-1">
+                <h4 className="font-semibold text-white mb-2">What You'll Learn:</h4>
+                <ul className="text-sm text-slate-400 space-y-1">
                   {workshop.topics.map((topic, idx) => (
                     <li key={idx} className="flex items-center">
                       <span className="text-[#0134BD] mr-2">•</span>
@@ -75,29 +75,29 @@ export default function WorkshopsPage() {
       </section>
 
       {/* Format Details */}
-      <section className="bg-gray-50 p-8 rounded-lg mb-12">
-        <h2 className="text-3xl font-bold text-center text-[#121B47] mb-8">Workshop Formats</h2>
+      <section className="bg-white/5 p-8 rounded-lg mb-12">
+        <h2 className="text-3xl font-bold text-center text-white mb-8">Workshop Formats</h2>
         <div className="grid gap-6 md:grid-cols-3">
           <div className="text-center">
             <div className="w-16 h-16 bg-[#0134BD] rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white text-2xl">💻</span>
             </div>
-            <h3 className="text-xl font-semibold text-[#121B47] mb-2">Virtual Workshops</h3>
-            <p className="text-gray-600">Interactive online sessions with live Q&A, accessible from anywhere.</p>
+            <h3 className="text-xl font-semibold text-white mb-2">Virtual Workshops</h3>
+            <p className="text-slate-400">Interactive online sessions with live Q&A, accessible from anywhere.</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-[#FB6C1D] rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white text-2xl">🏟️</span>
             </div>
-            <h3 className="text-xl font-semibold text-[#121B47] mb-2">In-Person Clinics</h3>
-            <p className="text-gray-600">Hands-on training at elite facilities with direct coaching feedback.</p>
+            <h3 className="text-xl font-semibold text-white mb-2">In-Person Clinics</h3>
+            <p className="text-slate-400">Hands-on training at elite facilities with direct coaching feedback.</p>
           </div>
           <div className="text-center">
             <div className="w-16 h-16 bg-[#C8A24A] rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-white text-2xl">👥</span>
             </div>
-            <h3 className="text-xl font-semibold text-[#121B47] mb-2">Group Sessions</h3>
-            <p className="text-gray-600">Collaborative learning with peers, building community and support networks.</p>
+            <h3 className="text-xl font-semibold text-white mb-2">Group Sessions</h3>
+            <p className="text-slate-400">Collaborative learning with peers, building community and support networks.</p>
           </div>
         </div>
       </section>
@@ -118,7 +118,7 @@ export default function WorkshopsPage() {
           </Link>
           <Link
             to="/services"
-            className="bg-white text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            className="bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
           >
             View All Services
           </Link>

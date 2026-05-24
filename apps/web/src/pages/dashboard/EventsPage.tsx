@@ -20,19 +20,19 @@ export default function EventsPage() {
           const fullEvent = events.find(e => e.id === event.id)!
           const spotsLeft = fullEvent.capacity - fullEvent.registered
           return (
-            <div key={event.id} className="bg-white rounded-xl shadow-sm p-5 flex items-start justify-between gap-4">
+            <div key={event.id} className="bg-navy-800 rounded-xl shadow-sm p-5 flex items-start justify-between gap-4">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Calendar size={22} className="text-green-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[#121B47]">{event.title}</h3>
-                  <p className="text-sm text-gray-500 flex items-center gap-1 mt-0.5"><MapPin size={12} /> {event.location}</p>
+                  <h3 className="font-semibold text-white">{event.title}</h3>
+                  <p className="text-sm text-slate-400 flex items-center gap-1 mt-0.5"><MapPin size={12} /> {event.location}</p>
                   <p className="text-xs text-gray-400 mt-1 flex items-center gap-1"><Users size={12} /> {event.registered} registered · {spotsLeft > 0 ? `${spotsLeft} spots left` : 'Full'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 flex-shrink-0">
-                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">{event.date}</span>
+                <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-medium">{event.date}</span>
                 <button onClick={() => toggleRegistration(event.id)} className="p-2 text-gray-400 hover:text-red-500 transition-colors">
                   <XCircle size={18} />
                 </button>

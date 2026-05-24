@@ -25,7 +25,7 @@ export default function OnePagerPage() {
     <DashboardLayout variant="player" title="Recruiting One-Pager" subtitle="Your shareable profile for college coaches" action={
       <button onClick={() => window.print()} className="btn btn-secondary flex items-center gap-2"><Printer size={16} /> Print</button>
     }>
-      <div id="onepager-content" className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden print:shadow-none print:rounded-none">
+      <div id="onepager-content" className="max-w-4xl mx-auto bg-navy-800 rounded-2xl shadow-lg overflow-hidden print:shadow-none print:rounded-none">
         <div className="bg-gradient-to-r from-[#121B47] to-[#0134BD] text-white p-8 print:p-6">
           <div className="flex items-start justify-between">
             <div>
@@ -42,24 +42,24 @@ export default function OnePagerPage() {
 
         <div className="p-8 space-y-8">
           <section>
-            <h2 className="text-xl font-bold text-[#121B47] mb-4 border-b border-gray-200 pb-2">Player Bio</h2>
-            <p className="text-gray-700 leading-relaxed">{p.bio}</p>
+            <h2 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Player Bio</h2>
+            <p className="text-gray-300 leading-relaxed">{p.bio}</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-[#121B47] mb-4 border-b border-gray-200 pb-2">Stats Snapshot</h2>
+            <h2 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Stats Snapshot</h2>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
               {Object.entries(p.stats).map(([key, val]) => (
-                <div key={key} className="text-center p-3 bg-slate-50 rounded-lg">
-                  <p className="text-2xl font-bold text-[#121B47]">{val}</p>
-                  <p className="text-xs text-gray-500 uppercase mt-1">{key === 'threep' ? '3PT%' : key === 'ftp' ? 'FT%' : key === 'fgp' ? 'FG%' : key.toUpperCase()}</p>
+                <div key={key} className="text-center p-3 bg-white/5 rounded-lg">
+                  <p className="text-2xl font-bold text-white">{val}</p>
+                  <p className="text-xs text-slate-400 uppercase mt-1">{key === 'threep' ? '3PT%' : key === 'ftp' ? 'FT%' : key === 'fgp' ? 'FG%' : key.toUpperCase()}</p>
                 </div>
               ))}
             </div>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-[#121B47] mb-4 border-b border-gray-200 pb-2">Film & Highlights</h2>
+            <h2 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Film & Highlights</h2>
             <div className="space-y-2">
               {p.filmLinks.map((link, i) => (
                 <a key={i} href={`https://${link}`} target="_blank" rel="noopener noreferrer" className="block text-[#0134BD] hover:underline">{link}</a>
@@ -68,11 +68,11 @@ export default function OnePagerPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-[#121B47] mb-4 border-b border-gray-200 pb-2">Coach Contact</h2>
-            <p className="text-gray-700">{p.coachContact}</p>
+            <h2 className="text-xl font-bold text-white mb-4 border-b border-white/10 pb-2">Coach Contact</h2>
+            <p className="text-gray-300">{p.coachContact}</p>
           </section>
 
-          <section className="flex items-center gap-3 pt-4 border-t border-gray-200">
+          <section className="flex items-center gap-3 pt-4 border-t border-white/10">
             <VerifiedBadge level={verification.badge} size="lg" />
             <span className="text-sm text-gray-400">Verified since {verification.verifiedDate}</span>
           </section>

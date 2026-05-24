@@ -15,29 +15,29 @@ export default function CoachDashboard() {
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {pipelineStats.map(s => (
-            <div key={s.label} className="bg-white rounded-xl shadow-sm p-4">
-              <p className="text-2xl font-bold text-[#121B47]">{s.value}</p>
-              <p className="text-xs text-gray-500 mt-1">{s.label}</p>
+            <div key={s.label} className="bg-navy-800 rounded-xl shadow-sm p-4">
+              <p className="text-2xl font-bold text-white">{s.value}</p>
+              <p className="text-xs text-slate-400 mt-1">{s.label}</p>
               <p className="text-xs text-gray-400 mt-0.5">{s.change}</p>
             </div>
           ))}
         </div>
 
         <div className="grid md:grid-cols-3 gap-5">
-          <Link to="/coach/search" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all flex flex-col items-center text-center gap-3">
+          <Link to="/coach/search" className="bg-navy-800 rounded-xl shadow-sm p-6 hover:shadow-md transition-all flex flex-col items-center text-center gap-3">
             <div className="w-12 h-12 bg-[#121B47] rounded-xl flex items-center justify-center text-[#FB6C1D]"><Search size={22} /></div>
-            <h3 className="font-bold text-[#121B47]">Search Players</h3>
-            <p className="text-sm text-gray-500">Filter by class, position, GPA, state, and more.</p>
+            <h3 className="font-bold text-white">Search Players</h3>
+            <p className="text-sm text-slate-400">Filter by class, position, GPA, state, and more.</p>
           </Link>
-          <Link to="/coach/shortlist" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all flex flex-col items-center text-center gap-3">
+          <Link to="/coach/shortlist" className="bg-navy-800 rounded-xl shadow-sm p-6 hover:shadow-md transition-all flex flex-col items-center text-center gap-3">
             <div className="w-12 h-12 bg-[#121B47] rounded-xl flex items-center justify-center text-[#C8A24A]"><Star size={22} /></div>
-            <h3 className="font-bold text-[#121B47]">My Shortlist</h3>
-            <p className="text-sm text-gray-500">View and manage your saved prospects with pipeline tracking.</p>
+            <h3 className="font-bold text-white">My Shortlist</h3>
+            <p className="text-sm text-slate-400">View and manage your saved prospects with pipeline tracking.</p>
           </Link>
-          <Link to="/coach/events" className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all flex flex-col items-center text-center gap-3">
+          <Link to="/coach/events" className="bg-navy-800 rounded-xl shadow-sm p-6 hover:shadow-md transition-all flex flex-col items-center text-center gap-3">
             <div className="w-12 h-12 bg-[#121B47] rounded-xl flex items-center justify-center text-green-500"><Calendar size={22} /></div>
-            <h3 className="font-bold text-[#121B47]">Events</h3>
-            <p className="text-sm text-gray-500">Upcoming exposure events and evaluation windows.</p>
+            <h3 className="font-bold text-white">Events</h3>
+            <p className="text-sm text-slate-400">Upcoming exposure events and evaluation windows.</p>
           </Link>
         </div>
 

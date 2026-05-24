@@ -21,10 +21,10 @@ export default function CoachEventsPage() {
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${ev.live ? 'bg-brand-orange text-white' : 'bg-slate-100 text-slate-400'}`}><Calendar size={18} /></div>
               <div className="flex-1">
                 <div className="flex items-start justify-between gap-3">
-                  <div><p className="font-semibold text-slate-800">{ev.name}</p><p className="text-sm text-slate-500 mt-0.5">{ev.dates}</p><span className="flex items-center gap-1 text-xs text-slate-400 mt-1"><MapPin size={10} />{ev.location}</span></div>
+                  <div><p className="font-semibold text-gray-200">{ev.name}</p><p className="text-sm text-slate-500 mt-0.5">{ev.dates}</p><span className="flex items-center gap-1 text-xs text-slate-400 mt-1"><MapPin size={10} />{ev.location}</span></div>
                   <span className={`badge flex-shrink-0 ${ev.live ? 'badge-orange' : 'badge-navy'}`}>{ev.type}</span>
                 </div>
-                {ev.live && <p className="text-xs text-red-600 mt-2 font-medium">No communication with uncommitted prospects during this window</p>}
+                {ev.live && <p className="text-xs text-red-400 mt-2 font-medium">No communication with uncommitted prospects during this window</p>}
               </div>
             </div>
           ))}

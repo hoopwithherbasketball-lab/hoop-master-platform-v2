@@ -33,7 +33,7 @@ export default function CheckoutPage() {
     return (
       <PageShell title="Checkout" description="Select a valid service plan." badge="Checkout">
         <div className="text-center py-16">
-          <p className="text-gray-500 text-lg mb-4">No plan selected.</p>
+          <p className="text-slate-400 text-lg mb-4">No plan selected.</p>
           <Link
             to="/services"
             className="bg-[#0134BD] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#002a80] transition-colors"
@@ -49,18 +49,18 @@ export default function CheckoutPage() {
     <PageShell title={`Checkout — ${plan.title}`} description={`Complete purchase of ${plan.title}`} badge="Checkout">
       <div className="max-w-2xl mx-auto space-y-8">
         {/* Order Summary */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-[#121B47] mb-4">Order Summary</h2>
-          <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-4">
+        <div className="bg-navy-800 p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold text-white mb-4">Order Summary</h2>
+          <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
             <div>
-              <h3 className="font-semibold text-[#121B47]">{plan.title}</h3>
-              <p className="text-sm text-gray-500">{plan.description}</p>
+              <h3 className="font-semibold text-white">{plan.title}</h3>
+              <p className="text-sm text-slate-400">{plan.description}</p>
             </div>
             <span className="text-2xl font-bold text-[#FB6C1D]">{plan.price}</span>
           </div>
           <div className="space-y-2 mb-4">
             {plan.features.map((feature) => (
-              <div key={feature} className="flex items-center text-sm text-gray-600">
+              <div key={feature} className="flex items-center text-sm text-slate-400">
                 <svg className="w-4 h-4 text-[#0134BD] mr-2 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
@@ -68,34 +68,34 @@ export default function CheckoutPage() {
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-            <span className="text-lg font-semibold text-[#121B47]">Total</span>
-            <span className="text-2xl font-bold text-[#121B47]">{plan.price}</span>
+          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+            <span className="text-lg font-semibold text-white">Total</span>
+            <span className="text-2xl font-bold text-white">{plan.price}</span>
           </div>
         </div>
 
         {/* Contact Info */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-[#121B47] mb-4">Contact Information</h2>
+        <div className="bg-navy-800 p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold text-white mb-4">Contact Information</h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your full name"
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
+                className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
+                className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
               />
             </div>
           </div>

@@ -63,11 +63,11 @@ export default function DashboardSidebar({ variant }: Props) {
   }
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-100 h-screen sticky top-16 flex flex-col overflow-y-auto">
+    <aside className="w-64 bg-navy-800 border-r border-white/10 h-screen sticky top-16 flex flex-col overflow-y-auto">
       <div className="p-4 flex-1">
-        <div className="mb-6 px-4 py-3 bg-slate-50 rounded-xl">
+        <div className="mb-6 px-4 py-3 bg-white/5 rounded-xl">
           <p className="text-xs text-slate-500 font-medium">Signed in as</p>
-          <p className="text-sm font-semibold text-slate-800 truncate mt-0.5">{user?.email}</p>
+          <p className="text-sm font-semibold text-gray-200 truncate mt-0.5">{user?.email}</p>
           <span className="badge badge-navy mt-1.5 capitalize">{variant}</span>
         </div>
         <nav className="space-y-0.5">
@@ -77,8 +77,8 @@ export default function DashboardSidebar({ variant }: Props) {
           {navItems.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
         </nav>
       </div>
-      <div className="p-4 border-t border-slate-100">
-        <button onClick={handleSignOut} className="sidebar-link-inactive w-full text-red-500 hover:bg-red-50 hover:text-red-600"><LogOut size={16} /><span>Sign Out</span></button>
+      <div className="p-4 border-t border-white/10">
+        <button onClick={handleSignOut} className="sidebar-link-inactive w-full text-red-400 hover:bg-red-500/20 hover:text-red-300"><LogOut size={16} /><span>Sign Out</span></button>
       </div>
     </aside>
   )

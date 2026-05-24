@@ -34,7 +34,7 @@ export const CTABanner: React.FC<CTABannerProps> = ({
             onClick={action.onClick}
             className={
               action.variant === 'secondary'
-                ? 'bg-white text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors'
+                ? 'bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors'
                 : 'bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors'
             }
           >

@@ -31,7 +31,7 @@ export default function AdminOverview() {
     <DashboardLayout variant="admin" title="Admin Overview" subtitle="Elite GBB ProCoach operations dashboard">
       {loading ? (<div className="grid grid-cols-2 md:grid-cols-4 gap-5 animate-pulse">{[...Array(4)].map((_, i) => <div key={i} className="card h-28" />)}</div>) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-          {cards.map(s => (<div key={s.label} className="stat-card"><span className={s.color}>{s.icon}</span><p className="font-display text-3xl font-bold text-navy-900 mt-2">{s.value}</p><p className="text-xs text-slate-500">{s.label}</p></div>))}
+          {cards.map(s => (<div key={s.label} className="stat-card"><span className={s.color}>{s.icon}</span><p className="font-display text-3xl font-bold text-white mt-2">{s.value}</p><p className="text-xs text-slate-500">{s.label}</p></div>))}
         </div>
       )}
     </DashboardLayout>

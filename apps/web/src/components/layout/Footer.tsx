@@ -45,7 +45,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-600">
+        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-400">
           <p>2026 Elite GBB / Hoop With Her. All rights reserved.</p>
           <p>Built for girls basketball families, coaches and programs.</p>
         </div>

@@ -12,13 +12,13 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 pt-16 py-12">
+    <div className="min-h-screen bg-white/5 flex items-center justify-center px-4 pt-16 py-12">
       <div className="w-full max-w-lg">
         <div className="text-center mb-8">
           <div className="w-12 h-12 bg-navy-900 rounded-xl flex items-center justify-center mx-auto mb-4">
             <span className="text-white font-display font-bold text-lg">GBB</span>
           </div>
-          <h1 className="font-display text-3xl font-bold text-navy-900">Create Your Account</h1>
+          <h1 className="font-display text-3xl font-bold text-white">Create Your Account</h1>
           <p className="text-slate-500 mt-2 text-sm">Join Elite GBB ProCoach</p>
         </div>
         <div className="card">

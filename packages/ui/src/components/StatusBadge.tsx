@@ -9,11 +9,11 @@ export interface StatusBadgeProps {
 }
 
 const statusColors: Record<BadgeStatus, string> = {
-  active: 'bg-green-100 text-green-800',
-  inactive: 'bg-gray-100 text-gray-800',
+  active: 'bg-green-500/20 text-green-800',
+  inactive: 'bg-white/10 text-gray-200',
   pending: 'bg-yellow-100 text-yellow-800',
-  completed: 'bg-blue-100 text-blue-800',
-  error: 'bg-red-100 text-red-800'
+  completed: 'bg-blue-500/20 text-blue-800',
+  error: 'bg-red-500/20 text-red-800'
 };
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({

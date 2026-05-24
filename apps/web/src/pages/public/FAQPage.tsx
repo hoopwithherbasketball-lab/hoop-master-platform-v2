@@ -14,12 +14,12 @@ export default function FAQPage() {
     <PageShell title="Frequently Asked Questions" description="Common questions about Elite GBB and our platform." badge="FAQ">
       <div className="max-w-3xl mx-auto space-y-4">
         {faqs.map((faq, i) => (
-          <details key={i} className="bg-white p-6 rounded-lg shadow-md group">
-            <summary className="text-lg font-semibold text-[#121B47] cursor-pointer list-none flex items-center justify-between">
+          <details key={i} className="bg-navy-800 p-6 rounded-lg shadow-md group">
+            <summary className="text-lg font-semibold text-white cursor-pointer list-none flex items-center justify-between">
               {faq.q}
               <span className="text-[#0134BD] group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <p className="mt-4 text-gray-600">{faq.a}</p>
+            <p className="mt-4 text-slate-400">{faq.a}</p>
           </details>
         ))}
       </div>

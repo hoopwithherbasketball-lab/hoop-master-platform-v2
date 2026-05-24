@@ -19,12 +19,12 @@ export default function AdminAuditsPage() {
           {audits.map((a: any) => (
             <div key={a.id} className="card">
               <div className="flex items-center justify-between mb-3">
-                <p className="font-semibold text-slate-800 text-sm">Submission #{a.id?.slice(-6)}</p>
+                <p className="font-semibold text-gray-200 text-sm">Submission #{a.id?.slice(-6)}</p>
                 <p className="text-xs text-slate-400">{new Date(a.submitted_at).toLocaleDateString()}</p>
               </div>
               <div className="grid sm:grid-cols-2 gap-3 text-sm">
-                {a.goals && <div className="bg-slate-50 rounded-lg p-3"><p className="text-xs font-semibold text-slate-500 mb-1">Goals</p><p className="text-slate-700">{a.goals}</p></div>}
-                {a.biggest_concern && <div className="bg-slate-50 rounded-lg p-3"><p className="text-xs font-semibold text-slate-500 mb-1">Biggest Concern</p><p className="text-slate-700">{a.biggest_concern}</p></div>}
+                {a.goals && <div className="bg-white/5 rounded-lg p-3"><p className="text-xs font-semibold text-slate-500 mb-1">Goals</p><p className="text-gray-300">{a.goals}</p></div>}
+                {a.biggest_concern && <div className="bg-white/5 rounded-lg p-3"><p className="text-xs font-semibold text-slate-500 mb-1">Biggest Concern</p><p className="text-gray-300">{a.biggest_concern}</p></div>}
               </div>
             </div>
           ))}

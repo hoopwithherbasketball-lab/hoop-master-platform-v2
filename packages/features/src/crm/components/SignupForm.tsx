@@ -43,12 +43,12 @@ export function SignupForm({ onSuccess, defaultRole = 'player', className = '' }
   return (
     <form onSubmit={handleSubmit} className={`space-y-5 ${className}`}>
       {error && (
-        <div className="bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-100">
+        <div className="bg-red-500/10 text-red-400 text-sm px-4 py-3 rounded-lg border border-red-500/20">
           {error}
         </div>
       )}
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">I am a...</label>
+        <label className="block text-sm font-medium text-gray-300 mb-1">I am a...</label>
         <div className="grid grid-cols-2 gap-2 mt-1">
           {roles.map(r => (
             <button
@@ -57,12 +57,12 @@ export function SignupForm({ onSuccess, defaultRole = 'player', className = '' }
               onClick={() => setRole(r.value)}
               className={`p-3 rounded-xl border-2 text-left transition-all ${
                 role === r.value
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-slate-200 hover:border-slate-300'
+                  ? 'border-blue-500 bg-blue-500/20'
+                  : 'border-white/10 hover:border-white/30'
               }`}
             >
               <p className={`text-sm font-semibold ${
-                role === r.value ? 'text-blue-600' : 'text-slate-800'
+                role === r.value ? 'text-blue-400' : 'text-gray-200'
               }`}>
                 {r.label}
               </p>
@@ -72,23 +72,23 @@ export function SignupForm({ onSuccess, defaultRole = 'player', className = '' }
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
         <input
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="input-dark w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           placeholder="you@email.com"
           required
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+        <label className="block text-sm font-medium text-gray-300 mb-1">Password</label>
         <input
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="input-dark w-full px-3 py-2 border border-white/20 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           placeholder="Min. 6 characters"
           required
         />
@@ -96,7 +96,7 @@ export function SignupForm({ onSuccess, defaultRole = 'player', className = '' }
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+        className="btn-primary w-full py-2 px-4"
       >
         {loading ? 'Creating account...' : 'Create Account'}
       </button>

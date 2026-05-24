@@ -20,7 +20,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
   onViewProfile,
 }) => {
   return (
-    <article className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+    <article className="bg-navy-800 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
       <div className="p-6">
         <div className="flex items-center mb-4">
           <img
@@ -29,11 +29,11 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
             className="w-16 h-16 rounded-full mr-4 object-cover"
           />
           <div>
-            <h3 className="text-xl font-semibold text-[#121B47]">{name}</h3>
-            <p className="text-gray-600">{position} &bull; Class of {gradYear}</p>
+            <h3 className="text-xl font-semibold text-white">{name}</h3>
+            <p className="text-slate-400">{position} &bull; Class of {gradYear}</p>
           </div>
         </div>
-        <p className="text-gray-600 mb-3">{location}</p>
+        <p className="text-slate-400 mb-3">{location}</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag) => (
             <span

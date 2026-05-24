@@ -13,10 +13,10 @@ export default function ConnectGBBHubPage() {
     <PageShell title="ConnectGBB" description="The membership platform for elite girls basketball development." badge="Community">
       <div className="grid gap-6 md:grid-cols-3">
         {sections.map(s => (
-          <Link key={s.path} to={s.path} className={`bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all border-l-4 ${s.color} group`}>
+          <Link key={s.path} to={s.path} className={`bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-all border-l-4 ${s.color} group`}>
             <div className="text-3xl mb-3">{s.icon}</div>
-            <h3 className="text-xl font-semibold text-[#121B47] mb-2 group-hover:text-[#0134BD] transition-colors">{s.title}</h3>
-            <p className="text-gray-600 text-sm">{s.desc}</p>
+            <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-[#0134BD] transition-colors">{s.title}</h3>
+            <p className="text-slate-400 text-sm">{s.desc}</p>
           </Link>
         ))}
       </div>

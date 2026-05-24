@@ -17,33 +17,33 @@ export default function AdminOrdersPage() {
             { label: 'Completed', value: orders.filter(o => o.status === 'completed').length, color: 'text-green-600' },
             { label: 'Revenue', value: `$${totalRevenue}`, color: 'text-[#C8A24A]' },
           ].map(s => (
-            <div key={s.label} className="bg-white rounded-xl shadow-sm p-4 text-center">
+            <div key={s.label} className="bg-navy-800 rounded-xl shadow-sm p-4 text-center">
               <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-              <p className="text-xs text-gray-500 mt-1">{s.label}</p>
+              <p className="text-xs text-slate-400 mt-1">{s.label}</p>
             </div>
           ))}
         </div>
 
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-navy-800 rounded-xl shadow-md overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
+            <thead className="bg-white/5 border-b border-white/10">
               <tr>
-                <th className="px-4 py-3 text-left text-xs text-gray-500 uppercase">Order</th>
-                <th className="px-4 py-3 text-left text-xs text-gray-500 uppercase">Athlete</th>
-                <th className="px-4 py-3 text-left text-xs text-gray-500 uppercase">Service</th>
-                <th className="px-4 py-3 text-left text-xs text-gray-500 uppercase">Package</th>
-                <th className="px-4 py-3 text-left text-xs text-gray-500 uppercase">Amount</th>
-                <th className="px-4 py-3 text-left text-xs text-gray-500 uppercase">Status</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Order</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Athlete</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Service</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Package</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Amount</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-white/10">
               {orders.map(o => (
-                <tr key={o.id} className="hover:bg-slate-50">
+                <tr key={o.id} className="hover:bg-white/5">
                   <td className="px-4 py-4"><Link to={`/dashboard/services/${o.id}`} className="font-medium text-[#0134BD] hover:underline">{o.id}</Link></td>
-                  <td className="px-4 py-4 text-slate-800">{o.athlete}</td>
-                  <td className="px-4 py-4 text-slate-600">{o.service}</td>
-                  <td className="px-4 py-4 text-slate-600">{o.package}</td>
-                  <td className="px-4 py-4 text-slate-600 flex items-center gap-1"><DollarSign size={12} />{o.amount}</td>
+                  <td className="px-4 py-4 text-gray-200">{o.athlete}</td>
+                  <td className="px-4 py-4 text-slate-400">{o.service}</td>
+                  <td className="px-4 py-4 text-slate-400">{o.package}</td>
+                  <td className="px-4 py-4 text-slate-400 flex items-center gap-1"><DollarSign size={12} />{o.amount}</td>
                   <td className="px-4 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-medium capitalize ${statusColors[o.status]}`}>{o.status}</span></td>
                 </tr>
               ))}

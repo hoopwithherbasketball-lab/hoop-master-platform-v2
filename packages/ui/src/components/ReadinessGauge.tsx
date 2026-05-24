@@ -11,7 +11,7 @@ export const ReadinessGauge: React.FC<ReadinessGaugeProps> = ({
 }) => {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative w-24 h-24 rounded-full border-4 border-gray-200 flex items-center justify-center">
+      <div className="relative w-24 h-24 rounded-full border-4 border-white/10 flex items-center justify-center">
         <div
           className="absolute inset-0 rounded-full border-4 border-blue-500"
           style={{
@@ -20,7 +20,7 @@ export const ReadinessGauge: React.FC<ReadinessGaugeProps> = ({
         />
         <span className="text-lg font-bold">{percentage}%</span>
       </div>
-      {label && <p className="mt-2 text-sm text-gray-600">{label}</p>}
+      {label && <p className="mt-2 text-sm text-slate-400">{label}</p>}
     </div>
   );
 };

@@ -37,9 +37,9 @@ export default function Navbar() {
                   <ChevronDown size={14} />
                 </button>
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-slate-100 py-1.5 z-50">
-                    <Link to={getDashboardPath()} onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">Dashboard</Link>
-                    <button onClick={handleSignOut} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sign Out</button>
+                  <div className="absolute right-0 mt-2 w-44 bg-navy-800 rounded-xl shadow-lg border border-white/10 py-1.5 z-50">
+                    <Link to={getDashboardPath()} onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5">Dashboard</Link>
+                    <button onClick={handleSignOut} className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/20">Sign Out</button>
                   </div>
                 )}
               </div>

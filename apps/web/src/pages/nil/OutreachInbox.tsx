@@ -13,11 +13,11 @@ export default function OutreachInbox() {
         {messages.map((message) => (
           <div key={`${message.from}-${message.subject}`} className="card p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <p className="text-sm font-semibold text-navy-900">{message.from}</p>
+              <p className="text-sm font-semibold text-white">{message.from}</p>
               <p className="text-sm text-slate-500">{message.subject}</p>
             </div>
             <div className="text-sm text-slate-500">{message.received}</div>
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase text-slate-600">{message.status}</span>
+            <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase text-slate-400">{message.status}</span>
           </div>
         ))}
       </div>
