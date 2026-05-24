@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import { useAuth } from '../contexts/AuthContextValue.js'
 
 export interface IntakeFormData {
   player_name: string
@@ -63,6 +65,7 @@ export function useIntakeForm() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const totalSteps = 9
+  const { user } = useAuth()
 
   const update = (field: keyof IntakeFormData, value: string | string[]) => {
     setData(prev => ({ ...prev, [field]: value }))
@@ -81,9 +84,37 @@ export function useIntakeForm() {
   const submit = async () => {
     setSubmitting(true)
     setError('')
-    await new Promise(r => setTimeout(r, 1000))
-    setSubmitting(false)
-    return true
+
+    try {
+      const { error: err } = await supabase.from('player_profiles').upsert({
+        user_id: user?.id,
+        first_name: data.player_name.split(' ')[0] || '',
+        last_name: data.player_name.split(' ').slice(1).join(' ') || '',
+        display_name: data.preferred_name || null,
+        class_year: data.grad_class ? parseInt(data.grad_class) : null,
+        position: data.primary_position || null,
+        secondary_position: data.secondary_position || null,
+        jersey_number: data.jersey_number || null,
+        height: data.height || null,
+        city: data.city || null,
+        state: data.state || null,
+        school_name: data.school || null,
+        team_name: data.team_names || null,
+        instagram_handle: data.instagram_handle || null,
+        film_url: data.film_links || null,
+        bio: data.self_words || null,
+        profile_completion_percent: 100,
+        is_public: true,
+      })
+
+      if (err) throw err
+      setSubmitting(false)
+      return true
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Submission failed')
+      setSubmitting(false)
+      return false
+    }
   }
 
   return { step, data, submitting, error, totalSteps, update, togglePrideTag, next, prev, submit }

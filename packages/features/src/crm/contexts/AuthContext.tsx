@@ -64,15 +64,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       password,
     });
 
-    if (data.user && !error) {
-      // Create user role
-      await supabase.from('user_roles').insert({
+    if (error) return { error };
+
+    if (data.user) {
+      const { error: roleError } = await supabase.from('user_roles').insert({
         user_id: data.user.id,
         role,
       });
+
+      if (roleError) {
+        console.error('Failed to assign role:', roleError);
+        return { error: roleError };
+      }
     }
 
-    return { error };
+    return { error: null };
   }
 
   async function signOut() {

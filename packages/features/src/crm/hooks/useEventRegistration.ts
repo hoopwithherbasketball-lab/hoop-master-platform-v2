@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import { useAuth } from '../contexts/AuthContextValue.js'
 
 export interface EventInfo {
   id: string
@@ -21,18 +23,61 @@ const MOCK_EVENTS: EventInfo[] = [
 export function useEventRegistration() {
   const [registered, setRegistered] = useState<Set<string>>(new Set())
   const [events] = useState(MOCK_EVENTS)
+  const [loading, setLoading] = useState(true)
+  const { user } = useAuth()
 
-  const toggleRegistration = (eventId: string) => {
-    setRegistered(prev => {
-      const next = new Set(prev)
-      if (next.has(eventId)) next.delete(eventId)
-      else next.add(eventId)
-      return next
-    })
-  }
+  useEffect(() => {
+    if (!user) {
+      setLoading(false)
+      return
+    }
+
+    const loadRegistrations = async () => {
+      const { data } = await supabase
+        .from('event_registrations')
+        .select('event_id')
+        .eq('user_id', user.id)
+        .eq('status', 'registered')
+
+      if (data) {
+        setRegistered(new Set(data.map(r => r.event_id)))
+      }
+      setLoading(false)
+    }
+
+    loadRegistrations()
+  }, [user])
+
+  const toggleRegistration = useCallback(async (eventId: string) => {
+    if (!user) return
+
+    if (registered.has(eventId)) {
+      const { error } = await supabase
+        .from('event_registrations')
+        .update({ status: 'cancelled' })
+        .eq('event_id', eventId)
+        .eq('user_id', user.id)
+
+      if (!error) {
+        setRegistered(prev => {
+          const next = new Set(prev)
+          next.delete(eventId)
+          return next
+        })
+      }
+    } else {
+      const { error } = await supabase
+        .from('event_registrations')
+        .insert({ event_id: eventId, user_id: user.id })
+
+      if (!error) {
+        setRegistered(prev => new Set(prev).add(eventId))
+      }
+    }
+  }, [user, registered])
 
   const isRegistered = (eventId: string) => registered.has(eventId)
   const myEvents = events.filter(e => registered.has(e.id))
 
-  return { events, myEvents, registeredCount: registered.size, toggleRegistration, isRegistered }
+  return { events, myEvents, registeredCount: registered.size, toggleRegistration, isRegistered, loading }
 }
