@@ -33,14 +33,18 @@ export function useEventRegistration() {
     }
 
     const loadRegistrations = async () => {
-      const { data } = await supabase
-        .from('event_registrations')
-        .select('event_id')
-        .eq('user_id', user.id)
-        .eq('status', 'registered')
+      try {
+        const { data } = await supabase
+          .from('event_registrations')
+          .select('event_id')
+          .eq('user_id', user.id)
+          .eq('status', 'registered')
 
-      if (data) {
-        setRegistered(new Set(data.map(r => r.event_id)))
+        if (data) {
+          setRegistered(new Set(data.map(r => r.event_id)))
+        }
+      } catch {
+        // table may not exist yet
       }
       setLoading(false)
     }
@@ -51,28 +55,32 @@ export function useEventRegistration() {
   const toggleRegistration = useCallback(async (eventId: string) => {
     if (!user) return
 
-    if (registered.has(eventId)) {
-      const { error } = await supabase
-        .from('event_registrations')
-        .update({ status: 'cancelled' })
-        .eq('event_id', eventId)
-        .eq('user_id', user.id)
+    try {
+      if (registered.has(eventId)) {
+        const { error } = await supabase
+          .from('event_registrations')
+          .update({ status: 'cancelled' })
+          .eq('event_id', eventId)
+          .eq('user_id', user.id)
 
-      if (!error) {
-        setRegistered(prev => {
-          const next = new Set(prev)
-          next.delete(eventId)
-          return next
-        })
-      }
-    } else {
-      const { error } = await supabase
-        .from('event_registrations')
-        .insert({ event_id: eventId, user_id: user.id })
+        if (!error) {
+          setRegistered(prev => {
+            const next = new Set(prev)
+            next.delete(eventId)
+            return next
+          })
+        }
+      } else {
+        const { error } = await supabase
+          .from('event_registrations')
+          .insert({ event_id: eventId, user_id: user.id })
 
-      if (!error) {
-        setRegistered(prev => new Set(prev).add(eventId))
+        if (!error) {
+          setRegistered(prev => new Set(prev).add(eventId))
+        }
       }
+    } catch {
+      // table may not exist yet
     }
   }, [user, registered])
 
