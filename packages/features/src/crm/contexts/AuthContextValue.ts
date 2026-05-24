@@ -11,6 +11,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, role: UserRole) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   hasRole: (role: UserRole) => boolean;
+  refreshRoles: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);

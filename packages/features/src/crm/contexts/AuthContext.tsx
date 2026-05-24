@@ -94,6 +94,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const hasRole = (role: UserRole) => roles.includes(role);
 
+  async function refreshRoles() {
+    if (user) {
+      await loadRoles(user.id);
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -105,6 +111,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         signUp,
         signOut,
         hasRole,
+        refreshRoles,
       }}
     >
       {children}

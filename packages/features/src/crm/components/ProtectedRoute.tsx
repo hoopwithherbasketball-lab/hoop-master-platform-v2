@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContextValue.js'
 import type { UserRole } from '@hoop-master/types'
@@ -9,7 +9,11 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, role }: ProtectedRouteProps) {
-  const { user, loading, hasRole } = useAuth()
+  const { user, loading, hasRole, refreshRoles } = useAuth()
+
+  useEffect(() => {
+    if (user) { refreshRoles() }
+  }, [])
 
   if (loading) {
     return (
