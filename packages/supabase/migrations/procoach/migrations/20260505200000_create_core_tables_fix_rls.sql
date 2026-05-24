@@ -295,6 +295,42 @@ CREATE POLICY "Admins can manage leads" ON leads
 CREATE INDEX IF NOT EXISTS leads_status_idx ON leads(status);
 CREATE INDEX IF NOT EXISTS leads_email_idx ON leads(email);
 
+-- Create events table (for showcases, clinics, camps)
+CREATE TABLE IF NOT EXISTS events (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  title text NOT NULL DEFAULT '',
+  description text NOT NULL DEFAULT '',
+  event_type text NOT NULL DEFAULT 'clinic',
+  location text NOT NULL DEFAULT '',
+  address text NOT NULL DEFAULT '',
+  start_date timestamptz,
+  end_date timestamptz,
+  price numeric(10,2) NOT NULL DEFAULT 0,
+  max_participants integer NOT NULL DEFAULT 0,
+  current_participants integer NOT NULL DEFAULT 0,
+  image_url text NOT NULL DEFAULT '',
+  registration_link text NOT NULL DEFAULT '',
+  organizer_id uuid REFERENCES auth.users(id) ON DELETE SET NULL,
+  age_groups text[] NOT NULL DEFAULT '{}',
+  status text NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','published','cancelled')),
+  featured boolean NOT NULL DEFAULT false,
+  is_active boolean NOT NULL DEFAULT true,
+  created_at timestamptz DEFAULT now(),
+  updated_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Anyone can view published events" ON events
+  FOR SELECT TO anon, authenticated
+  USING (status = 'published');
+
+CREATE POLICY "Admins can manage events" ON events
+  FOR ALL TO authenticated
+  USING (
+    EXISTS (SELECT 1 FROM user_roles WHERE user_id = auth.uid() AND role = 'admin')
+  );
+
 -- Create event_registrations table for event enrollment
 CREATE TABLE IF NOT EXISTS event_registrations (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
