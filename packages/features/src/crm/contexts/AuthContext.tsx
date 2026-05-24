@@ -86,6 +86,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (error) {
       console.error('Error signing out:', error);
     }
+    setUser(null);
+    setSession(null);
+    setRoles([]);
+    setLoading(false);
   }
 
   const hasRole = (role: UserRole) => roles.includes(role);
