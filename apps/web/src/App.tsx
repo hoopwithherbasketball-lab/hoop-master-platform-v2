@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, ProtectedRoute } from './lib/auth'
 import type { UserRole } from './types/database'
+import ErrorBoundary from './components/ErrorBoundary'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import HomePage from './pages/public/HomePage'
@@ -106,7 +107,7 @@ function AppRoutes() {
       <Route path="/coach/events" element={<ProtectedRoute><CoachEventsPage /></ProtectedRoute>} />
       <Route path="/coach/evaluation/:id" element={<ProtectedRoute><PlayerEvaluationPage /></ProtectedRoute>} />
       <Route path="/coach/compare" element={<ProtectedRoute><ProspectComparisonPage /></ProtectedRoute>} />
-      <Route path="/admin" element={<ProtectedRoute role="admin"><AdminOverview /></ProtectedRoute>} />
+      <Route path="/admin" element={<ProtectedRoute role="admin"><ErrorBoundary><AdminOverview /></ErrorBoundary></ProtectedRoute>} />
       <Route path="/admin/leads" element={<ProtectedRoute role="admin"><AdminLeadsPage /></ProtectedRoute>} />
       <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrdersPage /></ProtectedRoute>} />
       <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
