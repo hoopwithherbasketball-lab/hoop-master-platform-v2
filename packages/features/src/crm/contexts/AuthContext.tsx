@@ -18,18 +18,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   async function loadRoles(userId: string) {
     const results = await Promise.all(ALL_ROLES.map(r =>
-      supabase.rpc('has_role', { check_role: r }).then(({ data }) => data as boolean | null)
+      supabase.rpc('has_role', { check_role: r }).then(({ data, error }) => {
+        if (error) console.error('loadRoles has_role error for', r, error.message)
+        return data as boolean | null
+      })
     ))
-    setRoles(ALL_ROLES.filter((_, i) => results[i]))
+    const activeRoles = ALL_ROLES.filter((_, i) => results[i])
+    console.log('loadRoles active roles:', activeRoles)
+    setRoles(activeRoles)
   }
 
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        loadRoles(session.user.id);
+        await loadRoles(session.user.id);
       }
       setLoading(false);
     });
