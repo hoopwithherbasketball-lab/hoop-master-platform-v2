@@ -14,22 +14,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [roles, setRoles] = useState<UserRole[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const ALL_ROLES: UserRole[] = ['player', 'admin', 'coach', 'parent', 'club_admin']
+
   async function loadRoles(userId: string) {
-    try {
-      const { data, error } = await supabase.rpc('get_my_roles');
-      if (error) { console.error('loadRoles rpc error:', error.message, error); setRoles([]); return; }
-      console.log('loadRoles raw data:', JSON.stringify(data), 'typeof:', typeof data, 'isArray:', Array.isArray(data));
-      if (data && Array.isArray(data)) {
-        setRoles(data as UserRole[]);
-        console.log('loadRoles setRoles to:', JSON.stringify(data));
-      } else {
-        console.warn('loadRoles unexpected data format:', data);
-        setRoles([]);
-      }
-    } catch (e) {
-      console.error('loadRoles caught exception:', e);
-      setRoles([]);
-    }
+    const results = await Promise.all(ALL_ROLES.map(r =>
+      supabase.rpc('has_role', { check_role: r }).then(({ data }) => data as boolean | null)
+    ))
+    setRoles(ALL_ROLES.filter((_, i) => results[i]))
   }
 
   useEffect(() => {
