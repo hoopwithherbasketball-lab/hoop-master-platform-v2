@@ -15,13 +15,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   async function loadRoles(userId: string) {
-    const { data, error } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', userId);
+    const { data, error } = await supabase.rpc('get_my_roles');
     if (error) console.error('loadRoles error:', error);
     if (data) console.log('loadRoles data:', data);
-    setRoles(((data ?? []) as Array<{ role: string }>).map(r => r.role as UserRole));
+    setRoles((data ?? []) as UserRole[]);
   }
 
   useEffect(() => {
