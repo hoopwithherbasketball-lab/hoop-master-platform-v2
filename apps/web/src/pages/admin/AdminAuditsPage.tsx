@@ -7,7 +7,7 @@ export default function AdminAuditsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('audit_submissions').select('*').order('submitted_at', { ascending: false }).then(({ data }) => { setAudits(data ?? []); setLoading(false) }).catch(e => { console.error('AdminAuditsPage load error:', e); setLoading(false) })
+    supabase.from('audit_submissions').select('*').order('submitted_at', { ascending: false }).then(({ data }) => { setAudits(data ?? []); setLoading(false) }, e => { console.error('AdminAuditsPage load error:', e); setLoading(false) })
   }, [])
 
   return (
