@@ -61,6 +61,51 @@ export interface Database {
         Insert: Omit<Lead, 'id' | 'created_at'>
         Update: Partial<Omit<Lead, 'id'>>
       }
+      tournaments: {
+        Row: Tournament
+        Insert: Omit<Tournament, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Tournament, 'id'>>
+      }
+      events: {
+        Row: Event
+        Insert: Omit<Event, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Event, 'id'>>
+      }
+      programs: {
+        Row: Program
+        Insert: Omit<Program, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<Program, 'id'>>
+      }
+      event_registrations: {
+        Row: EventRegistration
+        Insert: Omit<EventRegistration, 'id' | 'created_at'>
+        Update: Partial<Omit<EventRegistration, 'id'>>
+      }
+      notifications: {
+        Row: Notification
+        Insert: Omit<Notification, 'id' | 'created_at'>
+        Update: Partial<Omit<Notification, 'id'>>
+      }
+      coach_profiles: {
+        Row: CoachProfile
+        Insert: Omit<CoachProfile, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<CoachProfile, 'id'>>
+      }
+      assistant_sessions: {
+        Row: AssistantSession
+        Insert: Omit<AssistantSession, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<AssistantSession, 'id'>>
+      }
+      assistant_messages: {
+        Row: AssistantMessage
+        Insert: Omit<AssistantMessage, 'id' | 'created_at'>
+        Update: Partial<Omit<AssistantMessage, 'id'>>
+      }
+      site_content: {
+        Row: SiteContent
+        Insert: Omit<SiteContent, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<SiteContent, 'id'>>
+      }
     }
   }
 }
@@ -198,4 +243,134 @@ export interface Lead {
   interest: string | null
   status: LeadStatus
   created_at: string
+}
+
+export interface Tournament {
+  id: string
+  title: string
+  description: string
+  location: string
+  address: string
+  start_date: string | null
+  end_date: string | null
+  registration_deadline: string | null
+  entry_fee: number
+  max_teams: number
+  current_teams: number
+  age_groups: string[]
+  divisions: string[]
+  format: string
+  prize_description: string
+  image_url: string
+  registration_link: string
+  organizer_id: string | null
+  status: 'draft' | 'published' | 'cancelled' | 'completed'
+  featured: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface Event {
+  id: string
+  title: string
+  description: string
+  event_type: string
+  location: string
+  address: string
+  start_date: string | null
+  end_date: string | null
+  price: number
+  max_participants: number
+  current_participants: number
+  image_url: string
+  registration_link: string
+  organizer_id: string | null
+  age_groups: string[]
+  status: 'draft' | 'published' | 'cancelled'
+  featured: boolean
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface Program {
+  id: string
+  coach_id: string | null
+  title: string
+  description: string
+  category: string
+  level: string
+  price: number
+  duration_weeks: number
+  sessions_per_week: number
+  max_participants: number
+  current_participants: number
+  image_url: string
+  location: string
+  schedule: string
+  age_min: number
+  age_max: number
+  status: 'draft' | 'published' | 'archived'
+  featured: boolean
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface EventRegistration {
+  id: string
+  event_id: string
+  user_id: string
+  player_profile_id: string | null
+  status: string
+  created_at: string
+}
+
+export interface Notification {
+  id: string
+  user_id: string
+  type: string
+  title: string
+  body: string | null
+  link: string | null
+  is_read: boolean
+  created_at: string
+}
+
+export interface CoachProfile {
+  id: string
+  user_id: string | null
+  first_name: string | null
+  last_name: string | null
+  title: string | null
+  organization: string | null
+  bio: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface AssistantSession {
+  id: string
+  coach_id: string
+  player_name: string | null
+  title: string
+  created_at: string
+  updated_at: string
+}
+
+export interface AssistantMessage {
+  id: string
+  session_id: string
+  role: 'user' | 'assistant'
+  content: string
+  created_at: string
+}
+
+export interface SiteContent {
+  id: string
+  page: string
+  section: string
+  content: string
+  created_at: string
+  updated_at: string
 }

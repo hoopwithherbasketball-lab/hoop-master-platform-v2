@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import { useAuth } from '../contexts/AuthContextValue.js'
 
 export interface ConnectedPlayer {
   id: string
@@ -18,24 +20,51 @@ export interface ActivityEntry {
   playerName: string
 }
 
-const MOCK_PLAYERS: ConnectedPlayer[] = [
-  { id: '1', name: 'Ava Grant', position: 'SG', gradClass: '2026', school: 'Sierra Canyon', consentStatus: 'approved', consentDate: '2026-03-15' },
-  { id: '2', name: 'Maya Grant', position: 'PG', gradClass: '2029', school: 'Sierra Canyon Middle', consentStatus: 'pending', consentDate: null },
-]
-
-const MOCK_ACTIVITY: ActivityEntry[] = [
-  { id: 'a1', type: 'consent', description: 'Consented to player profile for Ava Grant', date: '2026-03-15', playerName: 'Ava Grant' },
-  { id: 'a2', type: 'profile_update', description: 'Stats updated for Ava Grant', date: '2026-04-10', playerName: 'Ava Grant' },
-  { id: 'a3', type: 'evaluation', description: 'New evaluation available for Ava Grant', date: '2026-04-10', playerName: 'Ava Grant' },
-]
-
 export function useParentApproval() {
-  const [players, setPlayers] = useState(MOCK_PLAYERS)
-  const [activity] = useState(MOCK_ACTIVITY)
+  const { user } = useAuth()
+  const [players, setPlayers] = useState<ConnectedPlayer[]>([])
+  const [activity, setActivity] = useState<ActivityEntry[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const approveConsent = (playerId: string) => {
-    setPlayers(prev => prev.map(p => p.id === playerId ? { ...p, consentStatus: 'approved' as const, consentDate: new Date().toISOString().slice(0, 10) } : p))
-  }
+  useEffect(() => {
+    if (!user) return
+    const fetch = async () => {
+      try {
+        const { data } = await supabase
+          .from('player_profiles')
+          .select('id, first_name, last_name, position, class_year, school_name')
+          .eq('user_id', user.id)
 
-  return { players, activity, approveConsent }
+        const mapped: ConnectedPlayer[] = (data ?? []).map(p => ({
+          id: p.id,
+          name: `${p.first_name ?? ''} ${p.last_name ?? ''}`.trim() || 'Unknown',
+          position: p.position ?? '',
+          gradClass: p.class_year ? String(p.class_year) : '',
+          school: p.school_name ?? '',
+          consentStatus: 'approved' as const,
+          consentDate: null,
+        }))
+        setPlayers(mapped)
+        setActivity(mapped.map(p => ({
+          id: `${p.id}-connected`,
+          type: 'consent' as const,
+          description: `Connected to ${p.name}`,
+          date: new Date().toISOString().slice(0, 10),
+          playerName: p.name,
+        })))
+      } catch (e) { console.error('useParentApproval:', e) }
+      setLoading(false)
+    }
+    fetch()
+  }, [user])
+
+  const approveConsent = useCallback((playerId: string) => {
+    setPlayers(prev => prev.map(p =>
+      p.id === playerId
+        ? { ...p, consentStatus: 'approved' as const, consentDate: new Date().toISOString().slice(0, 10) }
+        : p
+    ))
+  }, [])
+
+  return { players, activity, approveConsent, loading }
 }

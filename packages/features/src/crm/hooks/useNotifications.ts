@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import { useAuth } from '../contexts/AuthContextValue.js'
 
 export interface Notification {
   id: string
@@ -10,23 +12,56 @@ export interface Notification {
   link?: string
 }
 
-const MOCK: Notification[] = [
-  { id: 'n1', type: 'evaluation', title: 'New Evaluation Available', description: 'Coach Williams posted a new evaluation for you.', timestamp: '2026-05-22T10:00:00Z', read: false, link: '/coach/evaluation/1' },
-  { id: 'n2', type: 'message', title: 'New Message', description: 'Taylor Reed sent you a message.', timestamp: '2026-05-21T14:30:00Z', read: false, link: '/connectgbb/messages' },
-  { id: 'n3', type: 'connection', title: 'Connection Request', description: 'Coach Williams wants to connect.', timestamp: '2026-05-20T09:00:00Z', read: true, link: '/connectgbb/connections' },
-  { id: 'n4', type: 'milestone', title: 'Class Milestone', description: 'Junior year stats tracking activated.', timestamp: '2026-05-15T08:00:00Z', read: true },
-]
-
 const typeIcons: Record<string, string> = { evaluation: '📋', message: '💬', connection: '🤝', consent: '✅', milestone: '🎯' }
 
 export function useNotifications() {
-  const [notifications, setNotifications] = useState(MOCK)
+  const { user } = useAuth()
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!user) return
+    const fetch = async () => {
+      try {
+        const { data } = await supabase
+          .from('notifications')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(20)
+
+        const mapped: Notification[] = (data ?? []).map(n => ({
+          id: n.id,
+          type: (['evaluation', 'message', 'connection', 'consent', 'milestone'].includes(n.type) ? n.type : 'message') as Notification['type'],
+          title: n.title,
+          description: n.body ?? '',
+          timestamp: n.created_at,
+          read: n.is_read,
+          link: n.link ?? undefined,
+        }))
+        setNotifications(mapped)
+      } catch (e) { console.error('useNotifications:', e) }
+      setLoading(false)
+    }
+    fetch()
+  }, [user])
 
   const unreadCount = notifications.filter(n => !n.read).length
 
-  const markAllRead = () => setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+  const markAllRead = useCallback(async () => {
+    if (!user) return
+    try {
+      await supabase.from('notifications').update({ is_read: true }).eq('user_id', user.id)
+      setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+    } catch (e) { console.error('markAllRead:', e) }
+  }, [user])
 
-  const markRead = (id: string) => setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n))
+  const markRead = useCallback(async (id: string) => {
+    try {
+      await supabase.from('notifications').update({ is_read: true }).eq('id', id)
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n))
+    } catch (e) { console.error('markRead:', e) }
+  }, [])
 
-  return { notifications, unreadCount, markAllRead, markRead, typeIcons }
+  return { notifications, unreadCount, markAllRead, markRead, typeIcons, loading }
 }

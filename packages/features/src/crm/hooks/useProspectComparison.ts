@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
 
 export interface ComparableProspect {
   id: string
@@ -12,17 +13,38 @@ export interface ComparableProspect {
   strengths: string[]
 }
 
-const POOL: ComparableProspect[] = [
-  { id: '1', name: 'Ava Grant', position: 'SG', grade: '2026', school: 'Sierra Canyon', height: "5'11\"", rating: 92, stats: { ppg: 18.4, apg: 5.2, rpg: 7.8, fgp: 47.2 }, strengths: ['Athleticism', 'IQ', 'Defense'] },
-  { id: '2', name: 'Taylor Brooks', position: 'PG', grade: '2027', school: 'Duncanville', height: "5'7\"", rating: 88, stats: { ppg: 16.2, apg: 6.1, rpg: 4.3, fgp: 44.8 }, strengths: ['Playmaking', 'Speed', 'Ball Handling'] },
-  { id: '3', name: 'Mia Carter', position: 'SF', grade: '2026', school: 'Montverde', height: "6'0\"", rating: 85, stats: { ppg: 14.8, apg: 3.5, rpg: 6.2, fgp: 45.0 }, strengths: ['Length', 'Shooting', 'Versatility'] },
-  { id: '4', name: 'Sophia Ramirez', position: 'PG', grade: '2028', school: 'Sierra Canyon', height: "5'6\"", rating: 90, stats: { ppg: 20.1, apg: 4.8, rpg: 3.9, fgp: 46.5 }, strengths: ['Scoring', 'Athleticism', 'Clutch'] },
-  { id: '5', name: 'Emma Davis', position: 'PF', grade: '2025', school: 'Whitney Young', height: "6'1\"", rating: 87, stats: { ppg: 15.3, apg: 2.1, rpg: 9.4, fgp: 48.1 }, strengths: ['Rebounding', 'Post Game', 'Strength'] },
-]
-
 export function useProspectComparison() {
-  const [selectedIds, setSelectedIds] = useState<string[]>(['1', '2'])
-  const [allProspects] = useState(POOL)
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [allProspects, setAllProspects] = useState<ComparableProspect[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const { data } = await supabase
+          .from('player_profiles')
+          .select('id, first_name, last_name, position, class_year, school_name, height')
+          .limit(20)
+
+        const mapped = (data ?? []).map(p => ({
+          id: p.id,
+          name: `${p.first_name ?? ''} ${p.last_name ?? ''}`.trim() || 'Unknown',
+          position: p.position ?? '',
+          grade: p.class_year ? String(p.class_year) : '',
+          school: p.school_name ?? '',
+          height: p.height ?? '',
+          rating: 0,
+          stats: { ppg: 0, apg: 0, rpg: 0, fgp: 0 },
+          strengths: [],
+        }))
+        setAllProspects(mapped)
+        if (mapped.length >= 2) setSelectedIds([mapped[0].id, mapped[1].id])
+        else if (mapped.length === 1) setSelectedIds([mapped[0].id])
+      } catch (e) { console.error('useProspectComparison:', e) }
+      setLoading(false)
+    }
+    fetch()
+  }, [])
 
   const toggleSelection = (id: string) => {
     setSelectedIds(prev => {
@@ -35,5 +57,5 @@ export function useProspectComparison() {
   const selected = allProspects.filter(p => selectedIds.includes(p.id))
   const available = allProspects.filter(p => !selectedIds.includes(p.id))
 
-  return { selected, available, allProspects, selectedIds, toggleSelection }
+  return { selected, available, allProspects, selectedIds, toggleSelection, loading }
 }
