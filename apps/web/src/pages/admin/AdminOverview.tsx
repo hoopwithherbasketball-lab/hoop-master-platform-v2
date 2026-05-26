@@ -10,13 +10,15 @@ export default function AdminOverview() {
   useEffect(() => { load() }, [])
 
   async function load() {
-    const [l, o, a, p] = await Promise.all([
-      supabase.from('leads').select('*', { count: 'exact', head: true }),
-      supabase.from('service_orders').select('*', { count: 'exact', head: true }),
-      supabase.from('audit_submissions').select('*', { count: 'exact', head: true }),
-      supabase.from('player_profiles').select('*', { count: 'exact', head: true }),
-    ])
-    setStats({ leads: l.count ?? 0, orders: o.count ?? 0, audits: a.count ?? 0, players: p.count ?? 0 })
+    try {
+      const [l, o, a, p] = await Promise.all([
+        supabase.from('leads').select('*', { count: 'exact', head: true }),
+        supabase.from('service_orders').select('*', { count: 'exact', head: true }),
+        supabase.from('audit_submissions').select('*', { count: 'exact', head: true }),
+        supabase.from('player_profiles').select('*', { count: 'exact', head: true }),
+      ])
+      setStats({ leads: l.count ?? 0, orders: o.count ?? 0, audits: a.count ?? 0, players: p.count ?? 0 })
+    } catch (e) { console.error('AdminOverview load error:', e) }
     setLoading(false)
   }
 
