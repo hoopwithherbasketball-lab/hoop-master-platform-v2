@@ -28,20 +28,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   useEffect(() => {
-    // Get initial session
+    // Timeout guard: don't let loading hang forever
+    const safeLoad = setTimeout(() => { setLoading(false) }, 4000)
+
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
         try { await loadRoles(session.user.id) } catch (e) { console.error('loadRoles exception:', e) }
       }
+      clearTimeout(safeLoad)
       setLoading(false);
-    }).catch(e => { console.error('getSession failed:', e); setLoading(false) });
+    }).catch(e => { clearTimeout(safeLoad); console.error('getSession failed:', e); setLoading(false) });
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => { subscription.unsubscribe(); clearTimeout(safeLoad) };
   }, []);
 
   async function signIn(email: string, password: string) {
