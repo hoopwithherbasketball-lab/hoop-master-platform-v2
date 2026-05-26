@@ -17,15 +17,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const ALL_ROLES: UserRole[] = ['player', 'admin', 'coach', 'parent', 'club_admin']
 
   async function loadRoles(userId: string) {
-    const results = await Promise.all(ALL_ROLES.map(r =>
-      supabase.rpc('has_role', { check_role: r }).then(({ data, error }) => {
-        if (error) console.error('loadRoles has_role error for', r, error.message)
-        return data as boolean | null
-      })
-    ))
-    const activeRoles = ALL_ROLES.filter((_, i) => results[i])
-    console.log('loadRoles active roles:', activeRoles)
-    setRoles(activeRoles)
+    try {
+      const results = await Promise.all(ALL_ROLES.map(r =>
+        supabase.rpc('has_role', { check_role: r }).then(({ data, error }) => {
+          if (error) console.error('loadRoles has_role error for', r, error.message)
+          return data as boolean | null
+        })
+      ))
+      const activeRoles = ALL_ROLES.filter((_, i) => results[i])
+      console.log('loadRoles active roles:', activeRoles)
+      setRoles(activeRoles)
+    } catch (e) {
+      console.error('loadRoles failed:', e)
+    }
   }
 
   useEffect(() => {
@@ -34,10 +38,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        await loadRoles(session.user.id);
+        try { await loadRoles(session.user.id) } catch (e) { console.error('loadRoles exception:', e) }
       }
       setLoading(false);
-    });
+    }).catch(e => { console.error('getSession failed:', e); setLoading(false) });
 
     // Listen for auth changes
     const {
@@ -46,7 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        await loadRoles(session.user.id);
+        try { await loadRoles(session.user.id) } catch (e) { console.error('loadRoles exception:', e) }
       } else {
         setRoles([]);
       }
