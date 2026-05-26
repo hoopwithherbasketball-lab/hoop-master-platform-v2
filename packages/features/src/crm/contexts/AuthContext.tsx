@@ -33,9 +33,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        try { await loadRoles(session.user.id) } catch (e) { console.error('loadRoles exception:', e) }
+      const user = session?.user ?? null
+      setUser(user);
+      if (user) {
+        // Validate token before making REST calls (triggers refresh if needed)
+        await supabase.auth.getUser()
+        try { await loadRoles(user.id) } catch (e) { console.error('loadRoles exception:', e) }
       }
       clearTimeout(safeLoad)
       setLoading(false);
