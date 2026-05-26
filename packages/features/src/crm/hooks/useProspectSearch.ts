@@ -1,4 +1,8 @@
-import { useState, useMemo } from 'react'
+import { useEffect, useState, useMemo } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import type { Database } from '@hoop-master/types'
+
+type PlayerProfile = Database['public']['Tables']['player_profiles']['Row']
 
 export interface Prospect {
   id: string
@@ -12,25 +16,41 @@ export interface Prospect {
   saved: boolean
 }
 
-const MOCK: Prospect[] = [
-  { id: '1', name: 'Ava Grant', position: 'SG', grade: '2026', rating: 92, state: 'CA', height: "5'11\"", school: 'Sierra Canyon', saved: false },
-  { id: '2', name: 'Taylor Brooks', position: 'PG', grade: '2027', rating: 88, state: 'TX', height: "5'7\"", school: 'Duncanville', saved: false },
-  { id: '3', name: 'Mia Carter', position: 'SF', grade: '2026', rating: 85, state: 'FL', height: "6'0\"", school: 'Montverde', saved: false },
-  { id: '4', name: 'Jordan Lee', position: 'C', grade: '2026', rating: 80, state: 'NY', height: "6'3\"", school: 'Christ the King', saved: true },
-  { id: '5', name: 'Maya Thompson', position: 'SF', grade: '2027', rating: 78, state: 'GA', height: "5'10\"", school: 'Wheeler', saved: true },
-  { id: '6', name: 'Sophia Ramirez', position: 'PG', grade: '2028', rating: 90, state: 'CA', height: "5'6\"", school: 'Sierra Canyon', saved: false },
-  { id: '7', name: 'Emma Davis', position: 'PF', grade: '2025', rating: 87, state: 'IL', height: "6'1\"", school: 'Whitney Young', saved: false },
-  { id: '8', name: 'Olivia Jones', position: 'SG', grade: '2027', rating: 83, state: 'NC', height: "5'9\"", school: 'Cary Academy', saved: false },
-]
-
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
-const GRADES = ['2025', '2026', '2027', '2028']
+const GRADES: string[] = []
 
 export function useProspectSearch() {
   const [query, setQuery] = useState('')
   const [positionFilter, setPositionFilter] = useState('')
   const [gradeFilter, setGradeFilter] = useState('')
-  const [prospects, setProspects] = useState(MOCK)
+  const [allProspects, setAllProspects] = useState<Prospect[]>([])
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { data } = await supabase.from('player_profiles').select('*').order('created_at', { ascending: false })
+      if (!data) return
+      setAllProspects((data as PlayerProfile[]).map(p => ({
+        id: p.id,
+        name: `${p.first_name} ${p.last_name}`.trim() || 'Unknown',
+        position: p.position ?? '',
+        grade: p.class_year ? String(p.class_year) : '',
+        rating: 0,
+        state: p.state ?? '',
+        height: p.height ?? '',
+        school: p.school_name ?? '',
+        saved: false,
+      })))
+    }
+    const fetchSaved = async () => {
+      const { data } = await supabase.from('coach_saved_players').select('player_profile_id')
+      if (data) setSavedIds(new Set(data.map(r => r.player_profile_id)))
+    }
+    fetch()
+    fetchSaved()
+  }, [])
+
+  const prospects = useMemo(() => allProspects.map(p => ({ ...p, saved: savedIds.has(p.id) })), [allProspects, savedIds])
 
   const filtered = useMemo(() => {
     return prospects.filter(p => {
@@ -41,8 +61,16 @@ export function useProspectSearch() {
     })
   }, [query, positionFilter, gradeFilter, prospects])
 
-  const toggleSave = (id: string) => {
-    setProspects(prev => prev.map(p => p.id === id ? { ...p, saved: !p.saved } : p))
+  const toggleSave = async (id: string) => {
+    const wasSaved = savedIds.has(id)
+    if (wasSaved) {
+      await supabase.from('coach_saved_players').delete().eq('player_profile_id', id)
+      savedIds.delete(id)
+    } else {
+      await supabase.from('coach_saved_players').insert({ coach_profile_id: '', player_profile_id: id })
+      savedIds.add(id)
+    }
+    setSavedIds(new Set(savedIds))
   }
 
   return { query, setQuery, positionFilter, setPositionFilter, gradeFilter, setGradeFilter, filtered, toggleSave, positions: POSITIONS, grades: GRADES }

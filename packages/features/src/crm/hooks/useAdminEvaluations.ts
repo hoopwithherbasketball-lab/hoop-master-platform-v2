@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
+
 export interface AdminEvalSummary {
   playerId: string
   playerName: string
@@ -10,14 +13,52 @@ export interface AdminEvalSummary {
   status: 'draft' | 'published' | 'archived'
 }
 
-const MOCK: AdminEvalSummary[] = [
-  { playerId: '1', playerName: 'Ava Grant', position: 'SG', gradClass: '2026', school: 'Sierra Canyon', overall: 92, evaluator: 'National Staff', evalDate: '2026-04-10', status: 'published' },
-  { playerId: '2', playerName: 'Taylor Brooks', position: 'PG', gradClass: '2027', school: 'Duncanville', overall: 88, evaluator: 'Regional Scout', evalDate: '2026-04-08', status: 'published' },
-  { playerId: '3', playerName: 'Mia Carter', position: 'SF', gradClass: '2026', school: 'Montverde', overall: 85, evaluator: 'National Staff', evalDate: '2026-04-05', status: 'draft' },
-  { playerId: '4', playerName: 'Sophia Ramirez', position: 'PG', gradClass: '2028', school: 'Sierra Canyon', overall: 90, evaluator: 'Regional Scout', evalDate: '2026-04-12', status: 'draft' },
-  { playerId: '5', playerName: 'Emma Davis', position: 'PF', gradClass: '2025', school: 'Whitney Young', overall: 87, evaluator: 'National Staff', evalDate: '2026-03-28', status: 'published' },
-]
-
 export function useAdminEvaluations() {
-  return { evaluations: MOCK, loading: false }
+  const [evaluations, setEvaluations] = useState<AdminEvalSummary[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('audit_results')
+          .select(`
+            id,
+            total_score,
+            created_at,
+            created_by,
+            readiness_band,
+            audit_submissions!inner(
+              player_profile_id,
+              player_profiles!inner(first_name, last_name, position, class_year, school_name)
+            )
+          `)
+          .order('created_at', { ascending: false })
+
+        if (error) { console.error('useAdminEvaluations error:', error.message); return }
+        if (!data) return
+
+        const mapped: AdminEvalSummary[] = data.map((r: any) => {
+          const sub = r.audit_submissions ?? {}
+          const prof = sub.player_profiles ?? {}
+          return {
+            playerId: sub.player_profile_id ?? '',
+            playerName: `${prof.first_name ?? ''} ${prof.last_name ?? ''}`.trim() || 'Unknown',
+            position: prof.position ?? '',
+            gradClass: prof.class_year ? String(prof.class_year) : '',
+            school: prof.school_name ?? '',
+            overall: r.total_score ?? 0,
+            evaluator: r.created_by ? r.created_by.slice(0, 8) : 'Staff',
+            evalDate: r.created_at ? r.created_at.slice(0, 10) : '',
+            status: (r.readiness_band === 'complete' ? 'published' : 'draft') as 'draft' | 'published' | 'archived',
+          }
+        })
+        setEvaluations(mapped)
+      } catch (e) { console.error('useAdminEvaluations exception:', e) }
+      setLoading(false)
+    }
+    fetch()
+  }, [])
+
+  return { evaluations, loading }
 }

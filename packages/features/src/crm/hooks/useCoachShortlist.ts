@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
 
 export interface ShortlistEntry {
   id: string
@@ -15,22 +16,45 @@ export interface ShortlistEntry {
 }
 
 const STATUS_ORDER: ShortlistEntry['status'][] = ['saved', 'contacted', 'evaluation', 'interview', 'offer', 'committed', 'archived']
-
-const MOCK: ShortlistEntry[] = [
-  { id: '1', name: 'Ava Grant', position: 'SG', grade: '2026', school: 'Sierra Canyon', state: 'CA', rating: 92, status: 'contacted', tags: ['high-major', 'guard'], notes: 'Reached out via email. Coach Williams responded positively.', dateAdded: '2026-03-10' },
-  { id: '2', name: 'Jordan Lee', position: 'C', grade: '2026', school: 'Christ the King', state: 'NY', rating: 80, status: 'evaluation', tags: ['post', 'rising'], notes: 'Need to see more game film. Potential sleeper.', dateAdded: '2026-03-22' },
-  { id: '3', name: 'Maya Thompson', position: 'SF', grade: '2027', school: 'Wheeler', state: 'GA', rating: 78, status: 'saved', tags: ['wing', 'athletic'], notes: '', dateAdded: '2026-04-05' },
-  { id: '4', name: 'Taylor Brooks', position: 'PG', grade: '2027', school: 'Duncanville', state: 'TX', rating: 88, status: 'interview', tags: ['high-major', 'floor-general'], notes: 'Scheduled Zoom call for next week.', dateAdded: '2026-04-01' },
-  { id: '5', name: 'Sophia Ramirez', position: 'PG', grade: '2028', school: 'Sierra Canyon', state: 'CA', rating: 90, status: 'saved', tags: ['emerging', 'guard'], notes: 'Young but special. Track closely.', dateAdded: '2026-04-18' },
-]
-
 const ALL_TAGS = ['high-major', 'guard', 'wing', 'post', 'floor-general', 'athletic', 'rising', 'emerging', 'sleeper', 'local']
 
 export function useCoachShortlist() {
-  const [entries, setEntries] = useState(MOCK)
+  const [entries, setEntries] = useState<ShortlistEntry[]>([])
   const [statusFilter, setStatusFilter] = useState('')
   const [tagFilter, setTagFilter] = useState('')
   const [editingNotes, setEditingNotes] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { data } = await supabase
+        .from('coach_saved_players')
+        .select(`
+          id,
+          created_at,
+          player_profile_id,
+          player_profiles!inner(first_name, last_name, position, class_year, school_name, state)
+        `)
+        .order('created_at', { ascending: false })
+      if (!data) return
+      setEntries(data.map((r: any) => {
+        const p = r.player_profiles ?? {}
+        return {
+          id: r.id,
+          name: `${p.first_name ?? ''} ${p.last_name ?? ''}`.trim() || 'Unknown',
+          position: p.position ?? '',
+          grade: p.class_year ? String(p.class_year) : '',
+          school: p.school_name ?? '',
+          state: p.state ?? '',
+          rating: 0,
+          status: 'saved' as const,
+          tags: [],
+          notes: '',
+          dateAdded: r.created_at ? r.created_at.slice(0, 10) : '',
+        }
+      }))
+    }
+    fetch()
+  }, [])
 
   const filtered = entries.filter(e => {
     if (statusFilter && e.status !== statusFilter) return false

@@ -1,28 +1,84 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
 
-export interface ServiceOrder {
+export interface ServiceOrderDisplay {
   id: string
   athlete: string
   athleteId: string
   service: string
   package: string
-  status: 'draft' | 'active' | 'review' | 'completed' | 'cancelled'
+  status: string
   submitted: string
   due: string
   amount: number
 }
 
-const MOCK: ServiceOrder[] = [
-  { id: 'ORD-2154', athlete: 'Sophia Lee', athleteId: 's1', service: 'Video Review', package: 'Starter', status: 'active', submitted: '2026-05-02', due: '2026-05-18', amount: 99 },
-  { id: 'ORD-2051', athlete: 'Kylie Brooks', athleteId: 's2', service: 'Recruiting Outreach', package: 'Development', status: 'review', submitted: '2026-04-28', due: '2026-05-15', amount: 199 },
-  { id: 'ORD-2017', athlete: 'Jamie Clark', athleteId: 's3', service: 'Brand Review', package: 'Starter', status: 'completed', submitted: '2026-04-15', due: '2026-04-30', amount: 99 },
-  { id: 'ORD-1984', athlete: 'Ava Grant', athleteId: '1', service: 'Elite Track Package', package: 'Elite Track', status: 'active', submitted: '2026-05-01', due: '2026-06-01', amount: 399 },
-  { id: 'ORD-1892', athlete: 'Maya Thompson', athleteId: 'm1', service: 'NIL Brand Strategy', package: 'Development', status: 'draft', submitted: '2026-04-20', due: '2026-06-01', amount: 199 },
-]
+const STATUS_COLORS: Record<string, string> = {
+  draft: 'bg-gray-100 text-gray-500',
+  active: 'bg-blue-100 text-blue-700',
+  review: 'bg-amber-100 text-amber-700',
+  in_review: 'bg-amber-100 text-amber-700',
+  completed: 'bg-green-100 text-green-700',
+  cancelled: 'bg-red-100 text-red-700',
+  new: 'bg-blue-500/20 text-blue-700',
+  awaiting_intake: 'bg-amber-500/20 text-amber-700',
+  needs_assets: 'bg-purple-500/20 text-purple-700',
+  assigned: 'bg-indigo-500/20 text-indigo-400',
+  in_progress: 'bg-blue-500/20 text-blue-400',
+  awaiting_client_feedback: 'bg-yellow-500/20 text-yellow-400',
+  complete: 'bg-green-500/20 text-green-400',
+  archived: 'bg-gray-500/20 text-gray-400',
+}
 
-const STATUS_COLORS: Record<string, string> = { draft: 'bg-gray-100 text-gray-500', active: 'bg-blue-100 text-blue-700', review: 'bg-amber-100 text-amber-700', completed: 'bg-green-100 text-green-700', cancelled: 'bg-red-100 text-red-700' }
+function fmtDate(iso: string | null | undefined): string {
+  if (!iso) return ''
+  return iso.slice(0, 10)
+}
 
 export function useAdminOrders() {
-  const [orders] = useState(MOCK)
+  const [orders, setOrders] = useState<ServiceOrderDisplay[]>([])
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { data, error } = await supabase
+        .from('service_orders')
+        .select(`
+          id,
+          status,
+          due_at,
+          created_at,
+          service_offer_id,
+          player_profile_id,
+          service_offers!inner(slug, name, category, price_cents),
+          player_profiles!left(first_name, last_name)
+        `)
+        .order('created_at', { ascending: false })
+
+      if (error) { console.error('useAdminOrders error:', error.message); return }
+      if (!data) return
+
+      const mapped: ServiceOrderDisplay[] = data.map((r: any) => {
+        const offer = r.service_offers ?? {}
+        const profile = r.player_profiles ?? {}
+        const fullName = profile.first_name || profile.last_name
+          ? `${profile.first_name ?? ''} ${profile.last_name ?? ''}`.trim()
+          : 'Unknown'
+        return {
+          id: r.id ? r.id.slice(0, 8) : '',
+          athlete: fullName,
+          athleteId: r.player_profile_id ?? '',
+          service: offer.name ?? '',
+          package: offer.category ?? '',
+          status: r.status ?? 'new',
+          submitted: fmtDate(r.created_at),
+          due: fmtDate(r.due_at),
+          amount: (offer.price_cents ?? 0) / 100,
+        }
+      })
+      setOrders(mapped)
+    }
+    fetch()
+  }, [])
+
   return { orders, statusColors: STATUS_COLORS }
 }

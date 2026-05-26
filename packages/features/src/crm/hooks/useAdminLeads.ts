@@ -1,36 +1,55 @@
-import { useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import type { Database } from '@hoop-master/types'
 
-export interface Lead {
+type LeadRow = Database['public']['Tables']['leads']['Row']
+
+export interface LeadDisplay {
   id: string
   name: string
-  email: string
-  interest: string
-  source: string
-  status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost'
+  email: string | null
+  interest: string | null
+  source: string | null
+  status: string
   date: string
-  notes: string
 }
 
-const MOCK: Lead[] = [
-  { id: '1', name: 'Madeline Harris', email: 'mharris@email.com', interest: 'Recruiting Plan', source: 'Website', status: 'new', date: '2026-05-20', notes: 'Looking for full recruiting package.' },
-  { id: '2', name: 'Camila Ortiz', email: 'cortiz@email.com', interest: 'NIL Coaching', source: 'Referral', status: 'contacted', date: '2026-05-18', notes: 'Referred by Coach Williams.' },
-  { id: '3', name: 'Alyssa Nguyen', email: 'anguyen@email.com', interest: 'Performance Audit', source: 'Social Media', status: 'qualified', date: '2026-05-15', notes: 'High-potential 2027 guard.' },
-  { id: '4', name: 'Brianna Foster', email: 'bfoster@email.com', interest: 'Elite Track Package', source: 'Event', status: 'new', date: '2026-05-22', notes: 'Met at Adidas showcase.' },
-  { id: '5', name: 'Chloe Washington', email: 'cwashington@email.com', interest: 'Highlight Reel', source: 'Website', status: 'converted', date: '2026-05-10', notes: 'Signed up for starter package.' },
-]
+const STATUSES = ['new', 'contacted', 'qualified', 'booked', 'won', 'nurture', 'lost']
 
-const STATUS_ORDER: Lead['status'][] = ['new', 'contacted', 'qualified', 'converted', 'lost']
+function formatDate(iso: string): string {
+  if (!iso) return ''
+  return iso.slice(0, 10)
+}
 
 export function useAdminLeads() {
-  const [leads] = useState(MOCK)
+  const [allLeads, setAllLeads] = useState<LeadDisplay[]>([])
   const [statusFilter, setStatusFilter] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
 
-  const filtered = leads.filter(l => {
-    if (statusFilter && l.status !== statusFilter) return false
-    if (searchQuery && !l.name.toLowerCase().includes(searchQuery.toLowerCase()) && !l.email.toLowerCase().includes(searchQuery.toLowerCase())) return false
-    return true
-  })
+  useEffect(() => {
+    const fetch = async () => {
+      const { data, error } = await supabase.from('leads').select('*').order('created_at', { ascending: false })
+      if (error) { console.error('useAdminLeads error:', error.message); return }
+      if (data) {
+        setAllLeads(data.map((r: LeadRow) => ({
+          id: r.id,
+          name: `${r.first_name ?? ''} ${r.last_name ?? ''}`.trim() || 'Unknown',
+          email: r.email,
+          interest: r.interest,
+          source: r.source,
+          status: r.status,
+          date: formatDate(r.created_at),
+        })))
+      }
+    }
+    fetch()
+  }, [])
 
-  return { leads: filtered, allLeads: leads, statusFilter, setStatusFilter, searchQuery, setSearchQuery, statuses: STATUS_ORDER }
+  const filtered = useMemo(() => allLeads.filter(l => {
+    if (statusFilter && l.status !== statusFilter) return false
+    if (searchQuery && !l.name.toLowerCase().includes(searchQuery.toLowerCase()) && !(l.email ?? '').toLowerCase().includes(searchQuery.toLowerCase())) return false
+    return true
+  }), [allLeads, statusFilter, searchQuery])
+
+  return { leads: filtered, allLeads, statusFilter, setStatusFilter, searchQuery, setSearchQuery, statuses: STATUSES }
 }
