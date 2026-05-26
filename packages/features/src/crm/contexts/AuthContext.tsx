@@ -60,30 +60,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       const user = session?.user ?? null
       setUser(user);
+      setLoading(false);
       if (user) {
-        const cached = loadCachedRoles()
-        if (cached.length > 0) { setRoles(cached) }
         loadRoles(user.id, true)
       } else {
         clearRolesCache()
       }
-      setLoading(false);
     }).catch(e => { console.error('getSession failed:', e); setLoading(false) });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+      setLoading(false);
       if (session?.user) {
-        try { await loadRoles(session.user.id) } catch (e) { console.error('loadRoles exception:', e) }
+        loadRoles(session.user.id, true)
       } else {
         setRoles([]);
         clearRolesCache()
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
