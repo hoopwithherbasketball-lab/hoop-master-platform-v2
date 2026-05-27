@@ -21,6 +21,10 @@
     "./connectgbb/*": "./dist/features/src/connectgbb/*",
     "./crm/*": "./dist/features/src/crm/*",
     "./coaching/*": "./dist/features/src/coaching/*",
+    "./nil": {
+      "import": "./dist/features/src/nil/index.js",
+      "types": "./dist/features/src/nil/index.d.ts"
+    },
     "./nil/*": "./dist/features/src/nil/*",
     "./recruiting/*": "./dist/features/src/recruiting/*"
   },

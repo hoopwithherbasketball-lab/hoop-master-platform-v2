@@ -1,21 +1,33 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
 import type { TrainingTrack } from './types'
-
-const MOCK_TRACKS: TrainingTrack[] = [
-  { id: '1', title: 'Ball Handling Fundamentals', description: 'Master dribbling, crossovers, and handles for any defensive pressure.', category: 'skill', level: 'beginner', duration: '4 weeks', lessonCount: 8 },
-  { id: '2', title: 'Shooting Mechanics', description: 'Perfect your form, release, and range with drills used by pros.', category: 'skill', level: 'intermediate', duration: '6 weeks', lessonCount: 12 },
-  { id: '3', title: 'Strength & Conditioning', description: 'Build court-specific strength, agility, and endurance.', category: 'strength', level: 'intermediate', duration: '8 weeks', lessonCount: 16 },
-  { id: '4', title: 'Film Study & IQ', description: 'Learn to read defenses, recognize sets, and make smarter decisions.', category: 'film', level: 'advanced', duration: '4 weeks', lessonCount: 8 },
-  { id: '5', title: 'Recruiting Prep', description: 'Build your highlight reel, write coach emails, and ace official visits.', category: 'recruiting', level: 'beginner', duration: '3 weeks', lessonCount: 6 },
-]
 
 export function useTrainingTracks() {
   const [tracks, setTracks] = useState<TrainingTrack[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setTracks(MOCK_TRACKS)
-    setLoading(false)
+    const fetch = async () => {
+      try {
+        const { data } = await supabase
+          .from('training_videos')
+          .select('*')
+          .limit(20)
+        const mapped: TrainingTrack[] = (data ?? []).map(v => ({
+          id: v.id,
+          title: v.title,
+          description: v.description || '',
+          category: v.category as TrainingTrack['category'],
+          level: v.level as TrainingTrack['level'],
+          duration: `${v.duration_minutes} min`,
+          lessonCount: v.lesson_count,
+          thumbnailUrl: v.thumbnail_url || undefined,
+        }))
+        setTracks(mapped)
+      } catch (e) { console.error('useTrainingTracks:', e) }
+      setLoading(false)
+    }
+    fetch()
   }, [])
 
   return { tracks, loading }

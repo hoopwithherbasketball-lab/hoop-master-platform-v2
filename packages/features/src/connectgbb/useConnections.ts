@@ -1,21 +1,50 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import { useAuth } from '../crm/contexts/AuthContextValue.js'
 import type { Connection } from './types'
 
-const MOCK_CONNECTIONS: Connection[] = [
-  { id: '1', userId: 'u1', displayName: 'Coach Williams', role: 'coach', status: 'approved', connectedAt: '2026-05-15T10:00:00Z' },
-  { id: '2', userId: 'u2', displayName: 'Sarah Johnson', role: 'player', status: 'approved', connectedAt: '2026-05-10T14:30:00Z' },
-  { id: '3', userId: 'u3', displayName: 'Michigan State University', role: 'coach', status: 'pending', connectedAt: '2026-05-20T08:00:00Z' },
-  { id: '4', userId: 'u4', displayName: 'Elite GBB Club', role: 'club_admin', status: 'approved', connectedAt: '2026-05-01T12:00:00Z' },
-]
-
 export function useConnections() {
+  const { user } = useAuth()
   const [connections, setConnections] = useState<Connection[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setConnections(MOCK_CONNECTIONS)
-    setLoading(false)
-  }, [])
+    if (!user) { setLoading(false); return }
+    const fetch = async () => {
+      try {
+        const { data } = await supabase
+          .from('member_connections')
+          .select('*')
+          .or(`requester_id.eq.${user.id},target_id.eq.${user.id}`)
+          .order('created_at', { ascending: false })
+
+        const userIds = [...new Set((data ?? []).flatMap(r => [r.requester_id, r.target_id].filter(id => id !== user.id)))]
+        let nameMap: Record<string, string> = {}
+        if (userIds.length > 0) {
+          const { data: profiles } = await supabase
+            .from('member_profiles')
+            .select('user_id, display_name')
+            .in('user_id', userIds)
+          for (const p of profiles ?? []) nameMap[p.user_id] = p.display_name
+        }
+
+        const mapped: Connection[] = (data ?? []).map(r => {
+          const otherId = r.requester_id === user.id ? r.target_id : r.requester_id
+          return {
+            id: r.id,
+            userId: otherId,
+            displayName: nameMap[otherId] || 'Unknown',
+            role: 'player',
+            status: r.status as Connection['status'],
+            connectedAt: r.created_at,
+          }
+        })
+        setConnections(mapped)
+      } catch (e) { console.error('useConnections:', e) }
+      setLoading(false)
+    }
+    fetch()
+  }, [user])
 
   return { connections, loading }
 }

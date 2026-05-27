@@ -2,6 +2,12 @@ export type UserRole = 'player' | 'parent' | 'coach' | 'club_admin' | 'admin' | 
 export type ServiceStatus = 'new' | 'awaiting_intake' | 'in_review' | 'needs_assets' | 'assigned' | 'in_progress' | 'awaiting_client_feedback' | 'complete' | 'archived'
 export type TaskStatus = 'open' | 'in_progress' | 'done' | 'dismissed'
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'booked' | 'won' | 'nurture' | 'lost'
+export type NILCompanyStage = 'prospecting' | 'matched' | 'outreach' | 'negotiation' | 'active'
+export type NILOpportunityStatus = 'matched' | 'review' | 'negotiation' | 'active' | 'completed' | 'cancelled'
+export type NILTier = 'bronze' | 'silver' | 'gold' | 'platinum'
+export type NILTaskStatus = 'todo' | 'in_progress' | 'completed'
+export type NILTaskPriority = 'low' | 'medium' | 'high' | 'urgent'
+export type ConnectRole = 'player' | 'parent' | 'coach' | 'scout'
 
 export interface Database {
   public: {
@@ -105,6 +111,71 @@ export interface Database {
         Row: SiteContent
         Insert: Omit<SiteContent, 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<SiteContent, 'id'>>
+      }
+      nil_companies: {
+        Row: NILCompany
+        Insert: Omit<NILCompany, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<NILCompany, 'id'>>
+      }
+      nil_opportunities: {
+        Row: NILOpportunity
+        Insert: Omit<NILOpportunity, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<NILOpportunity, 'id'>>
+      }
+      nil_athlete_profiles: {
+        Row: NILAthleteProfile
+        Insert: Omit<NILAthleteProfile, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<NILAthleteProfile, 'id'>>
+      }
+      nil_outreach: {
+        Row: NILOutreach
+        Insert: Omit<NILOutreach, 'id' | 'created_at'>
+        Update: Partial<Omit<NILOutreach, 'id'>>
+      }
+      nil_compliance_items: {
+        Row: NILComplianceItem
+        Insert: Omit<NILComplianceItem, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<NILComplianceItem, 'id'>>
+      }
+      nil_tasks: {
+        Row: NILTask
+        Insert: Omit<NILTask, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<NILTask, 'id'>>
+      }
+      community_posts: {
+        Row: CommunityPost
+        Insert: Omit<CommunityPost, 'id' | 'created_at'>
+        Update: Partial<Omit<CommunityPost, 'id'>>
+      }
+      community_likes: {
+        Row: { id: string; post_id: string; user_id: string; created_at: string }
+        Insert: { post_id: string; user_id: string }
+        Update: never
+      }
+      training_videos: {
+        Row: TrainingVideo
+        Insert: Omit<TrainingVideo, 'id' | 'created_at'>
+        Update: Partial<Omit<TrainingVideo, 'id'>>
+      }
+      member_connections: {
+        Row: { id: string; requester_id: string; target_id: string; status: string; created_at: string; updated_at: string }
+        Insert: { requester_id: string; target_id: string; status?: string }
+        Update: { status?: string }
+      }
+      conversations: {
+        Row: { id: string; participant_one: string; participant_two: string; last_message: string; last_timestamp: string; participant_one_unread: number; participant_two_unread: number; created_at: string }
+        Insert: { participant_one: string; participant_two: string }
+        Update: { last_message?: string; last_timestamp?: string; participant_one_unread?: number; participant_two_unread?: number }
+      }
+      messages: {
+        Row: { id: string; conversation_id: string; sender_id: string; content: string; created_at: string; read: boolean }
+        Insert: { conversation_id: string; sender_id: string; content: string }
+        Update: { read?: boolean }
+      }
+      member_profiles: {
+        Row: MemberProfile
+        Insert: Omit<MemberProfile, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<MemberProfile, 'id'>>
       }
     }
   }
@@ -243,6 +314,115 @@ export interface Lead {
   interest: string | null
   status: LeadStatus
   created_at: string
+}
+
+export interface NILCompany {
+  id: string
+  name: string
+  category: string
+  stage: NILCompanyStage
+  logo_url: string
+  website: string
+  description: string
+  created_at: string
+  updated_at: string
+}
+
+export interface NILOpportunity {
+  id: string
+  athlete_name: string
+  brand: string
+  value_cents: number
+  status: NILOpportunityStatus
+  athlete_profile_id: string | null
+  company_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface NILAthleteProfile {
+  id: string
+  player_profile_id: string
+  display_name: string
+  position: string
+  class_year: number | null
+  followers: string
+  readiness_score: number
+  tier: NILTier
+  opted_in: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface NILOutreach {
+  id: string
+  from_entity: string
+  subject: string
+  body: string
+  status: 'open' | 'pending' | 'replied' | 'closed'
+  athlete_profile_id: string | null
+  company_id: string | null
+  created_at: string
+}
+
+export interface NILComplianceItem {
+  id: string
+  athlete_name: string
+  opportunity_name: string
+  items: string[]
+  status: 'pending' | 'approved' | 'error'
+  athlete_profile_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface NILTask {
+  id: string
+  title: string
+  target: string
+  priority: NILTaskPriority
+  status: NILTaskStatus
+  due_date: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface CommunityPost {
+  id: string
+  author_id: string
+  author_name: string
+  author_role: ConnectRole | 'club_admin'
+  content: string
+  image_url: string
+  created_at: string
+  like_count: number
+  comment_count: number
+}
+
+export interface TrainingVideo {
+  id: string
+  title: string
+  description: string
+  category: string
+  level: string
+  duration_minutes: number
+  thumbnail_url: string
+  video_url: string
+  lesson_count: number
+  created_at: string
+}
+
+export interface MemberProfile {
+  id: string
+  user_id: string
+  display_name: string
+  role: ConnectRole
+  bio: string
+  avatar_url: string
+  location: string
+  email_visibility: 'public' | 'connections' | 'private'
+  created_at: string
+  updated_at: string
 }
 
 export interface Tournament {

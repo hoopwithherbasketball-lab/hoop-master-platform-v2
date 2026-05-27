@@ -1,2 +1,6 @@
-export const name = 'nil';
-export function describe() { return 'Placeholder module for nil feature.' }
+export { useNILCompanies } from './useNILCompanies.js'
+export { useNILOpportunities } from './useNILOpportunities.js'
+export { useNILAthletes } from './useNILAthletes.js'
+export { useNILOutreach } from './useNILOutreach.js'
+export { useNILCompliance } from './useNILCompliance.js'
+export { useNILTasks } from './useNILTasks.js'

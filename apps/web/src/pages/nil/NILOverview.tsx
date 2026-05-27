@@ -1,13 +1,29 @@
+import { useEffect, useState } from 'react'
+import { supabase } from '../../lib/supabase'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import StatusBadge from '../../components/ui/StatusBadge'
 
-const summaries = [
-  { title: 'Brand Partnerships', value: 6, note: 'Active and pending deals' },
-  { title: 'Opportunity Matches', value: 12, note: 'Best-fit NIL partners found' },
-  { title: 'Outreach Messages', value: 8, note: 'Pending replies' },
-]
-
 export default function NILOverview() {
+  const [summaries, setSummaries] = useState([
+    { title: 'Brand Partnerships', value: 0, note: 'Active and pending deals' },
+    { title: 'Opportunity Matches', value: 0, note: 'Best-fit NIL partners found' },
+    { title: 'Outreach Messages', value: 0, note: 'Pending replies' },
+  ])
+
+  useEffect(() => {
+    Promise.all([
+      supabase.from('nil_companies').select('*', { count: 'exact', head: true }),
+      supabase.from('nil_opportunities').select('*', { count: 'exact', head: true }),
+      supabase.from('nil_outreach').select('*', { count: 'exact', head: true }).eq('status', 'open'),
+    ]).then(([comp, opp, out]) => {
+      setSummaries([
+        { title: 'Brand Partnerships', value: comp.count ?? 0, note: 'Active and pending deals' },
+        { title: 'Opportunity Matches', value: opp.count ?? 0, note: 'Best-fit NIL partners found' },
+        { title: 'Outreach Messages', value: out.count ?? 0, note: 'Pending replies' },
+      ])
+    }).catch(console.error)
+  }, [])
+
   return (
     <DashboardLayout variant="admin" title="NIL Overview" subtitle="Monitor athlete NIL readiness, brand matches, and outreach." >
       <div className="grid gap-5 md:grid-cols-3">

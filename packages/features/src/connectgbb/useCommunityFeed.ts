@@ -1,33 +1,79 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import { useAuth } from '../crm/contexts/AuthContextValue.js'
 import type { CommunityPost } from './types'
 
-const MOCK_POSTS: CommunityPost[] = [
-  { id: '1', authorId: 'a1', authorName: 'Sarah Johnson', authorRole: 'player', content: 'Just wrapped up an amazing training session at the Elite GBB showcase! Grateful for the coaching staff and all the support.', createdAt: '2026-05-20T14:30:00Z', likeCount: 24, commentCount: 5, likedByUser: false },
-  { id: '2', authorId: 'a2', authorName: 'Coach Williams', authorRole: 'coach', content: 'Looking for 2027 guards with strong court vision. DM me if you want to connect about upcoming camps.', createdAt: '2026-05-19T10:15:00Z', likeCount: 18, commentCount: 8, likedByUser: false },
-  { id: '3', authorId: 'a3', authorName: 'Maria Rodriguez', authorRole: 'player', content: 'Committed to Cal Poly! Could not have done it without Elite GBB helping me build my recruiting profile.', createdAt: '2026-05-18T22:00:00Z', likeCount: 56, commentCount: 12, likedByUser: false },
-  { id: '4', authorId: 'a4', authorName: 'Elite GBB', authorRole: 'club_admin', content: 'New workshop alert: "NIL 101" - May 28th at 6pm EST. Learn how to build your brand and connect with sponsors. Link in bio!', createdAt: '2026-05-17T16:45:00Z', likeCount: 32, commentCount: 3, likedByUser: false },
-]
-
 export function useCommunityFeed() {
+  const { user } = useAuth()
   const [posts, setPosts] = useState<CommunityPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    setPosts(MOCK_POSTS)
-    setLoading(false)
+    const fetch = async () => {
+      try {
+        const { data } = await supabase
+          .from('community_posts')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(20)
+        const mapped: CommunityPost[] = (data ?? []).map(r => ({
+          id: r.id,
+          authorId: r.author_id,
+          authorName: r.author_name,
+          authorRole: r.author_role as CommunityPost['authorRole'],
+          content: r.content,
+          imageUrl: r.image_url || undefined,
+          createdAt: r.created_at,
+          likeCount: r.like_count,
+          commentCount: r.comment_count,
+          likedByUser: false,
+        }))
+        setPosts(mapped)
+      } catch (e) { console.error('useCommunityFeed:', e) }
+      setLoading(false)
+    }
+    fetch()
   }, [])
 
-  const toggleLike = (postId: string) => {
-    setPosts(prev => prev.map(p => p.id === postId ? { ...p, likedByUser: !p.likedByUser, likeCount: p.likedByUser ? p.likeCount - 1 : p.likeCount + 1 } : p))
-  }
-
-  const createPost = (content: string) => {
-    const newPost: CommunityPost = {
-      id: Date.now().toString(), authorId: 'me', authorName: 'You', authorRole: 'player',
-      content, createdAt: new Date().toISOString(), likeCount: 0, commentCount: 0, likedByUser: false,
+  const toggleLike = useCallback(async (postId: string) => {
+    if (!user) return
+    const post = posts.find(p => p.id === postId)
+    if (!post) return
+    const isLiked = post.likedByUser
+    const newCount = isLiked ? post.likeCount - 1 : post.likeCount + 1
+    if (isLiked) {
+      await supabase.from('community_likes').delete().eq('post_id', postId).eq('user_id', user.id)
+    } else {
+      await supabase.from('community_likes').insert({ post_id: postId, user_id: user.id })
     }
-    setPosts(prev => [newPost, ...prev])
-  }
+    await supabase.from('community_posts').update({ like_count: newCount }).eq('id', postId)
+    setPosts(prev => prev.map(p => p.id === postId ? { ...p, likedByUser: !isLiked, likeCount: newCount } : p))
+  }, [user, posts])
+
+  const createPost = useCallback(async (content: string) => {
+    if (!user) return
+    const { data } = await supabase.from('community_posts').insert({
+      author_id: user.id,
+      author_name: user.email?.split('@')[0] ?? 'You',
+      author_role: 'player',
+      content,
+    }).select().single()
+    if (data) {
+      const newPost: CommunityPost = {
+        id: data.id,
+        authorId: data.author_id,
+        authorName: data.author_name,
+        authorRole: data.author_role as CommunityPost['authorRole'],
+        content: data.content,
+        imageUrl: undefined,
+        createdAt: data.created_at,
+        likeCount: 0,
+        commentCount: 0,
+        likedByUser: false,
+      }
+      setPosts(prev => [newPost, ...prev])
+    }
+  }, [user])
 
   return { posts, loading, toggleLike, createPost }
 }
