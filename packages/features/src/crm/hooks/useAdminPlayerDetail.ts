@@ -28,17 +28,17 @@ export function useAdminPlayerDetail(id: string) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!id) return
+    if (!id) { setLoading(false); return }
     const fetch = async () => {
       try {
         const [profileRes, evalCountRes, connCountRes, orderRes] = await Promise.all([
           supabase.from('player_profiles').select('*').eq('id', id).single(),
-          supabase.from('audit_results').select('id', { count: 'exact', head: true }).eq('audit_submission_id', id),
+          supabase.from('audit_results').select('id', { count: 'exact', head: true }).eq('audit_submissions.player_profile_id', id),
           supabase.from('coach_saved_players').select('id', { count: 'exact', head: true }).eq('player_profile_id', id),
           supabase.from('service_orders').select('service_offers!inner(name)').eq('player_profile_id', id).maybeSingle(),
         ])
 
-        if (profileRes.error) { console.error('useAdminPlayerDetail error:', profileRes.error.message); return }
+        if (profileRes.error) { console.error('useAdminPlayerDetail error:', profileRes.error.message); setLoading(false); return }
         const p = profileRes.data as PlayerProfile
 
         type OrderRow = { service_offers: { name: string }[] }

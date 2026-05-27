@@ -27,7 +27,7 @@ export function useParentApproval() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!user) return
+    if (!user) { setLoading(false); return }
     const fetch = async () => {
       try {
         const { data } = await supabase

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '@hoop-master/supabase'
 import { useAuth } from '../contexts/AuthContextValue.js'
 
@@ -13,47 +13,71 @@ export interface EventInfo {
   price: number
 }
 
-const MOCK_EVENTS: EventInfo[] = [
-  { id: 'e1', title: 'Elite GBB Showcase', date: 'June 15-17, 2026', location: 'Atlanta, GA', description: 'Top girls basketball players compete in front of college scouts from across the country.', capacity: 200, registered: 156, price: 199 },
-  { id: 'e2', title: 'Recruiting Workshop', date: 'July 8, 2026', location: 'Virtual', description: 'Learn the ins and outs of the college recruiting process from expert coaches.', capacity: 500, registered: 312, price: 49 },
-  { id: 'e3', title: 'Summer Skills Camp', date: 'August 5-7, 2026', location: 'Chicago, IL', description: 'Intensive skills development camp with D1 coaches and current college players.', capacity: 150, registered: 89, price: 299 },
-  { id: 'e4', title: 'NIL Summit', date: 'September 12, 2026', location: 'Los Angeles, CA', description: 'Connect with brands and learn how to maximize your NIL opportunities.', capacity: 300, registered: 124, price: 149 },
-]
+function mapEvent(e: any): EventInfo {
+  return {
+    id: e.id,
+    title: e.title,
+    date: e.start_date ? new Date(e.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '',
+    location: e.location ?? '',
+    description: e.description ?? '',
+    capacity: e.max_participants ?? 0,
+    registered: e.current_participants ?? 0,
+    price: e.price ? Number(e.price) : 0,
+  }
+}
 
 export function useEventRegistration() {
   const [registered, setRegistered] = useState<Set<string>>(new Set())
-  const [events] = useState(MOCK_EVENTS)
+  const [events, setEvents] = useState<EventInfo[]>([])
   const [loading, setLoading] = useState(true)
   const { user } = useAuth()
+  const pendingRef = useRef<Set<string>>(new Set())
 
   useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('events')
+          .select('id, title, description, location, start_date, price, max_participants, current_participants, status')
+          .neq('status', 'cancelled')
+          .order('start_date', { ascending: true })
+
+        if (error) { console.error('useEventRegistration events error:', error.message); return }
+        if (data) setEvents(data.map(mapEvent))
+      } catch (e) { console.error('useEventRegistration loadEvents exception:', e) }
+    }
+
     if (!user) {
+      loadEvents()
       setLoading(false)
       return
     }
 
     const loadRegistrations = async () => {
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('event_registrations')
           .select('event_id')
           .eq('user_id', user.id)
           .eq('status', 'registered')
 
+        if (error) { console.error('useEventRegistration registrations error:', error.message); return }
         if (data) {
           setRegistered(new Set(data.map(r => r.event_id)))
         }
-      } catch {
-        // table may not exist yet
-      }
+      } catch (e) { console.error('useEventRegistration loadRegistrations exception:', e) }
       setLoading(false)
     }
 
+    loadEvents()
     loadRegistrations()
   }, [user])
 
   const toggleRegistration = useCallback(async (eventId: string) => {
     if (!user) return
+    if (pendingRef.current.has(eventId)) return
+
+    pendingRef.current.add(eventId)
 
     try {
       if (registered.has(eventId)) {
@@ -63,6 +87,7 @@ export function useEventRegistration() {
           .eq('event_id', eventId)
           .eq('user_id', user.id)
 
+        if (error) { console.error('useEventRegistration cancel error:', error.message) }
         if (!error) {
           setRegistered(prev => {
             const next = new Set(prev)
@@ -75,13 +100,17 @@ export function useEventRegistration() {
           .from('event_registrations')
           .insert({ event_id: eventId, user_id: user.id })
 
+        if (error) { console.error('useEventRegistration register error:', error.message) }
         if (!error) {
-          setRegistered(prev => new Set(prev).add(eventId))
+          setRegistered(prev => {
+            const next = new Set(prev)
+            next.add(eventId)
+            return next
+          })
         }
       }
-    } catch {
-      // table may not exist yet
-    }
+    } catch (e) { console.error('useEventRegistration toggle exception:', e) }
+    pendingRef.current.delete(eventId)
   }, [user, registered])
 
   const isRegistered = (eventId: string) => registered.has(eventId)

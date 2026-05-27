@@ -31,19 +31,27 @@ export function usePlayerEvaluation(playerId: string) {
 
   useEffect(() => {
     if (!playerId) return
+
+    const abortController = new AbortController()
+
     const fetch = async () => {
       try {
+        setLoading(true)
         const { data: profileData } = await supabase
           .from('player_profiles')
           .select('first_name, last_name, position, class_year, school_name, height')
           .eq('id', playerId)
           .maybeSingle()
 
+        if (abortController.signal.aborted) return
+
         const { data: submissionData } = await supabase
           .from('audit_submissions')
           .select('id')
           .eq('player_profile_id', playerId)
           .maybeSingle()
+
+        if (abortController.signal.aborted) return
 
         let auditResult: { total_score: number; strengths: string; gaps: string; priority_actions: string; created_at: string; created_by: string } | null = null
         if (submissionData?.id) {
@@ -52,6 +60,7 @@ export function usePlayerEvaluation(playerId: string) {
             .select('total_score, strengths, gaps, priority_actions, created_at, created_by')
             .eq('audit_submission_id', submissionData.id)
             .maybeSingle()
+          if (abortController.signal.aborted) return
           auditResult = r.data
         }
 
@@ -79,6 +88,8 @@ export function usePlayerEvaluation(playerId: string) {
       setLoading(false)
     }
     fetch()
+
+    return () => abortController.abort()
   }, [playerId])
 
   return {

@@ -14,16 +14,24 @@ export function useCoachReferral(playerId: string) {
   const { user } = useAuth()
   const [notes, setNotes] = useState<ReferralNote[]>([])
   const [newNote, setNewNote] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!playerId) return
+    if (!playerId) { setLoading(false); return }
+
+    const abortController = new AbortController()
+
     const load = async () => {
       try {
+        setLoading(true)
         const { data } = await supabase
           .from('coach_referral_notes')
           .select('*')
           .eq('player_profile_id', playerId)
           .order('created_at', { ascending: false })
+
+        if (abortController.signal.aborted) return
+
         const mapped: ReferralNote[] = (data ?? []).map(r => ({
           id: r.id,
           coachName: r.coach_name,
@@ -32,9 +40,15 @@ export function useCoachReferral(playerId: string) {
           date: new Date(r.created_at).toISOString().slice(0, 10),
         }))
         setNotes(mapped)
-      } catch (e) { console.error('useCoachReferral:', e) }
+      } catch (e) {
+        if (!abortController.signal.aborted) console.error('useCoachReferral:', e)
+      } finally {
+        if (!abortController.signal.aborted) setLoading(false)
+      }
     }
     load()
+
+    return () => abortController.abort()
   }, [playerId])
 
   const addNote = async () => {
@@ -56,9 +70,9 @@ export function useCoachReferral(playerId: string) {
           date: new Date(data.created_at).toISOString().slice(0, 10),
         }, ...prev])
       }
+      setNewNote('')
     } catch (e) { console.error('addNote:', e) }
-    setNewNote('')
   }
 
-  return { notes, newNote, setNewNote, addNote }
+  return { notes, newNote, setNewNote, addNote, loading }
 }

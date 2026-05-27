@@ -35,8 +35,8 @@ export function useAdminEvaluations() {
           `)
           .order('created_at', { ascending: false })
 
-        if (error) { console.error('useAdminEvaluations error:', error.message); return }
-        if (!data) return
+        if (error) { console.error('useAdminEvaluations error:', error.message); setLoading(false); return }
+        if (!data) { setLoading(false); return }
 
         type AuditRow = { total_score: number; created_at: string; created_by: string; readiness_band: string; audit_submissions: { player_profile_id: string; player_profiles: { first_name: string; last_name: string; position: string; class_year: number; school_name: string }[] }[] }
         const mapped: AdminEvalSummary[] = (data as unknown as AuditRow[]).map((r) => {

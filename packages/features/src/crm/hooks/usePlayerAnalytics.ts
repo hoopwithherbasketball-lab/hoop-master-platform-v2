@@ -14,17 +14,47 @@ export interface PlayerAnalytics {
   trends: StatTrend[]
 }
 
-export function usePlayerAnalytics(_playerId?: string) {
+export function usePlayerAnalytics(playerId?: string) {
   const { user } = useAuth()
   const [analytics, setAnalytics] = useState<PlayerAnalytics>({ stats: { ppg: [], apg: [], rpg: [], fgp: [] }, months: [], trends: [] })
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
 
-    supabase.from('player_profiles').select('id').eq('user_id', user.id).maybeSingle().then(({ data: profile }) => {
-      if (!profile) { setLoading(false); return }
-      supabase.from('player_game_stats').select('*').eq('player_profile_id', profile.id).order('created_at', { ascending: true }).then(({ data }) => {
+    const abortController = new AbortController()
+
+    const fetch = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+
+        let profileId: string | null = null
+        if (playerId) {
+          profileId = playerId
+        } else {
+          const { data: profile, error: profileErr } = await supabase
+            .from('player_profiles')
+            .select('id')
+            .eq('user_id', user.id)
+            .maybeSingle()
+          if (profileErr) throw profileErr
+          if (!profile) { setLoading(false); return }
+          profileId = profile.id
+        }
+
+        if (abortController.signal.aborted) return
+
+        const { data, error: statsErr } = await supabase
+          .from('player_game_stats')
+          .select('*')
+          .eq('player_profile_id', profileId)
+          .order('created_at', { ascending: true })
+
+        if (statsErr) throw statsErr
+        if (abortController.signal.aborted) return
+
         if (data && data.length > 0) {
           setAnalytics({
             stats: {
@@ -36,11 +66,22 @@ export function usePlayerAnalytics(_playerId?: string) {
             months: data.map(r => r.month_label || ''),
             trends: data.map(r => ({ label: 'Scoring', season: r.season, value: r.ppg ?? 0 })),
           })
+        } else {
+          setAnalytics({ stats: { ppg: [], apg: [], rpg: [], fgp: [] }, months: [], trends: [] })
         }
-        setLoading(false)
-      })
-    })
-  }, [user])
+      } catch (e) {
+        if (!abortController.signal.aborted) {
+          console.error('usePlayerAnalytics:', e)
+          setError('Failed to load analytics')
+        }
+      } finally {
+        if (!abortController.signal.aborted) setLoading(false)
+      }
+    }
+    fetch()
 
-  return { analytics, loading }
+    return () => abortController.abort()
+  }, [user, playerId])
+
+  return { analytics, loading, error }
 }

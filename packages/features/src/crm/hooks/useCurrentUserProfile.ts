@@ -19,20 +19,28 @@ export const useCurrentUserProfile = () => {
       return
     }
 
+    const abortController = new AbortController()
+
     const fetchProfile = async () => {
       try {
-        const { data, error } = await supabase
+        setLoading(true)
+        setError(null)
+
+        const { data, error: fetchError } = await supabase
           .from('player_profiles')
           .select('*')
           .eq('user_id', user.id)
           .single()
 
-        if (error && error.code !== 'PGRST116') throw error // PGRST116 is "not found"
+        if (abortController.signal.aborted) return
+        if (fetchError && fetchError.code !== 'PGRST116') throw fetchError
         setProfile(data ?? null)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unable to load profile')
+        if (!abortController.signal.aborted) {
+          setError(err instanceof Error ? err.message : 'Unable to load profile')
+        }
       } finally {
-        setLoading(false)
+        if (!abortController.signal.aborted) setLoading(false)
       }
     }
 
@@ -59,6 +67,7 @@ export const useCurrentUserProfile = () => {
       .subscribe()
 
     return () => {
+      abortController.abort()
       supabase.removeChannel(channel)
     }
   }, [user])
@@ -70,7 +79,7 @@ export const useCurrentUserProfile = () => {
       setLoading(true)
       setError(null)
 
-      const { data, error } = await supabase
+      const { data, error: upsertError } = await supabase
         .from('player_profiles')
         .upsert({
           user_id: user.id,
@@ -79,7 +88,7 @@ export const useCurrentUserProfile = () => {
         .select()
         .single()
 
-      if (error) throw error
+      if (upsertError) throw upsertError
       setProfile(data)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unable to update profile'
