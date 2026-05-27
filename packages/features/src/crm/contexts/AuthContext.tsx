@@ -41,27 +41,50 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (cached.length > 0) { setRoles(cached); return }
       setRoles(['player', 'admin'])
       saveRolesCache(['player', 'admin'])
+      return
     }
     try {
-      const { data, error } = await supabase.from('user_roles').select('role').eq('user_id', userId)
-      if (error) { console.error('loadRoles select error:', error.message); return }
+      const { data, error } = await Promise.race([
+        supabase.from('user_roles').select('role').eq('user_id', userId),
+        new Promise<{ data: null; error: { message: string } }>(
+          (_, reject) => setTimeout(() => reject(new Error('loadRoles timed out')), 5000)
+        ),
+      ])
+      if (error) { console.error('loadRoles select error:', error.message); fallbackRoles(); return }
       const activeRoles = (data ?? []).map(r => r.role as UserRole)
-      console.log('loadRoles active roles:', activeRoles)
       setRoles(activeRoles)
       saveRolesCache(activeRoles)
     } catch (e) {
       console.error('loadRoles failed:', e)
+      fallbackRoles()
+    }
+    function fallbackRoles() {
+      const cached = loadCachedRoles()
+      if (cached.length > 0) { setRoles(cached) }
     }
   }
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      const user = session?.user ?? null
-      setUser(user);
+    supabase.auth.getSession().then(async ({ data: { session: initialSession } }) => {
+      let sess = initialSession
+      if (sess) {
+        try {
+          const result = await Promise.race([
+            supabase.auth.refreshSession(),
+            new Promise<{ data: { session: Session | null }; error: { message: string } }>(
+              (_, reject) => setTimeout(() => reject(new Error('refreshSession timed out')), 5000)
+            ),
+          ])
+          sess = result.data.session ?? sess
+        } catch (e) {
+          console.warn('refreshSession failed/timed out, using cached session:', e)
+        }
+      }
+      setSession(sess);
+      setUser(sess?.user ?? null);
       setLoading(false);
-      if (user) {
-        loadRoles(user.id, user.email)
+      if (sess?.user) {
+        await loadRoles(sess.user.id, sess.user.email)
       } else {
         clearRolesCache()
       }
