@@ -61,6 +61,7 @@ import FilmIndexPage from './pages/dashboard/FilmIndexPage'
 import AnalyticsPage from './pages/dashboard/AnalyticsPage'
 import AdminEvaluationsPage from './pages/admin/AdminEvaluationsPage'
 import AdminPlayerDetailPage from './pages/admin/AdminPlayerDetailPage'
+import AdminReportsPage from './pages/admin/AdminReportsPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -114,6 +115,7 @@ function AppRoutes() {
       <Route path="/admin/evaluations" element={<ProtectedRoute role="admin"><AdminEvaluationsPage /></ProtectedRoute>} />
       <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
       <Route path="/admin/players/:id" element={<ProtectedRoute role="admin"><AdminPlayerDetailPage /></ProtectedRoute>} />
+      <Route path="/admin/reports" element={<ProtectedRoute role="admin"><AdminReportsPage /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
