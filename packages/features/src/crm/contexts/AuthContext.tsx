@@ -42,13 +42,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   async function loadRoles(userId: string, email?: string) {
-    if (email && email.startsWith('lamont')) {
-      const cached = loadCachedRoles()
-      if (cached.length > 0) { setRoles(cached); return }
-      setRoles(['player', 'admin'])
-      saveRolesCache(['player', 'admin'])
-      return
-    }
     try {
       const { data, error } = await Promise.race([
         supabase.from('user_roles').select('role').eq('user_id', userId),

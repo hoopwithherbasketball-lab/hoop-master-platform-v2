@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '@hoop-master/supabase'
+import { useAuth } from '../contexts/AuthContextValue.js'
 
 export interface ReferralNote {
   id: string
@@ -8,13 +10,53 @@ export interface ReferralNote {
   date: string
 }
 
-export function useCoachReferral(_playerId: string) {
+export function useCoachReferral(playerId: string) {
+  const { user } = useAuth()
   const [notes, setNotes] = useState<ReferralNote[]>([])
   const [newNote, setNewNote] = useState('')
 
-  const addNote = () => {
-    if (!newNote.trim()) return
-    setNotes(prev => [...prev, { id: Date.now().toString(), coachName: 'You', coachTitle: 'Coach', content: newNote, date: new Date().toISOString().slice(0, 10) }])
+  useEffect(() => {
+    if (!playerId) return
+    const load = async () => {
+      try {
+        const { data } = await supabase
+          .from('coach_referral_notes')
+          .select('*')
+          .eq('player_profile_id', playerId)
+          .order('created_at', { ascending: false })
+        const mapped: ReferralNote[] = (data ?? []).map(r => ({
+          id: r.id,
+          coachName: r.coach_name,
+          coachTitle: r.coach_title || 'Coach',
+          content: r.content,
+          date: new Date(r.created_at).toISOString().slice(0, 10),
+        }))
+        setNotes(mapped)
+      } catch (e) { console.error('useCoachReferral:', e) }
+    }
+    load()
+  }, [playerId])
+
+  const addNote = async () => {
+    if (!newNote.trim() || !user || !playerId) return
+    try {
+      const { data } = await supabase.from('coach_referral_notes').insert({
+        player_profile_id: playerId,
+        coach_user_id: user.id,
+        coach_name: user.email?.split('@')[0] || 'You',
+        coach_title: 'Coach',
+        content: newNote,
+      }).select().single()
+      if (data) {
+        setNotes(prev => [{
+          id: data.id,
+          coachName: data.coach_name,
+          coachTitle: data.coach_title || 'Coach',
+          content: data.content,
+          date: new Date(data.created_at).toISOString().slice(0, 10),
+        }, ...prev])
+      }
+    } catch (e) { console.error('addNote:', e) }
     setNewNote('')
   }
 

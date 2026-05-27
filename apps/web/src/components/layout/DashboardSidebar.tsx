@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, Settings, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, CheckSquare } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, Settings, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, CheckSquare, MessageSquare } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -46,6 +46,7 @@ const adminNav: NavItem[] = [
   { label: 'Reports', to: '/admin/reports', icon: <BarChart3 size={16} /> },
   { label: 'Training Content', to: '/admin/training', icon: <BookOpen size={16} /> },
   { label: 'Intake Submissions', to: '/admin/intake', icon: <User size={16} /> },
+  { label: 'Community Feed', to: '/admin/feed', icon: <MessageSquare size={16} /> },
 ]
 
 interface Props {
