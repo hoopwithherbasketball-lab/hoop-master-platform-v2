@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../../lib/supabase'
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import { User, Calendar, Package, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
+import { User, Calendar, Package, ExternalLink, ChevronDown, ChevronUp, Trash2, AlertTriangle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface IntakeSubmission {
@@ -15,6 +15,7 @@ export default function AdminIntakeSubmissionsPage() {
   const [submissions, setSubmissions] = useState<IntakeSubmission[]>([])
   const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [deleteId, setDeleteId] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     try {
@@ -25,6 +26,15 @@ export default function AdminIntakeSubmissionsPage() {
   }, [])
 
   useEffect(() => { load() }, [load])
+
+  const del = async () => {
+    if (!deleteId) return
+    try {
+      await supabase.from('intake_submissions').delete().eq('id', deleteId)
+      setDeleteId(null)
+      window.location.reload()
+    } catch (e) { console.error(e) }
+  }
 
   return (
     <DashboardLayout variant="admin" title="Intake Submissions" subtitle="Player registrations from the public form">
@@ -49,18 +59,37 @@ export default function AdminIntakeSubmissionsPage() {
                 </div>
               </div>
               {expanded === s.id && (
-                <div className="px-4 pb-4 pt-2 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  <div><p className="text-xs text-slate-500 mb-1">Gender</p><p className="text-white">{s.gender || '—'}</p></div>
-                  <div><p className="text-xs text-slate-500 mb-1">State</p><p className="text-white">{s.state || '—'}</p></div>
-                  <div><p className="text-xs text-slate-500 mb-1">Goal</p><p className="text-white">{s.goal || '—'}</p></div>
-                  <div><p className="text-xs text-slate-500 mb-1">Package</p><p className="text-white capitalize">{s.package_selected}</p></div>
-                  <div><p className="text-xs text-slate-500 mb-1">Player Profile</p>{s.player_profile_id ? <Link to={`/admin/players/${s.player_profile_id}`} className="text-royal-400 hover:underline flex items-center gap-1"><ExternalLink size={12} /> View</Link> : <p className="text-slate-500">—</p>}</div>
-                  <div><p className="text-xs text-slate-500 mb-1">Auth User</p>{s.auth_user_id ? <p className="text-green-400 text-xs">Created</p> : <p className="text-slate-500">—</p>}</div>
+                <div className="px-4 pb-4 pt-2 border-t border-white/10">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div><p className="text-xs text-slate-500 mb-1">Gender</p><p className="text-white">{s.gender || '—'}</p></div>
+                    <div><p className="text-xs text-slate-500 mb-1">State</p><p className="text-white">{s.state || '—'}</p></div>
+                    <div><p className="text-xs text-slate-500 mb-1">Goal</p><p className="text-white">{s.goal || '—'}</p></div>
+                    <div><p className="text-xs text-slate-500 mb-1">Package</p><p className="text-white capitalize">{s.package_selected}</p></div>
+                    <div><p className="text-xs text-slate-500 mb-1">Player Profile</p>{s.player_profile_id ? <Link to={`/admin/players/${s.player_profile_id}`} className="text-royal-400 hover:underline flex items-center gap-1"><ExternalLink size={12} /> View</Link> : <p className="text-slate-500">—</p>}</div>
+                    <div><p className="text-xs text-slate-500 mb-1">Auth User</p>{s.auth_user_id ? <p className="text-green-400 text-xs">Created</p> : <p className="text-slate-500">—</p>}</div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-white/10 flex justify-end">
+                    <button onClick={() => setDeleteId(s.id)} className="flex items-center gap-1 px-3 py-1.5 text-sm text-red-400 hover:bg-red-500/20 rounded-lg"><Trash2 size={14} /> Delete</button>
+                  </div>
                 </div>
               )}
             </div>
           ))}
           {submissions.length === 0 && <div className="card p-8 text-center text-slate-400">No intake submissions yet.</div>}
+        </div>
+      )}
+
+      {deleteId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setDeleteId(null)}>
+          <div className="bg-navy-800 rounded-xl shadow-xl w-full max-w-sm mx-4 p-6 text-center" onClick={e => e.stopPropagation()}>
+            <AlertTriangle size={32} className="mx-auto mb-3 text-red-400" />
+            <h3 className="text-lg font-bold text-white mb-1">Delete Submission?</h3>
+            <p className="text-sm text-slate-400 mb-5">This action cannot be undone.</p>
+            <div className="flex justify-center gap-3">
+              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm text-slate-400 hover:text-white">Cancel</button>
+              <button onClick={del} className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700">Delete</button>
+            </div>
+          </div>
         </div>
       )}
     </DashboardLayout>
