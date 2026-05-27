@@ -41,7 +41,8 @@ export function useAdminPlayerDetail(id: string) {
         if (profileRes.error) { console.error('useAdminPlayerDetail error:', profileRes.error.message); return }
         const p = profileRes.data as PlayerProfile
 
-        const packageName = (orderRes.data as any)?.service_offers?.name ?? 'None'
+        type OrderRow = { service_offers: { name: string }[] }
+        const packageName = ((orderRes.data as unknown as OrderRow)?.service_offers?.[0]?.name) ?? 'None'
 
         setDetail({
           id: p.id,

@@ -28,6 +28,7 @@ import ServicesOrdersPage from './pages/dashboard/ServicesOrdersPage'
 import ServiceOrderDetailPage from './pages/dashboard/ServiceOrderDetailPage'
 import ServiceIntakePage from './pages/dashboard/ServiceIntakePage'
 import IntakeFormPage from './pages/dashboard/IntakeFormPage'
+import EliteGBBIntakePage from './pages/public/EliteGBBIntakePage'
 import PlayerPortalPage from './pages/dashboard/PlayerPortalPage'
 import OnePagerPage from './pages/dashboard/OnePagerPage'
 import ClassTrackingPage from './pages/dashboard/ClassTrackingPage'
@@ -62,6 +63,8 @@ import AnalyticsPage from './pages/dashboard/AnalyticsPage'
 import AdminEvaluationsPage from './pages/admin/AdminEvaluationsPage'
 import AdminPlayerDetailPage from './pages/admin/AdminPlayerDetailPage'
 import AdminReportsPage from './pages/admin/AdminReportsPage'
+import AdminTrainingPage from './pages/admin/AdminTrainingPage'
+import AdminIntakeSubmissionsPage from './pages/admin/AdminIntakeSubmissionsPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -80,6 +83,7 @@ function AppRoutes() {
       <Route path="/nil-readiness" element={<PublicLayout><NILReadinessPage /></PublicLayout>} />
       <Route path="/audit" element={<PublicLayout><AuditPage /></PublicLayout>} />
       <Route path="/browse" element={<PublicLayout><BrowsePage /></PublicLayout>} />
+      <Route path="/elitegbb" element={<EliteGBBIntakePage />} />
       <Route path="/browse/:id" element={<PublicLayout><PlayerDetailPage /></PublicLayout>} />
       <Route path="/workshops" element={<PublicLayout><WorkshopsPage /></PublicLayout>} />
       <Route path="/ui-test" element={<PublicLayout><UITestPage /></PublicLayout>} />
@@ -116,6 +120,8 @@ function AppRoutes() {
       <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
       <Route path="/admin/players/:id" element={<ProtectedRoute role="admin"><AdminPlayerDetailPage /></ProtectedRoute>} />
       <Route path="/admin/reports" element={<ProtectedRoute role="admin"><AdminReportsPage /></ProtectedRoute>} />
+      <Route path="/admin/training" element={<ProtectedRoute role="admin"><AdminTrainingPage /></ProtectedRoute>} />
+      <Route path="/admin/intake" element={<ProtectedRoute role="admin"><AdminIntakeSubmissionsPage /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />

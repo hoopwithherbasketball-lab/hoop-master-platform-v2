@@ -38,9 +38,10 @@ export function useAdminEvaluations() {
         if (error) { console.error('useAdminEvaluations error:', error.message); return }
         if (!data) return
 
-        const mapped: AdminEvalSummary[] = data.map((r: any) => {
-          const sub = r.audit_submissions ?? {}
-          const prof = sub.player_profiles ?? {}
+        type AuditRow = { total_score: number; created_at: string; created_by: string; readiness_band: string; audit_submissions: { player_profile_id: string; player_profiles: { first_name: string; last_name: string; position: string; class_year: number; school_name: string }[] }[] }
+        const mapped: AdminEvalSummary[] = (data as unknown as AuditRow[]).map((r) => {
+          const sub = r.audit_submissions?.[0] ?? {} as AuditRow['audit_submissions'][0]
+          const prof = sub.player_profiles?.[0] ?? {}
           return {
             playerId: sub.player_profile_id ?? '',
             playerName: `${prof.first_name ?? ''} ${prof.last_name ?? ''}`.trim() || 'Unknown',

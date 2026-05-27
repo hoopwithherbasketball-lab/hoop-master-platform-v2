@@ -45,7 +45,7 @@ export function usePlayerEvaluation(playerId: string) {
           .eq('player_profile_id', playerId)
           .maybeSingle()
 
-        let auditResult: any = null
+        let auditResult: { total_score: number; strengths: string; gaps: string; priority_actions: string; created_at: string; created_by: string } | null = null
         if (submissionData?.id) {
           const r = await supabase
             .from('audit_results')

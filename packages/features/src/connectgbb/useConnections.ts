@@ -19,7 +19,7 @@ export function useConnections() {
           .order('created_at', { ascending: false })
 
         const userIds = [...new Set((data ?? []).flatMap(r => [r.requester_id, r.target_id].filter(id => id !== user.id)))]
-        let nameMap: Record<string, string> = {}
+        const nameMap: Record<string, string> = {}
         if (userIds.length > 0) {
           const { data: profiles } = await supabase
             .from('member_profiles')

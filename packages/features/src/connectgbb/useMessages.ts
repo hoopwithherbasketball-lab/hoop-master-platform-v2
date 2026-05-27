@@ -20,7 +20,7 @@ export function useMessages() {
           .order('last_timestamp', { ascending: false })
 
         const otherIds = [...new Set((convos ?? []).map(c => c.participant_one === user.id ? c.participant_two : c.participant_one))]
-        let nameMap: Record<string, { name: string; role: string }> = {}
+        const nameMap: Record<string, { name: string; role: string }> = {}
         if (otherIds.length > 0) {
           const { data: profiles } = await supabase
             .from('member_profiles')

@@ -24,6 +24,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-1">
             <Link to="/browse" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Browse Players</Link>
             <Link to="/services" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Services</Link>
+            <Link to="/elitegbb" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Create Profile</Link>
             <Link to="/recruiting-readiness" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Get Recruit-Ready</Link>
             <Link to="/nil-readiness" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">NIL Guide</Link>
             <Link to="/workshops" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Workshops</Link>
@@ -55,6 +56,7 @@ export default function Navbar() {
         <div className="md:hidden bg-navy-900 border-t border-white/10 px-4 py-4 space-y-1">
           <Link to="/browse" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Browse Players</Link>
           <Link to="/services" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Services</Link>
+          <Link to="/elitegbb" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Create Profile</Link>
           <Link to="/recruiting-readiness" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Get Recruit-Ready</Link>
           {user ? (
             <><Link to={getDashboardPath()} onClick={() => setOpen(false)} className="block text-white px-3 py-2 text-sm font-medium rounded-lg bg-royal-500">Dashboard</Link><button onClick={handleSignOut} className="block w-full text-left text-red-400 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Sign Out</button></>

@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '../../lib/supabase'
+import { useAuth } from '../../lib/auth'
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import { BarChart3, Users, FileText, Shield } from 'lucide-react'
+import { BarChart3, Users, FileText, Shield, Loader2 } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const TABS = [
   { id: 'stats', label: 'Stats & Analytics', icon: BarChart3 },
@@ -9,23 +12,42 @@ const TABS = [
   { id: 'security', label: 'Security', icon: Shield },
 ]
 
-const statBlocks = [
-  { label: 'Games', value: '24' },
-  { label: 'PPG', value: '18.4' },
-  { label: 'APG', value: '5.2' },
-  { label: 'RPG', value: '7.8' },
-  { label: 'SPG', value: '2.1' },
-  { label: 'BPG', value: '1.3' },
-  { label: 'FG%', value: '47.2' },
-  { label: '3PT%', value: '34.5' },
-  { label: 'FT%', value: '81.0' },
-]
-
 export default function PlayerPortalPage() {
+  const { user } = useAuth()
   const [activeTab, setActiveTab] = useState('stats')
+  const [profile, setProfile] = useState<{ id: string; first_name: string; last_name: string; position: string; class_year: number; school_name: string } | null>(null)
+  const [stats, setStats] = useState<{ ppg: number; apg: number; rpg: number; spg: number; bpg: number; fg_pct: number } | null>(null)
+  const [orders, setOrders] = useState<{ id: string; status: string; due_at: string | null }[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!user) return
+    const load = async () => {
+      const { data: p } = await supabase.from('player_profiles').select('id, first_name, last_name, position, class_year, school_name').eq('user_id', user.id).maybeSingle()
+      setProfile(p)
+      if (p) {
+        const { data: gs } = await supabase.from('player_game_stats').select('ppg, apg, rpg, spg, bpg, fg_pct').eq('player_profile_id', p.id).order('created_at', { ascending: false }).limit(1).maybeSingle()
+        setStats(gs)
+      }
+      const { data: o } = await supabase.from('service_orders').select('id, status, due_at').eq('customer_user_id', user.id).order('created_at', { ascending: false })
+      setOrders(o ?? [])
+      setLoading(false)
+    }
+    load()
+  }, [user])
+
+  if (loading) return <DashboardLayout variant="player" title="Player Portal" subtitle="Loading..."><div className="flex justify-center py-12"><Loader2 size={24} className="animate-spin text-slate-400" /></div></DashboardLayout>
+
+  const name = profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() : 'Your Player'
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase()
 
   return (
     <DashboardLayout variant="player" title="Player Portal" subtitle="Your central hub for stats, network, and recruiting materials.">
+      <div className="mb-6 card p-5 flex items-center gap-4">
+        <div className="w-14 h-14 bg-[#0134BD] rounded-full flex items-center justify-center text-xl font-bold text-white">{initials}</div>
+        <div><h2 className="text-xl font-bold text-white">{name}</h2><p className="text-slate-400 text-sm">{profile?.position || 'Position'} • Class of {profile?.class_year || '—'} • {profile?.school_name || 'School'}</p></div>
+      </div>
+
       <div className="flex gap-1 bg-navy-900 rounded-xl p-1 overflow-x-auto mb-8">
         {TABS.map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${activeTab === tab.id ? 'bg-navy-800 text-white shadow-sm' : 'text-white/70 hover:text-white'}`}>
@@ -35,52 +57,45 @@ export default function PlayerPortalPage() {
       </div>
 
       {activeTab === 'stats' && (
-        <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
-          {statBlocks.map(s => (
-            <div key={s.label} className="card p-4 text-center">
-              <p className="text-2xl font-bold text-white">{s.value}</p>
-              <p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">{s.label}</p>
-            </div>
-          ))}
-        </div>
+        stats ? (
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+            <StatBlock label="PPG" value={stats.ppg} />
+            <StatBlock label="APG" value={stats.apg} />
+            <StatBlock label="RPG" value={stats.rpg} />
+            <StatBlock label="SPG" value={stats.spg} />
+            <StatBlock label="BPG" value={stats.bpg} />
+            <StatBlock label="FG%" value={stats.fg_pct} />
+          </div>
+        ) : (
+          <div className="card p-8 text-center text-slate-400">
+            <BarChart3 size={32} className="mx-auto mb-3 text-slate-500" />
+            <p>No stats yet. Game data will appear here once uploaded.</p>
+            <Link to="/dashboard/analytics" className="inline-block mt-2 text-royal-400 hover:underline text-sm">View Analytics</Link>
+          </div>
+        )
       )}
 
       {activeTab === 'connections' && (
-        <div className="space-y-3">
-          <p className="text-sm text-slate-500 mb-4">Your network of coaches, scouts, and programs.</p>
-          {[
-            { name: 'Coach Williams', role: 'College Scout', org: 'Duke University', status: 'Connected' },
-            { name: 'Taylor Reed', role: 'Recruiting Coordinator', org: 'Stanford', status: 'Pending' },
-            { name: 'Jordan Blake', role: 'Head Coach', org: 'UConn', status: 'Connected' },
-          ].map(c => (
-            <div key={c.name} className="card p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#0134BD] rounded-full flex items-center justify-center text-white font-semibold text-sm">{c.name[0]}</div>
-                <div><p className="font-semibold text-white">{c.name}</p><p className="text-xs text-slate-500">{c.role} • {c.org}</p></div>
-              </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${c.status === 'Connected' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-100 text-yellow-700'}`}>{c.status}</span>
-            </div>
-          ))}
+        <div className="card p-8 text-center text-slate-400">
+          <Users size={32} className="mx-auto mb-3 text-slate-500" />
+          <p>Your coach network will appear here as coaches view your profile.</p>
         </div>
       )}
 
       {activeTab === 'deliverables' && (
         <div className="space-y-3">
-          <p className="text-sm text-slate-500 mb-4">Your recruiting deliverables and evaluations.</p>
-          {[
-            { name: 'Recruiting One-Pager', status: 'Ready', date: 'Apr 2026', icon: '📄' },
-            { name: 'Player Evaluation Report', status: 'Pending', date: 'In progress', icon: '📋' },
-            { name: 'Highlight Reel', status: 'Ready', date: 'Mar 2026', icon: '🎬' },
-            { name: 'Season Analytics Packet', status: 'Ready', date: 'Feb 2026', icon: '📊' },
-          ].map(d => (
-            <div key={d.name} className="card p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{d.icon}</span>
-                <div><p className="font-semibold text-white">{d.name}</p><p className="text-xs text-slate-500">{d.date}</p></div>
-              </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${d.status === 'Ready' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-100 text-yellow-700'}`}>{d.status}</span>
+          {orders.length > 0 ? orders.map(o => (
+            <div key={o.id} className="card p-4 flex items-center justify-between">
+              <div><p className="font-semibold text-white">Order {o.id.slice(0, 8)}</p><p className="text-xs text-slate-500">Status: {o.status.replace(/_/g, ' ')}</p></div>
+              <Link to={`/dashboard/services/${o.id}`} className="text-royal-400 hover:underline text-sm">View</Link>
             </div>
-          ))}
+          )) : (
+            <div className="card p-8 text-center text-slate-400">
+              <FileText size={32} className="mx-auto mb-3 text-slate-500" />
+              <p>No deliverables yet.</p>
+              <Link to="/elitegbb" className="inline-block mt-2 text-royal-400 hover:underline text-sm">Get started</Link>
+            </div>
+          )}
         </div>
       )}
 
@@ -89,20 +104,20 @@ export default function PlayerPortalPage() {
           <p className="text-sm text-slate-500">Manage your account security and privacy settings.</p>
           <div className="space-y-2">
             <label className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-              <span className="text-sm font-medium text-white">Two-Factor Authentication</span>
-              <input type="checkbox" className="w-5 h-5 text-[#0134BD] border-white/20 rounded" />
-            </label>
-            <label className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
               <span className="text-sm font-medium text-white">Profile Visibility (Coaches)</span>
-              <input type="checkbox" defaultChecked className="w-5 h-5 text-[#0134BD] border-white/20 rounded" />
+              <input type="checkbox" defaultChecked className="w-5 h-5 accent-[#0134BD] rounded" />
             </label>
             <label className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
               <span className="text-sm font-medium text-white">Show Stats Publicly</span>
-              <input type="checkbox" defaultChecked className="w-5 h-5 text-[#0134BD] border-white/20 rounded" />
+              <input type="checkbox" defaultChecked className="w-5 h-5 accent-[#0134BD] rounded" />
             </label>
           </div>
         </div>
       )}
     </DashboardLayout>
   )
+}
+
+function StatBlock({ label, value }: { label: string; value: number }) {
+  return <div className="card p-4 text-center"><p className="text-2xl font-bold text-white">{value}</p><p className="text-xs text-slate-500 mt-1 uppercase tracking-wider">{label}</p></div>
 }

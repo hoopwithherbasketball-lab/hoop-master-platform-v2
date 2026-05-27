@@ -15,7 +15,7 @@ export function ProtectedRoute({ children, role }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (user) { refreshRoles() }
-  }, [])
+  }, [user, refreshRoles])
 
   if (loading) {
     return (

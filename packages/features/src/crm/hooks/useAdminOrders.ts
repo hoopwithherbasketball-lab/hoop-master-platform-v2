@@ -57,9 +57,10 @@ export function useAdminOrders() {
       if (error) { console.error('useAdminOrders error:', error.message); return }
       if (!data) return
 
-      const mapped: ServiceOrderDisplay[] = data.map((r: any) => {
-        const offer = r.service_offers ?? {}
-        const profile = r.player_profiles ?? {}
+      type OrderRow = { id: string; status: string; created_at: string; due_at: string; intake_complete: boolean; service_offer_id: string; player_profile_id: string; service_offers: { slug: string; name: string; category: string; price_cents: number }[]; player_profiles: { first_name: string; last_name: string }[] }
+      const mapped: ServiceOrderDisplay[] = (data as unknown as OrderRow[]).map((r) => {
+        const offer = r.service_offers?.[0] ?? {} as OrderRow['service_offers'][0]
+        const profile = r.player_profiles?.[0] ?? {} as OrderRow['player_profiles'][0]
         const fullName = profile.first_name || profile.last_name
           ? `${profile.first_name ?? ''} ${profile.last_name ?? ''}`.trim()
           : 'Unknown'

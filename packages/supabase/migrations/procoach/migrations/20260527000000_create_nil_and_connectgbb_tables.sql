@@ -103,6 +103,13 @@ CREATE TABLE IF NOT EXISTS community_posts (
   like_count integer DEFAULT 0,
   comment_count integer DEFAULT 0
 );
+-- Backfill columns in case table already existed
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS author_name text NOT NULL DEFAULT '';
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS author_role text NOT NULL DEFAULT 'player' CHECK (author_role IN ('player','parent','coach','club_admin'));
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS image_url text DEFAULT '';
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS created_at timestamptz DEFAULT now();
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS like_count integer DEFAULT 0;
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS comment_count integer DEFAULT 0;
 ALTER TABLE community_posts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Anyone can view community_posts" ON community_posts FOR SELECT TO authenticated USING (true);
 CREATE POLICY "Users can insert own community_posts" ON community_posts FOR INSERT TO authenticated WITH CHECK (author_id = auth.uid());

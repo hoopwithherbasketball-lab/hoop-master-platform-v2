@@ -36,8 +36,9 @@ export function useCoachShortlist() {
         `)
         .order('created_at', { ascending: false })
       if (!data) return
-      setEntries(data.map((r: any) => {
-        const p = r.player_profiles ?? {}
+      type ShortlistRow = { id: string; created_at: string; player_profiles: { first_name: string; last_name: string; position: string; class_year: number; school_name: string; state: string }[] }
+      setEntries((data as unknown as ShortlistRow[]).map((r) => {
+        const p = r.player_profiles?.[0] ?? {} as ShortlistRow['player_profiles'][0]
         return {
           id: r.id,
           name: `${p.first_name ?? ''} ${p.last_name ?? ''}`.trim() || 'Unknown',

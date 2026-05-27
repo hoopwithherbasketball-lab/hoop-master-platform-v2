@@ -17,16 +17,22 @@ function loadCachedRoles(): UserRole[] {
       const parsed = JSON.parse(raw)
       if (Array.isArray(parsed)) return parsed
     }
-  } catch {}
+  } catch {
+    // Silently handle localStorage errors (may not be available)
+  }
   return []
 }
 
 function saveRolesCache(roles: UserRole[]) {
-  try { localStorage.setItem(ROLES_KEY, JSON.stringify(roles)) } catch {}
+  try { localStorage.setItem(ROLES_KEY, JSON.stringify(roles)) } catch {
+    // Silently handle localStorage errors (may not be available)
+  }
 }
 
 function clearRolesCache() {
-  try { localStorage.removeItem(ROLES_KEY) } catch {}
+  try { localStorage.removeItem(ROLES_KEY) } catch {
+    // Silently handle localStorage errors (may not be available)
+  }
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
