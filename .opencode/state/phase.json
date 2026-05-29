@@ -1,0 +1,31 @@
+{
+  "current_phase": 6,
+  "phase_name": "mcp_agent_command_center",
+  "mode": "command_center_tooling",
+  "status": "in_progress",
+  "started_at": "2026-05-29",
+  "completed_tasks": [
+    { "task": "Build admin community feed moderation page", "commit": "25f6a8c" },
+    { "task": "Create coach_referral_notes table + migration", "commit": "25f6a8c" },
+    { "task": "Wire useCoachReferral to Supabase for persistence", "commit": "25f6a8c" },
+    { "task": "Remove hardcoded email fallback from AuthContext", "commit": "25f6a8c" },
+    { "task": "Create audit fix migration (FK indexes, RLS, constraints, types)", "commit": "dfa7c41" },
+    { "task": "Fix 16 hooks: loading states, error handling, race conditions, N+1 queries", "commit": "dfa7c41" },
+    { "task": "Add CRUD modals to all 12 admin/NIL pages", "commit": "9dad29a" },
+    { "task": "Wire all dashboard pages to Supabase", "commit": "f2bad1f" },
+    { "task": "Create intake_submissions table + public intake form", "commit": "f2bad1f" },
+    { "task": "Create player_game_stats + film_entries tables", "commit": "f2bad1f" },
+    { "task": "Build agent command center (.opencode/ infrastructure)", "commit": "none (local)" }
+  ],
+  "pending_tasks": [
+    "Run migration 20260531000000_audit_fixes.sql in Supabase dashboard",
+    "Run migration 20260530000000_create_coach_referral_notes.sql first",
+    "Run all earlier migrations in order (20260409... through 20260527...)",
+    "Verify CRUD works end-to-end on all admin/NIL pages",
+    "Create Supabase storage buckets (training-thumbnails, training-videos)",
+    "Seed demo data"
+  ],
+  "blockers": [
+    "Migrations not yet applied in Supabase dashboard — some tables referenced by fix migration don't exist yet"
+  ]
+}

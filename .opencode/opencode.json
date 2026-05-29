@@ -1,0 +1,73 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "username": "lamont",
+  "default_agent": "hwh-overseer",
+  "instructions": ["AGENTS.md", "HANDOFF.md", "DEVELOPER_BRIEF.md"],
+
+  "agent": {
+    "hwh-overseer": {
+      "description": "HoopWithHer Phase Overseer — controls phase unlocking, approves agent handoffs, and enforces mode policy. Use when the user says 'proceed', 'continue', 'next phase', or 'status'.",
+      "mode": "primary",
+      "model": "anthropic/claude-sonnet-4-6",
+      "prompt": "file:///.opencode/agents/hwh-overseer.md"
+    },
+    "codex-dispatcher": {
+      "description": "Codex Task Dispatcher — routes work to specialist agents based on phase and task type. Invoked by Overseer when implementation work is needed.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "prompt": "file:///.opencode/agents/codex-dispatcher.md"
+    },
+    "frontend-ui-agent": {
+      "description": "Frontend UI Agent — builds React components, pages, routes, and UI features. Use when work involves frontend implementation.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "prompt": "file:///.opencode/agents/frontend-ui-agent.md"
+    },
+    "supabase-data-agent": {
+      "description": "Supabase Data Agent — designs schemas, writes migrations, creates types, builds database access code. Use for all database and data layer work.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "prompt": "file:///.opencode/agents/supabase-data-agent.md"
+    },
+    "qa-test-agent": {
+      "description": "QA Test Agent — runs builds, checks lint, verifies migrations, tests CRUD end-to-end. Use after any implementation to verify quality gates pass.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": { "bash": "allow" },
+      "prompt": "file:///.opencode/agents/qa-test-agent.md"
+    },
+    "security-privacy-agent": {
+      "description": "Security & Privacy Agent — reviews RLS policies, data exposure, PII handling, and auth flows. Use before any merge or deployment.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": { "edit": "deny" },
+      "prompt": "file:///.opencode/agents/security-privacy-agent.md"
+    },
+    "release-manager": {
+      "description": "Release Manager — summarizes phase completion, updates HANDOFF.md, generates release notes. Use before handoff or at phase boundaries.",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": { "bash": "allow", "edit": "allow" },
+      "prompt": "file:///.opencode/agents/release-manager.md"
+    }
+  },
+
+  "command": {
+    "proceed": {
+      "description": "Continue the build-out. The Overseer reads the current phase state, dispatches work to specialists, and advances the phase when complete.",
+      "prompt": "The user said 'proceed'. Read .opencode/state/phase.json to see the current phase state. Determine the next actionable task and dispatch it via codex-dispatcher. After completion, update phase.json and run qa-test-agent to verify. If all tasks in the phase are done, advance the phase number and commit."
+    },
+    "status": {
+      "description": "Show current phase, completed tasks, pending work, and any blockers.",
+      "prompt": "Read .opencode/state/phase.json and HANDOFF.md. Summarize the current phase, what's been completed, what's pending, and any known blockers. List the next 3 actionable tasks."
+    },
+    "handoff": {
+      "description": "Generate an updated handoff document for another developer or agent session.",
+      "prompt": "Load the handoff skill from .opencode/skills/handoff/SKILL.md and execute it to produce an updated HANDOFF.md."
+    }
+  },
+
+  "skills": {
+    "paths": [".opencode/skills"]
+  }
+}
