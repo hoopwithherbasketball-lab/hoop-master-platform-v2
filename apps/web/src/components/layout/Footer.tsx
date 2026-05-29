@@ -20,6 +20,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-4">Platform</h4>
             <ul className="space-y-2.5 text-sm">
+              <li><Link to="/watch" className="hover:text-white transition-colors">Watch Live</Link></li>
               <li><Link to="/browse" className="hover:text-white transition-colors">Browse Players</Link></li>
               <li><Link to="/events" className="hover:text-white transition-colors">Events</Link></li>
               <li><Link to="/signup?role=coach" className="hover:text-white transition-colors">For Coaches</Link></li>
@@ -41,6 +42,7 @@ export default function Footer() {
               <li><Link to="/recruiting-readiness" className="hover:text-white transition-colors">Recruiting Guide</Link></li>
               <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
               <li><Link to="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+              <li><Link to="/embed/docs" className="hover:text-white transition-colors">Embed Player</Link></li>
               <li><Link to="/login" className="hover:text-white transition-colors">Sign In</Link></li>
             </ul>
           </div>

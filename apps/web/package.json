@@ -9,13 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hoop-master/features": "*",
+    "@hoop-master/ui": "*",
     "@supabase/supabase-js": "^2.105.1",
+    "hls.js": "^1.6.16",
     "lucide-react": "^1.14.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.3",
-    "@hoop-master/ui": "*",
-    "@hoop-master/features": "*"
+    "react-router-dom": "^6.30.3"
   },
   "devDependencies": {
     "@types/react": "^18.3.1",

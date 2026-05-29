@@ -29,6 +29,8 @@ import ServiceOrderDetailPage from './pages/dashboard/ServiceOrderDetailPage'
 import ServiceIntakePage from './pages/dashboard/ServiceIntakePage'
 import IntakeFormPage from './pages/dashboard/IntakeFormPage'
 import EliteGBBIntakePage from './pages/public/EliteGBBIntakePage'
+import ChannelsBrowsePage from './pages/public/ChannelsBrowsePage'
+import ChannelWatchPage from './pages/public/ChannelWatchPage'
 import PlayerPortalPage from './pages/dashboard/PlayerPortalPage'
 import OnePagerPage from './pages/dashboard/OnePagerPage'
 import ClassTrackingPage from './pages/dashboard/ClassTrackingPage'
@@ -66,6 +68,14 @@ import AdminReportsPage from './pages/admin/AdminReportsPage'
 import AdminTrainingPage from './pages/admin/AdminTrainingPage'
 import AdminIntakeSubmissionsPage from './pages/admin/AdminIntakeSubmissionsPage'
 import AdminCommunityFeedPage from './pages/admin/AdminCommunityFeedPage'
+import AdminChannelsPage from './pages/admin/AdminChannelsPage'
+import AdminAssetsPage from './pages/admin/AdminAssetsPage'
+import AdminSchedulePage from './pages/admin/AdminSchedulePage'
+import AdminAdSlotsPage from './pages/admin/AdminAdSlotsPage'
+import AdminAnalyticsPage from './pages/admin/AdminAnalyticsPage'
+import AdminTenantsPage from './pages/admin/AdminTenantsPage'
+import EmbedPlayerPage from './pages/public/EmbedPlayerPage'
+import EmbedDocsPage from './pages/public/EmbedDocsPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
@@ -89,6 +99,10 @@ function AppRoutes() {
       <Route path="/workshops" element={<PublicLayout><WorkshopsPage /></PublicLayout>} />
       <Route path="/ui-test" element={<PublicLayout><UITestPage /></PublicLayout>} />
       <Route path="/checkout/:slug" element={<PublicLayout><CheckoutPage /></PublicLayout>} />
+      <Route path="/watch" element={<PublicLayout><ChannelsBrowsePage /></PublicLayout>} />
+      <Route path="/watch/:slug" element={<ChannelWatchPage />} />
+      <Route path="/embed/:slug" element={<EmbedPlayerPage />} />
+      <Route path="/embed/docs" element={<PublicLayout><EmbedDocsPage /></PublicLayout>} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
@@ -124,6 +138,12 @@ function AppRoutes() {
       <Route path="/admin/training" element={<ProtectedRoute role="admin"><AdminTrainingPage /></ProtectedRoute>} />
       <Route path="/admin/intake" element={<ProtectedRoute role="admin"><AdminIntakeSubmissionsPage /></ProtectedRoute>} />
       <Route path="/admin/feed" element={<ProtectedRoute role="admin"><AdminCommunityFeedPage /></ProtectedRoute>} />
+      <Route path="/admin/channels" element={<ProtectedRoute role="admin"><AdminChannelsPage /></ProtectedRoute>} />
+      <Route path="/admin/assets" element={<ProtectedRoute role="admin"><AdminAssetsPage /></ProtectedRoute>} />
+      <Route path="/admin/schedules" element={<ProtectedRoute role="admin"><AdminSchedulePage /></ProtectedRoute>} />
+      <Route path="/admin/ad-slots" element={<ProtectedRoute role="admin"><AdminAdSlotsPage /></ProtectedRoute>} />
+      <Route path="/admin/analytics" element={<ProtectedRoute role="admin"><AdminAnalyticsPage /></ProtectedRoute>} />
+      <Route path="/admin/tenants" element={<ProtectedRoute role="admin"><AdminTenantsPage /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />

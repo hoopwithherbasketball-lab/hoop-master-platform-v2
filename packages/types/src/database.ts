@@ -177,6 +177,46 @@ export interface Database {
         Insert: Omit<MemberProfile, 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Omit<MemberProfile, 'id'>>
       }
+      media_channels: {
+        Row: MediaChannel
+        Insert: Omit<MediaChannel, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<MediaChannel, 'id'>>
+      }
+      media_assets: {
+        Row: MediaAsset
+        Insert: Omit<MediaAsset, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<MediaAsset, 'id'>>
+      }
+      channel_schedules: {
+        Row: ChannelSchedule
+        Insert: Omit<ChannelSchedule, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<ChannelSchedule, 'id'>>
+      }
+      ad_slots: {
+        Row: AdSlot
+        Insert: Omit<AdSlot, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<AdSlot, 'id'>>
+      }
+      epg_programs: {
+        Row: EPGProgram
+        Insert: Omit<EPGProgram, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<EPGProgram, 'id'>>
+      }
+      analytics_events: {
+        Row: AnalyticsEvent
+        Insert: Omit<AnalyticsEvent, 'id' | 'created_at'>
+        Update: never
+      }
+      analytics_aggregates: {
+        Row: AnalyticsAggregate
+        Insert: Omit<AnalyticsAggregate, 'id' | 'created_at'>
+        Update: never
+      }
+      white_label_tenants: {
+        Row: WhiteLabelTenant
+        Insert: Omit<WhiteLabelTenant, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<WhiteLabelTenant, 'id'>>
+      }
     }
   }
 }
@@ -551,6 +591,137 @@ export interface SiteContent {
   page: string
   section: string
   content: string
+  created_at: string
+  updated_at: string
+}
+
+// ======== MEDIA PLATFORM TYPES (Phase 7) ========
+
+export type ChannelType = 'live' | 'linear' | 'vod'
+export type ChannelStatus = 'draft' | 'active' | 'paused' | 'archived'
+export type AssetStatus = 'draft' | 'processing' | 'ready' | 'failed' | 'archived'
+export type AdPosition = 'pre' | 'mid' | 'post'
+export type RepeatRule = 'none' | 'daily' | 'weekly'
+export type AnalyticsEventType = 'play' | 'pause' | 'stop' | 'heartbeat' | 'seek' | 'ad_start' | 'ad_end' | 'fullscreen' | 'quality_change'
+export type TenantStatus = 'active' | 'suspended' | 'archived'
+
+export interface ChannelBranding {
+  logo_url: string
+  primary_color: string
+  secondary_color: string
+  font_family: string
+}
+
+export interface MediaChannel {
+  id: string
+  slug: string
+  name: string
+  description: string
+  channel_type: ChannelType
+  status: ChannelStatus
+  branding: ChannelBranding
+  custom_domain: string | null
+  cname_target: string | null
+  stream_url: string | null
+  thumbnail_url: string
+  is_public: boolean
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface MediaAsset {
+  id: string
+  title: string
+  description: string
+  duration_seconds: number
+  storage_path: string
+  thumbnail_url: string
+  status: AssetStatus
+  category: string
+  tags: string[]
+  metadata: Record<string, unknown>
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface ChannelSchedule {
+  id: string
+  channel_id: string
+  asset_id: string
+  scheduled_start: string
+  scheduled_end: string
+  position: number
+  repeat_rule: RepeatRule
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface AdSlot {
+  id: string
+  channel_id: string
+  position: AdPosition
+  duration_seconds: number
+  ad_tag_url: string
+  scte35_cue: string | null
+  is_active: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface EPGProgram {
+  id: string
+  channel_id: string
+  asset_id: string | null
+  start_time: string
+  end_time: string
+  title: string
+  description: string
+  episode_number: number | null
+  season_number: number | null
+  metadata: Record<string, unknown>
+  created_at: string
+  updated_at: string
+}
+
+export interface AnalyticsEvent {
+  id: string
+  channel_id: string | null
+  asset_id: string | null
+  viewer_id: string | null
+  session_id: string
+  event_type: AnalyticsEventType
+  watch_seconds: number
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
+export interface AnalyticsAggregate {
+  id: string
+  channel_id: string | null
+  asset_id: string | null
+  hour_bucket: string
+  total_plays: number
+  total_watch_seconds: number
+  unique_viewers: number
+  peak_concurrent: number
+  ad_plays: number
+  ad_completions: number
+  created_at: string
+}
+
+export interface WhiteLabelTenant {
+  id: string
+  name: string
+  slug: string
+  custom_domain: string | null
+  cname_target: string | null
+  player_branding: Record<string, unknown>
+  status: TenantStatus
+  max_channels: number
+  max_storage_gb: number
   created_at: string
   updated_at: string
 }

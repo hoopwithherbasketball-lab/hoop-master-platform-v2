@@ -22,6 +22,7 @@ export default function Navbar() {
             <div><span className="font-display font-bold text-white text-lg leading-none">Elite GBB</span><span className="block text-xs text-slate-400 leading-none">ProCoach</span></div>
           </Link>
           <div className="hidden md:flex items-center gap-1">
+            <Link to="/watch" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Watch</Link>
             <Link to="/browse" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Browse Players</Link>
             <Link to="/services" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Services</Link>
             <Link to="/elitegbb" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Create Profile</Link>
@@ -54,6 +55,7 @@ export default function Navbar() {
       </div>
       {open && (
         <div className="md:hidden bg-navy-900 border-t border-white/10 px-4 py-4 space-y-1">
+          <Link to="/watch" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Watch</Link>
           <Link to="/browse" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Browse Players</Link>
           <Link to="/services" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Services</Link>
           <Link to="/elitegbb" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Create Profile</Link>

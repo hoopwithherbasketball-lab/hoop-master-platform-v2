@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, Settings, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, CheckSquare, MessageSquare } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, Settings, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideo, BarChart, Globe } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -49,6 +49,15 @@ const adminNav: NavItem[] = [
   { label: 'Community Feed', to: '/admin/feed', icon: <MessageSquare size={16} /> },
 ]
 
+const mediaNav: NavItem[] = [
+  { label: 'Channels', to: '/admin/channels', icon: <Radio size={16} /> },
+  { label: 'Assets', to: '/admin/assets', icon: <FileVideo size={16} /> },
+  { label: 'Schedules', to: '/admin/schedules', icon: <CalendarClock size={16} /> },
+  { label: 'Ad Slots', to: '/admin/ad-slots', icon: <Megaphone size={16} /> },
+  { label: 'Analytics', to: '/admin/analytics', icon: <BarChart size={16} /> },
+  { label: 'Tenants', to: '/admin/tenants', icon: <Globe size={16} /> },
+]
+
 interface Props {
   variant: 'player' | 'coach' | 'admin'
 }
@@ -74,6 +83,8 @@ export default function DashboardSidebar({ variant }: Props) {
           <span className="badge badge-navy mt-1.5 capitalize">{variant}</span>
         </div>
         <nav className="space-y-0.5">
+          {variant === 'admin' && (<div className="mt-8 mb-2 px-4"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Media Platform</p></div>)}
+          {variant === 'admin' && mediaNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
           {variant === 'admin' && (<div className="mt-8 mb-2 px-4"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NIL and Sponsorship</p></div>)}
           {variant === 'admin' && nilNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
           {variant === 'admin' && (<div className="mt-8 mb-2 px-4"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Operations</p></div>)}
