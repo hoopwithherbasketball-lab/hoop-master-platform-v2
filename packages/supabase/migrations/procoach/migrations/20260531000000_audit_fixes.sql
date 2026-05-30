@@ -147,7 +147,7 @@ CREATE INDEX IF NOT EXISTS idx_events_organizer_id ON events(organizer_id);
 CREATE INDEX IF NOT EXISTS idx_tournaments_organizer_id ON tournaments(organizer_id);
 
 -- site_content
-CREATE INDEX IF NOT EXISTS idx_site_content_updated_by ON site_content(updated_by);
+CREATE INDEX IF NOT EXISTS idx_site_content_updated_at ON site_content(updated_at);
 
 -- player_tasks
 CREATE INDEX IF NOT EXISTS idx_player_tasks_player_profile_id ON player_tasks(player_profile_id);
