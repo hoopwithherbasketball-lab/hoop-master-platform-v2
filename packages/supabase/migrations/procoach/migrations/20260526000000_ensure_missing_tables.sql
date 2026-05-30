@@ -12,11 +12,13 @@ CREATE TABLE IF NOT EXISTS notifications (
 
 ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "Users can view own notifications" ON notifications
+DROP POLICY IF EXISTS "Users can view own notifications" ON notifications;
+CREATE POLICY "Users can view own notifications" ON notifications
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
-CREATE POLICY IF NOT EXISTS "Users can update own notifications" ON notifications
+DROP POLICY IF EXISTS "Users can update own notifications" ON notifications;
+CREATE POLICY "Users can update own notifications" ON notifications
   FOR UPDATE TO authenticated
   USING (user_id = auth.uid());
 
@@ -39,11 +41,13 @@ CREATE TABLE IF NOT EXISTS coach_profiles (
 
 ALTER TABLE coach_profiles ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "Users can view own coach profile" ON coach_profiles
+DROP POLICY IF EXISTS "Users can view own coach profile" ON coach_profiles;
+CREATE POLICY "Users can view own coach profile" ON coach_profiles
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
-CREATE POLICY IF NOT EXISTS "Users can manage own coach profile" ON coach_profiles
+DROP POLICY IF EXISTS "Users can manage own coach profile" ON coach_profiles;
+CREATE POLICY "Users can manage own coach profile" ON coach_profiles
   FOR ALL TO authenticated
   USING (user_id = auth.uid());
 
@@ -62,14 +66,17 @@ CREATE TABLE IF NOT EXISTS event_registrations (
 
 ALTER TABLE event_registrations ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "Users can view own registrations" ON event_registrations
+DROP POLICY IF EXISTS "Users can view own registrations" ON event_registrations;
+CREATE POLICY "Users can view own registrations" ON event_registrations
   FOR SELECT TO authenticated
   USING (user_id = auth.uid());
 
-CREATE POLICY IF NOT EXISTS "Users can insert own registrations" ON event_registrations
+DROP POLICY IF EXISTS "Users can insert own registrations" ON event_registrations;
+CREATE POLICY "Users can insert own registrations" ON event_registrations
   FOR INSERT TO authenticated
   WITH CHECK (user_id = auth.uid());
 
-CREATE POLICY IF NOT EXISTS "Admins can manage registrations" ON event_registrations
+DROP POLICY IF EXISTS "Admins can manage registrations" ON event_registrations;
+CREATE POLICY "Admins can manage registrations" ON event_registrations
   FOR ALL TO authenticated
   USING (EXISTS (SELECT 1 FROM user_roles WHERE user_id = auth.uid() AND role = 'admin'));
