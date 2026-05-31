@@ -1,12 +1,10 @@
 @echo off
+title Hoop With Her - Dev Server
 cd /d "%~dp0apps\web"
-echo Starting Hoop With Her dev server...
-echo Press Ctrl+C to stop.
+echo ========================================
+echo   Hoop With Her Dev Server
+echo   http://localhost:5173
+echo ========================================
 echo.
 node ..\..\node_modules\vite\bin\vite.js --host
-if errorlevel 1 (
-  echo.
-  echo Server crashed. Retrying in 3 seconds...
-  timeout /t 3 /nobreak >nul
-  node ..\..\node_modules\vite\bin\vite.js --host
-)
+pause
