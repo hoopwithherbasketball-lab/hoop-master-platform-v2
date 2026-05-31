@@ -1,25 +1,25 @@
 {
-  "current_phase": 8,
-  "phase_name": "polish_and_optimization",
+  "current_phase": 7,
+  "phase_name": "media_platform_foundation",
   "mode": "implementation",
-  "status": "in_progress",
+  "status": "complete",
   "started_at": "2026-05-29",
   "completed_tasks": [
-    { "task": "Phase 7: Media platform foundation — all 35+ files built and verified" },
-    { "task": "Create migration runbook (MIGRATION_RUNBOOK.md)" }
+    { "task": "Phase 6: Agent command center" },
+    { "task": "Phase 7: Media platform foundation — all 40+ files built" },
+    { "task": "Fixed CREATE POLICY IF NOT EXISTS syntax for PostgreSQL" },
+    { "task": "Fixed site_content.updated_by index column" },
+    { "task": "Fixed training_videos CHECK constraint categories" },
+    { "task": "Applied all migrations in Supabase" },
+    { "task": "Switched HLS.js to CDN loading (npm package broken on Windows)" },
+    { "task": "Created start-dev.bat for dev server" }
   ],
   "pending_tasks": [
-    "Run all 17 migrations in Supabase dashboard",
-    "Create storage buckets (training-thumbnails, training-videos, media-assets)",
-    "Create .env file with Supabase credentials",
-    "Commit all Phase 7 changes to main",
-    "Add error boundaries to media pages",
-    "Add loading skeletons to all admin pages",
-    "Optimize bundle size with manual chunks",
-    "Add unit tests for services",
-    "Load test API endpoints"
+    "Verify /watch shows 4 channels in browser",
+    "Verify /admin pages load with data",
+    "Create storage buckets if not done",
+    "Fix turbo binary for Windows",
+    "Start Phase 8: polish and optimization"
   ],
-  "blockers": [
-    "Migrations not yet applied — requires Supabase dashboard access"
-  ]
+  "blockers": []
 }
