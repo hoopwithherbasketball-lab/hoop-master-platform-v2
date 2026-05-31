@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
-import Hls from 'hls.js'
 
 export interface PlayerBranding {
   logo_url?: string
@@ -64,7 +63,19 @@ export default function HLSPlayer({
 
     const initPlayer = async () => {
       try {
-        if (Hls.isSupported()) {
+        // Load hls.js from CDN to avoid npm package resolution issues
+        if (!(window as any).Hls) {
+          await new Promise<void>((resolve, reject) => {
+            const script = document.createElement('script')
+            script.src = 'https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js'
+            script.onload = () => resolve()
+            script.onerror = () => reject(new Error('Failed to load HLS.js'))
+            document.head.appendChild(script)
+          })
+        }
+
+        const Hls = (window as any).Hls
+        if (Hls && Hls.isSupported()) {
           const hls = new Hls({
             enableWorker: true,
             lowLatencyMode: true,
@@ -76,11 +87,11 @@ export default function HLSPlayer({
           hls.loadSource(src)
           hls.attachMedia(video)
 
-          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          hls.on('manifestParsed', () => {
             if (!destroyed) { setLoading(false); video.play().catch(() => {}) }
           })
 
-          hls.on(Hls.Events.ERROR, (_event: any, data: any) => {
+          hls.on('error', (_event: any, data: any) => {
             if (data?.fatal && !destroyed) {
               setError('Stream playback error. Please try again.')
               hls.destroy()

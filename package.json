@@ -16,7 +16,7 @@
   "devDependencies": {
     "ajv": "^8.20.0",
     "ajv-keywords": "^5.1.0",
-    "turbo": "^2.0.0"
+    "turbo": "^2.9.9"
   },
   "packageManager": "npm@10.0.0"
 }
