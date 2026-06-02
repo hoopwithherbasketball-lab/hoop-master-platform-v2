@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEventRegistration } from '@hoop-master/features/crm'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { MapPin, Users, CheckCircle } from 'lucide-react'
 
 export default function EventsPage() {

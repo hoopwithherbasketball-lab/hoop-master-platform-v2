@@ -24,6 +24,8 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
   return (
     <span
       className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${statusColors[status]} ${className}`}
+      role="status"
+      aria-label={`${label} status`}
     >
       {label}
     </span>

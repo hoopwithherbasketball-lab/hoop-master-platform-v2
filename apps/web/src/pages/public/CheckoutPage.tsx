@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 
 const plans: Record<string, { title: string; description: string; price: string; features: string[] }> = {
   'recruiting-review': {

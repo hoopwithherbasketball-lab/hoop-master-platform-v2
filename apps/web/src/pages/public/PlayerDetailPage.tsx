@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { CTABanner } from '@hoop-master/ui'
 import { VerifiedBadge, usePlayerEvaluation } from '@hoop-master/features/crm'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { players } from './players-data'
 import { Award, TrendingUp } from 'lucide-react'
 

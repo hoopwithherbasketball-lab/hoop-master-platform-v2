@@ -27,20 +27,39 @@ export const CTABanner: React.FC<CTABannerProps> = ({
       <h2 className="text-3xl font-bold mb-4">{title}</h2>
       <p className="text-xl mb-6 max-w-2xl mx-auto">{description}</p>
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        {actions.map((action) => (
-          <a
-            key={action.label}
-            href={action.href}
-            onClick={action.onClick}
-            className={
-              action.variant === 'secondary'
-                ? 'bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors'
-                : 'bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors'
-            }
-          >
-            {action.label}
-          </a>
-        ))}
+        {actions.map((action) => {
+          const isExternal = action.href?.startsWith('http');
+          const linkClasses = action.variant === 'secondary'
+            ? 'bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors'
+            : 'bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors';
+
+          if (action.onClick && !action.href) {
+            return (
+              <button
+                key={action.label}
+                type="button"
+                onClick={action.onClick}
+                className={linkClasses}
+                aria-label={action.label}
+              >
+                {action.label}
+              </button>
+            )
+          }
+
+          return (
+            <a
+              key={action.label}
+              href={action.href}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+              aria-label={action.label}
+              className={linkClasses}
+            >
+              {action.label}
+            </a>
+          )
+        })}
       </div>
     </section>
   );

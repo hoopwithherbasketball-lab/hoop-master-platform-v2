@@ -14,9 +14,11 @@ export const PageSection: React.FC<PageSectionProps> = ({
   children,
 }) => {
   return (
-    <section className={`mb-12 ${className}`}>
+    <section className={`mb-12 ${className}`} aria-labelledby={title ? `${title.replace(/\s+/g, '-').toLowerCase()}-heading` : undefined}>
       {title && (
-        <h2 className="text-3xl font-bold text-center text-white mb-8">{title}</h2>
+        <h2 id={title ? `${title.replace(/\s+/g, '-').toLowerCase()}-heading` : undefined} className="text-3xl font-bold text-center text-white mb-8">
+          {title}
+        </h2>
       )}
       {description && (
         <p className="text-center text-slate-400 max-w-2xl mx-auto mb-8">{description}</p>

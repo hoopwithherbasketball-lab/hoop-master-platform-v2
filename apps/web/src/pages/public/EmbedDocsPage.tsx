@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { Code, Copy, Check } from 'lucide-react'
 
 const channels = [

@@ -7,5 +7,6 @@ export { IconTarget } from './components/IconTarget';
 export { IconMoney } from './components/IconMoney';
 export { IconChart } from './components/IconChart';
 export { PageSection } from './layouts/PageSection';
+export { PageShell } from './layouts/PageShell';
 export { CTABanner } from './layouts/CTABanner';
 export { StatsGrid } from './layouts/StatsGrid';

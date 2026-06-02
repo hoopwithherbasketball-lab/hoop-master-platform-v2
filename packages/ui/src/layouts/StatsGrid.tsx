@@ -24,7 +24,7 @@ export const StatsGrid: React.FC<StatsGridProps> = ({
   className = '',
 }) => {
   return (
-    <section className={`bg-[#121B47] text-white p-8 rounded-lg mb-12 ${className}`}>
+    <section className={`bg-[#121B47] text-white p-8 rounded-lg mb-12 ${className}`} aria-label="Platform statistics">
       <div className={`grid gap-6 ${columnMap[columns] || 'md:grid-cols-4'} text-center`}>
         {stats.map((stat) => (
           <div key={stat.label}>

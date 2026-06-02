@@ -1,5 +1,5 @@
 import StatusBadge from '../../components/ui/StatusBadge'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { Link } from 'react-router-dom'
 
 const partners = [

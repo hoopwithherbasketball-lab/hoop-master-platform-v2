@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { IconTarget, IconMoney, IconChart, PageSection, CTABanner, StatsGrid } from '@hoop-master/ui'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 
 export default function HomePage() {
   return (

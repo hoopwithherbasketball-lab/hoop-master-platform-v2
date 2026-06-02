@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PlayerCard, CTABanner, PageSection } from '@hoop-master/ui'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { players } from './players-data'
 
 export default function BrowsePage() {

@@ -1,4 +1,4 @@
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 
 const faqs = [
   { q: 'What is Elite GBB?', a: 'Elite GBB is a recruiting-readiness platform for elite girls basketball players. We help athletes build their profile, connect with college coaches, and unlock NIL opportunities.' },

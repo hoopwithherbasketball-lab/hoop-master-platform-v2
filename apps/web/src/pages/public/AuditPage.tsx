@@ -1,5 +1,5 @@
 import { AuditCard } from '@hoop-master/ui'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 
 const audits = [
   { title: 'Recruiting Review', description: 'Complete evaluation of your recruiting profile and highlight reel package.', label: 'Popular' },
