@@ -33,31 +33,32 @@ export const CTABanner: React.FC<CTABannerProps> = ({
             ? 'bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors'
             : 'bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors';
 
-          if (action.onClick && !action.href) {
+          if (action.href) {
             return (
-              <button
+              <a
                 key={action.label}
-                type="button"
-                onClick={action.onClick}
-                className={linkClasses}
+                href={action.href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
                 aria-label={action.label}
+                className={linkClasses}
+                onClick={action.onClick}
               >
                 {action.label}
-              </button>
+              </a>
             )
           }
 
           return (
-            <a
+            <button
               key={action.label}
-              href={action.href}
-              target={isExternal ? '_blank' : undefined}
-              rel={isExternal ? 'noopener noreferrer' : undefined}
-              aria-label={action.label}
+              type="button"
+              onClick={action.onClick}
               className={linkClasses}
+              aria-label={action.label}
             >
               {action.label}
-            </a>
+            </button>
           )
         })}
       </div>
