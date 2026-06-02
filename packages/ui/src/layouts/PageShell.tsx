@@ -30,7 +30,7 @@ export const PageShell: React.FC<PageShellProps> = ({
           ) : null}
         </div>
       </header>
-      <div className="space-y-6">{children}</div>
+      <main className="space-y-6">{children}</main>
     </div>
   )
 }
