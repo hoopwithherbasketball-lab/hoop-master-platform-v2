@@ -16,7 +16,10 @@ export const PageShell: React.FC<PageShellProps> = ({
   children,
 }) => {
   return (
-    <div className={`max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-8 ${className}`}>
+    <main
+      className={`max-w-6xl mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-8 ${className}`}
+      aria-label={title}
+    >
       <header className="space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
@@ -30,7 +33,7 @@ export const PageShell: React.FC<PageShellProps> = ({
           ) : null}
         </div>
       </header>
-      <main className="space-y-6">{children}</main>
-    </div>
+      <div className="space-y-6">{children}</div>
+    </main>
   )
 }
