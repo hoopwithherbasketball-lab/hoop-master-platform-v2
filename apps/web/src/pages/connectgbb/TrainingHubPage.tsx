@@ -1,5 +1,5 @@
 import { useTrainingTracks } from '@hoop-master/features/connectgbb'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 
 const categoryColors: Record<string, string> = {
   skill: 'bg-[#0134BD]',

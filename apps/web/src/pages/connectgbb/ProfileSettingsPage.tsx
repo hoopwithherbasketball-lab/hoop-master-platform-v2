@@ -1,5 +1,5 @@
 import { useMemberProfile } from '@hoop-master/features/connectgbb'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { Save } from 'lucide-react'
 
 const ROLES = [

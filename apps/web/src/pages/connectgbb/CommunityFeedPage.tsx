@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useCommunityFeed } from '@hoop-master/features/connectgbb'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { Send } from 'lucide-react'
 
 export default function CommunityFeedPage() {

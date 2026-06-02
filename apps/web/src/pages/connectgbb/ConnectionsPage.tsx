@@ -1,5 +1,5 @@
 import { useConnections } from '@hoop-master/features/connectgbb'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 
 const statusLabels: Record<string, string> = { approved: 'Connected', pending: 'Pending' }
 const statusColors: Record<string, string> = { approved: 'bg-green-500/20 text-green-400', pending: 'bg-yellow-100 text-yellow-700' }

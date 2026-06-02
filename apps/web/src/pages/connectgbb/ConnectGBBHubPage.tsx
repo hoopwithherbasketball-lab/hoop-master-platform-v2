@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 
 const sections = [
   { title: 'Community Feed', desc: 'Connect with players, coaches, and programs. Share updates and celebrate milestones.', path: '/connectgbb/feed', icon: '💬', color: 'border-l-[#0134BD]' },

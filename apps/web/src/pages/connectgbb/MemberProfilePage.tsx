@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useMemberProfile } from '@hoop-master/features/connectgbb'
 import { VerifiedBadge, useVerification } from '@hoop-master/features/crm'
-import PageShell from '../../components/ui/PageShell'
+import { PageShell } from '@hoop-master/ui'
 import { MapPin, Calendar, MessageSquare } from 'lucide-react'
 
 export default function MemberProfilePage() {
