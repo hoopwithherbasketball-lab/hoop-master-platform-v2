@@ -20,6 +20,7 @@ This log captures the ongoing Phase 7 work on the public MVP shell and shared UI
 - Refined accessibility and semantics for `ReadinessGauge`, `ScoreBar`, `StatusBadge`, and `CTABanner`
 - Simplified CTA render logic to avoid anchor tags without `href` in `CTABanner`
 - Improved `PageShell` semantics by rendering a `<main>` wrapper with page-level labeling
+- Verified all `apps/web/src/pages/public/*` pages now import shared `PageShell` from `@hoop-master/ui`
 - Verified `apps/web` rebuilds cleanly with `npx turbo build --filter=web`
 
 ## Next steps
