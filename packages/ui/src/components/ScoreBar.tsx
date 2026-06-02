@@ -14,7 +14,7 @@ export const ScoreBar: React.FC<ScoreBarProps> = ({
   color = 'bg-blue-500'
 }) => {
   const boundedScore = Math.max(0, Math.min(score, maxScore));
-  const percentage = (boundedScore / maxScore) * 100;
+  const percentage = maxScore > 0 ? (boundedScore / maxScore) * 100 : 0;
 
   return (
     <div className="w-full" role="group" aria-label={label ? `${label} score bar` : 'score bar'}>
