@@ -9,7 +9,7 @@ export const ReadinessGauge: React.FC<ReadinessGaugeProps> = ({
   percentage,
   label = 'Readiness'
 }) => {
-  const normalized = Math.round(Math.min(Math.max(percentage, 0), 100));
+  const normalized = Math.round(Math.min(Math.max(percentage || 0, 0), 100));
 
   return (
     <div className="flex flex-col items-center" role="group" aria-label={`${label} gauge`}>
