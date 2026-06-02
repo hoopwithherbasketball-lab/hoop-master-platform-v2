@@ -82,7 +82,15 @@ export default function PlayerDetailPage() {
         </div>
       </div>
 
-      <CTABanner title={`Interested in Recruiting ${firstName}?`} description="Connect with this athlete and access full recruiting tools, transcripts, and video highlights." actions={[{ label: 'Create Coach Account', href: '/signup' }, { label: 'View Recruiting Services', href: '/services', variant: 'secondary' }]} />
+      <CTABanner
+        title={`Interested in Recruiting ${firstName}?`}
+        description="Connect with this athlete and access full recruiting tools, transcripts, and video highlights."
+        actions={[
+          { label: 'Create Coach Account', href: '/signup' },
+          { label: 'View Recruiting Services', href: '/services', variant: 'secondary' },
+        ]}
+        LinkComponent={Link}
+      />
     </PageShell>
   )
 }

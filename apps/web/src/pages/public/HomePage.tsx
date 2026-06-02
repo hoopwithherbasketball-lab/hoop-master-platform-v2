@@ -120,6 +120,7 @@ export default function HomePage() {
         actions={[
           { label: 'Join Elite GBB Today', href: '/signup', variant: 'secondary' },
         ]}
+        LinkComponent={Link}
       />
     </PageShell>
   )

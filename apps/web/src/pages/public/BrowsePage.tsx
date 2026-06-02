@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { PlayerCard, CTABanner, PageSection } from '@hoop-master/ui'
 import { PageShell } from '@hoop-master/ui'
 import { players } from './players-data'
@@ -124,6 +124,7 @@ export default function BrowsePage() {
           { label: 'Create Coach Account', href: '/signup' },
           { label: 'View Recruiting Services', href: '/services', variant: 'secondary' },
         ]}
+        LinkComponent={Link}
       />
     </PageShell>
   )
