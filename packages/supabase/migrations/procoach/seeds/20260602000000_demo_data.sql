@@ -20,7 +20,7 @@ ON CONFLICT DO NOTHING;
 INSERT INTO service_offers (slug, name, category, description, price_cents, active) VALUES
   ('player-dev-bronze', 'Player Development - Bronze', 'player_dev', 'Basic skills assessment and development plan', 49900, true),
   ('player-dev-silver', 'Player Development - Silver', 'player_dev', 'Advanced skills training with film breakdown', 99900, true),
-  ('player-dev-gold', 'Player Development - Gold', 'player_dev', 'Comprehensive elite training + recruiting support', 199900, true),
+  ('player-dev-gold', 'Player Development - Gold', 'Comprehensive elite training + recruiting support', 199900, true),
   ('recruiting-basic', 'Recruiting Package - Basic', 'recruiting', 'Profile creation, highlight reel, coach outreach', 79900, true),
   ('recruiting-premium', 'Recruiting Package - Premium', 'recruiting', 'Full recruiting concierge with video production', 149900, true),
   ('skills-clinic', 'Youth Skills Clinic', 'clinic', 'Weekend skills clinic for ages 10-14', 14900, true),
