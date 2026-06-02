@@ -1,5 +1,6 @@
 import { useEventRegistration } from '@hoop-master/features/crm'
 import DashboardLayout from '../../components/layout/DashboardLayout'
+import { Link } from 'react-router-dom'
 import { MapPin, Users, Calendar, XCircle } from 'lucide-react'
 
 export default function EventsPage() {
@@ -9,10 +10,10 @@ export default function EventsPage() {
     <DashboardLayout variant="player" title="My Events" subtitle={`${registeredCount} event${registeredCount !== 1 ? 's' : ''} registered`}>
       <div className="max-w-4xl mx-auto space-y-6">
         {registeredCount === 0 && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center">
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center">
             <p className="font-semibold text-amber-800 mb-1">No events registered</p>
             <p className="text-amber-600 text-sm mb-4">Browse upcoming events and register to attend.</p>
-            <a href="/events" className="inline-block bg-[#0134BD] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#002a80]">Browse Events</a>
+            <Link to="/events" className="inline-block bg-[#0134BD] text-white px-6 py-2.5 rounded-lg font-medium hover:bg-[#002a80]">Browse Events</Link>
           </div>
         )}
 
