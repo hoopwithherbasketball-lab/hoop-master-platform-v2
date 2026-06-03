@@ -3,6 +3,8 @@ import { supabase } from '@hoop-master/supabase'
 import { useAuth } from '../crm/contexts/AuthContextValue.js'
 import type { CommunityMembership } from './types'
 
+let rpcUnavailable = false
+
 const mapMembership = (row: {
   id: string
   user_id: string
@@ -34,34 +36,63 @@ export function useCommunityMembership() {
     if (!user) return
     try {
       setError(null)
-      const { data: ensured, error: ensureError } = await supabase
-        .rpc('ensure_community_membership')
-        .single()
 
-      if (ensureError) throw ensureError
+      const { data: existingMembership, error: existingError } = await supabase
+        .from('community_memberships')
+        .select('id, user_id, status, tier, approved_at, expires_at')
+        .eq('user_id', user.id)
+        .maybeSingle()
 
-      const ensuredRecord = ensured as {
+      if (!existingError && existingMembership?.id && existingMembership?.user_id) {
+        setMembership(mapMembership(existingMembership))
+        return
+      }
+
+      if (!rpcUnavailable) {
+        const { data: ensured, error: ensureError } = await supabase
+          .rpc('ensure_community_membership')
+          .single()
+
+        if (ensureError && ensureError.code === 'PGRST202') {
+          rpcUnavailable = true
+        }
+
+        if (ensureError && ensureError.code !== 'PGRST202') {
+          throw ensureError
+        }
+
+        const ensuredRecord = ensured as {
         id: string
         user_id: string
         status: 'pending' | 'active' | 'suspended'
         tier: 'starter' | 'pro' | 'elite'
         approved_at: string | null
         expires_at: string | null
-      } | null
+        } | null
 
-      if (ensuredRecord?.id && ensuredRecord?.user_id) {
-        setMembership(mapMembership(ensuredRecord))
-        return
+        if (ensuredRecord?.id && ensuredRecord?.user_id) {
+          setMembership(mapMembership(ensuredRecord))
+          return
+        }
       }
 
-      const { data, error: selectError } = await supabase
-        .from('community_memberships')
-        .select('id, user_id, status, tier, approved_at, expires_at')
+      const { data: roleRows } = await supabase
+        .from('user_roles')
+        .select('role')
         .eq('user_id', user.id)
-        .maybeSingle()
+        .limit(5)
 
-      if (selectError) throw selectError
-      setMembership(data ? mapMembership(data) : null)
+      const fallbackRoles = roleRows?.map((r) => r.role) || roles
+      const fallbackActive = fallbackRoles.includes('admin') || fallbackRoles.includes('coach') || fallbackRoles.includes('club_admin') || fallbackRoles.includes('service_specialist')
+      setMembership({
+        id: `legacy-${user.id}`,
+        userId: user.id,
+        status: fallbackActive ? 'active' : 'pending',
+        tier: fallbackActive ? 'pro' : 'starter',
+        approvedAt: null,
+        expiresAt: null,
+        isActive: fallbackActive,
+      })
     } catch (e) {
       console.error('useCommunityMembership ensureMembership:', e)
       const fallbackActive = roles.includes('admin') || roles.includes('coach') || roles.includes('club_admin') || roles.includes('service_specialist')

@@ -1,0 +1,61 @@
+{
+  "summary": "Frontend-only ConnectGBB membership/regression testing completed with provided coach credential. Required flows passed on localhost, but PUBLIC preview endpoint is blocked by host allowlist so public-endpoint verification could not be completed.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "LoginForm",
+        "issue": "Missing data-testid attributes on email/password/sign-in controls; required testability contract not met.",
+        "selector": "input[type='email'], input[type='password'], button[type='submit']",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Public-endpoint e2e execution",
+        "issue": "Preview URL returns blocked-host page (Vite host not allowed), preventing mandated public URL validation.",
+        "affected_selectors": [
+          "N/A - app shell blocked before React app loads"
+        ]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "ConnectGBB hub",
+        "issues": [
+          "Loading text ('Checking membership access…') can appear concurrently with locked members-only section, causing mixed-state UX during initial render."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/tests/test_connectgbb_membership_states_playwright.py"
+  ],
+  "action_items": [
+    "Fix preview/public host allowlist so required PUBLIC URL tests can run (Vite allowedHosts / ingress host alignment).",
+    "Add data-testid to LoginForm inputs and submit button for stable automation.",
+    "Optionally gate locked/active hub panel rendering until membership loading completes to avoid mixed-state flash."
+  ],
+  "critical_code_review_comments": [
+    "ProtectedRoute debug logging regression appears fixed (no noisy ProtectedRoute logs observed during tested flows).",
+    "Admin community memberships route auth guard remained intact for coach credential (redirected to /dashboard).",
+    "Build/runtime sanity passed: npm run build -- --filter=web succeeded."
+  ],
+  "updated_files": [
+    "/app/tests/test_connectgbb_membership_states_playwright.py",
+    "/app/test_reports/iteration_4.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (not requested)",
+    "frontend": "80%"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Localhost run with coach_test_1780504587@example.com succeeded for requested membership-aware checks: /connectgbb locked state, /connectgbb/feed locked state + refresh control, locked consistency across messages/connections/training, and admin guard redirect. Public URL remains blocked by host allowlist and must be fixed before final sign-off.",
+  "rca of the issue": "Root cause for blocked external testing: preview host mismatch/allowlist misconfiguration. The served page reports host not allowed and instructs updating Vite allowedHosts. This blocks end-user-equivalent testing on required public endpoint despite localhost functionality.",
+  "mocked_api": "NO MOCKED APIs used"
+}
