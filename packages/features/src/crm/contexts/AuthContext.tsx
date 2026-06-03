@@ -105,11 +105,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   async function signIn(email: string, password: string) {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+    let lastError: Error | null = null
+
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (!error) {
+        return { error: null }
+      }
+
+      lastError = error
+      const retryable = error.status === 429 || /failed to fetch|network/i.test(error.message)
+      if (!retryable || attempt === 1) {
+        break
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 700 * (attempt + 1)))
+    }
+
+    return { error: lastError };
   }
 
   async function signUp(email: string, password: string, role: UserRole) {

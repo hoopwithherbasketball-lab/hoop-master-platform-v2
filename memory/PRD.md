@@ -28,6 +28,15 @@ User request: ensure the product incorporates a **members-only community aspect*
   - Profile settings now persist data to backend via upsert
 - **Admin governance:**
   - Added `AdminCommunityMembershipsPage` with status/tier management and dashboard access link
+- **Role E2E credential seeding:**
+  - Created and validated pending + admin Supabase test accounts and stored credentials in `/app/memory/test_credentials.md`
+- **Moderation queue workflows:**
+  - Extended `AdminCommunityFeedPage` with moderation queue backed by `analytics_events` (community report events)
+  - Added report resolution action in admin queue
+- **Lock-state CTA analytics:**
+  - Added `trackCommunityEvent` utility and wired lock-state CTA + report tracking to analytics event ingestion
+- **Auth stability hardening:**
+  - Added retry/backoff logic for transient 429/network failures in `AuthContext.signIn`
 - **Reliability + testing updates:**
   - Login form now includes required `data-testid` attributes
   - Vite host allowlist settings updated for public preview stability
@@ -37,6 +46,8 @@ User request: ensure the product incorporates a **members-only community aspect*
 ## Prioritized Backlog
 ### P0
 - Apply the new Supabase migration to target environments so role-based fallback is no longer required.
+  - Blocker in current workspace: Supabase CLI is available, but project is not linked and `SUPABASE_ACCESS_TOKEN` is not available for `supabase link/db push`.
+- Replace legacy `user_roles`-derived memberships fallback with persisted `community_memberships` table operations once migration is applied.
 - Create and store full role-coverage test credentials (pending member + admin) for complete authenticated E2E.
 
 ### P1
@@ -48,6 +59,6 @@ User request: ensure the product incorporates a **members-only community aspect*
 - Add analytics events for membership lock CTA and profile-completion conversion.
 
 ## Next Tasks
-1. Run migration in target Supabase environment and validate RLS/policies live.
-2. Re-run full authenticated E2E with pending, active, and admin accounts.
-3. Expand admin moderation and audit-log exploration UI.
+1. Link Supabase project and run migration push (`supabase link` + `supabase db push`) once access token is provided.
+2. Re-run full authenticated E2E on public endpoint after migration is live (membership table mode replacing legacy fallback mode).
+3. Expand moderation queue with report states (open/reviewing/resolved) on persistent schema once migration is applied.
