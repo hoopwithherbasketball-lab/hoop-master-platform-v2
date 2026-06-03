@@ -15,10 +15,20 @@ interface Post {
   comment_count: number
 }
 
+interface ReportRow {
+  id: string
+  viewer_id: string | null
+  event_type: string
+  metadata: { post_id?: string; reason?: string; details?: string; source?: string } | null
+  created_at: string
+}
+
 export default function AdminCommunityFeedPage() {
   const [posts, setPosts] = useState<Post[]>([])
+  const [reports, setReports] = useState<ReportRow[]>([])
   const [loading, setLoading] = useState(true)
   const [deleteId, setDeleteId] = useState<string | null>(null)
+  const [resolvingReportId, setResolvingReportId] = useState<string | null>(null)
 
   useEffect(() => {
     const load = async () => {
@@ -27,12 +37,38 @@ export default function AdminCommunityFeedPage() {
           .from('community_posts')
           .select('*')
           .order('created_at', { ascending: false })
+
+        const { data: reportData } = await supabase
+          .from('analytics_events')
+          .select('id, viewer_id, event_type, metadata, created_at')
+          .eq('event_type', 'quality_change')
+          .eq('metadata->>app_event', 'community_report_submitted')
+          .order('created_at', { ascending: false })
+          .limit(100)
+
         setPosts(data ?? [])
+        setReports((reportData ?? []) as ReportRow[])
       } catch (e) { console.error(e) }
       setLoading(false)
     }
     load()
   }, [])
+
+  const resolveReport = async (id: string) => {
+    try {
+      setResolvingReportId(id)
+      await supabase
+        .from('analytics_events')
+        .delete()
+        .eq('id', id)
+
+      setReports((prev) => prev.filter((r) => r.id !== id))
+    } catch (e) {
+      console.error('resolveReport:', e)
+    } finally {
+      setResolvingReportId(null)
+    }
+  }
 
   const del = async () => {
     if (!deleteId) return
@@ -45,6 +81,38 @@ export default function AdminCommunityFeedPage() {
 
   return (
     <DashboardLayout variant="admin" title="Community Feed" subtitle="Moderate all community posts">
+      <div className="card p-4 mb-4" data-testid="admin-community-report-queue-summary">
+        <p className="text-xs text-slate-400 mb-1">Open Moderation Reports</p>
+        <p className="text-2xl font-bold text-white">{reports.length}</p>
+      </div>
+
+      {reports.length > 0 && (
+        <div className="card overflow-hidden mb-6" data-testid="admin-community-report-queue-table">
+          <div className="px-4 py-3 border-b border-white/10">
+            <h3 className="text-sm font-semibold text-white">Moderation Queue</h3>
+          </div>
+          <div className="divide-y divide-white/10">
+            {reports.map((report) => (
+              <div key={report.id} className="p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                <div>
+                  <p className="text-sm text-white">Post: {report.metadata?.post_id || 'unknown'}</p>
+                  <p className="text-xs text-slate-400">Reason: {report.metadata?.reason || 'unspecified'} · {new Date(report.created_at).toLocaleString()}</p>
+                  {report.metadata?.details && <p className="text-xs text-slate-300 mt-1">{report.metadata.details}</p>}
+                </div>
+                <button
+                  onClick={() => resolveReport(report.id)}
+                  disabled={resolvingReportId === report.id}
+                  data-testid={`admin-community-resolve-report-button-${report.id}`}
+                  className="px-3 py-1.5 rounded text-xs font-medium bg-green-600/30 text-green-200 hover:bg-green-600/40 disabled:opacity-50"
+                >
+                  Resolve
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="animate-pulse space-y-3">{[1,2,3,4].map(i => <div key={i} className="card h-16" />)}</div>
       ) : (

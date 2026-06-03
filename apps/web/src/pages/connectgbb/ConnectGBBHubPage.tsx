@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { PageShell } from '@hoop-master/ui'
 import { useCommunityMembership } from '@hoop-master/features/connectgbb'
 import { Crown, ShieldCheck, Lock } from 'lucide-react'
+import { useAuth } from '../../lib/auth'
+import { trackCommunityEvent } from '../../lib/communityAnalytics'
 
 const sections = [
   { title: 'Community Feed', desc: 'Network with vetted members, share progress, and follow recruiting discussions.', path: '/connectgbb/feed', icon: 'C', color: 'border-l-[#0134BD]' },
@@ -11,7 +13,17 @@ const sections = [
 ]
 
 export default function ConnectGBBHubPage() {
+  const { user } = useAuth()
   const { membership, canAccessCommunity, loading } = useCommunityMembership()
+
+  const trackLockCta = async (cta: string) => {
+    await trackCommunityEvent('lock_state_cta_click', user?.id, {
+      cta,
+      membership_status: membership?.status || 'unknown',
+      membership_tier: membership?.tier || 'starter',
+      source: 'connectgbb_hub',
+    })
+  }
 
   return (
     <PageShell title="ConnectGBB" description="The membership platform for elite girls basketball development." badge="Community">
@@ -56,6 +68,7 @@ export default function ConnectGBBHubPage() {
               </p>
               <Link
                 to="/connectgbb/settings"
+                onClick={() => trackLockCta('complete_profile_for_priority_review')}
                 data-testid="connectgbb-locked-complete-profile-link"
                 className="inline-block bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
               >

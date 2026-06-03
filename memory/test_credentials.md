@@ -5,9 +5,13 @@
   - Email: `coach_test_1780504587@example.com`
   - Password: `TestPass123!`
 
-## Still Needed for Full Role Coverage
-- Pending member account (player role)
-- Admin account (`user_roles.role = admin`)
+- Pending member (player role):
+  - Email: `pending.member.20260603@example.com`
+  - Password: `PendingPass123!`
+
+- Admin member:
+  - Email: `admin.member.20260603@example.com`
+  - Password: `AdminPass123!`
 
 ## Notes
 - The current Supabase environment does not yet have the new `ensure_community_membership` RPC available.

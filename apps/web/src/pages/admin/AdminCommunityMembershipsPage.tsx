@@ -19,6 +19,7 @@ export default function AdminCommunityMembershipsPage() {
   const [loading, setLoading] = useState(true)
   const [savingId, setSavingId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [persistedMembershipTable, setPersistedMembershipTable] = useState(true)
 
   useEffect(() => {
     const load = async () => {
@@ -30,8 +31,33 @@ export default function AdminCommunityMembershipsPage() {
           .select('id, user_id, status, tier, approved_at, expires_at, notes, created_at')
           .order('created_at', { ascending: false })
 
-        if (queryError) throw queryError
-        setRows((data ?? []) as MembershipRow[])
+        if (queryError) {
+          const isMissingTable = queryError.code === 'PGRST205' || queryError.message?.toLowerCase().includes('community_memberships')
+          if (!isMissingTable) throw queryError
+
+          setPersistedMembershipTable(false)
+          const { data: roleData, error: roleError } = await supabase
+            .from('user_roles')
+            .select('user_id, role')
+            .order('created_at', { ascending: false })
+
+          if (roleError) throw roleError
+
+          const mapped = (roleData ?? []).map((row, index) => ({
+            id: `legacy-${row.user_id}-${index}`,
+            user_id: row.user_id,
+            status: (['admin', 'coach', 'club_admin', 'service_specialist'].includes(row.role) ? 'active' : 'pending') as MembershipRow['status'],
+            tier: (row.role === 'admin' ? 'elite' : (['coach', 'club_admin', 'service_specialist'].includes(row.role) ? 'pro' : 'starter')) as MembershipRow['tier'],
+            approved_at: null,
+            expires_at: null,
+            notes: 'Derived from user_roles (migration table not yet present)',
+            created_at: new Date().toISOString(),
+          }))
+          setRows(mapped)
+        } else {
+          setPersistedMembershipTable(true)
+          setRows((data ?? []) as MembershipRow[])
+        }
       } catch (e) {
         console.error('AdminCommunityMembershipsPage load:', e)
         setError('Unable to load community memberships.')
@@ -49,6 +75,7 @@ export default function AdminCommunityMembershipsPage() {
   }), [rows])
 
   const updateStatus = async (row: MembershipRow, nextStatus: MembershipRow['status']) => {
+    if (!persistedMembershipTable) return
     try {
       setSavingId(row.id)
       const payload = {
@@ -73,6 +100,7 @@ export default function AdminCommunityMembershipsPage() {
   }
 
   const updateTier = async (row: MembershipRow, nextTier: MembershipRow['tier']) => {
+    if (!persistedMembershipTable) return
     try {
       setSavingId(row.id)
       const { error: updateError } = await supabase
@@ -108,6 +136,11 @@ export default function AdminCommunityMembershipsPage() {
       </div>
 
       {error && <p className="text-red-300 mb-4" data-testid="admin-community-memberships-error-text">{error}</p>}
+      {!persistedMembershipTable && (
+        <p className="text-amber-300 text-sm mb-4" data-testid="admin-community-memberships-legacy-mode-text">
+          Running in legacy role-derived mode. Apply SQL migration to enable persisted membership approvals and tier updates.
+        </p>
+      )}
 
       {loading ? (
         <div className="animate-pulse space-y-3">{[1, 2, 3, 4].map((i) => <div key={i} className="card h-16" />)}</div>
@@ -140,7 +173,7 @@ export default function AdminCommunityMembershipsPage() {
                       value={row.tier}
                       data-testid={`admin-community-membership-tier-select-${row.id}`}
                       onChange={(e) => updateTier(row, e.target.value as MembershipRow['tier'])}
-                      disabled={savingId === row.id}
+                      disabled={savingId === row.id || !persistedMembershipTable}
                       className="bg-transparent border border-white/10 rounded px-2 py-1 text-slate-200"
                     >
                       <option value="starter">starter</option>
@@ -153,7 +186,7 @@ export default function AdminCommunityMembershipsPage() {
                     <button
                       data-testid={`admin-community-approve-button-${row.id}`}
                       onClick={() => updateStatus(row, 'active')}
-                      disabled={savingId === row.id}
+                      disabled={savingId === row.id || !persistedMembershipTable}
                       className="px-3 py-1.5 rounded text-xs font-medium bg-green-600/30 text-green-200 hover:bg-green-600/40 disabled:opacity-50"
                     >
                       Approve
@@ -161,7 +194,7 @@ export default function AdminCommunityMembershipsPage() {
                     <button
                       data-testid={`admin-community-suspend-button-${row.id}`}
                       onClick={() => updateStatus(row, 'suspended')}
-                      disabled={savingId === row.id}
+                      disabled={savingId === row.id || !persistedMembershipTable}
                       className="px-3 py-1.5 rounded text-xs font-medium bg-red-600/30 text-red-200 hover:bg-red-600/40 disabled:opacity-50"
                     >
                       Suspend

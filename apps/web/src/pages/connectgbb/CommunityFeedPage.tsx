@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { useCommunityFeed, useCommunityModeration } from '@hoop-master/features/connectgbb'
 import { PageShell } from '@hoop-master/ui'
 import { Send, Flag, Heart, MessageSquare } from 'lucide-react'
+import { useAuth } from '../../lib/auth'
+import { trackCommunityEvent } from '../../lib/communityAnalytics'
 
 export default function CommunityFeedPage() {
+  const { user } = useAuth()
   const { posts, loading, error, membership, canAccessCommunity, toggleLike, createPost, createComment, requestMembership } = useCommunityFeed()
   const { reportPost } = useCommunityModeration()
   const [newPost, setNewPost] = useState('')
@@ -35,7 +38,15 @@ export default function CommunityFeedPage() {
 
   const handleReport = async (postId: string) => {
     const result = await reportPost(postId, 'other', 'Reported from in-app premium community moderation control.')
-    if (!result.ok) setSubmitError(result.error)
+    if (!result.ok) {
+      setSubmitError(result.error)
+      return
+    }
+
+    await trackCommunityEvent('community_report_submitted', user?.id, {
+      post_id: postId,
+      source: 'connectgbb_feed',
+    })
   }
 
   if (!canAccessCommunity) {
@@ -47,7 +58,14 @@ export default function CommunityFeedPage() {
             Your account is currently <span className="capitalize text-white">{membership?.status || 'pending'}</span>. Community access unlocks when membership becomes active.
           </p>
           <button
-            onClick={() => requestMembership()}
+            onClick={async () => {
+              await trackCommunityEvent('lock_state_cta_click', user?.id, {
+                cta: 'refresh_membership_status',
+                source: 'community_feed_lock',
+                membership_status: membership?.status || 'unknown',
+              })
+              await requestMembership()
+            }}
             data-testid="community-feed-refresh-membership-button"
             className="bg-[#0134BD] text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-[#002a80] transition-colors"
           >

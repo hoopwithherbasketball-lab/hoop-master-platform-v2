@@ -16,14 +16,20 @@ export function useCommunityModeration() {
       const trimmedDetails = details.trim().slice(0, 500)
 
       const { error: insertError } = await supabase
-        .from('community_post_reports')
-        .upsert({
-          post_id: postId,
-          reporter_id: user.id,
-          reason,
-          details: trimmedDetails,
-          status: 'open',
-        }, { onConflict: 'post_id,reporter_id' })
+        .from('analytics_events')
+        .insert({
+          viewer_id: user.id,
+          session_id: `community-report-${Date.now()}`,
+          event_type: 'quality_change',
+          metadata: {
+            app_event: 'community_report_submitted',
+            post_id: postId,
+            reason,
+            details: trimmedDetails,
+            source: 'connectgbb_feed',
+          },
+          watch_seconds: 0,
+        })
 
       if (insertError) throw insertError
       return { ok: true, error: null }
