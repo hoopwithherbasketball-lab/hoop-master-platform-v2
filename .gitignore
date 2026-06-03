@@ -15,3 +15,9 @@ yarn-error.log*
 *.png
 *.jpeg
 *.jpg
+.env.*
+*.env
+credentials.json
+*.pem
+*.key
+.credentials
