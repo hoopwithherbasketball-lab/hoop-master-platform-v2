@@ -20,7 +20,7 @@ export default function HomePage() {
           <Link data-testid="home-start-journey-link" to="/signup" className="bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors">
             Start Your Journey
           </Link>
-          <Link data-testid="home-check-readiness-link" to="/recruiting-readiness" className="bg-navy-800 text-[#0134BD] px-8 py-3 rounded-lg font-semibold text-lg hover:bg-white/10 transition-colors">
+          <Link data-testid="home-check-readiness-link" to="/recruiting-readiness" className="bg-[#121B47] text-white border border-white/30 px-8 py-3 rounded-lg font-semibold text-lg hover:bg-[#1b2a66] transition-colors">
             Check Readiness
           </Link>
         </div>

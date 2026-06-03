@@ -4,33 +4,35 @@
 Continue the Phase 7 public MVP shell build-out in `hoop-master-platform-v2` on branch `phase-7-shell-refinement-20260602`, replacing remaining local shell/CTA patterns with shared Phase 7 UI primitives under approved paths.
 
 ## Architecture Decisions
-- Kept implementation scoped to public pages and shared UI shell layer.
+- Expanded scope (per user approval) to include web runtime env wiring for reliable local startup.
 - Standardized CTA behavior through `@hoop-master/ui` `CTABanner` + `LinkComponent` for internal routing.
 - Added `testId` support in shared `CTABanner` to improve deterministic UI automation.
 - Preserved existing app routing; no migrations or auth/billing/deploy config changes.
 
 ## What Was Implemented
-- Updated public page CTA consistency:
-  - `ServicesPage`: shared `PageSection` structure, improved Team Package CTA contrast, shared `CTABanner` usage.
-  - `WorkshopsPage`: shared `PageSection` structure, shared `CTABanner` usage, cleaned CTA/link semantics.
-- Added deterministic CTA test IDs on key public CTAs:
-  - `HomePage`, `BrowsePage`, `PlayerDetailPage`, `ServicesPage`, `WorkshopsPage`.
+- Updated public page shell/CTA consistency:
+  - `ServicesPage`, `WorkshopsPage`, `NILReadinessPage`, `RecruitingReadinessPage` standardized around shared shell primitives.
+  - `ContactPage`, `EventsPage`, `FAQPage` now include shared section/CTA treatment for Phase 7 consistency.
+- Added deterministic `data-testid` coverage for critical public interactions:
+  - Home/Browse/PlayerDetail/Contact/Events/FAQ/Checkout/Watch/Embed docs public flows.
 - Shared UI enhancement:
-  - `packages/ui/src/layouts/CTABanner.tsx` now supports optional `testId` per action and emits `data-testid` on rendered links/buttons.
+  - `packages/ui/src/layouts/CTABanner.tsx` supports optional `testId` and generates stable fallback IDs.
+- Runtime env wiring fix:
+  - `apps/web/vite.config.ts` now falls back to root `.env.txt` for `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` when missing in shell env.
 
 ## Prioritized Backlog
 ### P0
-- Resolve runtime environment wiring for supervisor/default runtime so `VITE_SUPABASE_*` are consistently present without manual export.
+- Add explicit `/events` empty-state registration CTA if product wants guaranteed visible registration action with no seeded events.
 
 ### P1
-- Complete remaining public-page shell harmonization pass (non-CTA structural consistency checks across all `apps/web/src/pages/public/*`).
-- Expand deterministic `data-testid` coverage to all critical public-page interactive elements.
+- Complete final non-critical visual harmonization across remaining public pages (spacing/heading rhythm).
+- Extend `data-testid` coverage from critical interactions to all public-page form controls and status blocks.
 
 ### P2
 - Add visual regression snapshots for key public routes in CI.
-- Add accessibility contrast audit to prevent future CTA contrast regressions.
+- Add automated accessibility contrast checks in CI for CTA/button variants.
 
 ## Next Tasks
-1. Re-run full frontend e2e against default runtime once env wiring is fixed.
-2. Apply final consistency pass to remaining public routes and verify no local CTA variants remain.
-3. Ship PR update with validation outputs and known blocker note.
+1. Add optional no-events empty state CTA on `/events` (if desired by product team).
+2. Add CI snapshot + a11y contrast gate for major public routes.
+3. Final review pass for copy consistency in CTA labels across public routes.
