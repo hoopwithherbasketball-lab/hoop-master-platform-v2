@@ -37,6 +37,7 @@ export function LoginForm({ onSuccess, className = '' }: LoginFormProps) {
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
         <input
+          data-testid="login-form-email-input"
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
@@ -48,6 +49,7 @@ export function LoginForm({ onSuccess, className = '' }: LoginFormProps) {
       <div>
         <label className="block text-sm font-medium text-gray-300 mb-1">Password</label>
         <input
+          data-testid="login-form-password-input"
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
@@ -57,6 +59,7 @@ export function LoginForm({ onSuccess, className = '' }: LoginFormProps) {
         />
       </div>
       <button
+        data-testid="login-form-submit-button"
         type="submit"
         disabled={loading}
           className="btn-primary w-full py-2 px-4"

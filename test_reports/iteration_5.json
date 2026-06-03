@@ -1,0 +1,67 @@
+{
+  "summary": "Frontend-only regression retest completed on PUBLIC preview URL for ConnectGBB membership flow. Login form data-testid fixes are verified and public host allowlist blocker appears resolved, but membership-aware route behavior remains unstable under repeated Supabase 404/429 failures.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "ConnectGBB route lock states",
+        "issue": "Observed inconsistent locked state across membership-protected routes during a single authenticated session (messages/connections locked while training unlocked in same run).",
+        "selector": "[data-testid=\"messages-locked-state\"], [data-testid=\"connections-locked-state\"], [data-testid=\"training-hub-locked-state\"]",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Membership resolution + gating",
+        "issue": "Frequent Supabase request failures (404 for community_memberships + ensure_community_membership, plus repeated 429 rate-limit responses) cause unstable/flickering effective access state across pages.",
+        "affected_selectors": [
+          "[data-testid=\"connectgbb-membership-loading-card\"]",
+          "[data-testid=\"community-feed-membership-locked\"]",
+          "[data-testid=\"messages-locked-state\"]",
+          "[data-testid=\"connections-locked-state\"]",
+          "[data-testid=\"training-hub-locked-state\"]"
+        ]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "ConnectGBB hub",
+        "issues": [
+          "No mixed loading+locked simultaneous rendering observed in this run, but membership loading can remain visible without reaching stable summary/locked panel when upstream calls fail repeatedly."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/tests/test_connectgbb_membership_states_playwright.py",
+    "/root/.emergent/automation_output/20260603_164754/console_20260603_164754.log",
+    "/root/.emergent/automation_output/20260603_164858/console_20260603_164858.log"
+  ],
+  "action_items": [
+    "Stabilize useCommunityMembership requests (dedupe/retry/backoff/circuit-breaker) to avoid repeated 404/429 storms.",
+    "Ensure one deterministic fallback source for access checks (auth roles vs fetched roles) so lock state is consistent across all ConnectGBB pages in one session.",
+    "Keep PUBLIC preview healthy under automation load; current runs intermittently fail even reaching login inputs after 429 bursts."
+  ],
+  "critical_code_review_comments": [
+    "LoginForm testability requirement is fixed: login-form-email-input, login-form-password-input, and login-form-submit-button exist.",
+    "PUBLIC endpoint host-allowlist blocker from iteration_4 is not reproduced; app is reachable and login flow works.",
+    "Current membership gating relies on failing table/RPC paths (404) and then fallback, which appears non-deterministic under network/rate-limit stress."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_5.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (not requested)",
+    "frontend": "70%"
+  },
+  "test_credentials": "Read from /app/memory/test_credentials.md and used: coach_test_1780504587@example.com / TestPass123!",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Public URL is now accessible and login test IDs are present. Main residual blocker is unstable membership-aware gating caused by repeated Supabase 404/429 failures during page transitions. Re-test after membership lookup/fallback stabilization.",
+  "rca of the issue": "Reproduction: login as coach_test_1780504587@example.com on public preview, navigate rapidly across /connectgbb, /connectgbb/feed, /connectgbb/messages, /connectgbb/connections, /connectgbb/training. Observed many Supabase 404 (community_memberships and ensure_community_membership RPC) and later 429s; route lock state diverges across pages in same session. Likely root cause: repeated membership fetch attempts per page/hook invocation + fallback role resolution inconsistency under failed/aborted requests.",
+  "mocked_api": "NO MOCKED APIs used"
+}

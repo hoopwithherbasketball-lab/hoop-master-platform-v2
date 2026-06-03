@@ -38,6 +38,14 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     appType: 'spa',
+    server: {
+      host: '0.0.0.0',
+      allowedHosts: true,
+    },
+    preview: {
+      host: '0.0.0.0',
+      allowedHosts: true,
+    },
     define: {
       'import.meta.env.VITE_SUPABASE_URL': JSON.stringify(supabaseUrl),
       'import.meta.env.VITE_SUPABASE_ANON_KEY': JSON.stringify(supabaseAnonKey),
