@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useEventRegistration } from '@hoop-master/features/crm'
-import { PageShell } from '@hoop-master/ui'
+import { PageShell, PageSection, CTABanner } from '@hoop-master/ui'
 import { MapPin, Users, CheckCircle } from 'lucide-react'
 
 export default function EventsPage() {
@@ -8,6 +8,7 @@ export default function EventsPage() {
 
   return (
     <PageShell title="Events & Showcases" description="Upcoming events, camps, and showcases for elite girls basketball players." badge="Events">
+      <PageSection title="Upcoming Events">
       <div className="grid gap-6 md:grid-cols-2">
         {events.map(event => {
           const registered = isRegistered(event.id)
@@ -22,7 +23,7 @@ export default function EventsPage() {
               <p className="text-xs text-gray-400 mb-3 flex items-center gap-1"><Users size={12} /> {event.registered} registered · {spotsLeft > 0 ? `${spotsLeft} spots left` : 'Full'}</p>
               <p className="text-slate-400 mb-4">{event.description}</p>
               <div className="flex items-center gap-3">
-                <button onClick={() => toggleRegistration(event.id)} className={`flex-1 py-2.5 px-4 rounded-lg font-semibold transition-all ${registered ? 'bg-green-500/20 text-green-400 border-2 border-green-300' : 'bg-[#0134BD] hover:bg-[#002a80] text-white'}`}>
+                <button data-testid={`events-register-button-${event.id}`} onClick={() => toggleRegistration(event.id)} className={`flex-1 py-2.5 px-4 rounded-lg font-semibold transition-all ${registered ? 'bg-green-500/20 text-green-400 border-2 border-green-300' : 'bg-[#0134BD] hover:bg-[#002a80] text-white'}`}>
                   {registered ? <span className="flex items-center justify-center gap-1"><CheckCircle size={16} /> Registered</span> : `Register · $${event.price}`}
                 </button>
               </div>
@@ -30,9 +31,17 @@ export default function EventsPage() {
           )
         })}
       </div>
-      <div className="text-center">
-        <p className="text-slate-400">Signed in? <Link to="/dashboard/events" className="text-[#0134BD] hover:text-[#FB6C1D] font-semibold">View your events dashboard</Link></p>
-      </div>
+      </PageSection>
+
+      <CTABanner
+        title="Track Your Event Registrations"
+        description="Already registered? Open your events dashboard to manage confirmations and updates."
+        actions={[
+          { label: 'View your events dashboard', href: '/dashboard/events', testId: 'events-dashboard-link' },
+          { label: 'Explore services', href: '/services', variant: 'secondary', testId: 'events-explore-services-link' },
+        ]}
+        LinkComponent={Link}
+      />
     </PageShell>
   )
 }

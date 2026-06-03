@@ -71,7 +71,7 @@ export default function ChannelWatchPage() {
         <div className="text-center">
           <h2 className="text-xl font-semibold text-white mb-2">Channel Not Found</h2>
           <p className="text-slate-400 mb-4">{error || 'This channel does not exist or is not active.'}</p>
-          <Link to="/watch" className="text-[#0134BD] hover:underline">Browse Channels</Link>
+          <Link data-testid="channel-watch-browse-channels-link" to="/watch" className="text-[#0134BD] hover:underline">Browse Channels</Link>
         </div>
       </div>
     )
@@ -85,7 +85,7 @@ export default function ChannelWatchPage() {
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto">
         <div className="p-4">
-          <Link to="/watch" className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
+          <Link data-testid="channel-watch-back-link" to="/watch" className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
             <ArrowLeft size={16} /> Back to Channels
           </Link>
         </div>

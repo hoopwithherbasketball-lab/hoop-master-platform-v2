@@ -85,7 +85,7 @@ function HWHPlayer({ channelSlug, width = '100%', height = 540 }) {
     <div className="bg-slate-900 rounded-xl overflow-hidden">
       <div className="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
         <span className="text-xs text-slate-400 font-medium">{title}</span>
-        <button onClick={() => copyToClipboard(code, id)} className="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors">
+        <button data-testid={`embed-docs-copy-${id}-button`} onClick={() => copyToClipboard(code, id)} className="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors">
           {copied === id ? <><Check size={12} /> Copied</> : <><Copy size={12} /> Copy</>}
         </button>
       </div>
@@ -108,18 +108,18 @@ function HWHPlayer({ channelSlug, width = '100%', height = 540 }) {
             <div className="space-y-3 mb-4">
               <div>
                 <label className="block text-xs text-slate-400 mb-1">Channel</label>
-                <select value={selectedChannel} onChange={e => setSelectedChannel(e.target.value)} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white">
+                <select data-testid="embed-docs-channel-select" value={selectedChannel} onChange={e => setSelectedChannel(e.target.value)} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white">
                   {channels.map(c => <option key={c.slug} value={c.slug}>{c.name}</option>)}
                 </select>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">Width</label>
-                  <input value={playerWidth} onChange={e => setPlayerWidth(e.target.value)} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+                  <input data-testid="embed-docs-width-input" value={playerWidth} onChange={e => setPlayerWidth(e.target.value)} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
                 </div>
                 <div>
                   <label className="block text-xs text-slate-400 mb-1">Height (px)</label>
-                  <input value={playerHeight} onChange={e => setPlayerHeight(e.target.value)} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+                  <input data-testid="embed-docs-height-input" value={playerHeight} onChange={e => setPlayerHeight(e.target.value)} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
                 </div>
               </div>
             </div>

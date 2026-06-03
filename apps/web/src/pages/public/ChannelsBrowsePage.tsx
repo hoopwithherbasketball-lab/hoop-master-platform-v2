@@ -70,6 +70,7 @@ export default function ChannelsBrowsePage() {
           <div className="relative flex-1">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
+              data-testid="channels-search-input"
               type="text"
               placeholder="Search channels..."
               value={search}
@@ -81,6 +82,7 @@ export default function ChannelsBrowsePage() {
             {TYPE_FILTERS.map(f => (
               <button
                 key={f.value}
+                data-testid={`channels-type-filter-${f.value || 'all'}`}
                 onClick={() => setTypeFilter(f.value)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${typeFilter === f.value ? 'bg-[#0134BD] text-white' : 'bg-navy-800 text-slate-400 hover:text-white border border-white/10'}`}
               >
@@ -120,6 +122,7 @@ export default function ChannelsBrowsePage() {
           {filtered.map(ch => (
             <Link
               key={ch.id}
+              data-testid={`channel-card-link-${ch.slug}`}
               to={`/watch/${ch.slug}`}
               className="group bg-navy-800 rounded-xl overflow-hidden hover:ring-2 hover:ring-[#0134BD] transition-all"
             >

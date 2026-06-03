@@ -1,4 +1,5 @@
-import { PageShell } from '@hoop-master/ui'
+import { Link } from 'react-router-dom'
+import { PageShell, PageSection, CTABanner } from '@hoop-master/ui'
 
 const faqs = [
   { q: 'What is Elite GBB?', a: 'Elite GBB is a recruiting-readiness platform for elite girls basketball players. We help athletes build their profile, connect with college coaches, and unlock NIL opportunities.' },
@@ -12,17 +13,30 @@ const faqs = [
 export default function FAQPage() {
   return (
     <PageShell title="Frequently Asked Questions" description="Common questions about Elite GBB and our platform." badge="FAQ">
-      <div className="max-w-3xl mx-auto space-y-4">
+      <PageSection className="max-w-3xl mx-auto" title="Common Questions">
+      <div className="space-y-4">
         {faqs.map((faq, i) => (
-          <details key={i} className="bg-navy-800 p-6 rounded-lg shadow-md group">
-            <summary className="text-lg font-semibold text-white cursor-pointer list-none flex items-center justify-between">
+          <details key={i} data-testid={`faq-item-${i}`} className="bg-navy-800 p-6 rounded-lg shadow-md group">
+            <summary data-testid={`faq-item-${i}-summary`} className="text-lg font-semibold text-white cursor-pointer list-none flex items-center justify-between">
               {faq.q}
               <span className="text-[#0134BD] group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <p className="mt-4 text-slate-400">{faq.a}</p>
+            <p data-testid={`faq-item-${i}-answer`} className="mt-4 text-slate-400">{faq.a}</p>
           </details>
         ))}
       </div>
+
+      </PageSection>
+
+      <CTABanner
+        title="Still Have Questions?"
+        description="Connect with our team for personalized guidance on recruiting, workshops, and NIL preparation."
+        actions={[
+          { label: 'Contact support', href: '/contact', testId: 'faq-contact-support-link' },
+          { label: 'View services', href: '/services', variant: 'secondary', testId: 'faq-view-services-link' },
+        ]}
+        LinkComponent={Link}
+      />
     </PageShell>
   )
 }

@@ -42,6 +42,7 @@ export default function BrowsePage() {
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Search</label>
             <input
+              data-testid="browse-search-input"
               type="text"
               placeholder="Name, position, or location..."
               value={filters.search}
@@ -52,6 +53,7 @@ export default function BrowsePage() {
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Graduation Year</label>
             <select
+              data-testid="browse-grad-year-select"
               value={filters.gradYear}
               onChange={(e) => handleFilterChange('gradYear', e.target.value)}
               className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
@@ -65,6 +67,7 @@ export default function BrowsePage() {
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Position</label>
             <select
+              data-testid="browse-position-select"
               value={filters.position}
               onChange={(e) => handleFilterChange('position', e.target.value)}
               className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
@@ -80,6 +83,7 @@ export default function BrowsePage() {
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Division</label>
             <select
+              data-testid="browse-division-select"
               value={filters.division}
               onChange={(e) => handleFilterChange('division', e.target.value)}
               className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"

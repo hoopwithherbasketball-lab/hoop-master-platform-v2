@@ -19,7 +19,7 @@ export default function PlayerDetailPage() {
         <div className="text-center py-20">
           <h2 className="text-3xl font-bold text-white mb-4">Player Not Found</h2>
           <p className="text-slate-400 mb-8">This player profile doesn't exist or has been removed.</p>
-          <Link to="/browse" className="bg-[#0134BD] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#121B47] transition-colors">Back to Browse</Link>
+          <Link data-testid="player-not-found-back-link" to="/browse" className="bg-[#0134BD] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#121B47] transition-colors">Back to Browse</Link>
         </div>
       </PageShell>
     )
@@ -29,7 +29,7 @@ export default function PlayerDetailPage() {
 
   return (
     <PageShell title={`${player.name} - Player Profile`} description={`${player.position} - Class of ${player.gradYear} - ${player.location}`}>
-      <Link to="/browse" className="inline-flex items-center text-[#0134BD] hover:text-[#FB6C1D] font-medium mb-6 transition-colors">Back to Browse</Link>
+      <Link data-testid="player-detail-back-link" to="/browse" className="inline-flex items-center text-[#0134BD] hover:text-[#FB6C1D] font-medium mb-6 transition-colors">Back to Browse</Link>
 
       <div className="bg-navy-800 rounded-lg shadow-md p-8 mb-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">

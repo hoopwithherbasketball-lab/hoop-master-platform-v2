@@ -36,6 +36,7 @@ export default function CheckoutPage() {
           <p className="text-slate-400 text-lg mb-4">No plan selected.</p>
           <Link
             to="/services"
+            data-testid="checkout-view-services-link"
             className="bg-[#0134BD] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#002a80] transition-colors"
           >
             View Services
@@ -81,6 +82,7 @@ export default function CheckoutPage() {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
               <input
+                data-testid="checkout-full-name-input"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -91,6 +93,7 @@ export default function CheckoutPage() {
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
               <input
+                data-testid="checkout-email-input"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -103,6 +106,7 @@ export default function CheckoutPage() {
 
         {/* Payment Button */}
         <button
+          data-testid="checkout-complete-purchase-button"
           disabled={!name || !email}
           className="w-full bg-[#FB6C1D] hover:bg-[#e55a1a] disabled:bg-gray-300 disabled:cursor-not-allowed text-white py-3 px-6 rounded-lg font-semibold text-lg transition-colors"
         >

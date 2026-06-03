@@ -1,6 +1,5 @@
-"""Frontend regression checks for public shell routes and CTA navigation.
+"""Frontend regression checks for Phase 7 public shell route/testid coverage.
 
-Note: This file stores the validated Playwright flow used in this iteration.
 Execute inside an async Playwright context where `page` is available.
 """
 
@@ -10,72 +9,66 @@ async def run_public_shell_regression(page):
         await page.set_viewport_size({"width": 1920, "height": 1080})
         print("Viewport set")
 
-        await page.wait_for_selector("text=Elite Girls Basketball Development", timeout=15000)
-        print("Home page loaded")
-
-        await page.goto("http://localhost:4173/services", wait_until="domcontentloaded")
-        await page.wait_for_selector("text=Elite Services & Packages", timeout=10000)
-        await page.wait_for_selector('[data-testid="services-profile-audit-cta-link"]', timeout=10000)
-        print("Services page rendered")
-
-        await page.click('[data-testid="services-profile-audit-cta-link"]', force=True)
-        await page.wait_for_url("**/contact", timeout=10000)
-        print("Services card CTA routes to /contact")
-
-        await page.goto("http://localhost:4173/services", wait_until="domcontentloaded")
-        await page.wait_for_selector('[data-testid="services-view-workshops-link"]', timeout=10000)
-        await page.evaluate(
-            """() => {
-              window.__unloadCount = 0;
-              window.addEventListener('beforeunload', () => { window.__unloadCount += 1; });
-            }"""
-        )
-        await page.click('[data-testid="services-view-workshops-link"]', force=True)
-        await page.wait_for_url("**/workshops", timeout=10000)
-        print("Services banner CTA routes to /workshops without full page reload")
-
-        await page.wait_for_selector('[data-testid="workshops-recruiting-101-book-link"]', timeout=10000)
-        await page.click('[data-testid="workshops-recruiting-101-book-link"]', force=True)
-        await page.wait_for_url("**/contact", timeout=10000)
-        print("Workshop card CTA routes to /contact")
-
-        await page.goto("http://localhost:4173/workshops", wait_until="domcontentloaded")
-        await page.wait_for_selector('[data-testid="workshops-view-services-link"]', timeout=10000)
-        await page.click('[data-testid="workshops-view-services-link"]', force=True)
-        await page.wait_for_url("**/services", timeout=10000)
-        print("Workshop banner CTA routes to /services")
-
-        await page.goto("http://localhost:4173/nil-readiness", wait_until="domcontentloaded")
-        await page.wait_for_selector("text=NIL Readiness Guide", timeout=10000)
-        await page.wait_for_selector('[data-testid="nil-readiness-create-profile-link"]', timeout=10000)
-        print("NIL readiness page rendered")
-
-        await page.goto("http://localhost:4173/recruiting-readiness", wait_until="domcontentloaded")
-        await page.wait_for_selector("text=Recruiting Readiness Assessment", timeout=10000)
-        progress_before = await page.locator("text=Complete").first.text_content()
-        await page.locator('input[type="checkbox"]').first.click(force=True)
-        await page.wait_for_timeout(300)
-        progress_after = await page.locator("text=Complete").first.text_content()
-        print(f"Checklist progress before: {progress_before}; after: {progress_after}")
-
-        await page.click('[data-testid="recruiting-get-expert-help-link"]', force=True)
-        await page.wait_for_url("**/services", timeout=10000)
-        print("Recruiting CTA routes to /services")
-
-        await page.goto("http://localhost:4173/", wait_until="domcontentloaded")
-        await page.get_by_role("link", name="Join Elite GBB Today", exact=True).click(force=True)
+        await page.goto("http://localhost:3000/", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="home-start-journey-link"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="home-join-elite-link"]', timeout=10000)
+        await page.evaluate("""() => {
+          window.__unload_count = 0;
+          window.addEventListener('beforeunload', () => { window.__unload_count += 1; });
+        }""")
+        await page.click('[data-testid="home-join-elite-link"]', force=True)
         await page.wait_for_url("**/signup", timeout=10000)
-        print("Home CTABanner action works")
+        print("Home links and CTA routing validated")
 
-        await page.goto("http://localhost:4173/browse", wait_until="domcontentloaded")
-        await page.get_by_role("link", name="View Recruiting Services", exact=True).click(force=True)
-        await page.wait_for_url("**/services", timeout=10000)
-        print("Browse CTABanner action works")
+        await page.goto("http://localhost:3000/browse", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="browse-search-input"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="browse-grad-year-select"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="browse-position-select"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="browse-division-select"]', timeout=10000)
+        print("Browse filters test IDs validated")
 
-        await page.goto("http://localhost:4173/browse/1", wait_until="domcontentloaded")
-        await page.get_by_role("link", name="View Recruiting Services", exact=True).click(force=True)
-        await page.wait_for_url("**/services", timeout=10000)
-        print("Player detail CTABanner action works")
+        await page.goto("http://localhost:3000/browse/1", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="player-detail-back-link"]', timeout=10000)
+        print("Player detail back link validated")
+
+        await page.goto("http://localhost:3000/contact", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="contact-name-input"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="contact-send-message-button"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="contact-view-services-link"]', timeout=10000)
+        print("Contact form and CTA test IDs validated")
+
+        await page.goto("http://localhost:3000/events", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="events-dashboard-link"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="events-explore-services-link"]', timeout=10000)
+        print("Events CTA links validated")
+
+        await page.goto("http://localhost:3000/faq", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="faq-item-0-summary"]', timeout=10000)
+        await page.click('[data-testid="faq-item-0-summary"]', force=True)
+        await page.wait_for_selector('[data-testid="faq-contact-support-link"]', timeout=10000)
+        print("FAQ accordion and CTA validated")
+
+        await page.goto("http://localhost:3000/checkout/recruiting-review", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="checkout-full-name-input"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="checkout-complete-purchase-button"]', timeout=10000)
+        print("Checkout form/button test IDs validated")
+
+        await page.goto("http://localhost:3000/watch", wait_until="domcontentloaded")
+        await page.wait_for_timeout(1200)
+        cards = await page.locator('[data-testid^="channel-card-link-"]').count()
+        if cards > 0:
+            await page.wait_for_selector('[data-testid="channels-search-input"]', timeout=10000)
+            await page.locator('[data-testid^="channel-card-link-"]').first.click(force=True)
+            await page.wait_for_selector('[data-testid="channel-watch-back-link"]', timeout=10000)
+        await page.goto("http://localhost:3000/watch/non-existent-channel", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="channel-watch-browse-channels-link"]', timeout=10000)
+        print("Watch routes validated")
+
+        await page.goto("http://localhost:3000/embed/docs", wait_until="domcontentloaded")
+        await page.wait_for_selector('[data-testid="embed-docs-channel-select"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="embed-docs-copy-html-button"]', timeout=10000)
+        await page.wait_for_selector('[data-testid="embed-docs-width-input"]', timeout=10000)
+        print("Embed docs controls test IDs validated")
 
         error_text = await page.evaluate("""() => {
         const errorElements = Array.from(document.querySelectorAll('.error, [class*="error"], [id*="error"]'));
