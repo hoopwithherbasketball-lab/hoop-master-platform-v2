@@ -95,7 +95,7 @@ export default function ServicesPage() {
               <Link
                 to={pkg.ctaHref}
                 data-testid={`services-${toTestId(pkg.title)}-learn-more-link`}
-                className="inline-block bg-navy-800 text-[#0134BD] py-2 px-6 rounded-md font-semibold hover:bg-white/10 transition-colors"
+                className="inline-block bg-[#121B47] text-white py-2 px-6 rounded-md font-semibold hover:bg-[#0a1529] transition-colors"
               >
                 Learn More
               </Link>

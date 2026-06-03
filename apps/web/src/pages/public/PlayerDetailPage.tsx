@@ -86,8 +86,8 @@ export default function PlayerDetailPage() {
         title={`Interested in Recruiting ${firstName}?`}
         description="Connect with this athlete and access full recruiting tools, transcripts, and video highlights."
         actions={[
-          { label: 'Create Coach Account', href: '/signup' },
-          { label: 'View Recruiting Services', href: '/services', variant: 'secondary' },
+          { label: 'Create Coach Account', href: '/signup', testId: 'player-detail-create-coach-account-link' },
+          { label: 'View Recruiting Services', href: '/services', variant: 'secondary', testId: 'player-detail-view-recruiting-services-link' },
         ]}
         LinkComponent={Link}
       />

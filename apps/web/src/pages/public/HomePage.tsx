@@ -118,7 +118,7 @@ export default function HomePage() {
         description="Join thousands of elite athletes who are building their future with Elite GBB."
         gradient="from-[#FB6C1D] to-[#C8A24A]"
         actions={[
-          { label: 'Join Elite GBB Today', href: '/signup', variant: 'secondary' },
+          { label: 'Join Elite GBB Today', href: '/signup', variant: 'secondary', testId: 'home-join-elite-link' },
         ]}
         LinkComponent={Link}
       />

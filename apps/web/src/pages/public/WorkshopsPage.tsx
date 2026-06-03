@@ -55,7 +55,7 @@ export default function WorkshopsPage() {
                 <span className="font-semibold text-white">Format:</span> {workshop.format}
               </div>
               <div className="mb-6">
-                <h4 className="font-semibold text-white mb-2">What You'll Learn:</h4>
+                <h4 className="font-semibold text-white mb-2">What You&apos;ll Learn:</h4>
                 <ul className="text-sm text-slate-400 space-y-1">
                   {workshop.topics.map((topic, idx) => (
                     <li key={idx} className="flex items-center">

@@ -121,8 +121,8 @@ export default function BrowsePage() {
         title="Are You a Coach Looking for Talent?"
         description="Access our complete player database, advanced search filters, and recruiting tools designed for college coaches."
         actions={[
-          { label: 'Create Coach Account', href: '/signup' },
-          { label: 'View Recruiting Services', href: '/services', variant: 'secondary' },
+          { label: 'Create Coach Account', href: '/signup', testId: 'browse-create-coach-account-link' },
+          { label: 'View Recruiting Services', href: '/services', variant: 'secondary', testId: 'browse-view-recruiting-services-link' },
         ]}
         LinkComponent={Link}
       />
