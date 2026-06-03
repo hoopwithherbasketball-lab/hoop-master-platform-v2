@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { PageShell } from '@hoop-master/ui'
+import { PageShell, PageSection, CTABanner, ReadinessGauge, ScoreBar, StatusBadge } from '@hoop-master/ui'
 
 const evaluationFactors = [
   {
@@ -76,6 +76,7 @@ export default function RecruitingReadinessPage() {
   }
 
   const completedCount = checkedItems.filter(Boolean).length
+  const readinessPercent = Math.round((completedCount / checklistItems.length) * 100)
 
   return (
     <PageShell
@@ -83,41 +84,51 @@ export default function RecruitingReadinessPage() {
       description="Evaluate your college basketball recruiting potential and create a personalized development plan."
       badge="Recruiting Tools"
     >
-      {/* Evaluation Factors */}
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-white mb-8">What Coaches Evaluate</h2>
+      <PageSection title="Current Readiness Snapshot">
+        <div className="bg-navy-800 border border-white/10 rounded-lg p-6">
+          <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-center lg:justify-between">
+            <div className="w-full lg:max-w-xl space-y-3">
+              <h3 className="text-xl font-semibold text-white">Checklist Completion</h3>
+              <p className="text-slate-400">Track how prepared you are before coach outreach begins.</p>
+              <ScoreBar
+                label="Readiness Progress"
+                score={completedCount}
+                maxScore={checklistItems.length}
+                color="bg-[#0134BD]"
+              />
+            </div>
+            <div className="self-center lg:self-auto">
+              <ReadinessGauge percentage={readinessPercent} label="Recruiting readiness" />
+            </div>
+          </div>
+        </div>
+      </PageSection>
+
+      <PageSection title="What Coaches Evaluate">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {evaluationFactors.map((factor, index) => (
+          {evaluationFactors.map((factor) => (
             <div key={factor.title} className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-lg font-semibold text-white">{factor.title}</h3>
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  factor.importance === 'High' ? 'bg-red-500/20 text-red-800' : 'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {factor.importance} Priority
-                </span>
+                <StatusBadge
+                  status={factor.importance === 'High' ? 'active' : 'pending'}
+                  label={`${factor.importance} Priority`}
+                />
               </div>
               <p className="text-slate-400">{factor.description}</p>
             </div>
           ))}
         </div>
-      </section>
+      </PageSection>
 
-      {/* Interactive Checklist */}
-      <section className="bg-white/5 p-8 rounded-lg mb-12">
-        <h2 className="text-3xl font-bold text-center text-white mb-8">Recruiting Readiness Checklist</h2>
+      <PageSection className="bg-white/5 p-8 rounded-lg" title="Recruiting Readiness Checklist">
         <div className="max-w-2xl mx-auto">
           <div className="mb-6">
             <div className="flex justify-between items-center mb-4">
               <span className="text-lg font-semibold text-white">Progress</span>
               <span className="text-lg font-bold text-[#0134BD]">{completedCount}/{checklistItems.length} Complete</span>
             </div>
-            <div className="w-full bg-white/15 rounded-full h-3">
-              <div
-                className="bg-[#0134BD] h-3 rounded-full transition-all duration-300"
-                style={{ width: `${(completedCount / checklistItems.length) * 100}%` }}
-              ></div>
-            </div>
+            <ScoreBar score={completedCount} maxScore={checklistItems.length} color="bg-[#0134BD]" />
           </div>
           <div className="space-y-3">
             {checklistItems.map((item, index) => (
@@ -135,13 +146,11 @@ export default function RecruitingReadinessPage() {
             ))}
           </div>
         </div>
-      </section>
+      </PageSection>
 
-      {/* Grade-by-Grade Timeline */}
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-white mb-8">Grade-by-Grade Timeline</h2>
+      <PageSection title="Grade-by-Grade Timeline">
         <div className="space-y-6">
-          {timeline.map((stage, index) => (
+          {timeline.map((stage) => (
             <div key={stage.grade} className="flex items-start">
               <div className="flex-shrink-0 w-24 text-center">
                 <div className="w-12 h-12 bg-[#0134BD] rounded-full flex items-center justify-center text-white font-bold mx-auto mb-2">
@@ -163,29 +172,18 @@ export default function RecruitingReadinessPage() {
             </div>
           ))}
         </div>
-      </section>
+      </PageSection>
 
-      {/* CTA */}
-      <section className="bg-gradient-to-r from-[#0134BD] to-[#121B47] text-white p-8 rounded-lg text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to Accelerate Your Recruiting?</h2>
-        <p className="text-xl mb-6 max-w-2xl mx-auto">
-          Get personalized recruiting guidance and tools to maximize your college opportunities.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/signup"
-            className="bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-          >
-            Create Your Profile
-          </Link>
-          <Link
-            to="/services"
-            className="bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
-          >
-            Get Expert Help
-          </Link>
-        </div>
-      </section>
+      <CTABanner
+        title="Ready to Accelerate Your Recruiting?"
+        description="Get personalized recruiting guidance and tools to maximize your college opportunities."
+        gradient="from-[#0134BD] to-[#121B47]"
+        actions={[
+          { label: 'Create Your Profile', href: '/signup', testId: 'recruiting-create-profile-link' },
+          { label: 'Get Expert Help', href: '/services', variant: 'secondary', testId: 'recruiting-get-expert-help-link' },
+        ]}
+        LinkComponent={Link}
+      />
     </PageShell>
   )
 }

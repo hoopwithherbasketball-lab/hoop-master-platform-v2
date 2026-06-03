@@ -5,6 +5,7 @@ interface CTAAction {
   href?: string;
   onClick?: () => void;
   variant?: 'primary' | 'secondary';
+  testId?: string;
 }
 
 export interface CTABannerProps {
@@ -41,6 +42,7 @@ export const CTABanner: React.FC<CTABannerProps> = ({
         {actions.map((action, index) => {
           const actionKey = `${getSafeId(action.label)}-${index}`
           const isExternal = action.href?.startsWith('http');
+          const actionTestId = action.testId || `cta-banner-action-${getSafeId(action.label)}`
           const linkClasses = action.variant === 'secondary'
             ? 'bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors'
             : 'bg-[#FB6C1D] hover:bg-[#e55a1a] text-white px-6 py-3 rounded-lg font-semibold transition-colors';
@@ -56,6 +58,7 @@ export const CTABanner: React.FC<CTABannerProps> = ({
                   aria-label={action.label}
                   className={linkClasses}
                   onClick={action.onClick}
+                  data-testid={actionTestId}
                 >
                   {action.label}
                 </a>
@@ -71,6 +74,7 @@ export const CTABanner: React.FC<CTABannerProps> = ({
                   className={linkClasses}
                   aria-label={action.label}
                   onClick={action.onClick}
+                  data-testid={actionTestId}
                 >
                   {action.label}
                 </LinkTag>
@@ -88,6 +92,7 @@ export const CTABanner: React.FC<CTABannerProps> = ({
                 aria-label={action.label}
                 className={linkClasses}
                 onClick={action.onClick}
+                data-testid={actionTestId}
               >
                 {action.label}
               </a>
@@ -101,6 +106,7 @@ export const CTABanner: React.FC<CTABannerProps> = ({
               onClick={action.onClick}
               className={linkClasses}
               aria-label={action.label}
+              data-testid={actionTestId}
             >
               {action.label}
             </button>

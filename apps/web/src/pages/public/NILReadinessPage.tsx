@@ -1,11 +1,11 @@
-import StatusBadge from '../../components/ui/StatusBadge'
-import { PageShell } from '@hoop-master/ui'
+import { PageShell, PageSection, CTABanner, StatusBadge, StatsGrid } from '@hoop-master/ui'
 import { Link } from 'react-router-dom'
+import { Theater, CalendarClock, MessageCircle, Briefcase } from 'lucide-react'
 
 const partners = [
-  { name: 'PerformBetter', category: 'Training', status: 'Open' },
-  { name: 'Baller Brand', category: 'Apparel', status: 'Match Pending' },
-  { name: 'Hoops Nutrition', category: 'Supplement', status: 'Approved' },
+  { name: 'PerformBetter', category: 'Training', status: 'active' as const },
+  { name: 'Baller Brand', category: 'Apparel', status: 'pending' as const },
+  { name: 'Hoops Nutrition', category: 'Supplement', status: 'completed' as const },
 ]
 
 const myths = [
@@ -31,22 +31,22 @@ const brandPillars = [
   {
     title: 'Authenticity',
     description: 'Be genuine in your content and partnerships. Sponsors want real athletes, not personas.',
-    icon: '🎭'
+    icon: Theater,
   },
   {
     title: 'Consistency',
     description: 'Post regularly and maintain a cohesive brand voice across all platforms.',
-    icon: '📅'
+    icon: CalendarClock,
   },
   {
     title: 'Engagement',
     description: 'Interact with your audience. Respond to comments and build a community.',
-    icon: '💬'
+    icon: MessageCircle,
   },
   {
     title: 'Professionalism',
     description: 'Present yourself as a serious athlete with clear goals and work ethic.',
-    icon: '👔'
+    icon: Briefcase,
   }
 ]
 
@@ -75,8 +75,16 @@ export default function NILReadinessPage() {
       description="Everything you need to know about Name, Image, and Likeness opportunities in girls basketball."
       badge="NIL Education"
     >
-      {/* NIL Definition */}
-      <section className="bg-gradient-to-r from-[#0134BD] to-[#121B47] text-white p-8 rounded-lg mb-12">
+      <StatsGrid
+        columns={3}
+        stats={[
+          { value: '3', label: 'Partner Tracks', color: 'text-[#FB6C1D]' },
+          { value: '4', label: 'Brand Pillars', color: 'text-[#C8A24A]' },
+          { value: '6', label: 'Parent Action Steps', color: 'text-[#0134BD]' },
+        ]}
+      />
+
+      <PageSection className="bg-gradient-to-r from-[#0134BD] to-[#121B47] text-white p-8 rounded-lg" title="What is NIL?">
         <h2 className="text-3xl font-bold mb-4">What is NIL?</h2>
         <p className="text-xl mb-6 max-w-3xl">
           Name, Image, and Likeness (NIL) rights allow college athletes to profit from their personal brand through endorsements,
@@ -97,11 +105,23 @@ export default function NILReadinessPage() {
             <p>Your right to profit from your athletic achievements</p>
           </div>
         </div>
-      </section>
+      </PageSection>
 
-      {/* Myth Busting */}
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-white mb-8">NIL Myths vs Reality</h2>
+      <PageSection title="Active Partner Opportunities">
+        <div className="grid gap-4 md:grid-cols-3">
+          {partners.map((partner) => (
+            <article key={partner.name} className="bg-navy-800 rounded-lg border border-white/10 p-5 space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-lg font-semibold text-white">{partner.name}</h3>
+                <StatusBadge status={partner.status} />
+              </div>
+              <p className="text-sm text-slate-400">Category: {partner.category}</p>
+            </article>
+          ))}
+        </div>
+      </PageSection>
+
+      <PageSection title="NIL Myths vs Reality">
         <div className="grid gap-6 md:grid-cols-2">
           {myths.map((item, index) => (
             <div key={index} className="bg-red-500/10 border-l-4 border-red-400 p-6 rounded-lg">
@@ -110,25 +130,25 @@ export default function NILReadinessPage() {
             </div>
           ))}
         </div>
-      </section>
+      </PageSection>
 
-      {/* Brand Pillars */}
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-white mb-8">4 Pillars of NIL Success</h2>
+      <PageSection title="4 Pillars of NIL Success">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {brandPillars.map((pillar, index) => (
+          {brandPillars.map((pillar) => {
+            const Icon = pillar.icon
+            return (
             <div key={pillar.title} className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow text-center">
-              <div className="text-4xl mb-4">{pillar.icon}</div>
+              <div className="w-16 h-16 bg-[#0134BD] rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon size={28} className="text-white" />
+              </div>
               <h3 className="text-xl font-semibold text-white mb-3">{pillar.title}</h3>
               <p className="text-slate-400">{pillar.description}</p>
             </div>
-          ))}
+          )})}
         </div>
-      </section>
+      </PageSection>
 
-      {/* Social Media Expectations */}
-      <section className="bg-white/5 p-8 rounded-lg mb-12">
-        <h2 className="text-3xl font-bold text-center text-white mb-8">Social Media Expectations</h2>
+      <PageSection className="bg-white/5 p-8 rounded-lg" title="Social Media Expectations">
         <div className="max-w-2xl mx-auto">
           <p className="text-slate-400 mb-6 text-center">
             Building a strong social media presence is crucial for NIL success. Here's what sponsors expect:
@@ -142,11 +162,9 @@ export default function NILReadinessPage() {
             ))}
           </div>
         </div>
-      </section>
+      </PageSection>
 
-      {/* Parent Action Plan */}
-      <section className="mb-12">
-        <h2 className="text-3xl font-bold text-center text-white mb-8">Parent Action Plan</h2>
+      <PageSection title="Parent Action Plan">
         <div className="bg-[#C8A24A] text-white p-8 rounded-lg">
           <p className="text-lg mb-6 text-center">
             Parents play a crucial role in supporting their athlete's NIL journey. Here's how to help:
@@ -160,29 +178,18 @@ export default function NILReadinessPage() {
             ))}
           </div>
         </div>
-      </section>
+      </PageSection>
 
-      {/* CTA */}
-      <section className="bg-gradient-to-r from-[#FB6C1D] to-[#C8A24A] text-white p-8 rounded-lg text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to Start Your NIL Journey?</h2>
-        <p className="text-xl mb-6 max-w-2xl mx-auto">
-          Get personalized NIL guidance, brand building tools, and access to sponsorship opportunities.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/signup"
-            className="bg-navy-800 text-[#0134BD] px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
-          >
-            Create NIL Profile
-          </Link>
-          <Link
-            to="/services"
-            className="bg-[#121B47] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#0a1529] transition-colors"
-          >
-            Get NIL Coaching
-          </Link>
-        </div>
-      </section>
+      <CTABanner
+        title="Ready to Start Your NIL Journey?"
+        description="Get personalized NIL guidance, brand building tools, and access to sponsorship opportunities."
+        gradient="from-[#FB6C1D] to-[#C8A24A]"
+        actions={[
+          { label: 'Create NIL Profile', href: '/signup', variant: 'secondary', testId: 'nil-readiness-create-profile-link' },
+          { label: 'Get NIL Coaching', href: '/services', testId: 'nil-readiness-get-coaching-link' },
+        ]}
+        LinkComponent={Link}
+      />
     </PageShell>
   )
 }
