@@ -1,5 +1,6 @@
 import { useTrainingTracks } from '@hoop-master/features/connectgbb'
 import { PageShell } from '@hoop-master/ui'
+import { useCommunityMembership } from '@hoop-master/features/connectgbb'
 
 const categoryColors: Record<string, string> = {
   skill: 'bg-[#0134BD]',
@@ -16,10 +17,23 @@ const categoryLabels: Record<string, string> = {
 }
 
 export default function TrainingHubPage() {
-  const { tracks, loading } = useTrainingTracks()
+  const { tracks, loading, error } = useTrainingTracks()
+  const { canAccessCommunity } = useCommunityMembership()
+
+  if (!canAccessCommunity) {
+    return (
+      <PageShell title="Training Hub" description="Premium training resources are restricted to active members." badge="ConnectGBB">
+        <div className="max-w-2xl mx-auto bg-navy-800 border border-white/10 rounded-xl p-8 text-center" data-testid="training-hub-locked-state">
+          <h2 className="text-2xl font-semibold text-white mb-3">Training Hub Locked</h2>
+          <p className="text-slate-400">Activate your community membership to access the premium training library.</p>
+        </div>
+      </PageShell>
+    )
+  }
 
   return (
     <PageShell title="Training Hub" description="Video lessons, drill libraries, and skill tracks designed for elite development." badge="ConnectGBB">
+      {error && <p className="text-red-300 mb-4" data-testid="training-hub-error-text">{error}</p>}
       {loading ? (
         <div className="animate-pulse grid gap-6 md:grid-cols-2">
           {[1, 2, 3, 4].map(i => <div key={i} className="bg-navy-800 p-6 rounded-lg shadow-md h-40" />)}

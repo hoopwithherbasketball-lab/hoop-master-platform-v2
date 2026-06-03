@@ -12,11 +12,11 @@ const faqs = [
 
 export default function FAQPage() {
   return (
-    <PageShell title="Frequently Asked Questions" description="Common questions about Elite GBB and our platform." badge="FAQ">
+    <PageShell title="Frequently Asked Questions" description="Clear answers about platform access, recruiting support, and NIL preparation." badge="FAQ">
       <PageSection className="max-w-3xl mx-auto" title="Common Questions">
-      <div className="space-y-4">
+      <div className="space-y-5">
         {faqs.map((faq, i) => (
-          <details key={i} data-testid={`faq-item-${i}`} className="bg-navy-800 p-6 rounded-lg shadow-md group">
+          <details key={i} data-testid={`faq-item-${i}`} className="bg-navy-800 p-6 rounded-lg shadow-md border border-white/10 group">
             <summary data-testid={`faq-item-${i}-summary`} className="text-lg font-semibold text-white cursor-pointer list-none flex items-center justify-between">
               {faq.q}
               <span className="text-[#0134BD] group-open:rotate-180 transition-transform">▼</span>
@@ -29,8 +29,8 @@ export default function FAQPage() {
       </PageSection>
 
       <CTABanner
-        title="Still Have Questions?"
-        description="Connect with our team for personalized guidance on recruiting, workshops, and NIL preparation."
+        title="Need a More Specific Answer?"
+        description="Our team can provide tailored recommendations based on recruiting level, timeline, and goals."
         actions={[
           { label: 'Contact support', href: '/contact', testId: 'faq-contact-support-link' },
           { label: 'View services', href: '/services', variant: 'secondary', testId: 'faq-view-services-link' },

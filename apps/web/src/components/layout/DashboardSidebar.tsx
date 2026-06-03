@@ -47,6 +47,7 @@ const adminNav: NavItem[] = [
   { label: 'Training Content', to: '/admin/training', icon: <BookOpen size={16} /> },
   { label: 'Intake Submissions', to: '/admin/intake', icon: <User size={16} /> },
   { label: 'Community Feed', to: '/admin/feed', icon: <MessageSquare size={16} /> },
+  { label: 'Community Memberships', to: '/admin/community-memberships', icon: <ShieldCheck size={16} /> },
 ]
 
 const mediaNav: NavItem[] = [

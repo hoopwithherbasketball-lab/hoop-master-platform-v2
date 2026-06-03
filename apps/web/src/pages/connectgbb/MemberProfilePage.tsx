@@ -6,16 +6,16 @@ import { MapPin, Calendar, MessageSquare } from 'lucide-react'
 
 export default function MemberProfilePage() {
   const { id } = useParams<{ id: string }>()
-  const { profile } = useMemberProfile(id || '1')
+  const { profile } = useMemberProfile(id || '')
   const badge = useVerification()
 
-  if (!profile) return <PageShell title="Not Found" description="Member not found." badge="ConnectGBB"><Link to="/connectgbb" className="text-[#0134BD] hover:underline">← Back to ConnectGBB</Link></PageShell>
+  if (!profile) return <PageShell title="Not Found" description="Member not found." badge="ConnectGBB"><Link to="/connectgbb" className="text-[#0134BD] hover:underline" data-testid="connectgbb-member-not-found-back-link">← Back to ConnectGBB</Link></PageShell>
 
   return (
     <PageShell title={profile.displayName} description={`${profile.role} • ${profile.location}`} badge="Profile">
-      <Link to="/connectgbb/feed" className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-[#0134BD] mb-2">← Back to Feed</Link>
+      <Link to="/connectgbb/feed" className="inline-flex items-center gap-1 text-sm text-slate-400 hover:text-[#0134BD] mb-2" data-testid="connectgbb-member-back-to-feed-link">← Back to Feed</Link>
       <div className="max-w-2xl mx-auto">
-        <div className="bg-navy-800 rounded-xl shadow-md p-6 text-center">
+        <div className="bg-navy-800 rounded-xl shadow-md border border-white/10 p-6 text-center" data-testid="connectgbb-member-profile-card">
           <div className="w-20 h-20 bg-[#0134BD] rounded-full flex items-center justify-center text-3xl font-bold text-white mx-auto">{profile.avatar}</div>
           <div className="flex items-center justify-center gap-2 mt-4">
             <h1 className="text-2xl font-bold text-white">{profile.displayName}</h1>
@@ -31,7 +31,7 @@ export default function MemberProfilePage() {
             <div className="text-center"><p className="text-xl font-bold text-white">{profile.connections}</p><p className="text-xs text-slate-400">Connections</p></div>
             <div className="text-center"><p className="text-xl font-bold text-white">{profile.posts}</p><p className="text-xs text-slate-400">Posts</p></div>
           </div>
-          <button className="mt-5 bg-[#0134BD] text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-[#002a80] transition-colors flex items-center gap-2 mx-auto">
+          <button className="mt-5 bg-[#0134BD] text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-[#002a80] transition-colors flex items-center gap-2 mx-auto" data-testid="connectgbb-member-message-button">
             <MessageSquare size={16} /> Message
           </button>
         </div>

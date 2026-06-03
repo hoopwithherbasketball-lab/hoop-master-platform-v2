@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 import { useAuth } from '../crm/contexts/AuthContextValue.js'
 import type { Connection } from './types'
+import { useCommunityMembership } from './useCommunityMembership.js'
 
 export function useConnections() {
   const { user } = useAuth()
+  const { canAccessCommunity } = useCommunityMembership()
   const [connections, setConnections] = useState<Connection[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!user) { setConnections([]); setLoading(false); return }
+    if (!canAccessCommunity) { setConnections([]); setLoading(false); return }
 
     const abortController = new AbortController()
 
@@ -63,7 +66,7 @@ export function useConnections() {
     fetch()
 
     return () => abortController.abort()
-  }, [user])
+  }, [user, canAccessCommunity])
 
   return { connections, loading, error }
 }

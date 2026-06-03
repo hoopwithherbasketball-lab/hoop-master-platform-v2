@@ -96,12 +96,12 @@ function HWHPlayer({ channelSlug, width = '100%', height = 540 }) {
   return (
     <PageShell
       title="Embed Player"
-      description="Integrate the Hoop With Her video player into your website or app."
+      description="Integrate the Elite GBB video player into your site or application with minimal setup."
       badge="Developer Docs"
     >
-      <div className="grid gap-8 lg:grid-cols-2">
-        <div className="space-y-6">
-          <div className="card p-6">
+      <div className="grid gap-10 lg:grid-cols-2">
+        <div className="space-y-8">
+          <div className="card p-7">
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Code size={18} /> Quick Start</h2>
             <p className="text-sm text-slate-400 mb-4">Copy the iframe code below to embed the player on any webpage. No API key required for public channels.</p>
 
@@ -127,7 +127,7 @@ function HWHPlayer({ channelSlug, width = '100%', height = 540 }) {
             <CodeBlock title="HTML" code={iframeCode} id="html" />
           </div>
 
-          <div className="card p-6">
+          <div className="card p-7">
             <h2 className="text-lg font-semibold text-white mb-4">Player Events</h2>
             <div className="space-y-3 text-sm">
               <div className="flex gap-3">
@@ -146,18 +146,18 @@ function HWHPlayer({ channelSlug, width = '100%', height = 540 }) {
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="card p-6">
+        <div className="space-y-8">
+          <div className="card p-7">
             <h2 className="text-lg font-semibold text-white mb-4">JavaScript API</h2>
             <CodeBlock title="JavaScript" code={jsApiCode} id="js" />
           </div>
 
-          <div className="card p-6">
+          <div className="card p-7">
             <h2 className="text-lg font-semibold text-white mb-4">React Component</h2>
             <CodeBlock title="React" code={reactCode} id="react" />
           </div>
 
-          <div className="card p-6">
+          <div className="card p-7">
             <h2 className="text-lg font-semibold text-white mb-4">URL Patterns</h2>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">

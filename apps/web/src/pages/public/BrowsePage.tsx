@@ -33,10 +33,10 @@ export default function BrowsePage() {
   return (
     <PageShell
       title="Browse Elite Players"
-      description="Discover top girls basketball talent ready for college recruiting."
+      description="Evaluate high-intent prospects using advanced filters, profile depth, and readiness indicators."
       badge="Player Database"
     >
-      <section className="bg-navy-800 p-6 rounded-lg shadow-md mb-8">
+      <section className="bg-navy-800 p-7 rounded-lg shadow-md border border-white/10 mb-10">
         <h2 className="text-2xl font-bold text-white mb-4">Find Your Next Recruit</h2>
         <div className="grid gap-4 md:grid-cols-4">
           <div>
@@ -122,8 +122,8 @@ export default function BrowsePage() {
       </PageSection>
 
       <CTABanner
-        title="Are You a Coach Looking for Talent?"
-        description="Access our complete player database, advanced search filters, and recruiting tools designed for college coaches."
+        title="Need a Deeper Recruiting Workflow?"
+        description="Access full database workflows, coach-facing tools, and strategic support designed for competitive programs."
         actions={[
           { label: 'Create Coach Account', href: '/signup', testId: 'browse-create-coach-account-link' },
           { label: 'View Recruiting Services', href: '/services', variant: 'secondary', testId: 'browse-view-recruiting-services-link' },

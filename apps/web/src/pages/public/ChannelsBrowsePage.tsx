@@ -62,7 +62,7 @@ export default function ChannelsBrowsePage() {
   return (
     <PageShell
       title="Watch Now"
-      description="Stream live events, 24/7 channels, and on-demand content from Hoop With Her."
+      description="Stream live events, 24/7 channels, and on-demand content from the Elite GBB network."
       badge="Media"
     >
       {!loading && channels.length > 0 && (
@@ -108,14 +108,14 @@ export default function ChannelsBrowsePage() {
       ) : channels.length === 0 ? (
         <div className="text-center py-16">
           <Radio size={48} className="mx-auto text-slate-600 mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">No channels available yet</h3>
-          <p className="text-slate-400">Check back soon for live events and 24/7 content.</p>
+          <h3 className="text-xl font-semibold text-white mb-2">No Channels Available Yet</h3>
+          <p className="text-slate-400">Check back shortly for live events, featured series, and premium channel drops.</p>
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-16">
           <Search size={48} className="mx-auto text-slate-600 mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">No channels match your search</h3>
-          <p className="text-slate-400">Try a different search term or filter.</p>
+          <h3 className="text-xl font-semibold text-white mb-2">No Channels Match Your Search</h3>
+          <p className="text-slate-400">Try a different keyword or reset filters to see all available channels.</p>
         </div>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

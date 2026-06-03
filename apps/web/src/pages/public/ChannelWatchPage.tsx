@@ -83,7 +83,7 @@ export default function ChannelWatchPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4">
         <div className="p-4">
           <Link data-testid="channel-watch-back-link" to="/watch" className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-white transition-colors">
             <ArrowLeft size={16} /> Back to Channels
@@ -101,7 +101,7 @@ export default function ChannelWatchPage() {
           </Suspense>
         </div>
 
-        <div className="px-4 pb-8 max-w-5xl mx-auto">
+        <div className="px-4 pb-10 max-w-5xl mx-auto">
           <div className="flex items-center gap-3 mb-2">
             {channel.channel_type === 'live' ? <Radio size={20} className="text-red-400" /> :
              channel.channel_type === 'linear' ? <Tv size={20} className="text-blue-400" /> :
@@ -114,7 +114,7 @@ export default function ChannelWatchPage() {
           {channel.description && <p className="text-slate-400 mb-6">{channel.description}</p>}
 
           {programs.length > 0 && (
-            <div className="bg-navy-800 rounded-xl p-4">
+            <div className="bg-navy-800 rounded-xl p-5 border border-white/10">
               <h2 className="flex items-center gap-2 text-sm font-semibold text-white mb-3">
                 <Calendar size={14} /> Today's Schedule
               </h2>

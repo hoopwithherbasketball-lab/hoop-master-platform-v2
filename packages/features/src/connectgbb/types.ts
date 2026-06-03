@@ -2,14 +2,40 @@ export interface CommunityPost {
   id: string
   authorId: string
   authorName: string
-  authorRole: 'player' | 'parent' | 'coach' | 'club_admin'
+  authorRole: 'player' | 'parent' | 'coach' | 'club_admin' | 'scout'
   content: string
   imageUrl?: string
   createdAt: string
   likeCount: number
   commentCount: number
   likedByUser: boolean
+  recentComments: CommunityComment[]
 }
+
+export type CommunityMembershipStatus = 'pending' | 'active' | 'suspended'
+export type CommunityMembershipTier = 'starter' | 'pro' | 'elite'
+
+export interface CommunityMembership {
+  id: string
+  userId: string
+  status: CommunityMembershipStatus
+  tier: CommunityMembershipTier
+  approvedAt: string | null
+  expiresAt: string | null
+  isActive: boolean
+}
+
+export interface CommunityComment {
+  id: string
+  postId: string
+  authorId: string
+  authorName: string
+  authorRole: 'player' | 'parent' | 'coach' | 'club_admin' | 'scout'
+  content: string
+  createdAt: string
+}
+
+export type CommunityReportReason = 'spam' | 'abuse' | 'harassment' | 'misinformation' | 'other'
 
 export interface TrainingTrack {
   id: string

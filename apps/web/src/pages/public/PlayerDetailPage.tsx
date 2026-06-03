@@ -28,10 +28,10 @@ export default function PlayerDetailPage() {
   const firstName = player.name.split(' ')[0]
 
   return (
-    <PageShell title={`${player.name} - Player Profile`} description={`${player.position} - Class of ${player.gradYear} - ${player.location}`}>
+    <PageShell title={`${player.name} - Player Profile`} description={`${player.position} • Class of ${player.gradYear} • ${player.location}`}>
       <Link data-testid="player-detail-back-link" to="/browse" className="inline-flex items-center text-[#0134BD] hover:text-[#FB6C1D] font-medium mb-6 transition-colors">Back to Browse</Link>
 
-      <div className="bg-navy-800 rounded-lg shadow-md p-8 mb-8">
+      <div className="bg-navy-800 rounded-lg shadow-md border border-white/10 p-8 mb-10">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <img src={player.image} alt={player.name} className="w-32 h-32 rounded-full object-cover border-4 border-[#0134BD]" />
           <div className="flex-1 text-center md:text-left">
@@ -55,19 +55,19 @@ export default function PlayerDetailPage() {
         </div>
       </div>
 
-      <div className="bg-navy-800 rounded-lg shadow-md p-8 mb-8">
+      <div className="bg-navy-800 rounded-lg shadow-md border border-white/10 p-8 mb-10">
         <h2 className="text-2xl font-bold text-white mb-6">Player Stats</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {player.stats.map(stat => <div key={stat.label} className="bg-white/5 rounded-lg p-4 text-center"><div className="text-3xl font-bold text-[#0134BD]">{stat.value}</div><div className="text-sm text-slate-400 mt-1">{stat.label}</div></div>)}
         </div>
       </div>
 
-      <div className="bg-navy-800 rounded-lg shadow-md p-8 mb-8">
+      <div className="bg-navy-800 rounded-lg shadow-md border border-white/10 p-8 mb-10">
         <h2 className="text-2xl font-bold text-white mb-4">About</h2>
         <p className="text-slate-400 leading-relaxed">{player.bio}</p>
       </div>
 
-      <div className="bg-navy-800 rounded-lg shadow-md p-8 mb-8">
+      <div className="bg-navy-800 rounded-lg shadow-md border border-white/10 p-8 mb-10">
         <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2"><Award size={22} /> Evaluation Summary</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {evalData.categories.slice(0, 8).map(cat => (
@@ -84,7 +84,7 @@ export default function PlayerDetailPage() {
 
       <CTABanner
         title={`Interested in Recruiting ${firstName}?`}
-        description="Connect with this athlete and access full recruiting tools, transcripts, and video highlights."
+        description="Connect with this athlete and unlock complete coach tools, transcripts, and verified performance context."
         actions={[
           { label: 'Create Coach Account', href: '/signup', testId: 'player-detail-create-coach-account-link' },
           { label: 'View Recruiting Services', href: '/services', variant: 'secondary', testId: 'player-detail-view-recruiting-services-link' },

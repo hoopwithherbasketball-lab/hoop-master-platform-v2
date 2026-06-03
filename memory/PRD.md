@@ -12,17 +12,20 @@ Continue the Phase 7 public MVP shell build-out in `hoop-master-platform-v2` on 
 ## What Was Implemented
 - Updated public page shell/CTA consistency:
   - `ServicesPage`, `WorkshopsPage`, `NILReadinessPage`, `RecruitingReadinessPage` standardized around shared shell primitives.
-  - `ContactPage`, `EventsPage`, `FAQPage` now include shared section/CTA treatment for Phase 7 consistency.
+  - `ContactPage`, `EventsPage`, `FAQPage` include shared section/CTA treatment with premium copy alignment.
+  - Added `/events` optional empty-state registration experience with dual CTAs (`/contact` + `/services`) and deterministic test IDs.
 - Added deterministic `data-testid` coverage for critical public interactions:
   - Home/Browse/PlayerDetail/Contact/Events/FAQ/Checkout/Watch/Embed docs public flows.
 - Shared UI enhancement:
   - `packages/ui/src/layouts/CTABanner.tsx` supports optional `testId` and generates stable fallback IDs.
 - Runtime env wiring fix:
   - `apps/web/vite.config.ts` now falls back to root `.env.txt` for `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` when missing in shell env.
+- Final copy/spacing harmonization sweep:
+  - Refined premium voice and spacing rhythm on Home, Browse, Contact, FAQ, Checkout, Channels Browse, Channel Watch, and Embed Docs.
 
 ## Prioritized Backlog
 ### P0
-- Add explicit `/events` empty-state registration CTA if product wants guaranteed visible registration action with no seeded events.
+- Add optional analytics event tracking for `/events` empty-state CTA clicks to measure demand.
 
 ### P1
 - Complete final non-critical visual harmonization across remaining public pages (spacing/heading rhythm).
@@ -33,6 +36,6 @@ Continue the Phase 7 public MVP shell build-out in `hoop-master-platform-v2` on 
 - Add automated accessibility contrast checks in CI for CTA/button variants.
 
 ## Next Tasks
-1. Add optional no-events empty state CTA on `/events` (if desired by product team).
+1. Add CTA click analytics for `/events` empty-state and dashboard banner actions.
 2. Add CI snapshot + a11y contrast gate for major public routes.
-3. Final review pass for copy consistency in CTA labels across public routes.
+3. Perform final microcopy audit for consistent premium tone across all public and dashboard routes.

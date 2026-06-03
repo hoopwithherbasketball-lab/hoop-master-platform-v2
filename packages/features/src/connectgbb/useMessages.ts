@@ -2,20 +2,29 @@ import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@hoop-master/supabase'
 import { useAuth } from '../crm/contexts/AuthContextValue.js'
 import type { Conversation, Message } from './types'
+import { useCommunityMembership } from './useCommunityMembership.js'
 
 export function useMessages() {
   const { user } = useAuth()
+  const { canAccessCommunity } = useCommunityMembership()
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [activeConvoId, setActiveConvoId] = useState<string | null>(null)
   const [newMessage, setNewMessage] = useState('')
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!user) { setLoading(false); return }
+    if (!user || !canAccessCommunity) {
+      setConversations([])
+      setActiveConvoId(null)
+      setLoading(false)
+      return
+    }
 
     const fetch = async () => {
       try {
         setLoading(true)
+        setError(null)
         const { data: convos } = await supabase
           .from('conversations')
           .select('*')
@@ -73,16 +82,19 @@ export function useMessages() {
           }
         })
         setConversations(mapped)
-      } catch (e) { console.error('useMessages:', e) }
+      } catch (e) {
+        console.error('useMessages:', e)
+        setError('Unable to load conversations.')
+      }
       setLoading(false)
     }
     fetch()
-  }, [user])
+  }, [user, canAccessCommunity])
 
   const activeConvo = conversations.find(c => c.id === activeConvoId) || null
 
   const sendMessage = useCallback(async () => {
-    if (!newMessage.trim() || !activeConvoId || !user) return
+    if (!newMessage.trim() || !activeConvoId || !user || !canAccessCommunity) return
     const content = newMessage.trim()
     try {
       const { data: msgData } = await supabase.from('messages').insert({
@@ -91,19 +103,21 @@ export function useMessages() {
         content,
       }).select().single()
 
-      const convo = conversations.find(c => c.id === activeConvoId)
-      const otherParticipant = convo
-        ? (convo.participantId)
-        : null
-      const otherUnreadField = convo
-        ? (convo.participantId === convo.participantId ? 'participant_two_unread' : 'participant_one_unread')
-        : 'participant_two_unread'
+      const { data: convoData } = await supabase
+        .from('conversations')
+        .select('participant_one, participant_two, participant_one_unread, participant_two_unread')
+        .eq('id', activeConvoId)
+        .single()
 
-      await supabase.from('conversations').update({
-        last_message: content,
-        last_timestamp: new Date().toISOString(),
-        [otherUnreadField]: supabase.rpc('increment', { x: 1 }),
-      }).eq('id', activeConvoId)
+      if (convoData) {
+        const isParticipantOne = convoData.participant_one === user.id
+        await supabase.from('conversations').update({
+          last_message: content,
+          last_timestamp: new Date().toISOString(),
+          participant_one_unread: isParticipantOne ? 0 : (convoData.participant_one_unread || 0) + 1,
+          participant_two_unread: isParticipantOne ? (convoData.participant_two_unread || 0) + 1 : 0,
+        }).eq('id', activeConvoId)
+      }
 
       if (msgData) {
         setNewMessage('')
@@ -120,8 +134,11 @@ export function useMessages() {
           return { ...c, lastMessage: content, lastTimestamp: new Date().toISOString(), messages: [...c.messages, newMsg] }
         }))
       }
-    } catch (e) { console.error('sendMessage:', e) }
-  }, [newMessage, activeConvoId, user, conversations])
+    } catch (e) {
+      console.error('sendMessage:', e)
+      setError('Unable to send message.')
+    }
+  }, [newMessage, activeConvoId, user, conversations, canAccessCommunity])
 
-  return { conversations, activeConvo, activeConvoId, newMessage, setNewMessage, setActiveConvoId, sendMessage, loading }
+  return { conversations, activeConvo, activeConvoId, newMessage, setNewMessage, setActiveConvoId, sendMessage, loading, error }
 }

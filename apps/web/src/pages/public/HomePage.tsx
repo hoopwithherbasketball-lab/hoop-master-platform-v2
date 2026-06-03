@@ -6,10 +6,10 @@ export default function HomePage() {
   return (
     <PageShell
       title="Elite Girls Basketball Development"
-      description="All-in-one player readiness, recruiting visibility, NIL opportunities, and partner services for elite female athletes."
+      description="A premium platform for player readiness, recruiting visibility, NIL positioning, and long-term development outcomes."
       badge="Player Development"
     >
-      <section className="text-center py-16 bg-gradient-to-r from-[#121B47] to-[#0134BD] text-white rounded-lg mb-12">
+      <section className="text-center py-16 px-6 bg-gradient-to-r from-[#121B47] to-[#0134BD] text-white rounded-lg mb-12">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           Elevate Your Game, Own Your Future
         </h1>
@@ -26,23 +26,23 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-12">
-        <div className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#0134BD]">
+      <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-14">
+        <div className="bg-navy-800 p-6 rounded-lg shadow-md border border-white/10 hover:shadow-lg transition-shadow border-l-4 border-[#0134BD]">
           <h3 className="text-xl font-semibold text-white mb-3">For Players</h3>
           <p className="text-slate-400 mb-4">Build your recruiting profile, track readiness, and connect with college coaches.</p>
           <Link data-testid="home-for-players-link" to="/signup" className="text-[#0134BD] font-semibold hover:text-[#FB6C1D] transition-colors">Get Started →</Link>
         </div>
-        <div className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#FB6C1D]">
+        <div className="bg-navy-800 p-6 rounded-lg shadow-md border border-white/10 hover:shadow-lg transition-shadow border-l-4 border-[#FB6C1D]">
           <h3 className="text-xl font-semibold text-white mb-3">For Parents</h3>
           <p className="text-slate-400 mb-4">Navigate recruiting and NIL opportunities with expert guidance and tools.</p>
           <Link data-testid="home-for-parents-link" to="/workshops" className="text-[#0134BD] font-semibold hover:text-[#FB6C1D] transition-colors">Learn More →</Link>
         </div>
-        <div className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#C8A24A]">
+        <div className="bg-navy-800 p-6 rounded-lg shadow-md border border-white/10 hover:shadow-lg transition-shadow border-l-4 border-[#C8A24A]">
           <h3 className="text-xl font-semibold text-white mb-3">For Coaches</h3>
           <p className="text-slate-400 mb-4">Discover top talent, access player profiles, and streamline recruiting.</p>
           <Link data-testid="home-for-coaches-link" to="/browse" className="text-[#0134BD] font-semibold hover:text-[#FB6C1D] transition-colors">Browse Players →</Link>
         </div>
-        <div className="bg-navy-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border-l-4 border-[#0134BD]">
+        <div className="bg-navy-800 p-6 rounded-lg shadow-md border border-white/10 hover:shadow-lg transition-shadow border-l-4 border-[#0134BD]">
           <h3 className="text-xl font-semibold text-white mb-3">For Clubs</h3>
           <p className="text-slate-400 mb-4">Partner with elite programs and provide premium services to your athletes.</p>
           <Link data-testid="home-for-clubs-link" to="/services" className="text-[#0134BD] font-semibold hover:text-[#FB6C1D] transition-colors">View Services →</Link>

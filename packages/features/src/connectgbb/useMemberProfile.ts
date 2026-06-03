@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 import type { MemberProfile } from './types'
+import { useCommunityMembership } from './useCommunityMembership.js'
+import { useAuth } from '../crm/contexts/AuthContextValue.js'
 
 export function useMemberProfile(id: string) {
+  const { user } = useAuth()
+  const { canAccessCommunity } = useCommunityMembership()
   const [profile, setProfile] = useState<MemberProfile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!id) { setProfile(null); setLoading(false); return }
+    const viewingOwnProfile = user?.id === id
+    if (!canAccessCommunity && !viewingOwnProfile) { setProfile(null); setLoading(false); return }
 
     const abortController = new AbortController()
 
@@ -75,7 +81,7 @@ export function useMemberProfile(id: string) {
     fetch()
 
     return () => abortController.abort()
-  }, [id])
+  }, [id, canAccessCommunity, user])
 
   return { profile, loading, error }
 }

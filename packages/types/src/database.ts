@@ -7,7 +7,10 @@ export type NILOpportunityStatus = 'matched' | 'review' | 'negotiation' | 'activ
 export type NILTier = 'bronze' | 'silver' | 'gold' | 'platinum'
 export type NILTaskStatus = 'todo' | 'in_progress' | 'completed'
 export type NILTaskPriority = 'low' | 'medium' | 'high' | 'urgent'
-export type ConnectRole = 'player' | 'parent' | 'coach' | 'scout'
+export type ConnectRole = 'player' | 'parent' | 'coach' | 'scout' | 'club_admin'
+export type CommunityMembershipStatus = 'pending' | 'active' | 'suspended'
+export type CommunityMembershipTier = 'starter' | 'pro' | 'elite'
+export type CommunityReportReason = 'spam' | 'abuse' | 'harassment' | 'misinformation' | 'other'
 
 export interface Database {
   public: {
@@ -151,6 +154,26 @@ export interface Database {
         Row: { id: string; post_id: string; user_id: string; created_at: string }
         Insert: { post_id: string; user_id: string }
         Update: never
+      }
+      community_comments: {
+        Row: CommunityComment
+        Insert: Omit<CommunityComment, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<CommunityComment, 'id'>>
+      }
+      community_post_reports: {
+        Row: CommunityPostReport
+        Insert: Omit<CommunityPostReport, 'id' | 'created_at' | 'updated_at' | 'resolved_at' | 'resolved_by'>
+        Update: Partial<Omit<CommunityPostReport, 'id' | 'reporter_id' | 'post_id'>>
+      }
+      community_audit_logs: {
+        Row: CommunityAuditLog
+        Insert: Omit<CommunityAuditLog, 'id' | 'created_at'>
+        Update: never
+      }
+      community_memberships: {
+        Row: CommunityMembership
+        Insert: Omit<CommunityMembership, 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Omit<CommunityMembership, 'id' | 'user_id'>>
       }
       training_videos: {
         Row: TrainingVideo
@@ -437,6 +460,54 @@ export interface CommunityPost {
   created_at: string
   like_count: number
   comment_count: number
+}
+
+export interface CommunityComment {
+  id: string
+  post_id: string
+  author_id: string
+  author_name: string
+  author_role: ConnectRole
+  parent_comment_id: string | null
+  content: string
+  created_at: string
+  updated_at: string
+}
+
+export interface CommunityPostReport {
+  id: string
+  post_id: string
+  reporter_id: string
+  reason: CommunityReportReason
+  details: string
+  status: 'open' | 'reviewing' | 'resolved' | 'rejected'
+  resolved_at: string | null
+  resolved_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface CommunityAuditLog {
+  id: string
+  actor_user_id: string | null
+  action: string
+  entity_type: string
+  entity_id: string | null
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
+export interface CommunityMembership {
+  id: string
+  user_id: string
+  status: CommunityMembershipStatus
+  tier: CommunityMembershipTier
+  invited_by: string | null
+  approved_at: string | null
+  expires_at: string | null
+  notes: string
+  created_at: string
+  updated_at: string
 }
 
 export interface TrainingVideo {

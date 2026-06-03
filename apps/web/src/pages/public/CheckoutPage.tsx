@@ -31,9 +31,9 @@ export default function CheckoutPage() {
 
   if (!plan) {
     return (
-      <PageShell title="Checkout" description="Select a valid service plan." badge="Checkout">
+      <PageShell title="Checkout" description="Select a valid service package to continue." badge="Checkout">
         <div className="text-center py-16">
-          <p className="text-slate-400 text-lg mb-4">No plan selected.</p>
+          <p className="text-slate-400 text-lg mb-4">No package selected.</p>
           <Link
             to="/services"
             data-testid="checkout-view-services-link"
@@ -47,10 +47,10 @@ export default function CheckoutPage() {
   }
 
   return (
-    <PageShell title={`Checkout — ${plan.title}`} description={`Complete purchase of ${plan.title}`} badge="Checkout">
-      <div className="max-w-2xl mx-auto space-y-8">
+    <PageShell title={`Checkout — ${plan.title}`} description={`Complete your secure checkout for ${plan.title}.`} badge="Checkout">
+      <div className="max-w-2xl mx-auto space-y-10">
         {/* Order Summary */}
-        <div className="bg-navy-800 p-6 rounded-lg shadow-md">
+        <div className="bg-navy-800 p-7 rounded-lg shadow-md border border-white/10">
           <h2 className="text-2xl font-semibold text-white mb-4">Order Summary</h2>
           <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
             <div>
@@ -76,7 +76,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Contact Info */}
-        <div className="bg-navy-800 p-6 rounded-lg shadow-md">
+        <div className="bg-navy-800 p-7 rounded-lg shadow-md border border-white/10">
           <h2 className="text-2xl font-semibold text-white mb-4">Contact Information</h2>
           <div className="space-y-4">
             <div>
@@ -114,7 +114,7 @@ export default function CheckoutPage() {
         </button>
 
         <p className="text-center text-sm text-gray-400">
-          Secure checkout. You will be redirected to complete payment.
+          Secure checkout. You will be redirected to complete payment authorization.
         </p>
       </div>
     </PageShell>
