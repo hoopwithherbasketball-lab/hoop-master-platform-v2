@@ -1,41 +1,53 @@
-# PRD — Phase 7 Public MVP Shell Refinement
+# PRD — Members-Only ConnectGBB + Premium Backend Hardening
 
 ## Original Problem Statement
-Continue the Phase 7 public MVP shell build-out in `hoop-master-platform-v2` on branch `phase-7-shell-refinement-20260602`, replacing remaining local shell/CTA patterns with shared Phase 7 UI primitives under approved paths.
+User request: ensure the product incorporates a **members-only community aspect** in the overall design, and ensure backend features/functionality are **premium, high quality, and well structured**.
 
 ## Architecture Decisions
-- Expanded scope (per user approval) to include web runtime env wiring for reliable local startup.
-- Standardized CTA behavior through `@hoop-master/ui` `CTABanner` + `LinkComponent` for internal routing.
-- Added `testId` support in shared `CTABanner` to improve deterministic UI automation.
-- Preserved existing app routing; no migrations or auth/billing/deploy config changes.
+- Introduced a **members-only backend model** for ConnectGBB via new Supabase migration assets (membership, comments, reports, audit logs, and stricter RLS/policies).
+- Implemented a **stabilized membership access hook** (`useCommunityMembership`) with cache, inflight dedupe, cooldown/backoff, and deterministic role-based fallback when migration objects are not yet provisioned.
+- Shifted ConnectGBB pages to **membership-aware UI states** (locked vs accessible) for consistent community gating.
+- Added admin controls for memberships (`/admin/community-memberships`) to support premium governance workflows.
+- Added testability and regression hardening (`data-testid`s on auth + community controls, host allowlist updates in Vite config).
 
 ## What Was Implemented
-- Updated public page shell/CTA consistency:
-  - `ServicesPage`, `WorkshopsPage`, `NILReadinessPage`, `RecruitingReadinessPage` standardized around shared shell primitives.
-  - `ContactPage`, `EventsPage`, `FAQPage` include shared section/CTA treatment with premium copy alignment.
-  - Added `/events` optional empty-state registration experience with dual CTAs (`/contact` + `/services`) and deterministic test IDs.
-- Added deterministic `data-testid` coverage for critical public interactions:
-  - Home/Browse/PlayerDetail/Contact/Events/FAQ/Checkout/Watch/Embed docs public flows.
-- Shared UI enhancement:
-  - `packages/ui/src/layouts/CTABanner.tsx` supports optional `testId` and generates stable fallback IDs.
-- Runtime env wiring fix:
-  - `apps/web/vite.config.ts` now falls back to root `.env.txt` for `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` when missing in shell env.
-- Final copy/spacing harmonization sweep:
-  - Refined premium voice and spacing rhythm on Home, Browse, Contact, FAQ, Checkout, Channels Browse, Channel Watch, and Embed Docs.
+- **Database/backend foundation (migration file added):**
+  - `community_memberships` (status + tier)
+  - `community_comments`
+  - `community_post_reports`
+  - `community_audit_logs`
+  - Helper functions/triggers for membership checks, event logging, and count syncing
+  - RLS hardening for members-only behavior across ConnectGBB data domains
+- **Feature-layer backend logic:**
+  - New hooks: `useCommunityMembership`, `useCommunityModeration`
+  - Upgraded hooks: `useCommunityFeed`, `useMessages`, `useConnections`, `useTrainingTracks`, `useMemberProfile`
+  - Feed now supports structured post validation, comments, reporting, and safer fallback behavior
+- **Members-only UX/design integration:**
+  - ConnectGBB hub now reflects membership status and locked-state messaging
+  - Feed/messages/connections/training pages render deterministic locked states when inactive
+  - Profile settings now persist data to backend via upsert
+- **Admin governance:**
+  - Added `AdminCommunityMembershipsPage` with status/tier management and dashboard access link
+- **Reliability + testing updates:**
+  - Login form now includes required `data-testid` attributes
+  - Vite host allowlist settings updated for public preview stability
+  - Removed noisy ProtectedRoute debug logs
+  - Added/updated test credentials memory file with current created account
 
 ## Prioritized Backlog
 ### P0
-- Add optional analytics event tracking for `/events` empty-state CTA clicks to measure demand.
+- Apply the new Supabase migration to target environments so role-based fallback is no longer required.
+- Create and store full role-coverage test credentials (pending member + admin) for complete authenticated E2E.
 
 ### P1
-- Complete final non-critical visual harmonization across remaining public pages (spacing/heading rhythm).
-- Extend `data-testid` coverage from critical interactions to all public-page form controls and status blocks.
+- Add admin moderation queue UI for `community_post_reports` (reviewing/resolved workflow).
+- Add retry telemetry + health indicator for membership resolution failures.
 
 ### P2
-- Add visual regression snapshots for key public routes in CI.
-- Add automated accessibility contrast checks in CI for CTA/button variants.
+- Add CI E2E suite for membership-gated route consistency on public preview URL.
+- Add analytics events for membership lock CTA and profile-completion conversion.
 
 ## Next Tasks
-1. Add CTA click analytics for `/events` empty-state and dashboard banner actions.
-2. Add CI snapshot + a11y contrast gate for major public routes.
-3. Perform final microcopy audit for consistent premium tone across all public and dashboard routes.
+1. Run migration in target Supabase environment and validate RLS/policies live.
+2. Re-run full authenticated E2E with pending, active, and admin accounts.
+3. Expand admin moderation and audit-log exploration UI.
