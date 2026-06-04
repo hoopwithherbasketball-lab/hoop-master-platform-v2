@@ -382,6 +382,13 @@ CREATE POLICY "Admins can read community_audit_logs"
 ON public.community_audit_logs FOR SELECT TO authenticated
 USING (public.is_admin_user(auth.uid()));
 
+CREATE POLICY "Members can write community_audit_logs"
+ON public.community_audit_logs FOR INSERT TO authenticated
+WITH CHECK (
+  public.is_active_community_member(auth.uid())
+  OR public.is_admin_user(auth.uid())
+);
+
 DROP POLICY IF EXISTS "Anyone can view public member_profiles" ON public.member_profiles;
 DROP POLICY IF EXISTS "Users can view own member_profile" ON public.member_profiles;
 DROP POLICY IF EXISTS "Users can manage own member_profile" ON public.member_profiles;

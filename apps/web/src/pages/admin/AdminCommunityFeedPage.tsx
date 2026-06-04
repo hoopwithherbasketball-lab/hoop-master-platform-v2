@@ -60,7 +60,7 @@ export default function AdminCommunityFeedPage() {
   const resolveReport = async (id: string, status: ReportRow['status']) => {
     try {
       setResolvingReportId(id)
-      await supabase
+      const { error } = await supabase
         .from('community_post_reports')
         .update({
           status,
@@ -69,6 +69,7 @@ export default function AdminCommunityFeedPage() {
         })
         .eq('id', id)
 
+      if (error) throw error
       setReports((prev) => prev.filter((r) => r.id !== id))
     } catch (e) {
       console.error('resolveReport:', e)

@@ -1,0 +1,67 @@
+{
+  "summary": "Frontend-only retest completed for membership/migration role-matrix scenarios. Local role gating and admin queue visibility pass; moderation persistence still blocked by Supabase RLS (403/42501), and preview role-matrix remains unstable due 429 throttling at login.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Coach report submission from /connectgbb/feed",
+        "issue": "Clicking report returns 403 on community_post_reports upsert and UI shows 'Could not submit report at this time.'",
+        "affected_selectors": [
+          "[data-testid^=community-feed-report-button-]",
+          "[data-testid=community-feed-error-text]"
+        ]
+      },
+      {
+        "flow": "Admin resolve/reject persistence from /admin/feed",
+        "issue": "Resolve request returns 403 (code 42501; RLS policy failure on community_audit_logs), so row remains in queue before and after reload.",
+        "affected_selectors": [
+          "[data-testid=admin-community-report-queue-summary]",
+          "[data-testid^=admin-community-resolve-report-button-]",
+          "[data-testid^=admin-community-reject-report-button-]"
+        ]
+      },
+      {
+        "flow": "Preview role-matrix E2E run",
+        "issue": "Preview login is intermittently rate-limited (multiple 429s), causing timeout waiting for login-form-email-input.",
+        "affected_selectors": [
+          "[data-testid=login-form-email-input]",
+          "[data-testid=login-form-password-input]",
+          "[data-testid=login-form-submit-button]"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/tests/test_connectgbb_role_matrix_e2e.py",
+    "/root/.emergent/automation_output/20260604_173101/console_20260604_173101.log"
+  ],
+  "action_items": [
+    "Fix Supabase RLS/policy chain for community_post_reports + related community_audit_logs writes so report/resolve workflows persist.",
+    "After policy fix, re-verify resolve/reject success path to confirm row removal only after successful update.",
+    "Stabilize preview anti-bot/rate-limit behavior (or approved automation bypass) for reliable role-matrix coverage."
+  ],
+  "critical_code_review_comments": [
+    "AdminCommunityFeedPage currently removes queue rows only after successful update (good), but the success path cannot be validated until RLS is fixed.",
+    "useCommunityModeration and resolveReport both fail against DB policy layer, indicating migration wiring is blocked by authorization/policy, not UI selectors.",
+    "Some admin feed action buttons (e.g., post delete controls) still lack data-testid, which reduces long-term testability."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_9.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (not requested)",
+    "frontend": "74%"
+  },
+  "test_credentials": "Read from /app/memory/test_credentials.md and used exactly: pending.member.20260603@example.com / PendingPass123!, coach.member.1780593208@example.com / CoachPass123!, admin.member.20260603@example.com / AdminPass123!",
+  "seed_data_creation": "None (used existing queue row and existing feed posts).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Local: pending lock PASS, coach create-post access PASS, admin queue open/reviewing visibility PASS. Coach report submit and admin resolve remain blocked by 403/42501 policy errors tied to community_audit_logs. Preview: role-matrix run failed at login selector due repeated 429.",
+  "rca of the issue": "RCA-1: Moderation persistence failure. Repro: coach logs in -> /connectgbb/feed -> click report, then admin -> /admin/feed -> click resolve. Observed 403 and Postgres 42501 with message 'new row violates row-level security policy for table community_audit_logs'; report/update does not persist. Mitigation: adjust RLS/policies/triggers for authenticated coach/admin workflow when writing community_post_reports and audit rows. RCA-2: Preview instability. Repro: run role-matrix script on preview URL; repeated 429 responses lead to timeout before login fields become interactable. Mitigation: allowlist/test bypass or reduce upstream rate limiting for automation traffic.",
+  "mocked_api": "NO MOCKED APIs used"
+}
