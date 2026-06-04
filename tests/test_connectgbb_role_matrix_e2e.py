@@ -17,54 +17,49 @@ async def run_for_base_url(base_url: str) -> int:
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        context = await browser.new_context()
-        page = await context.new_page()
+        async def with_fresh_page():
+            context = await browser.new_context()
+            page = await context.new_page()
+            page.on("console", lambda msg: print(f"CONSOLE[{msg.type}]: {msg.text}"))
+            await page.set_viewport_size({"width": 1920, "height": 1080})
+            return context, page
 
-        def log_console(msg):
-            print(f"CONSOLE[{msg.type}]: {msg.text}")
-
-        page.on("console", log_console)
-
-        async def login(email: str, password: str):
+        async def login(page, email: str, password: str):
             await page.goto(f"{base_url}/login", wait_until="domcontentloaded", timeout=60000)
             await page.get_by_test_id("login-form-email-input").fill(email)
             await page.get_by_test_id("login-form-password-input").fill(password)
             await page.get_by_test_id("login-form-submit-button").click(force=True)
             await page.wait_for_timeout(2600)
 
-        async def logout():
-            await page.goto(f"{base_url}/dashboard", wait_until="domcontentloaded", timeout=60000)
-            await page.wait_for_timeout(1000)
-            logout_btn = page.get_by_test_id("dashboard-sidebar-logout-button")
-            if await logout_btn.count() > 0:
-                await logout_btn.click(force=True)
-                await page.wait_for_timeout(1200)
-
         try:
-            await page.set_viewport_size({"width": 1920, "height": 1080})
-
             # Pending member expectations
-            await login(PENDING_EMAIL, PENDING_PASSWORD)
+            pending_context, pending_page = await with_fresh_page()
+            await login(pending_page, PENDING_EMAIL, PENDING_PASSWORD)
+            page = pending_page
             await page.goto(f"{base_url}/connectgbb/feed", wait_until="domcontentloaded", timeout=60000)
             await page.wait_for_timeout(1600)
             if not await page.get_by_test_id("community-feed-membership-locked").is_visible():
                 failures.append("Pending member should see locked community feed state")
             if await page.get_by_test_id("community-feed-create-post-card").count() > 0:
                 failures.append("Pending member should not see create post card")
-            await logout()
+            await pending_context.close()
 
             # Coach expectations
-            await login(COACH_EMAIL, COACH_PASSWORD)
+            coach_context, coach_page = await with_fresh_page()
+            await login(coach_page, COACH_EMAIL, COACH_PASSWORD)
+            page = coach_page
             await page.goto(f"{base_url}/connectgbb/feed", wait_until="domcontentloaded", timeout=60000)
             await page.wait_for_timeout(1600)
             if await page.get_by_test_id("community-feed-membership-locked").count() > 0:
                 failures.append("Coach should not see locked feed state")
             if not await page.get_by_test_id("community-feed-create-post-card").is_visible():
                 failures.append("Coach should see create post card")
-            await logout()
+            await coach_context.close()
 
             # Admin expectations
-            await login(ADMIN_EMAIL, ADMIN_PASSWORD)
+            admin_context, admin_page = await with_fresh_page()
+            await login(admin_page, ADMIN_EMAIL, ADMIN_PASSWORD)
+            page = admin_page
             await page.goto(f"{base_url}/admin/feed", wait_until="domcontentloaded", timeout=60000)
             await page.wait_for_timeout(1800)
             if not await page.get_by_test_id("admin-community-report-queue-summary").is_visible():
@@ -74,6 +69,7 @@ async def run_for_base_url(base_url: str) -> int:
             await page.wait_for_timeout(1800)
             if not await page.get_by_test_id("admin-community-memberships-table-wrapper").is_visible():
                 failures.append("Admin memberships table missing")
+            await admin_context.close()
 
             if failures:
                 print("ROLE MATRIX RESULT: FAILED")

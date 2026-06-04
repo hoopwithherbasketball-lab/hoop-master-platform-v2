@@ -32,8 +32,8 @@ User request: ensure the product incorporates a **members-only community aspect*
   - Created and validated pending + admin accounts and added a dedicated active coach account for role-matrix testing.
   - Stored all credentials in `/app/memory/test_credentials.md`.
 - **Moderation queue workflows:**
-  - Extended `AdminCommunityFeedPage` with moderation queue backed by `analytics_events` (community report events)
-  - Added report resolution action in admin queue
+  - Switched queue persistence to `community_post_reports` (`open/reviewing` states)
+  - Added resolve/reject admin actions with success-gated UI updates
 - **Lock-state CTA analytics:**
   - Added `trackCommunityEvent` utility and wired lock-state CTA + report tracking to analytics event ingestion
 - **Automated role-matrix E2E suite:**
@@ -48,6 +48,7 @@ User request: ensure the product incorporates a **members-only community aspect*
 
 ## Prioritized Backlog
 ### P0
+- Apply/add `community_audit_logs` INSERT policy in the live database so trigger-based report insert/update writes stop returning 42501.
 - Run role-matrix E2E against both local and preview URLs after each auth/community release.
 
 ### P1
