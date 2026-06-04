@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [roles, setRoles] = useState<UserRole[]>(loadCachedRoles);
   const [loading, setLoading] = useState(true);
 
-  async function loadRoles(userId: string, email?: string) {
+  async function loadRoles(userId: string, _email?: string) {
     try {
       const { data, error } = await Promise.race([
         supabase.from('user_roles').select('role').eq('user_id', userId),
