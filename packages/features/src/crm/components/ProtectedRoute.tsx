@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children, role }: ProtectedRouteProps) {
-  const { user, loading, roles, hasRole, refreshRoles } = useAuth()
+  const { user, loading, hasRole, refreshRoles } = useAuth()
 
   useEffect(() => {
     if (user) { refreshRoles() }
