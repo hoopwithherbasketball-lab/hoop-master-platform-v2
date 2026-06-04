@@ -23,8 +23,8 @@ export default function MessagesPage() {
   return (
     <PageShell title="Messages" description="In-app messaging with coaches, scouts, and programs." badge="ConnectGBB">
       {error && <p className="text-red-300 mb-4" data-testid="messages-error-text">{error}</p>}
-      <div className="flex h-[600px] bg-navy-800 rounded-xl shadow-md overflow-hidden">
-        <div className="w-80 border-r border-white/10 flex flex-col">
+      <div className="flex flex-col lg:flex-row h-auto lg:h-[600px] bg-navy-800 rounded-xl shadow-md overflow-hidden">
+        <div className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col max-h-[320px] lg:max-h-none">
           <div className="p-3 border-b border-white/10 bg-white/5"><h3 className="font-semibold text-white text-sm">Conversations</h3></div>
           <div className="flex-1 overflow-y-auto">
             {loading && <p className="p-4 text-xs text-slate-400">Loading conversations…</p>}
@@ -46,7 +46,7 @@ export default function MessagesPage() {
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-[420px]">
           {activeConvo ? (
             <>
               <div className="p-4 border-b border-white/10 bg-white/5 flex items-center gap-3">
@@ -66,7 +66,7 @@ export default function MessagesPage() {
                   )
                 })}
               </div>
-              <div className="p-4 border-t border-white/10">
+              <div className="p-3 sm:p-4 border-t border-white/10">
                 <div className="flex items-center gap-3">
                   <input data-testid="messages-input" value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} placeholder="Type a message..." className="flex-1 p-3 border border-white/10 rounded-xl outline-none focus:ring-2 focus:ring-[#0134BD] text-sm" />
                   <button data-testid="messages-send-button" onClick={sendMessage} className="w-10 h-10 bg-[#0134BD] text-white rounded-xl flex items-center justify-center hover:bg-[#002a80]"><Send size={16} /></button>

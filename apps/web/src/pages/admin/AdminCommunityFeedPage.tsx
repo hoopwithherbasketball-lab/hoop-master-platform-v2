@@ -33,6 +33,7 @@ export default function AdminCommunityFeedPage() {
   const [loading, setLoading] = useState(true)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [resolvingReportId, setResolvingReportId] = useState<string | null>(null)
+  const [reportError, setReportError] = useState<string | null>(null)
 
   useEffect(() => {
     const load = async () => {
@@ -60,6 +61,7 @@ export default function AdminCommunityFeedPage() {
   const resolveReport = async (id: string, status: ReportRow['status']) => {
     try {
       setResolvingReportId(id)
+      setReportError(null)
       const { error } = await supabase
         .from('community_post_reports')
         .update({
@@ -73,6 +75,7 @@ export default function AdminCommunityFeedPage() {
       setReports((prev) => prev.filter((r) => r.id !== id))
     } catch (e) {
       console.error('resolveReport:', e)
+      setReportError('Unable to update report status. Please apply audit-log INSERT policy SQL and retry.')
     } finally {
       setResolvingReportId(null)
     }
@@ -131,11 +134,14 @@ export default function AdminCommunityFeedPage() {
         </div>
       )}
 
+      {reportError && <p className="text-red-300 mb-4" data-testid="admin-community-report-error-text">{reportError}</p>}
+
       {loading ? (
         <div className="animate-pulse space-y-3">{[1,2,3,4].map(i => <div key={i} className="card h-16" />)}</div>
       ) : (
-        <div className="card overflow-hidden">
-          <table className="w-full text-sm">
+        <>
+        <div className="card overflow-x-auto hidden md:block">
+          <table className="w-full min-w-[760px] text-sm">
             <thead className="bg-white/5 border-b border-white/10">
               <tr>
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Author</th>
@@ -169,6 +175,29 @@ export default function AdminCommunityFeedPage() {
             </tbody>
           </table>
         </div>
+
+        <div className="md:hidden space-y-3">
+          {posts.map((p) => (
+            <article key={p.id} className="card p-4 space-y-2" data-testid={`admin-community-post-mobile-${p.id}`}>
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="font-medium text-white text-sm">{p.author_name}</p>
+                  <p className="text-xs text-slate-400 capitalize">{p.author_role}</p>
+                </div>
+                <button onClick={() => setDeleteId(p.id)} className="p-1.5 text-red-400 hover:bg-red-500/20 rounded" data-testid={`admin-community-delete-button-mobile-${p.id}`}><Trash2 size={14} /></button>
+              </div>
+              <p className="text-slate-300 text-sm line-clamp-2">{p.content}</p>
+              <div className="flex items-center justify-between text-xs text-slate-400">
+                <span>Likes {p.like_count}</span>
+                <span>Comments {p.comment_count}</span>
+                <span>{new Date(p.created_at).toLocaleDateString()}</span>
+              </div>
+            </article>
+          ))}
+
+          {posts.length === 0 && <div className="card p-8 text-center text-slate-400">No posts yet.</div>}
+        </div>
+        </>
       )}
 
       {deleteId && (

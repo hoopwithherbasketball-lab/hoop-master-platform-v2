@@ -145,8 +145,9 @@ export default function AdminCommunityMembershipsPage() {
       {loading ? (
         <div className="animate-pulse space-y-3">{[1, 2, 3, 4].map((i) => <div key={i} className="card h-16" />)}</div>
       ) : (
-        <div className="card overflow-hidden" data-testid="admin-community-memberships-table-wrapper">
-          <table className="w-full text-sm">
+        <>
+        <div className="card overflow-x-auto hidden md:block" data-testid="admin-community-memberships-table-wrapper">
+          <table className="w-full min-w-[780px] text-sm">
             <thead className="bg-white/5 border-b border-white/10">
               <tr>
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">User</th>
@@ -212,6 +213,60 @@ export default function AdminCommunityMembershipsPage() {
             </tbody>
           </table>
         </div>
+
+        <div className="md:hidden space-y-3" data-testid="admin-community-memberships-mobile-list">
+          {rows.map((row) => (
+            <article key={row.id} className="card p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-white text-sm font-semibold truncate pr-3" data-testid={`admin-community-membership-user-mobile-${row.id}`}>{row.user_id}</p>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${row.status === 'active' ? 'bg-green-500/20 text-green-300' : row.status === 'pending' ? 'bg-yellow-500/20 text-yellow-300' : 'bg-red-500/20 text-red-300'}`}>
+                  {row.status}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <select
+                  value={row.tier}
+                  data-testid={`admin-community-membership-tier-select-mobile-${row.id}`}
+                  onChange={(e) => updateTier(row, e.target.value as MembershipRow['tier'])}
+                  disabled={savingId === row.id || !persistedMembershipTable}
+                  className="bg-transparent border border-white/10 rounded px-2 py-2 text-slate-200 text-xs"
+                >
+                  <option value="starter">starter</option>
+                  <option value="pro">pro</option>
+                  <option value="elite">elite</option>
+                </select>
+                <p className="text-xs text-slate-400 self-center text-right">{new Date(row.created_at).toLocaleDateString()}</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  data-testid={`admin-community-approve-button-mobile-${row.id}`}
+                  onClick={() => updateStatus(row, 'active')}
+                  disabled={savingId === row.id || !persistedMembershipTable}
+                  className="px-3 py-2 rounded text-xs font-medium bg-green-600/30 text-green-200 hover:bg-green-600/40 disabled:opacity-50"
+                >
+                  Approve
+                </button>
+                <button
+                  data-testid={`admin-community-suspend-button-mobile-${row.id}`}
+                  onClick={() => updateStatus(row, 'suspended')}
+                  disabled={savingId === row.id || !persistedMembershipTable}
+                  className="px-3 py-2 rounded text-xs font-medium bg-red-600/30 text-red-200 hover:bg-red-600/40 disabled:opacity-50"
+                >
+                  Suspend
+                </button>
+              </div>
+            </article>
+          ))}
+
+          {rows.length === 0 && (
+            <div className="card p-8 text-center text-slate-400" data-testid="admin-community-memberships-empty-mobile-text">
+              No community memberships found.
+            </div>
+          )}
+        </div>
+        </>
       )}
     </DashboardLayout>
   )

@@ -76,7 +76,7 @@ export default function DashboardSidebar({ variant }: Props) {
   }
 
   return (
-    <aside className="w-64 bg-navy-800 border-r border-white/10 h-screen sticky top-16 flex flex-col overflow-y-auto">
+    <aside className="w-full lg:w-64 bg-navy-800 border-b lg:border-b-0 lg:border-r border-white/10 lg:h-[calc(100vh-4rem)] lg:sticky top-16 flex flex-col overflow-y-auto">
       <div className="p-4 flex-1">
         <div className="mb-6 px-4 py-3 bg-white/5 rounded-xl">
           <p className="text-xs text-slate-500 font-medium">Signed in as</p>

@@ -1,0 +1,62 @@
+name: ConnectGBB Role Matrix E2E
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'apps/web/**'
+      - 'packages/features/**'
+      - 'packages/ui/**'
+      - 'tests/test_connectgbb_role_matrix_e2e.py'
+      - '.github/workflows/connectgbb-role-matrix-e2e.yml'
+
+jobs:
+  role-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      BASE_URL_LOCAL: http://localhost:3000
+      BASE_URL_PREVIEW: https://status-hub-39.preview.emergentagent.com
+      PREVIEW_ALLOWLIST_TOKEN: ${{ secrets.PREVIEW_E2E_ALLOWLIST_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Python
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install chromium
+
+      - name: Start local web app
+        run: |
+          npm run dev --workspace=web -- --host 0.0.0.0 --port 3000 > /tmp/web-ci.log 2>&1 &
+          sleep 8
+
+      - name: Run role-matrix suite (local + preview)
+        run: |
+          python tests/test_connectgbb_role_matrix_e2e.py \
+            --base-url "$BASE_URL_LOCAL" \
+            --base-url "$BASE_URL_PREVIEW" \
+            --preview-allowlist-token "$PREVIEW_ALLOWLIST_TOKEN"
+
+      - name: Print local app logs on failure
+        if: failure()
+        run: |
+          echo "--- /tmp/web-ci.log ---"
+          tail -n 200 /tmp/web-ci.log || true
