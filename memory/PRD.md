@@ -5,7 +5,7 @@ User request: ensure the product incorporates a **members-only community aspect*
 
 ## Architecture Decisions
 - Introduced a **members-only backend model** for ConnectGBB via new Supabase migration assets (membership, comments, reports, audit logs, and stricter RLS/policies).
-- Implemented a **stabilized membership access hook** (`useCommunityMembership`) with cache, inflight dedupe, cooldown/backoff, and deterministic role-based fallback when migration objects are not yet provisioned.
+- Implemented a **stabilized membership access hook** (`useCommunityMembership`) with cache, inflight dedupe, and cooldown/backoff; strict members-only mode is now enabled post-migration.
 - Shifted ConnectGBB pages to **membership-aware UI states** (locked vs accessible) for consistent community gating.
 - Added admin controls for memberships (`/admin/community-memberships`) to support premium governance workflows.
 - Added testability and regression hardening (`data-testid`s on auth + community controls, host allowlist updates in Vite config).
@@ -45,10 +45,8 @@ User request: ensure the product incorporates a **members-only community aspect*
 
 ## Prioritized Backlog
 ### P0
-- Apply the new Supabase migration to target environments so role-based fallback is no longer required.
-  - Blocker in current workspace: Supabase CLI is available, but project is not linked and `SUPABASE_ACCESS_TOKEN` is not available for `supabase link/db push`.
-- Replace legacy `user_roles`-derived memberships fallback with persisted `community_memberships` table operations once migration is applied.
-- Create and store full role-coverage test credentials (pending member + admin) for complete authenticated E2E.
+- Resolve residual coach-account lock behavior in `/connectgbb/feed` despite active membership row and role setup.
+- Add report-status lifecycle (`open/reviewing/resolved`) persisted to `community_post_reports` table (currently analytics-backed queue).
 
 ### P1
 - Add admin moderation queue UI for `community_post_reports` (reviewing/resolved workflow).
@@ -59,6 +57,6 @@ User request: ensure the product incorporates a **members-only community aspect*
 - Add analytics events for membership lock CTA and profile-completion conversion.
 
 ## Next Tasks
-1. Link Supabase project and run migration push (`supabase link` + `supabase db push`) once access token is provided.
-2. Re-run full authenticated E2E on public endpoint after migration is live (membership table mode replacing legacy fallback mode).
-3. Expand moderation queue with report states (open/reviewing/resolved) on persistent schema once migration is applied.
+1. Investigate and fix coach-account feed lock mismatch (membership active but lock state shown).
+2. Transition moderation queue persistence from analytics events to `community_post_reports` lifecycle states.
+3. Add automated role-matrix E2E (pending/coach/admin) against preview endpoint.

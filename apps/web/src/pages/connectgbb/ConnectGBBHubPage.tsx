@@ -4,6 +4,7 @@ import { useCommunityMembership } from '@hoop-master/features/connectgbb'
 import { Crown, ShieldCheck, Lock } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { trackCommunityEvent } from '../../lib/communityAnalytics'
+import { useEffect } from 'react'
 
 const sections = [
   { title: 'Community Feed', desc: 'Network with vetted members, share progress, and follow recruiting discussions.', path: '/connectgbb/feed', icon: 'C', color: 'border-l-[#0134BD]' },
@@ -24,6 +25,11 @@ export default function ConnectGBBHubPage() {
       source: 'connectgbb_hub',
     })
   }
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.localStorage.setItem('connectgbb_strict_membership_mode', 'true')
+  }, [])
 
   return (
     <PageShell title="ConnectGBB" description="The membership platform for elite girls basketball development." badge="Community">

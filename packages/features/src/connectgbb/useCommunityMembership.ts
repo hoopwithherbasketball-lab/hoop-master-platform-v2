@@ -7,7 +7,7 @@ let rpcUnavailable = false
 let membershipsTableUnavailable = false
 let requestCooldownUntil = 0
 
-const CACHE_TTL_MS = 45_000
+const CACHE_TTL_MS = 30_000
 const RATE_LIMIT_BACKOFF_MS = 30_000
 
 type CachedMembership = {
@@ -56,6 +56,11 @@ const mapMembership = (row: {
   }
 }
 
+const shouldUseStrictMembershipMode = () => {
+  if (typeof window === 'undefined') return false
+  return window.localStorage.getItem('connectgbb_strict_membership_mode') === 'true'
+}
+
 const isMissingResourceError = (error: unknown) => {
   const maybe = error as { code?: string; status?: number } | null
   return maybe?.code === 'PGRST202' || maybe?.code === 'PGRST205' || maybe?.status === 404
@@ -89,6 +94,13 @@ export function useCommunityMembership() {
 
     const run = (async () => {
       if (Date.now() < requestCooldownUntil) {
+        if (shouldUseStrictMembershipMode()) {
+          return {
+            membership: buildFallbackMembership(user.id, []),
+            error: 'Membership service is currently rate-limited. Please retry shortly.',
+          }
+        }
+
         const fallback = buildFallbackMembership(user.id, roles)
         return {
           membership: fallback,
@@ -148,17 +160,21 @@ export function useCommunityMembership() {
           }
         }
 
-        const fallback = buildFallbackMembership(user.id, roles)
+        const fallback = buildFallbackMembership(user.id, shouldUseStrictMembershipMode() ? [] : roles)
         return {
           membership: fallback,
-          error: 'Membership backend is not provisioned in this environment; using role-based fallback.',
+          error: shouldUseStrictMembershipMode()
+            ? 'Membership is required and your account has not been activated yet.'
+            : 'Membership backend is not provisioned in this environment; using role-based fallback.',
         }
       } catch (e) {
         console.error('useCommunityMembership resolveMembership:', e)
-        const fallback = buildFallbackMembership(user.id, roles)
+        const fallback = buildFallbackMembership(user.id, shouldUseStrictMembershipMode() ? [] : roles)
         return {
           membership: fallback,
-          error: 'Unable to verify membership right now; using role-based fallback.',
+          error: shouldUseStrictMembershipMode()
+            ? 'Unable to verify membership right now. Please retry.'
+            : 'Unable to verify membership right now; using role-based fallback.',
         }
       }
     })()

@@ -42,7 +42,7 @@ export function useCommunityFeed() {
 
         const { data: postsData, error: postsError } = await supabase
           .from('community_posts')
-          .select('*')
+          .select('id, author_id, author_name, author_role, content, image_url, created_at, like_count, comment_count')
           .order('created_at', { ascending: false })
           .limit(20)
 
