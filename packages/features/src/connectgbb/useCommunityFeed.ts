@@ -8,16 +8,14 @@ const mapComment = (r: {
   id: string
   post_id: string
   author_id: string
-  author_name: string
-  author_role: CommunityComment['authorRole']
   content: string
   created_at: string
-}): CommunityComment => ({
+}, profilesMap: Map<string, { display_name: string; role: string }>): CommunityComment => ({
   id: r.id,
   postId: r.post_id,
   authorId: r.author_id,
-  authorName: r.author_name,
-  authorRole: r.author_role,
+  authorName: profilesMap.get(r.author_id)?.display_name || 'Member',
+  authorRole: (profilesMap.get(r.author_id)?.role || 'player') as CommunityComment['authorRole'],
   content: r.content,
   createdAt: r.created_at,
 })
@@ -68,17 +66,34 @@ export function useCommunityFeed() {
         if (postIds.length > 0) {
           const { data: commentsData, error: commentsError } = await supabase
             .from('community_comments')
-            .select('id, post_id, author_id, author_name, author_role, content, created_at')
+            .select('id, post_id, author_id, content, created_at')
             .in('post_id', postIds)
             .order('created_at', { ascending: false })
 
           if (commentsError) throw commentsError
 
+          const authorIds = Array.from(new Set((commentsData ?? []).map((row) => row.author_id)))
+          const profilesMap = new Map<string, { display_name: string; role: string }>()
+
+          if (authorIds.length > 0) {
+            const { data: profileRows } = await supabase
+              .from('member_profiles')
+              .select('user_id, display_name, role')
+              .in('user_id', authorIds)
+
+            for (const profile of profileRows ?? []) {
+              profilesMap.set(profile.user_id, {
+                display_name: profile.display_name || 'Member',
+                role: profile.role || 'player',
+              })
+            }
+          }
+
           for (const row of commentsData ?? []) {
             if (!commentsByPost.has(row.post_id)) commentsByPost.set(row.post_id, [])
             const existing = commentsByPost.get(row.post_id) ?? []
             if (existing.length < 2) {
-              existing.push(mapComment(row))
+              existing.push(mapComment(row, profilesMap))
               commentsByPost.set(row.post_id, existing)
             }
           }
@@ -149,16 +164,17 @@ export function useCommunityFeed() {
         .insert({
           post_id: postId,
           author_id: user.id,
-          author_name: displayName,
-          author_role: role,
           content: trimmed,
         })
-        .select('id, post_id, author_id, author_name, author_role, content, created_at')
+        .select('id, post_id, author_id, content, created_at')
         .single()
 
       if (insertError || !data) throw insertError || new Error('No comment created')
 
-      const newComment = mapComment(data)
+      const profilesMap = new Map<string, { display_name: string; role: string }>()
+      profilesMap.set(user.id, { display_name: displayName, role })
+
+      const newComment = mapComment(data, profilesMap)
       setPosts((prev) => prev.map((post) => {
         if (post.id !== postId) return post
         const nextComments = [newComment, ...post.recentComments].slice(0, 2)

@@ -1,0 +1,79 @@
+{
+  "summary": "Frontend-only ConnectGBB role-matrix and moderation workflow retest completed on local + preview. Pending lock and coach feed access behave correctly, comments query regression is resolved, but moderation report/resolve persistence is functionally broken by RLS/403 failures and preview remains intermittently rate-limited.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Coach report post from /connectgbb/feed",
+        "issue": "Report submission fails with 403 and Postgres 42501 (new row violates row-level security policy for table community_audit_logs); UI shows 'Could not submit report at this time.'",
+        "affected_selectors": [
+          "[data-testid^=community-feed-report-button-]",
+          "[data-testid=community-feed-error-text]"
+        ]
+      },
+      {
+        "flow": "Admin moderation queue resolve/reject from /admin/feed",
+        "issue": "Resolve action appears to remove row in-memory, but request returns 403 and row reappears after page reload; queue status update is not persisted.",
+        "affected_selectors": [
+          "[data-testid=admin-community-report-queue-summary]",
+          "[data-testid^=admin-community-resolve-report-button-]",
+          "[data-testid^=admin-community-reject-report-button-]"
+        ]
+      },
+      {
+        "flow": "Automated role matrix execution on preview endpoint",
+        "issue": "Intermittent 429/rate-limit behavior causes flaky automation; one full matrix run timed out at login selector while a targeted retry succeeded.",
+        "affected_selectors": [
+          "[data-testid=login-form-email-input]",
+          "[data-testid=login-form-password-input]",
+          "[data-testid=login-form-submit-button]"
+        ]
+      },
+      {
+        "flow": "Automated role matrix script reliability",
+        "issue": "Current /app/tests/test_connectgbb_role_matrix_e2e.py can produce false failures due to session carry-over (logout selector mismatch), causing coach check to run under stale pending session.",
+        "affected_selectors": [
+          "[data-testid=dashboard-sidebar-logout-button]",
+          "[data-testid=community-feed-membership-locked]",
+          "[data-testid=community-feed-create-post-card]"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/tests/test_connectgbb_role_matrix_e2e.py",
+    "/root/.emergent/automation_output/20260604_172407/console_20260604_172407.log",
+    "/root/.emergent/automation_output/20260604_172540/console_20260604_172540.log",
+    "/root/.emergent/automation_output/20260604_172446/console_20260604_172446.log"
+  ],
+  "action_items": [
+    "Fix RLS/policy chain for community_post_reports workflow so coach report inserts succeed (current failure references community_audit_logs policy).",
+    "In AdminCommunityFeedPage resolve/reject flow, check Supabase update errors before optimistic row removal; only remove row after confirmed success.",
+    "Stabilize preview anti-bot/rate-limit handling for role-matrix automation (or provide approved bypass/allowlist).",
+    "Harden /app/tests/test_connectgbb_role_matrix_e2e.py by isolating sessions between users (clear storage/cookies or robust logout assertion)."
+  ],
+  "critical_code_review_comments": [
+    "AdminCommunityFeedPage.resolveReport does not validate update error result before setReports filter, which masks failed persistence and creates false-positive UI success.",
+    "useCommunityModeration.reportPost catches and reports error correctly, but underlying DB policy path currently blocks required business flow.",
+    "Community feed comments regression appears fixed in this run: no missing community_comments.author_name failure observed; posts/comments rendered for coach."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_8.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (not requested)",
+    "frontend": "68%"
+  },
+  "test_credentials": "Read from /app/memory/test_credentials.md and used exactly: pending.member.20260603@example.com / PendingPass123!, coach.member.1780593208@example.com / CoachPass123!, admin.member.20260603@example.com / AdminPass123!",
+  "seed_data_creation": "None (used existing seeded open moderation report row).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Local: pending lock and coach create-post access passed; admin queue shows seeded row. Critical blocker is moderation persistence (403 on coach report + admin resolve/reject not persisted). Preview remains flaky due intermittent 429 despite targeted login success.",
+  "rca of the issue": "RCA-1: Reporting/resolution persistence failure. Repro: coach clicks report on /connectgbb/feed then admin clicks resolve on /admin/feed. Console shows 403 and 42501 policy error tied to community_audit_logs; admin row disappears optimistically but returns after reload. Root cause is backend RLS/policy violation with frontend optimistic update masking failure. RCA-2: Role-matrix script flakiness. Repro: run /app/tests/test_connectgbb_role_matrix_e2e.py across multiple roles; logout selector is not consistently found so session may carry over, producing false coach lock failures. RCA-3: Preview instability. Repro: full matrix against preview intermittently gets repeated 429 and selector timeout at login; targeted retry can still succeed, indicating environment throttling/challenge intermittency rather than deterministic selector absence.",
+  "mocked_api": "NO MOCKED APIs used"
+}
