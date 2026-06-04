@@ -38,6 +38,10 @@ User request: ensure the product incorporates a **members-only community aspect*
   - Added `trackCommunityEvent` utility and wired lock-state CTA + report tracking to analytics event ingestion
 - **Automated role-matrix E2E suite:**
   - Added `/app/tests/test_connectgbb_role_matrix_e2e.py` to validate pending/coach/admin access across local and preview targets.
+- **Mobile-friendly sweep:**
+  - Improved responsive behavior on shared layouts and key admin/connect pages (DashboardLayout, DashboardSidebar, Messages, AdminCommunityFeed, AdminCommunityMemberships) with mobile card/list fallback and no horizontal overflow on tested routes.
+- **CI preview reliability hardening:**
+  - Added `.github/workflows/connectgbb-role-matrix-e2e.yml` with preview token support, retry-aware role matrix run, and yarn-based install/build policy alignment.
 - **Auth stability hardening:**
   - Added retry/backoff logic for transient 429/network failures in `AuthContext.signIn`
 - **Reliability + testing updates:**
@@ -50,6 +54,7 @@ User request: ensure the product incorporates a **members-only community aspect*
 ### P0
 - Apply/add `community_audit_logs` INSERT policy in the live database so trigger-based report insert/update writes stop returning 42501.
 - Run role-matrix E2E against both local and preview URLs after each auth/community release.
+- Add preview allowlist token secret (`PREVIEW_E2E_ALLOWLIST_TOKEN`) in GitHub for stable CI execution.
 
 ### P1
 - Add admin moderation queue UI for `community_post_reports` (reviewing/resolved workflow).
