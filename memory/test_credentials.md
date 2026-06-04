@@ -1,9 +1,9 @@
 # Test Credentials
 
 ## Created During This Run
-- Active member candidate (coach role):
-  - Email: `coach_test_1780504587@example.com`
-  - Password: `TestPass123!`
+- Active member (coach role):
+  - Email: `coach.member.1780593208@example.com`
+  - Password: `CoachPass123!`
 
 - Pending member (player role):
   - Email: `pending.member.20260603@example.com`
@@ -14,5 +14,5 @@
   - Password: `AdminPass123!`
 
 ## Notes
-- The current Supabase environment does not yet have the new `ensure_community_membership` RPC available.
-- Role-based fallback is active in UI until migration is applied to the target database.
+- Migration is now applied and `ensure_community_membership` exists.
+- Membership mode is strict for ConnectGBB routes; pending members are intentionally locked.

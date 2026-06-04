@@ -29,12 +29,15 @@ User request: ensure the product incorporates a **members-only community aspect*
 - **Admin governance:**
   - Added `AdminCommunityMembershipsPage` with status/tier management and dashboard access link
 - **Role E2E credential seeding:**
-  - Created and validated pending + admin Supabase test accounts and stored credentials in `/app/memory/test_credentials.md`
+  - Created and validated pending + admin accounts and added a dedicated active coach account for role-matrix testing.
+  - Stored all credentials in `/app/memory/test_credentials.md`.
 - **Moderation queue workflows:**
   - Extended `AdminCommunityFeedPage` with moderation queue backed by `analytics_events` (community report events)
   - Added report resolution action in admin queue
 - **Lock-state CTA analytics:**
   - Added `trackCommunityEvent` utility and wired lock-state CTA + report tracking to analytics event ingestion
+- **Automated role-matrix E2E suite:**
+  - Added `/app/tests/test_connectgbb_role_matrix_e2e.py` to validate pending/coach/admin access across local and preview targets.
 - **Auth stability hardening:**
   - Added retry/backoff logic for transient 429/network failures in `AuthContext.signIn`
 - **Reliability + testing updates:**
@@ -45,8 +48,7 @@ User request: ensure the product incorporates a **members-only community aspect*
 
 ## Prioritized Backlog
 ### P0
-- Resolve residual coach-account lock behavior in `/connectgbb/feed` despite active membership row and role setup.
-- Add report-status lifecycle (`open/reviewing/resolved`) persisted to `community_post_reports` table (currently analytics-backed queue).
+- Run role-matrix E2E against both local and preview URLs after each auth/community release.
 
 ### P1
 - Add admin moderation queue UI for `community_post_reports` (reviewing/resolved workflow).

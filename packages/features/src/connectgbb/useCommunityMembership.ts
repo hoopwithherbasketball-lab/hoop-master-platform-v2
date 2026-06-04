@@ -94,7 +94,7 @@ export function useCommunityMembership() {
 
     const run = (async () => {
       if (Date.now() < requestCooldownUntil) {
-        if (shouldUseStrictMembershipMode()) {
+        if (shouldUseStrictMembershipMode() && !hasPrivilegedRole(roles)) {
           return {
             membership: buildFallbackMembership(user.id, []),
             error: 'Membership service is currently rate-limited. Please retry shortly.',
@@ -160,7 +160,8 @@ export function useCommunityMembership() {
           }
         }
 
-        const fallback = buildFallbackMembership(user.id, shouldUseStrictMembershipMode() ? [] : roles)
+        const fallbackRoles = shouldUseStrictMembershipMode() && !hasPrivilegedRole(roles) ? [] : roles
+        const fallback = buildFallbackMembership(user.id, fallbackRoles)
         return {
           membership: fallback,
           error: shouldUseStrictMembershipMode()
@@ -169,7 +170,8 @@ export function useCommunityMembership() {
         }
       } catch (e) {
         console.error('useCommunityMembership resolveMembership:', e)
-        const fallback = buildFallbackMembership(user.id, shouldUseStrictMembershipMode() ? [] : roles)
+        const fallbackRoles = shouldUseStrictMembershipMode() && !hasPrivilegedRole(roles) ? [] : roles
+        const fallback = buildFallbackMembership(user.id, fallbackRoles)
         return {
           membership: fallback,
           error: shouldUseStrictMembershipMode()

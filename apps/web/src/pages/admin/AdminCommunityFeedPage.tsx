@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import { Trash2, X, AlertTriangle, MessageSquare, Heart } from 'lucide-react'
+import { useAuth } from '../../lib/auth'
 
 interface Post {
   id: string
@@ -17,13 +18,16 @@ interface Post {
 
 interface ReportRow {
   id: string
-  viewer_id: string | null
-  event_type: string
-  metadata: { post_id?: string; reason?: string; details?: string; source?: string } | null
+  post_id: string
+  reporter_id: string
+  reason: 'spam' | 'abuse' | 'harassment' | 'misinformation' | 'other'
+  details: string
+  status: 'open' | 'reviewing' | 'resolved' | 'rejected'
   created_at: string
 }
 
 export default function AdminCommunityFeedPage() {
+  const { user } = useAuth()
   const [posts, setPosts] = useState<Post[]>([])
   const [reports, setReports] = useState<ReportRow[]>([])
   const [loading, setLoading] = useState(true)
@@ -39,10 +43,9 @@ export default function AdminCommunityFeedPage() {
           .order('created_at', { ascending: false })
 
         const { data: reportData } = await supabase
-          .from('analytics_events')
-          .select('id, viewer_id, event_type, metadata, created_at')
-          .eq('event_type', 'quality_change')
-          .eq('metadata->>app_event', 'community_report_submitted')
+          .from('community_post_reports')
+          .select('id, post_id, reporter_id, reason, details, status, created_at')
+          .in('status', ['open', 'reviewing'])
           .order('created_at', { ascending: false })
           .limit(100)
 
@@ -54,12 +57,16 @@ export default function AdminCommunityFeedPage() {
     load()
   }, [])
 
-  const resolveReport = async (id: string) => {
+  const resolveReport = async (id: string, status: ReportRow['status']) => {
     try {
       setResolvingReportId(id)
       await supabase
-        .from('analytics_events')
-        .delete()
+        .from('community_post_reports')
+        .update({
+          status,
+          resolved_at: status === 'resolved' || status === 'rejected' ? new Date().toISOString() : null,
+          resolved_by: status === 'resolved' || status === 'rejected' ? user?.id || null : null,
+        })
         .eq('id', id)
 
       setReports((prev) => prev.filter((r) => r.id !== id))
@@ -95,18 +102,28 @@ export default function AdminCommunityFeedPage() {
             {reports.map((report) => (
               <div key={report.id} className="p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
-                  <p className="text-sm text-white">Post: {report.metadata?.post_id || 'unknown'}</p>
-                  <p className="text-xs text-slate-400">Reason: {report.metadata?.reason || 'unspecified'} · {new Date(report.created_at).toLocaleString()}</p>
-                  {report.metadata?.details && <p className="text-xs text-slate-300 mt-1">{report.metadata.details}</p>}
+                  <p className="text-sm text-white">Post: {report.post_id}</p>
+                  <p className="text-xs text-slate-400">Reason: {report.reason} · {new Date(report.created_at).toLocaleString()}</p>
+                  {report.details && <p className="text-xs text-slate-300 mt-1">{report.details}</p>}
                 </div>
-                <button
-                  onClick={() => resolveReport(report.id)}
-                  disabled={resolvingReportId === report.id}
-                  data-testid={`admin-community-resolve-report-button-${report.id}`}
-                  className="px-3 py-1.5 rounded text-xs font-medium bg-green-600/30 text-green-200 hover:bg-green-600/40 disabled:opacity-50"
-                >
-                  Resolve
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => resolveReport(report.id, 'resolved')}
+                    disabled={resolvingReportId === report.id}
+                    data-testid={`admin-community-resolve-report-button-${report.id}`}
+                    className="px-3 py-1.5 rounded text-xs font-medium bg-green-600/30 text-green-200 hover:bg-green-600/40 disabled:opacity-50"
+                  >
+                    Resolve
+                  </button>
+                  <button
+                    onClick={() => resolveReport(report.id, 'rejected')}
+                    disabled={resolvingReportId === report.id}
+                    data-testid={`admin-community-reject-report-button-${report.id}`}
+                    className="px-3 py-1.5 rounded text-xs font-medium bg-red-600/30 text-red-200 hover:bg-red-600/40 disabled:opacity-50"
+                  >
+                    Reject
+                  </button>
+                </div>
               </div>
             ))}
           </div>

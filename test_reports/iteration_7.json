@@ -1,0 +1,69 @@
+{
+  "summary": "Frontend-only role-matrix and ConnectGBB moderation regression tested on local + preview. Local role matrix passes for pending/coach/admin route gating and memberships page visibility, but preview run is blocked by anti-bot/rate-limit behavior and feed integration is partially broken due a comments schema mismatch.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Community feed load for coach/admin moderation source data",
+        "issue": "Feed query fails with console error code 42703: column community_comments.author_name does not exist; report buttons are not rendered because posts/comments fetch fails.",
+        "affected_selectors": [
+          "[data-testid^=community-feed-post-]",
+          "[data-testid^=community-feed-report-button-]",
+          "[data-testid=community-feed-error-text]"
+        ]
+      },
+      {
+        "flow": "Preview role-matrix execution (all roles)",
+        "issue": "Preview login page intermittently blocked by repeated 429/401 + challenge behavior; login testids become unavailable and automation times out before filling credentials.",
+        "affected_selectors": [
+          "[data-testid=login-form-email-input]",
+          "[data-testid=login-form-password-input]",
+          "[data-testid=login-form-submit-button]"
+        ]
+      },
+      {
+        "flow": "Admin moderation queue resolve/reject verification",
+        "issue": "Queue container loads, but no actionable report rows existed in tested local run (0 resolve/reject buttons), so resolve/reject interaction could not be functionally exercised in this session.",
+        "affected_selectors": [
+          "[data-testid=admin-community-report-queue-summary]",
+          "[data-testid=admin-community-report-queue-table]",
+          "[data-testid^=admin-community-resolve-report-button-]",
+          "[data-testid^=admin-community-reject-report-button-]"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/tests/test_connectgbb_role_matrix_e2e.py",
+    "/root/.emergent/automation_output/20260604_171825/console_20260604_171825.log"
+  ],
+  "action_items": [
+    "Fix community feed comments select contract (code expects author_name/author_role columns in community_comments).",
+    "After schema/query fix, re-run coach report submission then validate admin queue resolve/reject updates against community_post_reports.",
+    "Stabilize preview environment anti-bot/rate-limit behavior for automated role-matrix coverage (or provide approved automation bypass)."
+  ],
+  "critical_code_review_comments": [
+    "useCommunityFeed currently hard-selects community_comments.author_name and author_role; if DB migrated away from these fields, feed fails hard and blocks moderation report creation path.",
+    "Membership resolution behavior appears corrected for requested local roles: pending remains locked while coach reaches create-post UI.",
+    "Admin memberships page loads successfully without relying on legacy analytics fallback in this run."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_7.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (not requested)",
+    "frontend": "72%"
+  },
+  "test_credentials": "Used credentials from /app/memory/test_credentials.md: pending.member.20260603@example.com / PendingPass123!, coach.member.1780593208@example.com / CoachPass123!, admin.member.20260603@example.com / AdminPass123!",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Local role matrix route checks pass; preview still intermittently blocked before login selectors appear. Feed query schema mismatch (community_comments.author_name) prevents post/comment rendering and blocks complete moderation queue action validation from fresh reports.",
+  "rca of the issue": "RCA-1 (feed integration): Repro by logging in as coach and opening /connectgbb/feed. Console shows 400 + Postgres error 42703 for missing community_comments.author_name, causing useCommunityFeed failure and empty post/report action surface. Mitigation: align query mapper/select list with actual community_comments schema or restore expected columns. RCA-2 (preview instability): Repro by running /app/tests/test_connectgbb_role_matrix_e2e.py against preview URL; repeated 429 + challenge/401 events occur, then login-form-email-input is never available. Mitigation: reduce request burst, add environment allowlisting/challenge bypass for CI automation, and verify rate-limit settings.",
+  "mocked_api": "NO MOCKED APIs used"
+}
