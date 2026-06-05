@@ -54,6 +54,8 @@ import OutreachInbox from "./pages/nil/OutreachInbox"
 import ComplianceQueue from "./pages/nil/ComplianceQueue"
 import TaskBoard from "./pages/nil/TaskBoard"
 import PartnerPortalIntegration from "./pages/nil/PartnerPortalIntegration"
+import ProposalBuilderOverview from "./pages/nil/ProposalBuilderOverview"
+import ProposalEditor from "./pages/nil/ProposalEditor"
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
 import EliteGBBHubPage from './pages/connectgbb/ConnectGBBHubPage'
 import CommunityFeedPage from './pages/connectgbb/CommunityFeedPage'
@@ -165,6 +167,8 @@ function AppRoutes() {
       <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
       <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
       <Route path="/nil/partner-portal" element={<ProtectedRoute role="admin"><PartnerPortalIntegration /></ProtectedRoute>} />
+      <Route path="/nil/proposals" element={<ProtectedRoute role="admin"><ProposalBuilderOverview /></ProtectedRoute>} />
+      <Route path="/nil/proposals/:id/edit" element={<ProtectedRoute role="admin"><ProposalEditor /></ProtectedRoute>} />
       <Route path="/elitegbb" element={<ProtectedRoute><EliteGBBHubPage /></ProtectedRoute>} />
       <Route path="/elitegbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
       <Route path="/elitegbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />
