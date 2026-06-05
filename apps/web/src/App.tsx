@@ -80,6 +80,8 @@ import EmbedPlayerPage from './pages/public/EmbedPlayerPage'
 import EmbedDocsPage from './pages/public/EmbedDocsPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
+import AdminPageBuilderPage from './pages/admin/AdminPageBuilderPage'
+import DynamicPagePreview from './pages/public/DynamicPagePreview'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (<div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1">{children}</div><Footer /></div>)
@@ -107,6 +109,7 @@ function AppRoutes() {
       <Route path="/embed/:slug" element={<EmbedPlayerPage />} />
       <Route path="/embed/docs" element={<PublicLayout><EmbedDocsPage /></PublicLayout>} />
       <Route path="/partner-onboarding" element={<PartnerOnboardingPage />} />
+      <Route path="/p/:slug" element={<DynamicPagePreview />} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
@@ -150,6 +153,7 @@ function AppRoutes() {
       <Route path="/admin/ad-slots" element={<ProtectedRoute role="admin"><AdminAdSlotsPage /></ProtectedRoute>} />
       <Route path="/admin/analytics" element={<ProtectedRoute role="admin"><AdminAnalyticsPage /></ProtectedRoute>} />
       <Route path="/admin/tenants" element={<ProtectedRoute role="admin"><AdminTenantsPage /></ProtectedRoute>} />
+      <Route path="/admin/page-builder" element={<ProtectedRoute role="admin"><AdminPageBuilderPage /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
