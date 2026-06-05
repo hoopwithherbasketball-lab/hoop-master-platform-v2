@@ -1,32 +1,62 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { PlayerCard, CTABanner, PageSection } from '@hoop-master/ui'
-import { PageShell } from '@hoop-master/ui'
-import { players } from './players-data'
+import { supabase } from '../../lib/supabase'
+import { PlayerCard, CTABanner, PageSection, PageShell } from '@hoop-master/ui'
+import { Loader as Loader2, Users } from 'lucide-react'
+
+interface PlayerRow {
+  id: string
+  first_name: string | null
+  last_name: string | null
+  position: string | null
+  class_year: number | null
+  city: string | null
+  state: string | null
+  school_name: string | null
+  gpa: number | null
+}
+
+const PLACEHOLDER_IMG = '/images/placeholder-player.svg'
+
+function buildTags(p: PlayerRow): string[] {
+  const tags: string[] = []
+  if (p.gpa && p.gpa >= 3.5) tags.push(`GPA ${p.gpa.toFixed(1)}`)
+  if (p.school_name) tags.push(p.school_name)
+  return tags.slice(0, 3)
+}
 
 export default function BrowsePage() {
   const navigate = useNavigate()
-  const [filters, setFilters] = useState({
-    search: '',
-    gradYear: '',
-    position: '',
-    division: '',
-  })
+  const [players, setPlayers] = useState<PlayerRow[]>([])
+  const [loading, setLoading] = useState(true)
+  const [filters, setFilters] = useState({ search: '', gradYear: '', position: '' })
+
+  useEffect(() => {
+    supabase
+      .from('player_profiles')
+      .select('id, first_name, last_name, position, class_year, city, state, school_name, gpa')
+      .eq('is_public', true)
+      .order('created_at', { ascending: false })
+      .limit(60)
+      .then(({ data }) => {
+        setPlayers(data ?? [])
+        setLoading(false)
+      })
+  }, [])
 
   const currentYear = new Date().getFullYear()
   const gradYears = Array.from({ length: 7 }, (_, i) => currentYear + i)
 
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }))
-  }
+  const positions = ['Point Guard', 'Shooting Guard', 'Small Forward', 'Power Forward', 'Center']
 
-  const filteredPlayers = players.filter(player => {
-    const query = filters.search.toLowerCase()
+  const filtered = players.filter(p => {
+    const name = [p.first_name, p.last_name].filter(Boolean).join(' ').toLowerCase()
+    const location = [p.city, p.state].filter(Boolean).join(', ').toLowerCase()
+    const q = filters.search.toLowerCase()
     return (
-      (!filters.search || player.name.toLowerCase().includes(query) || player.location.toLowerCase().includes(query) || player.position.toLowerCase().includes(query)) &&
-      (!filters.gradYear || player.gradYear.toString() === filters.gradYear) &&
-      (!filters.position || player.position === filters.position) &&
-      (!filters.division || player.division === filters.division)
+      (!filters.search || name.includes(q) || location.includes(q) || (p.position ?? '').toLowerCase().includes(q)) &&
+      (!filters.gradYear || String(p.class_year) === filters.gradYear) &&
+      (!filters.position || p.position === filters.position)
     )
   })
 
@@ -38,7 +68,7 @@ export default function BrowsePage() {
     >
       <section className="bg-navy-800 p-7 rounded-lg shadow-md border border-white/10 mb-10">
         <h2 className="text-2xl font-bold text-white mb-4">Find Your Next Recruit</h2>
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-3">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Search</label>
             <input
@@ -46,8 +76,8 @@ export default function BrowsePage() {
               type="text"
               placeholder="Name, position, or location..."
               value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-              className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
+              onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
+              className="w-full p-2 border border-white/20 rounded-md bg-transparent text-white focus:outline-none focus:border-[#0134BD]"
             />
           </div>
           <div>
@@ -55,13 +85,11 @@ export default function BrowsePage() {
             <select
               data-testid="browse-grad-year-select"
               value={filters.gradYear}
-              onChange={(e) => handleFilterChange('gradYear', e.target.value)}
-              className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
+              onChange={e => setFilters(f => ({ ...f, gradYear: e.target.value }))}
+              className="w-full p-2 border border-white/20 rounded-md bg-navy-800 text-white focus:outline-none focus:border-[#0134BD]"
             >
               <option value="">All Years</option>
-              {gradYears.map(year => (
-                <option key={year} value={year}>{year}</option>
-              ))}
+              {gradYears.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
           </div>
           <div>
@@ -69,54 +97,45 @@ export default function BrowsePage() {
             <select
               data-testid="browse-position-select"
               value={filters.position}
-              onChange={(e) => handleFilterChange('position', e.target.value)}
-              className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
+              onChange={e => setFilters(f => ({ ...f, position: e.target.value }))}
+              className="w-full p-2 border border-white/20 rounded-md bg-navy-800 text-white focus:outline-none focus:border-[#0134BD]"
             >
               <option value="">All Positions</option>
-              <option value="Point Guard">Point Guard</option>
-              <option value="Shooting Guard">Shooting Guard</option>
-              <option value="Small Forward">Small Forward</option>
-              <option value="Power Forward">Power Forward</option>
-              <option value="Center">Center</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Division</label>
-            <select
-              data-testid="browse-division-select"
-              value={filters.division}
-              onChange={(e) => handleFilterChange('division', e.target.value)}
-              className="w-full p-2 border border-white/20 rounded-md focus:ring-[#0134BD] focus:border-[#0134BD]"
-            >
-              <option value="">All Divisions</option>
-              <option value="D1">Division 1</option>
-              <option value="D2">Division 2</option>
-              <option value="D3">Division 3</option>
+              {positions.map(pos => <option key={pos} value={pos}>{pos}</option>)}
             </select>
           </div>
         </div>
       </section>
 
-      <PageSection title="Featured Players">
-        {filteredPlayers.length === 0 ? (
+      <PageSection title={loading ? 'Loading Players...' : `${filtered.length} Player${filtered.length !== 1 ? 's' : ''} Found`}>
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 size={32} className="animate-spin text-[#0134BD]" />
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-12 bg-navy-800 rounded-lg shadow-md">
+            <Users size={40} className="mx-auto mb-3 text-slate-600" />
             <p className="text-slate-400 text-lg mb-2">No players match your filters</p>
-            <p className="text-gray-400">Try adjusting your search criteria</p>
+            <p className="text-gray-500 text-sm">Try adjusting your search criteria</p>
           </div>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredPlayers.map((player) => (
-              <PlayerCard
-                key={player.id}
-                name={player.name}
-                position={player.position}
-                gradYear={player.gradYear}
-                location={player.location}
-                tags={player.tags}
-                image={player.image}
-                onViewProfile={() => navigate(`/browse/${player.id}`)}
-              />
-            ))}
+            {filtered.map(p => {
+              const name = [p.first_name, p.last_name].filter(Boolean).join(' ') || 'Unknown Player'
+              const location = [p.city, p.state].filter(Boolean).join(', ') || 'Location not set'
+              return (
+                <PlayerCard
+                  key={p.id}
+                  name={name}
+                  position={p.position ?? 'Unknown'}
+                  gradYear={p.class_year ?? currentYear}
+                  location={location}
+                  tags={buildTags(p)}
+                  image={PLACEHOLDER_IMG}
+                  onViewProfile={() => navigate(`/browse/${p.id}`)}
+                />
+              )
+            })}
           </div>
         )}
       </PageSection>
