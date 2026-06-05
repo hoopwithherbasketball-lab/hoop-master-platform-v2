@@ -1,8 +1,30 @@
 import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { supabase } from '../../lib/supabase'
 import { IconTarget, IconMoney, IconChart, PageSection, CTABanner, StatsGrid } from '@hoop-master/ui'
 import { PageShell } from '@hoop-master/ui'
 
+function usePlatformStats() {
+  const [stats, setStats] = useState({ players: 0, coaches: 0, workshops: 0, loaded: false })
+  useEffect(() => {
+    Promise.all([
+      supabase.from('player_profiles').select('id', { count: 'exact', head: true }),
+      supabase.from('user_roles').select('id', { count: 'exact', head: true }).eq('role', 'coach'),
+      supabase.from('events').select('id', { count: 'exact', head: true }).eq('event_type', 'workshop'),
+    ]).then(([players, coaches, workshops]) => {
+      setStats({
+        players: players.count ?? 0,
+        coaches: coaches.count ?? 0,
+        workshops: workshops.count ?? 0,
+        loaded: true,
+      })
+    }).catch(() => setStats(s => ({ ...s, loaded: true })))
+  }, [])
+  return stats
+}
+
 export default function HomePage() {
+  const platformStats = usePlatformStats()
   return (
     <PageShell
       title="Elite Girls Basketball Development"
@@ -106,10 +128,10 @@ export default function HomePage() {
 
       <StatsGrid
         stats={[
-          { value: '500+', label: 'Players Recruited', color: 'text-[#C8A24A]' },
+          { value: platformStats.players > 0 ? `${platformStats.players}+` : '500+', label: 'Players Recruited', color: 'text-[#C8A24A]' },
           { value: '$2M+', label: 'NIL Earnings', color: 'text-[#FB6C1D]' },
-          { value: '200+', label: 'Partner Coaches', color: 'text-[#0134BD]' },
-          { value: '50+', label: 'Workshops Hosted', color: 'text-[#C8A24A]' },
+          { value: platformStats.coaches > 0 ? `${platformStats.coaches}+` : '200+', label: 'Partner Coaches', color: 'text-[#0134BD]' },
+          { value: platformStats.workshops > 0 ? `${platformStats.workshops}+` : '50+', label: 'Workshops Hosted', color: 'text-[#C8A24A]' },
         ]}
       />
 

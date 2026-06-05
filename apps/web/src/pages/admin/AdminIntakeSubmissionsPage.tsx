@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../../lib/supabase'
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import { User, Calendar, Package, ExternalLink, ChevronDown, ChevronUp, Trash2, AlertTriangle } from 'lucide-react'
+import { User, Calendar, Package, ExternalLink, ChevronDown, ChevronUp, Trash2, TriangleAlert as AlertTriangle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 interface IntakeSubmission {
@@ -31,8 +31,8 @@ export default function AdminIntakeSubmissionsPage() {
     if (!deleteId) return
     try {
       await supabase.from('intake_submissions').delete().eq('id', deleteId)
+      setSubmissions(prev => prev.filter(s => s.id !== deleteId))
       setDeleteId(null)
-      window.location.reload()
     } catch (e) { console.error(e) }
   }
 
