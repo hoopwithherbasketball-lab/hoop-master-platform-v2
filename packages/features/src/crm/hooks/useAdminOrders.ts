@@ -47,9 +47,10 @@ export function useAdminOrders() {
           status,
           due_at,
           created_at,
+          customer_name,
           service_offer_id,
           player_profile_id,
-          service_offers!inner(slug, name, category, price_cents),
+          service_offers!left(slug, name, category, price_cents),
           player_profiles!left(first_name, last_name)
         `)
         .order('created_at', { ascending: false })
@@ -57,23 +58,24 @@ export function useAdminOrders() {
       if (error) { console.error('useAdminOrders error:', error.message); return }
       if (!data) return
 
-      type OrderRow = { id: string; status: string; created_at: string; due_at: string; intake_complete: boolean; service_offer_id: string; player_profile_id: string; service_offers: { slug: string; name: string; category: string; price_cents: number }[]; player_profiles: { first_name: string; last_name: string }[] }
+      type OrderRow = { id: string; status: string; created_at: string; due_at: string; customer_name: string | null; service_offer_id: string; player_profile_id: string; service_offers: { slug: string; name: string; category: string; price_cents: number }[] | null; player_profiles: { first_name: string; last_name: string }[] | null }
       const mapped: ServiceOrderDisplay[] = (data as unknown as OrderRow[]).map((r) => {
-        const offer = r.service_offers?.[0] ?? {} as OrderRow['service_offers'][0]
-        const profile = r.player_profiles?.[0] ?? {} as OrderRow['player_profiles'][0]
-        const fullName = profile.first_name || profile.last_name
+        const offer = Array.isArray(r.service_offers) ? r.service_offers[0] : r.service_offers
+        const profile = Array.isArray(r.player_profiles) ? r.player_profiles[0] : r.player_profiles
+        const profileName = profile?.first_name || profile?.last_name
           ? `${profile.first_name ?? ''} ${profile.last_name ?? ''}`.trim()
-          : 'Unknown'
+          : null
+        const fullName = profileName ?? r.customer_name ?? 'Unknown'
         return {
           id: r.id ? r.id.slice(0, 8) : '',
           athlete: fullName,
           athleteId: r.player_profile_id ?? '',
-          service: offer.name ?? '',
-          package: offer.category ?? '',
+          service: offer?.name ?? '',
+          package: offer?.category ?? '',
           status: r.status ?? 'new',
           submitted: fmtDate(r.created_at),
           due: fmtDate(r.due_at),
-          amount: (offer.price_cents ?? 0) / 100,
+          amount: (offer?.price_cents ?? 0) / 100,
         }
       })
       setOrders(mapped)
