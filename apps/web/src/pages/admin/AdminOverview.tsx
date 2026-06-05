@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import { Users, ShoppingBag, ClipboardList, TrendingUp, Radio, FileVideo, CalendarClock, BarChart } from 'lucide-react'
+import { Users, ShoppingBag, ClipboardList, TrendingUp, Radio, FileVideoCamera as FileVideo, CalendarClock, ChartBar as BarChart } from 'lucide-react'
 
 export default function AdminOverview() {
   const [stats, setStats] = useState({ leads: 0, orders: 0, audits: 0, players: 0, channels: 0, assets: 0, schedules: 0, analytics: 0 })
@@ -20,7 +20,7 @@ export default function AdminOverview() {
         supabase.from('media_channels').select('*', { count: 'exact', head: true }),
         supabase.from('media_assets').select('*', { count: 'exact', head: true }),
         supabase.from('channel_schedules').select('*', { count: 'exact', head: true }),
-        supabase.from('analytics_events').select('*', { count: 'exact', head: true }),
+        supabase.from('media_analytics').select('*', { count: 'exact', head: true }),
       ])
       setStats({
         leads: l.count ?? 0, orders: o.count ?? 0, audits: a.count ?? 0, players: p.count ?? 0,

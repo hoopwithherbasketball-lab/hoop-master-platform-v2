@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, Settings, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideo, BarChart, Globe } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, Settings, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -48,6 +48,7 @@ const adminNav: NavItem[] = [
   { label: 'Intake Submissions', to: '/admin/intake', icon: <User size={16} /> },
   { label: 'Community Feed', to: '/admin/feed', icon: <MessageSquare size={16} /> },
   { label: 'Community Memberships', to: '/admin/community-memberships', icon: <ShieldCheck size={16} /> },
+  { label: 'Moderation Queue', to: '/admin/moderation', icon: <Flag size={16} /> },
 ]
 
 const mediaNav: NavItem[] = [

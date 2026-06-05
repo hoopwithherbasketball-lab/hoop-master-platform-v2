@@ -69,6 +69,7 @@ import AdminTrainingPage from './pages/admin/AdminTrainingPage'
 import AdminIntakeSubmissionsPage from './pages/admin/AdminIntakeSubmissionsPage'
 import AdminCommunityFeedPage from './pages/admin/AdminCommunityFeedPage'
 import AdminCommunityMembershipsPage from './pages/admin/AdminCommunityMembershipsPage'
+import AdminModerationQueuePage from './pages/admin/AdminModerationQueuePage'
 import AdminChannelsPage from './pages/admin/AdminChannelsPage'
 import AdminAssetsPage from './pages/admin/AdminAssetsPage'
 import AdminSchedulePage from './pages/admin/AdminSchedulePage'
@@ -140,6 +141,7 @@ function AppRoutes() {
       <Route path="/admin/intake" element={<ProtectedRoute role="admin"><AdminIntakeSubmissionsPage /></ProtectedRoute>} />
       <Route path="/admin/feed" element={<ProtectedRoute role="admin"><AdminCommunityFeedPage /></ProtectedRoute>} />
       <Route path="/admin/community-memberships" element={<ProtectedRoute role="admin"><AdminCommunityMembershipsPage /></ProtectedRoute>} />
+      <Route path="/admin/moderation" element={<ProtectedRoute role="admin"><AdminModerationQueuePage /></ProtectedRoute>} />
       <Route path="/admin/channels" element={<ProtectedRoute role="admin"><AdminChannelsPage /></ProtectedRoute>} />
       <Route path="/admin/assets" element={<ProtectedRoute role="admin"><AdminAssetsPage /></ProtectedRoute>} />
       <Route path="/admin/schedules" element={<ProtectedRoute role="admin"><AdminSchedulePage /></ProtectedRoute>} />
