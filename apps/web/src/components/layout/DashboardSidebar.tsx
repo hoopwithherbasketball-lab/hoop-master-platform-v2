@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight, LayoutTemplate } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -51,6 +51,10 @@ const adminNav: NavItem[] = [
   { label: 'Moderation Queue', to: '/admin/moderation', icon: <Flag size={16} /> },
 ]
 
+const contentNav: NavItem[] = [
+  { label: 'Page Builder', to: '/admin/page-builder', icon: <LayoutTemplate size={16} /> },
+]
+
 const mediaNav: NavItem[] = [
   { label: 'Channels', to: '/admin/channels', icon: <Radio size={16} /> },
   { label: 'Assets', to: '/admin/assets', icon: <FileVideo size={16} /> },
@@ -99,6 +103,8 @@ export default function DashboardSidebar({ variant }: Props) {
           <span className="badge badge-navy mt-1.5 capitalize">{variant}</span>
         </div>
         <nav className="space-y-0.5">
+          {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Content Studio</p></div>)}
+          {variant === 'admin' && contentNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
           {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Media Platform</p></div>)}
           {variant === 'admin' && mediaNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
           {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">NIL and Sponsorship</p></div>)}
