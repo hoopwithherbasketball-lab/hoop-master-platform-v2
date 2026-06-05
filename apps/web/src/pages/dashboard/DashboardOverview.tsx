@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/auth'
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import { Star, Calendar, ShoppingBag, TrendingUp, ArrowRight, User, BookOpen } from 'lucide-react'
+import { Star, Calendar, ShoppingBag, TrendingUp, ArrowRight, User, BookOpen, Users, ShieldCheck, Tv } from 'lucide-react'
 
 interface Stats {
   readinessScore: number | null
@@ -14,8 +14,10 @@ interface Stats {
   playerName: string
 }
 
+interface QuickLink { label: string; desc: string; to: string; icon: React.ReactNode; color: string }
+
 export default function DashboardOverview() {
-  const { user } = useAuth()
+  const { user, hasRole } = useAuth()
   const [stats, setStats] = useState<Stats>({
     readinessScore: null,
     upcomingEvents: 0,
@@ -99,12 +101,23 @@ export default function DashboardOverview() {
     },
   ]
 
-  const quickLinks = [
-    { label: 'Profile Optimizer', desc: 'Improve your recruiting profile', to: '/dashboard/profile/optimizer', icon: <User size={18} />, color: 'text-blue-400' },
-    { label: 'Film Index', desc: 'Upload and manage game film', to: '/dashboard/film-index', icon: <TrendingUp size={18} />, color: 'text-green-400' },
-    { label: 'Resources', desc: 'Guides, tools and learning materials', to: '/dashboard/resources', icon: <BookOpen size={18} />, color: 'text-yellow-400' },
-    { label: 'ConnectGBB', desc: 'Community and training hub', to: '/connectgbb', icon: <Star size={18} />, color: 'text-purple-400' },
-  ]
+  function getQuickLinks(): QuickLink[] {
+    const links: QuickLink[] = [
+      { label: 'Profile Optimizer', desc: 'Improve your recruiting profile', to: '/dashboard/profile/optimizer', icon: <User size={18} />, color: 'text-blue-400' },
+      { label: 'Film Index', desc: 'Upload and manage game film', to: '/dashboard/film-index', icon: <TrendingUp size={18} />, color: 'text-green-400' },
+      { label: 'Resources', desc: 'Guides, tools and learning materials', to: '/dashboard/resources', icon: <BookOpen size={18} />, color: 'text-yellow-400' },
+      { label: 'ConnectGBB', desc: 'Community and training hub', to: '/connectgbb', icon: <Tv size={18} />, color: 'text-cyan-400' },
+    ]
+    if (hasRole('coach')) {
+      links.push({ label: 'Coach Tools', desc: 'Search players and manage shortlist', to: '/coach', icon: <Users size={18} />, color: 'text-purple-400' })
+    }
+    if (hasRole('admin')) {
+      links.push({ label: 'Admin Panel', desc: 'Platform operations and reports', to: '/admin', icon: <ShieldCheck size={18} />, color: 'text-red-400' })
+    }
+    return links
+  }
+
+  const quickLinks = getQuickLinks()
 
   return (
     <DashboardLayout
@@ -135,7 +148,7 @@ export default function DashboardOverview() {
 
         <div>
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Quick Actions</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {quickLinks.map(l => (
               <Link key={l.label} to={l.to} className="bg-navy-800 rounded-xl p-4 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all group">
                 <span className={`${l.color} mb-3 block`}>{l.icon}</span>

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, Settings, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -64,9 +64,11 @@ interface Props {
   variant: 'player' | 'coach' | 'admin'
 }
 
+interface ModuleLink { label: string; to: string; icon: React.ReactNode }
+
 export default function DashboardSidebar({ variant }: Props) {
   const location = useLocation()
-  const { user, signOut } = useAuth()
+  const { user, signOut, hasRole } = useAuth()
   const navigate = useNavigate()
   const navItems = variant === 'admin' ? adminNav : variant === 'coach' ? coachNav : playerNav
 
@@ -75,6 +77,18 @@ export default function DashboardSidebar({ variant }: Props) {
     if (to === '/dashboard' || to === '/coach' || to === '/admin') return location.pathname === to
     return location.pathname.startsWith(to)
   }
+
+  function getOtherModules(): ModuleLink[] {
+    const modules: ModuleLink[] = []
+    if (variant !== 'player') modules.push({ label: 'Player Dashboard', to: '/dashboard', icon: <LayoutDashboard size={14} /> })
+    if (variant !== 'coach' && hasRole('coach')) modules.push({ label: 'Coach Tools', to: '/coach', icon: <Users size={14} /> })
+    if (variant !== 'admin' && hasRole('admin')) modules.push({ label: 'Admin Panel', to: '/admin', icon: <ShieldCheck size={14} /> })
+    if (hasRole('admin')) modules.push({ label: 'NIL Hub', to: '/nil', icon: <BookOpen size={14} /> })
+    modules.push({ label: 'ConnectGBB', to: '/connectgbb', icon: <Tv size={14} /> })
+    return modules
+  }
+
+  const otherModules = getOtherModules()
 
   return (
     <aside className="w-full lg:w-64 bg-navy-800 border-b lg:border-b-0 lg:border-r border-white/10 lg:h-[calc(100vh-4rem)] lg:sticky top-16 flex flex-col overflow-y-auto">
@@ -92,6 +106,20 @@ export default function DashboardSidebar({ variant }: Props) {
           {variant === 'admin' && (<div className="mt-8 mb-2 px-4"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Operations</p></div>)}
           {navItems.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
         </nav>
+
+        {otherModules.length > 0 && (
+          <div className="mt-8">
+            <div className="mb-2 px-4 flex items-center gap-1.5">
+              <ArrowLeftRight size={10} className="text-slate-500" />
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Switch Module</p>
+            </div>
+            {otherModules.map(item => (
+              <Link key={item.to} to={item.to} className="sidebar-link-inactive opacity-75 hover:opacity-100">
+                {item.icon}<span>{item.label}</span>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
       <div className="p-4 border-t border-white/10">
         <button onClick={handleSignOut} className="sidebar-link-inactive w-full text-red-400 hover:bg-red-500/20 hover:text-red-300"><LogOut size={16} /><span>Sign Out</span></button>
