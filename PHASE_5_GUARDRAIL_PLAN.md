@@ -1,4 +1,4 @@
-﻿# PHASE_5_GUARDRAIL_PLAN
+# PHASE_5_GUARDRAIL_PLAN
 
 ## Phase 5: Agent guardrail refinement and protected workflow policies
 
