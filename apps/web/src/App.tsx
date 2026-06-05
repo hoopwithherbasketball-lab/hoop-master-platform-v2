@@ -53,6 +53,7 @@ import AthleteNILProfileList from "./pages/nil/AthleteNILProfileList"
 import OutreachInbox from "./pages/nil/OutreachInbox"
 import ComplianceQueue from "./pages/nil/ComplianceQueue"
 import TaskBoard from "./pages/nil/TaskBoard"
+import PartnerPortalIntegration from "./pages/nil/PartnerPortalIntegration"
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
 import EliteGBBHubPage from './pages/connectgbb/ConnectGBBHubPage'
 import CommunityFeedPage from './pages/connectgbb/CommunityFeedPage'
@@ -78,6 +79,9 @@ import AdminAnalyticsPage from './pages/admin/AdminAnalyticsPage'
 import AdminTenantsPage from './pages/admin/AdminTenantsPage'
 import EmbedPlayerPage from './pages/public/EmbedPlayerPage'
 import EmbedDocsPage from './pages/public/EmbedDocsPage'
+import AdminPageBuilder from './pages/admin/AdminPageBuilder'
+import AdminPageEditor from './pages/admin/AdminPageEditor'
+import DynamicPage from './pages/public/DynamicPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
 
@@ -106,6 +110,7 @@ function AppRoutes() {
       <Route path="/watch/:slug" element={<ChannelWatchPage />} />
       <Route path="/embed/:slug" element={<EmbedPlayerPage />} />
       <Route path="/embed/docs" element={<PublicLayout><EmbedDocsPage /></PublicLayout>} />
+      <Route path="/p/:slug" element={<PublicLayout><DynamicPage /></PublicLayout>} />
       <Route path="/partner-onboarding" element={<PartnerOnboardingPage />} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
@@ -150,6 +155,8 @@ function AppRoutes() {
       <Route path="/admin/ad-slots" element={<ProtectedRoute role="admin"><AdminAdSlotsPage /></ProtectedRoute>} />
       <Route path="/admin/analytics" element={<ProtectedRoute role="admin"><AdminAnalyticsPage /></ProtectedRoute>} />
       <Route path="/admin/tenants" element={<ProtectedRoute role="admin"><AdminTenantsPage /></ProtectedRoute>} />
+      <Route path="/admin/pages" element={<ProtectedRoute role="admin"><AdminPageBuilder /></ProtectedRoute>} />
+      <Route path="/admin/pages/:slug" element={<ProtectedRoute role="admin"><AdminPageEditor /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
@@ -157,6 +164,7 @@ function AppRoutes() {
       <Route path="/nil/outreach" element={<ProtectedRoute role="admin"><OutreachInbox /></ProtectedRoute>} />
       <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
       <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
+      <Route path="/nil/partner-portal" element={<ProtectedRoute role="admin"><PartnerPortalIntegration /></ProtectedRoute>} />
       <Route path="/elitegbb" element={<ProtectedRoute><EliteGBBHubPage /></ProtectedRoute>} />
       <Route path="/elitegbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
       <Route path="/elitegbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />

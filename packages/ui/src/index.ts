@@ -10,3 +10,4 @@ export { PageSection } from './layouts/PageSection';
 export { PageShell } from './layouts/PageShell';
 export { CTABanner } from './layouts/CTABanner';
 export { StatsGrid } from './layouts/StatsGrid';
+export * as Blocks from './blocks';

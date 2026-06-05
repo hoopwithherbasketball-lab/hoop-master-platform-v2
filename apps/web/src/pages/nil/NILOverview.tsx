@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import StatusBadge from '../../components/ui/StatusBadge'
+import { Link } from 'react-router-dom'
+import { ExternalLink, Briefcase } from 'lucide-react'
 
 interface ReadinessStats {
   campaigns: number
@@ -76,6 +78,37 @@ export default function NILOverview() {
             <p className="text-lg font-semibold text-white">
               {readiness?.responseRate != null ? `${readiness.responseRate}%` : '—'}
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Partner Portal Integration Section */}
+      <div className="card p-6 mt-6 bg-gradient-to-r from-blue-900 to-indigo-900 border border-blue-800">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Briefcase className="text-blue-300" size={20} />
+              <h2 className="text-xl font-bold text-white">Partner Portal Integration</h2>
+            </div>
+            <p className="text-blue-200">
+              Manage external brand partners onboarding via the HWH Partner Portal.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Link 
+              to="/nil/partner-portal" 
+              className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded font-medium transition-colors border border-white/20"
+            >
+              Manage Partners
+            </Link>
+            <a 
+              href="http://localhost:3002" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium transition-colors"
+            >
+              Open Portal <ExternalLink size={16} />
+            </a>
           </div>
         </div>
       </div>

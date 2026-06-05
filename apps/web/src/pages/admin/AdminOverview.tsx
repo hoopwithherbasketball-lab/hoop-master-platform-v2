@@ -55,8 +55,9 @@ export default function AdminOverview() {
         <div className="space-y-8">
           <div>
             <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Operations</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-5">
               {cards.map(s => (<div key={s.label} className="stat-card"><span className={s.color}>{s.icon}</span><p className="font-display text-3xl font-bold text-white mt-2">{s.value}</p><p className="text-xs text-slate-500">{s.label}</p></div>))}
+              <Link to="/admin/pages" className="stat-card hover:bg-white/5 transition-colors"><span className="text-purple-400"><ClipboardList size={22} /></span><p className="font-display text-2xl font-bold text-white mt-2">Pages</p><p className="text-xs text-slate-500">Page Builder</p></Link>
             </div>
           </div>
           <div>
