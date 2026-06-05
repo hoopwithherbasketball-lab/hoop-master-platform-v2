@@ -53,6 +53,7 @@ export default function Navbar() {
             <Link to="/services" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Services</Link>
             {!user && <Link to="/elitegbb" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Create Profile</Link>}
             <Link to="/recruiting-readiness" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Get Recruit-Ready</Link>
+            {!user && <Link to="/partner-onboarding" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Partners</Link>}
             {!user && <Link to="/workshops" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Workshops</Link>}
           </div>
           <div className="hidden md:flex items-center gap-3">

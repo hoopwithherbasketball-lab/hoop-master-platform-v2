@@ -271,6 +271,8 @@ export interface PlayerProfile {
   instagram_handle: string | null
   twitter_handle: string | null
   film_url: string | null
+  profile_image_url: string | null
+  overall_score: number | null
   created_at: string
   updated_at: string
 }
@@ -446,8 +448,16 @@ export interface NILTask {
   priority: NILTaskPriority
   status: NILTaskStatus
   due_date: string | null
+  steps: TaskStep[]
+  notes: string | null
   created_at: string
   updated_at: string
+}
+
+export interface TaskStep {
+  id: string
+  label: string
+  done: boolean
 }
 
 export interface CommunityPost {

@@ -99,19 +99,19 @@ export default function DashboardSidebar({ variant }: Props) {
           <span className="badge badge-navy mt-1.5 capitalize">{variant}</span>
         </div>
         <nav className="space-y-0.5">
-          {variant === 'admin' && (<div className="mt-8 mb-2 px-4"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Media Platform</p></div>)}
+          {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Media Platform</p></div>)}
           {variant === 'admin' && mediaNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
-          {variant === 'admin' && (<div className="mt-8 mb-2 px-4"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NIL and Sponsorship</p></div>)}
+          {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">NIL and Sponsorship</p></div>)}
           {variant === 'admin' && nilNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
-          {variant === 'admin' && (<div className="mt-8 mb-2 px-4"><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Operations</p></div>)}
+          {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Operations</p></div>)}
           {navItems.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
         </nav>
 
         {otherModules.length > 0 && (
           <div className="mt-8">
-            <div className="mb-2 px-4 flex items-center gap-1.5">
-              <ArrowLeftRight size={10} className="text-slate-500" />
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Switch Module</p>
+            <div className="mb-3 px-4 border-b border-white/10 pb-2 flex items-center gap-1.5">
+              <ArrowLeftRight size={10} className="text-slate-400" />
+              <p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Switch Module</p>
             </div>
             {otherModules.map(item => (
               <Link key={item.to} to={item.to} className="sidebar-link-inactive opacity-75 hover:opacity-100">

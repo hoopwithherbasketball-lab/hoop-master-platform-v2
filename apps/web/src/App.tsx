@@ -79,6 +79,7 @@ import AdminTenantsPage from './pages/admin/AdminTenantsPage'
 import EmbedPlayerPage from './pages/public/EmbedPlayerPage'
 import EmbedDocsPage from './pages/public/EmbedDocsPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
+import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (<div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1">{children}</div><Footer /></div>)
@@ -105,6 +106,7 @@ function AppRoutes() {
       <Route path="/watch/:slug" element={<ChannelWatchPage />} />
       <Route path="/embed/:slug" element={<EmbedPlayerPage />} />
       <Route path="/embed/docs" element={<PublicLayout><EmbedDocsPage /></PublicLayout>} />
+      <Route path="/partner-onboarding" element={<PartnerOnboardingPage />} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />

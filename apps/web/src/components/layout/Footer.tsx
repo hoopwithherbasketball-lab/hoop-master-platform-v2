@@ -25,6 +25,7 @@ export default function Footer() {
               <li><Link to="/events" className="hover:text-white transition-colors">Events</Link></li>
               <li><Link to="/signup?role=coach" className="hover:text-white transition-colors">For Coaches</Link></li>
               <li><Link to="/signup?role=club_admin" className="hover:text-white transition-colors">For Clubs</Link></li>
+              <li><Link to="/partner-onboarding" className="hover:text-white transition-colors">Partner With Us</Link></li>
             </ul>
           </div>
           <div>

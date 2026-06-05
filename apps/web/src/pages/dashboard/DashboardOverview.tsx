@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/auth'
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import { Star, Calendar, ShoppingBag, TrendingUp, ArrowRight, User, BookOpen, Users, ShieldCheck, Tv } from 'lucide-react'
+import { Star, Calendar, ShoppingBag, TrendingUp, ArrowRight, User, BookOpen, Users, ShieldCheck, Tv, ClipboardList } from 'lucide-react'
 
 interface Stats {
   readinessScore: number | null
@@ -27,11 +27,12 @@ export default function DashboardOverview() {
     playerName: '',
   })
   const [loading, setLoading] = useState(true)
+  const [intakeComplete, setIntakeComplete] = useState(true)
 
   useEffect(() => {
     if (!user) return
     async function load() {
-      const [profileRes, eventsRes, ordersRes] = await Promise.all([
+      const [profileRes, eventsRes, ordersRes, intakeRes] = await Promise.all([
         supabase
           .from('player_profiles')
           .select('first_name, last_name, overall_score')
@@ -46,11 +47,16 @@ export default function DashboardOverview() {
           .from('service_orders')
           .select('id, status')
           .eq('customer_user_id', user!.id),
+        supabase
+          .from('intake_submissions')
+          .select('id', { count: 'exact', head: true })
+          .eq('auth_user_id', user!.id),
       ])
 
       const profile = profileRes.data
       const orders = ordersRes.data ?? []
 
+      setIntakeComplete((intakeRes.count ?? 0) > 0)
       setStats({
         readinessScore: profile?.overall_score ?? null,
         upcomingEvents: eventsRes.count ?? 0,
@@ -126,6 +132,18 @@ export default function DashboardOverview() {
       subtitle="Your hub for recruiting, development, and NIL."
     >
       <div className="max-w-5xl mx-auto space-y-8">
+        {!loading && !intakeComplete && (
+          <Link to="/dashboard/intake" className="flex items-center justify-between bg-amber-500/10 border border-amber-500/30 rounded-xl p-4 hover:bg-amber-500/15 transition-colors">
+            <div className="flex items-center gap-3">
+              <ClipboardList size={20} className="text-amber-400 shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-amber-300">Complete Your Player Intake</p>
+                <p className="text-xs text-amber-400/80">Required to activate your profile and unlock all platform features.</p>
+              </div>
+            </div>
+            <ArrowRight size={16} className="text-amber-400 shrink-0" />
+          </Link>
+        )}
         {loading ? (
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4 animate-pulse">
             {[...Array(4)].map((_, i) => <div key={i} className="h-28 bg-navy-800 rounded-xl" />)}
