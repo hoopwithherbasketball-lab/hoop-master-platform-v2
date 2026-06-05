@@ -13,7 +13,7 @@ function getSupabase(): SupabaseClient {
   return _supabase
 }
 
-function asyncHandler(fn: (req: Request, res: Response) => Promise<void>) {
+function asyncHandler(fn: (req: Request, res: Response) => Promise<unknown>) {
   return (req: Request, res: Response, next: NextFunction) => {
     fn(req, res).catch(next)
   }

@@ -1,7 +1,7 @@
 import { Router, type Request, type Response, type NextFunction } from 'express'
 import { ingestEvent, ingestBatch, getChannelStats, getAssetStats } from '@hoop-master/analytics-ingester'
 
-function asyncHandler(fn: (req: Request, res: Response) => Promise<void>) {
+function asyncHandler(fn: (req: Request, res: Response) => Promise<unknown>) {
   return (req: Request, res: Response, next: NextFunction) => {
     fn(req, res).catch(next)
   }
