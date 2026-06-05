@@ -11,7 +11,7 @@ export default function ConnectionsPage() {
 
   if (!canAccessCommunity) {
     return (
-      <PageShell title="My Connections" description="Connections are available for active premium community members." badge="ConnectGBB">
+      <PageShell title="My Connections" description="Connections are available for active premium community members." badge="EliteGBB">
         <div className="max-w-2xl mx-auto bg-navy-800 border border-white/10 rounded-xl p-8 text-center" data-testid="connections-locked-state">
           <h2 className="text-2xl font-semibold text-white mb-3">Connections Locked</h2>
           <p className="text-slate-400">Your profile is pending activation. Once approved, your network will appear here.</p>
@@ -21,7 +21,7 @@ export default function ConnectionsPage() {
   }
 
   return (
-    <PageShell title="My Connections" description="Manage your network of coaches, players, and programs." badge="ConnectGBB">
+    <PageShell title="My Connections" description="Manage your network of coaches, players, and programs." badge="EliteGBB">
       {error && <p className="text-red-300 mb-4" data-testid="connections-error-text">{error}</p>}
       {loading ? (
         <div className="animate-pulse space-y-4">{[1, 2, 3].map(i => <div key={i} className="bg-navy-800 p-6 rounded-lg shadow-md h-20" />)}</div>

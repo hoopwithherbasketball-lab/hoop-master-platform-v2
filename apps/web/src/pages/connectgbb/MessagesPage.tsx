@@ -11,7 +11,7 @@ export default function MessagesPage() {
 
   if (!canAccessCommunity) {
     return (
-      <PageShell title="Messages" description="Secure messaging is available to active members only." badge="ConnectGBB">
+      <PageShell title="Messages" description="Secure messaging is available to active members only." badge="EliteGBB">
         <div className="max-w-2xl mx-auto bg-navy-800 border border-white/10 rounded-xl p-8 text-center" data-testid="messages-locked-state">
           <h2 className="text-2xl font-semibold text-white mb-3">Messaging Locked</h2>
           <p className="text-slate-400">Activate your membership to access premium in-network messaging.</p>
@@ -21,7 +21,7 @@ export default function MessagesPage() {
   }
 
   return (
-    <PageShell title="Messages" description="In-app messaging with coaches, scouts, and programs." badge="ConnectGBB">
+    <PageShell title="Messages" description="In-app messaging with coaches, scouts, and programs." badge="EliteGBB">
       {error && <p className="text-red-300 mb-4" data-testid="messages-error-text">{error}</p>}
       <div className="flex flex-col lg:flex-row h-auto lg:h-[600px] bg-navy-800 rounded-xl shadow-md overflow-hidden">
         <div className="w-full lg:w-80 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col max-h-[320px] lg:max-h-none">

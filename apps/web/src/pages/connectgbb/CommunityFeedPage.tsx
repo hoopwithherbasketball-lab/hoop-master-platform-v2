@@ -45,13 +45,13 @@ export default function CommunityFeedPage() {
 
     await trackCommunityEvent('community_report_submitted', user?.id, {
       post_id: postId,
-      source: 'connectgbb_feed',
+      source: 'elitegbb_feed',
     })
   }
 
   if (!canAccessCommunity) {
     return (
-      <PageShell title="Community" description="Members-only network with moderated discussions and trusted collaboration." badge="ConnectGBB">
+      <PageShell title="Community" description="Members-only network with moderated discussions and trusted collaboration." badge="EliteGBB">
         <div className="max-w-2xl mx-auto bg-navy-800 border border-white/10 rounded-xl p-8 text-center" data-testid="community-feed-membership-locked">
           <h2 className="text-2xl font-semibold text-white mb-3">Membership Activation Pending</h2>
           <p className="text-slate-400 mb-5">
@@ -77,7 +77,7 @@ export default function CommunityFeedPage() {
   }
 
   return (
-    <PageShell title="Community" description="Connect with players, coaches, and the Elite GBB community." badge="ConnectGBB">
+    <PageShell title="Community" description="Connect with players, coaches, and the Elite GBB community." badge="EliteGBB">
       {loading ? (
         <div className="animate-pulse space-y-4">
           {[1, 2, 3].map(i => <div key={i} className="bg-navy-800 p-6 rounded-lg shadow-md h-32" />)}

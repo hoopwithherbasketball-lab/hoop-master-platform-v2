@@ -32,7 +32,7 @@ export default function Navbar() {
     if (hasRole('coach')) modules.push({ label: 'Coach Tools', to: '/coach', icon: <Users size={14} />, desc: 'Search, shortlist & evaluate' })
     if (hasRole('admin')) modules.push({ label: 'Admin Panel', to: '/admin', icon: <ShieldCheck size={14} />, desc: 'Platform operations' })
     if (hasRole('admin')) modules.push({ label: 'NIL Hub', to: '/nil', icon: <BookOpen size={14} />, desc: 'Opportunities & outreach' })
-    modules.push({ label: 'ConnectGBB', to: '/connectgbb', icon: <Tv size={14} />, desc: 'Community & training' })
+    modules.push({ label: 'EliteGBB', to: '/elitegbb', icon: <Tv size={14} />, desc: 'Community & training' })
     return modules
   }
 

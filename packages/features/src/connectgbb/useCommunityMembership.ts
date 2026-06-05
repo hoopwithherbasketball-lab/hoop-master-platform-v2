@@ -58,7 +58,7 @@ const mapMembership = (row: {
 
 const shouldUseStrictMembershipMode = () => {
   if (typeof window === 'undefined') return false
-  return window.localStorage.getItem('connectgbb_strict_membership_mode') === 'true'
+  return window.localStorage.getItem('elitegbb_strict_membership_mode') === 'true'
 }
 
 const isMissingResourceError = (error: unknown) => {

@@ -106,7 +106,7 @@ export default function DashboardOverview() {
       { label: 'Profile Optimizer', desc: 'Improve your recruiting profile', to: '/dashboard/profile/optimizer', icon: <User size={18} />, color: 'text-blue-400' },
       { label: 'Film Index', desc: 'Upload and manage game film', to: '/dashboard/film-index', icon: <TrendingUp size={18} />, color: 'text-green-400' },
       { label: 'Resources', desc: 'Guides, tools and learning materials', to: '/dashboard/resources', icon: <BookOpen size={18} />, color: 'text-yellow-400' },
-      { label: 'ConnectGBB', desc: 'Community and training hub', to: '/connectgbb', icon: <Tv size={18} />, color: 'text-cyan-400' },
+      { label: 'EliteGBB', desc: 'Community and training hub', to: '/elitegbb', icon: <Tv size={18} />, color: 'text-cyan-400' },
     ]
     if (hasRole('coach')) {
       links.push({ label: 'Coach Tools', desc: 'Search players and manage shortlist', to: '/coach', icon: <Users size={18} />, color: 'text-purple-400' })

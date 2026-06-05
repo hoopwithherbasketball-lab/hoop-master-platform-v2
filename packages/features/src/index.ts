@@ -1,5 +1,5 @@
 export * as CRM from './crm'
-export * as ConnectGBB from './connectgbb'
+export * as EliteGBB from './connectgbb'
 export * as Coaching from './coaching'
 export * as NIL from './nil'
 export * as Recruiting from './recruiting'

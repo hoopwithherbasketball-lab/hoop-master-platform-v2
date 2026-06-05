@@ -22,7 +22,7 @@ export default function TrainingHubPage() {
 
   if (!canAccessCommunity) {
     return (
-      <PageShell title="Training Hub" description="Premium training resources are restricted to active members." badge="ConnectGBB">
+      <PageShell title="Training Hub" description="Premium training resources are restricted to active members." badge="EliteGBB">
         <div className="max-w-2xl mx-auto bg-navy-800 border border-white/10 rounded-xl p-8 text-center" data-testid="training-hub-locked-state">
           <h2 className="text-2xl font-semibold text-white mb-3">Training Hub Locked</h2>
           <p className="text-slate-400">Activate your community membership to access the premium training library.</p>
@@ -32,7 +32,7 @@ export default function TrainingHubPage() {
   }
 
   return (
-    <PageShell title="Training Hub" description="Video lessons, drill libraries, and skill tracks designed for elite development." badge="ConnectGBB">
+    <PageShell title="Training Hub" description="Video lessons, drill libraries, and skill tracks designed for elite development." badge="EliteGBB">
       {error && <p className="text-red-300 mb-4" data-testid="training-hub-error-text">{error}</p>}
       {loading ? (
         <div className="animate-pulse grid gap-6 md:grid-cols-2">

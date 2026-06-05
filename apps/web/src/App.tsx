@@ -54,7 +54,7 @@ import OutreachInbox from "./pages/nil/OutreachInbox"
 import ComplianceQueue from "./pages/nil/ComplianceQueue"
 import TaskBoard from "./pages/nil/TaskBoard"
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
-import ConnectGBBHubPage from './pages/connectgbb/ConnectGBBHubPage'
+import EliteGBBHubPage from './pages/connectgbb/ConnectGBBHubPage'
 import CommunityFeedPage from './pages/connectgbb/CommunityFeedPage'
 import TrainingHubPage from './pages/connectgbb/TrainingHubPage'
 import ConnectionsPage from './pages/connectgbb/ConnectionsPage'
@@ -155,13 +155,13 @@ function AppRoutes() {
       <Route path="/nil/outreach" element={<ProtectedRoute role="admin"><OutreachInbox /></ProtectedRoute>} />
       <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
       <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
-      <Route path="/connectgbb" element={<ProtectedRoute><ConnectGBBHubPage /></ProtectedRoute>} />
-      <Route path="/connectgbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
-      <Route path="/connectgbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />
-      <Route path="/connectgbb/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
-      <Route path="/connectgbb/member/:id" element={<ProtectedRoute><MemberProfilePage /></ProtectedRoute>} />
-      <Route path="/connectgbb/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
-      <Route path="/connectgbb/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
+      <Route path="/elitegbb" element={<ProtectedRoute><EliteGBBHubPage /></ProtectedRoute>} />
+      <Route path="/elitegbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
+      <Route path="/elitegbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />
+      <Route path="/elitegbb/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
+      <Route path="/elitegbb/member/:id" element={<ProtectedRoute><MemberProfilePage /></ProtectedRoute>} />
+      <Route path="/elitegbb/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
+      <Route path="/elitegbb/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
