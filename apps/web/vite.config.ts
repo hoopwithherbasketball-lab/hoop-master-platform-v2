@@ -30,10 +30,12 @@ const readEnvTxt = (filePath: string): Record<string, string> => {
 
 export default defineConfig(({ mode }) => {
   const loadedEnv = loadEnv(mode, process.cwd(), '')
+  // Also try loading from repo root in case cwd is apps/web/
+  const rootEnv = loadEnv(mode, resolve(__dirname, '../..'), '')
   const rootEnvTxt = readEnvTxt(resolve(__dirname, '../../.env.txt'))
 
-  const supabaseUrl = loadedEnv.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || rootEnvTxt.VITE_SUPABASE_URL || ''
-  const supabaseAnonKey = loadedEnv.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || rootEnvTxt.VITE_SUPABASE_ANON_KEY || ''
+  const supabaseUrl = loadedEnv.VITE_SUPABASE_URL || rootEnv.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || rootEnvTxt.VITE_SUPABASE_URL || ''
+  const supabaseAnonKey = loadedEnv.VITE_SUPABASE_ANON_KEY || rootEnv.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || rootEnvTxt.VITE_SUPABASE_ANON_KEY || ''
 
   return {
     plugins: [react()],
