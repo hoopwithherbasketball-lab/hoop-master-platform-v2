@@ -119,14 +119,12 @@ export default function NILOverview() {
             >
               Manage Partners
             </Link>
-            <a 
-              href={partnerPortalUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              to="/nil/companies" 
               className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium transition-colors"
             >
-              Open Portal <ExternalLink size={16} />
-            </a>
+              Open CRM <ExternalLink size={16} />
+            </Link>
           </div>
         </div>
       </div>
