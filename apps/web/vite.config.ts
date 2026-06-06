@@ -41,6 +41,8 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     appType: 'spa',
     server: {
+      port: 5173,
+      strictPort: true,
       host: '0.0.0.0',
       allowedHosts: true,
     },
