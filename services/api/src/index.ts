@@ -4,6 +4,7 @@ import { channelsRouter } from './routes/channels.js'
 import { epgRouter } from './routes/epg.js'
 import { analyticsRouter } from './routes/analytics.js'
 import { playerConfigRouter } from './routes/player-config.js'
+import { bifRouter } from './routes/bif.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -21,6 +22,7 @@ app.use('/api/channels', channelsRouter)
 app.use('/api/epg', epgRouter)
 app.use('/api/analytics', analyticsRouter)
 app.use('/api/player', playerConfigRouter)
+app.use('/api/bif', bifRouter)
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), supabase: !!supabaseUrl })
