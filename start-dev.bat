@@ -1,10 +1,11 @@
 @echo off
 title Hoop With Her - Dev Server
-cd /d "%~dp0apps\web"
 echo ========================================
-echo   Hoop With Her Dev Server
-echo   http://localhost:5173
+echo   Hoop With Her Dev Servers (Turbo)
+echo   http://localhost:5173 (Web App)
+echo   http://localhost:3002 (Partner Portal)
 echo ========================================
 echo.
-node ..\..\node_modules\vite\bin\vite.js --host
+npm run dev
 pause
+
