@@ -35,8 +35,16 @@ let webpackConfig = {
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      'react': path.resolve(__dirname, '../../node_modules/react'),
+      'react-dom': path.resolve(__dirname, '../../node_modules/react-dom'),
     },
     configure: (webpackConfig) => {
+      // Disable ModuleScopePlugin to allow aliases pointing outside of src/ folder (like root node_modules)
+      if (webpackConfig.resolve && webpackConfig.resolve.plugins) {
+        webpackConfig.resolve.plugins = webpackConfig.resolve.plugins.filter(
+          (plugin) => plugin.constructor.name !== "ModuleScopePlugin"
+        );
+      }
 
       // Add ignored patterns to reduce watched directories
         webpackConfig.watchOptions = {
@@ -91,6 +99,8 @@ if (isDevServer) {
     if (!webpackConfig.webpack) webpackConfig.webpack = {};
     if (!webpackConfig.webpack.alias) webpackConfig.webpack.alias = {};
     webpackConfig.webpack.alias['@'] = path.resolve(__dirname, 'src');
+    webpackConfig.webpack.alias['react'] = path.resolve(__dirname, '../../node_modules/react');
+    webpackConfig.webpack.alias['react-dom'] = path.resolve(__dirname, '../../node_modules/react-dom');
   } catch (err) {
     if (err.code === 'MODULE_NOT_FOUND' && err.message.includes('@emergentbase/visual-edits/craco')) {
       console.warn(
