@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useNILCompanies } from '@hoop-master/features/nil'
 import { supabase } from '../../lib/supabase'
-import { Plus, Edit3, Trash2, X, Mail, Search, Globe, User, Send, Check } from 'lucide-react'
+import { Plus, Edit3, Trash2, X, Mail, Search, Globe, User, Send, Check, Upload } from 'lucide-react'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 
 const INDUSTRIES = ['Restaurant', 'Fitness Studio', 'Salon', 'Service Provider', 'Local Brand', 'Other']
@@ -46,6 +46,107 @@ export default function CompanyList() {
   
   // UI states
   const [modal, setModal] = useState<{ type: 'create' | 'edit'; company?: any } | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadMessage, setUploadMessage] = useState('')
+
+  const handleBulkUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    setUploadMessage('Reading CSV...')
+
+    const reader = new FileReader()
+    reader.onload = async (event) => {
+      try {
+        const text = event.target?.result as string
+        const lines = text.split(/\r?\n/)
+        if (lines.length <= 1) {
+          throw new Error('CSV is empty or missing a header row.')
+        }
+
+        // Parse header and map column indices
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase())
+        const getIndex = (name: string) => headers.indexOf(name)
+        
+        const nameIdx = getIndex('name')
+        const industryIdx = getIndex('industry')
+        const contactNameIdx = getIndex('contact name') || getIndex('contact_name')
+        const contactEmailIdx = getIndex('contact email') || getIndex('contact_email')
+        const websiteIdx = getIndex('website')
+        const statusIdx = getIndex('status')
+        const offersIdx = getIndex('offers')
+        const notesIdx = getIndex('notes')
+
+        if (nameIdx === -1) {
+          throw new Error('CSV must contain a "Name" column.')
+        }
+
+        const payload: any[] = []
+
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i].trim()
+          if (!line) continue
+
+          // Parse CSV row with simple quote handling
+          const cols: string[] = []
+          let cur = ''
+          let inQuotes = false
+          for (let charIdx = 0; charIdx < line.length; charIdx++) {
+            const char = line[charIdx]
+            if (char === '"') {
+              inQuotes = !inQuotes
+            } else if (char === ',' && !inQuotes) {
+              cols.push(cur.trim())
+              cur = ''
+            } else {
+              cur += char
+            }
+          }
+          cols.push(cur.trim())
+
+          const nameVal = cols[nameIdx]
+          if (!nameVal) continue // Skip rows without name
+
+          const indVal = (industryIdx !== -1 && cols[industryIdx]) ? cols[industryIdx] : 'Other'
+          const cNameVal = (contactNameIdx !== -1 && cols[contactNameIdx]) ? cols[contactNameIdx] : ''
+          const cEmailVal = (contactEmailIdx !== -1 && cols[contactEmailIdx]) ? cols[contactEmailIdx] : ''
+          const webVal = (websiteIdx !== -1 && cols[websiteIdx]) ? cols[websiteIdx] : ''
+          const statVal = (statusIdx !== -1 && cols[statusIdx]) ? cols[statusIdx] : 'prospect'
+          
+          const rawOffers = (offersIdx !== -1 && cols[offersIdx]) ? cols[offersIdx].split(';').map(o => o.trim()) : []
+          const rawNotes = (notesIdx !== -1 && cols[notesIdx]) ? cols[notesIdx] : ''
+          
+          payload.push({
+            name: nameVal,
+            industry: INDUSTRIES.includes(indVal) ? indVal : 'Other',
+            contact_name: cNameVal,
+            contact_email: cEmailVal,
+            website: webVal,
+            status: STATUSES.includes(statVal) ? statVal : 'prospect',
+            notes: serializeNotes(rawOffers, rawNotes)
+          })
+        }
+
+        if (payload.length === 0) {
+          throw new Error('No valid rows parsed from the CSV.')
+        }
+
+        setUploadMessage(`Uploading ${payload.length} targets...`)
+        const { error } = await supabase.from('nil_companies').insert(payload)
+        if (error) throw error
+
+        setUploadMessage('Upload successful! Reloading...')
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
+      } catch (err: any) {
+        alert(`Failed to import CSV: ${err.message}`)
+        setUploading(false)
+        setUploadMessage('')
+      }
+    }
+    reader.readAsText(file)
+  }
   const [outreachModal, setOutreachModal] = useState<any | null>(null)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   
@@ -201,9 +302,30 @@ export default function CompanyList() {
       title="NIL Brand Partners"
       subtitle="Target local brands and initiate NIL sponsorship outreach."
       action={
-        <button onClick={openCreate} className="flex items-center gap-1.5 bg-[#0134BD] hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
-          <Plus size={16} /> Add Target Brand
-        </button>
+        <div className="flex items-center gap-2">
+          {uploading ? (
+            <span className="text-xs text-blue-300 animate-pulse font-medium">{uploadMessage}</span>
+          ) : (
+            <>
+              <input 
+                type="file" 
+                id="bulk-upload-csv" 
+                accept=".csv" 
+                onChange={handleBulkUpload} 
+                className="hidden" 
+              />
+              <label 
+                htmlFor="bulk-upload-csv" 
+                className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-semibold cursor-pointer border border-white/15 transition-colors"
+              >
+                <Upload size={15} /> Bulk Upload (CSV)
+              </label>
+            </>
+          )}
+          <button onClick={openCreate} className="flex items-center gap-1.5 bg-[#0134BD] hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+            <Plus size={16} /> Add Target Brand
+          </button>
+        </div>
       }
     >
       <div className="space-y-6">
