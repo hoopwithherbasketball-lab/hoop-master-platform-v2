@@ -1,6 +1,7 @@
 import { Router, type Request, type Response, type NextFunction } from 'express'
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 import { generatePlaylist, generateM3U8 } from '@hoop-master/playlist-engine'
+import { getAdSlotsForChannel, injectAdMarkers } from '@hoop-master/ad-insertion'
 
 let _supabase: SupabaseClient | null = null
 function getSupabase(): SupabaseClient {
@@ -51,10 +52,21 @@ channelsRouter.get('/:id', asyncHandler(async (req, res) => {
 }))
 
 channelsRouter.get('/:id/manifest', asyncHandler(async (req, res) => {
-  const playlist = await generatePlaylist(req.params.id)
+  const channelId = req.params.id
+  const playlist = await generatePlaylist(channelId)
   if (!playlist) return res.status(404).json({ error: 'No schedule found for this channel' })
 
-  const m3u8 = generateM3U8(playlist)
+  let m3u8 = generateM3U8(playlist)
+  
+  try {
+    const adSlots = await getAdSlotsForChannel(channelId)
+    if (adSlots.length > 0) {
+      m3u8 = injectAdMarkers(m3u8, adSlots, new Date(playlist.generatedAt))
+    }
+  } catch (err) {
+    console.error('[channels] Ad marker injection failed:', err)
+  }
+
   res.set('Content-Type', 'application/vnd.apple.mpegurl')
   res.set('Cache-Control', 'max-age=10')
   res.send(m3u8)
