@@ -65,6 +65,8 @@ import MemberProfilePage from './pages/connectgbb/MemberProfilePage'
 import MessagesPage from './pages/connectgbb/MessagesPage'
 import FilmIndexPage from './pages/dashboard/FilmIndexPage'
 import AnalyticsPage from './pages/dashboard/AnalyticsPage'
+import FundingPage from './pages/dashboard/FundingPage'
+import AdminFundingPage from './pages/admin/AdminFundingPage'
 import AdminEvaluationsPage from './pages/admin/AdminEvaluationsPage'
 import AdminPlayerDetailPage from './pages/admin/AdminPlayerDetailPage'
 import AdminReportsPage from './pages/admin/AdminReportsPage'
@@ -132,6 +134,7 @@ function AppRoutes() {
       <Route path="/dashboard/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
       <Route path="/dashboard/resources" element={<ProtectedRoute><ResourcesDashboardPage /></ProtectedRoute>} />
       <Route path="/dashboard/parent" element={<ProtectedRoute><ParentDashboardPage /></ProtectedRoute>} />
+      <Route path="/dashboard/funding" element={<ProtectedRoute><FundingPage /></ProtectedRoute>} />
       <Route path="/coach" element={<ProtectedRoute><CoachDashboard /></ProtectedRoute>} />
       <Route path="/coach/search" element={<ProtectedRoute><CoachSearchPage /></ProtectedRoute>} />
       <Route path="/coach/shortlist" element={<ProtectedRoute><CoachShortlistPage /></ProtectedRoute>} />
@@ -140,6 +143,7 @@ function AppRoutes() {
       <Route path="/coach/compare" element={<ProtectedRoute><ProspectComparisonPage /></ProtectedRoute>} />
       <Route path="/admin" element={<ProtectedRoute role="admin"><AdminOverview /></ProtectedRoute>} />
       <Route path="/admin/leads" element={<ProtectedRoute role="admin"><AdminLeadsPage /></ProtectedRoute>} />
+      <Route path="/admin/funding" element={<ProtectedRoute role="admin"><AdminFundingPage /></ProtectedRoute>} />
       <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrdersPage /></ProtectedRoute>} />
       <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
       <Route path="/admin/evaluations" element={<ProtectedRoute role="admin"><AdminEvaluationsPage /></ProtectedRoute>} />

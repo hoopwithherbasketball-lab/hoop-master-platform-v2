@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight, Award } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -18,6 +18,7 @@ const playerNav: NavItem[] = [
   { label: 'Services', to: '/dashboard/services', icon: <ShoppingBag size={16} /> },
   { label: 'Resources', to: '/dashboard/resources', icon: <BookOpen size={16} /> },
   { label: 'Parent Center', to: '/dashboard/parent', icon: <GraduationCap size={16} /> },
+  { label: 'Funding & Grants', to: '/dashboard/funding', icon: <Award size={16} /> },
 ]
 
 const coachNav: NavItem[] = [
@@ -35,11 +36,13 @@ const nilNav: NavItem[] = [
   { label: 'Outreach Inbox', to: '/nil/outreach', icon: <Mail size={16} /> },
   { label: 'Compliance', to: '/nil/compliance', icon: <ShieldCheck size={16} /> },
   { label: 'Tasks', to: '/nil/tasks', icon: <CheckSquare size={16} /> },
+  { label: 'Compliance Queue', to: '/nil/compliance', icon: <ShieldCheck size={16} /> },
 ]
 
 const adminNav: NavItem[] = [
   { label: 'Overview', to: '/admin', icon: <LayoutDashboard size={16} /> },
   { label: 'Leads', to: '/admin/leads', icon: <Users size={16} /> },
+  { label: 'Funding & Grants', to: '/admin/funding', icon: <Award size={16} /> },
   { label: 'Orders', to: '/admin/orders', icon: <ShoppingBag size={16} /> },
   { label: 'Audits', to: '/admin/audits', icon: <ClipboardList size={16} /> },
   { label: 'Players', to: '/admin/players', icon: <User size={16} /> },
