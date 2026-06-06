@@ -48,6 +48,10 @@ function App() {
               )
             } 
           />
+          <Route 
+            path="/proposals/builder" 
+            element={<DashboardPage onLogout={handleLogout} />} 
+          />
         </Routes>
       </BrowserRouter>
     </div>
