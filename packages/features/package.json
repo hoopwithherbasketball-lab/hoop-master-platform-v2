@@ -26,7 +26,17 @@
       "types": "./dist/features/src/nil/index.d.ts"
     },
     "./nil/*": "./dist/features/src/nil/*",
-    "./recruiting/*": "./dist/features/src/recruiting/*"
+    "./recruiting/*": "./dist/features/src/recruiting/*",
+    "./evaluations": {
+      "import": "./dist/features/src/evaluations/index.js",
+      "types": "./dist/features/src/evaluations/index.d.ts"
+    },
+    "./evaluations/*": "./dist/features/src/evaluations/*",
+    "./scouting": {
+      "import": "./dist/features/src/scouting/index.js",
+      "types": "./dist/features/src/scouting/index.d.ts"
+    },
+    "./scouting/*": "./dist/features/src/scouting/*"
   },
   "scripts": {
     "lint": "eslint src",

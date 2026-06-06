@@ -15,6 +15,7 @@ interface PipelineStats {
 export default function CoachDashboard() {
   const { user } = useAuth()
   const [stats, setStats] = useState<PipelineStats>({ prospects: 0, shortlisted: 0, evaluations: 0, events: 0 })
+  const [stageCounts, setStageCounts] = useState({ saved: 0, contacted: 0, evaluation: 0, interview: 0, offer: 0, committed: 0 })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -22,16 +23,33 @@ export default function CoachDashboard() {
     async function load() {
       const [prospectsRes, shortlistRes, evalsRes, eventsRes] = await Promise.all([
         supabase.from('player_profiles').select('id', { count: 'exact', head: true }).eq('is_public', true),
-        supabase.from('coach_saved_players').select('id', { count: 'exact', head: true }).eq('coach_user_id', user!.id),
+        supabase.from('coach_saved_players').select('id').eq('coach_profile_id', user!.id),
         supabase.from('audit_results').select('id', { count: 'exact', head: true }),
         supabase.from('events').select('id', { count: 'exact', head: true }).eq('status', 'published'),
       ])
+      
+      const savedCount = shortlistRes.data?.length ?? 0
+      const counts = { saved: 0, contacted: 0, evaluation: 0, interview: 0, offer: 0, committed: 0 }
+      
+      if (shortlistRes.data) {
+        shortlistRes.data.forEach(p => {
+          try {
+            const status = localStorage.getItem(`scout_shortlist_${p.id}_status`)
+            const s = status ? JSON.parse(status) : 'saved'
+            if (s in counts) {
+              counts[s as keyof typeof counts]++
+            }
+          } catch (e) {}
+        })
+      }
+
       setStats({
         prospects: prospectsRes.count ?? 0,
-        shortlisted: shortlistRes.count ?? 0,
+        shortlisted: savedCount,
         evaluations: evalsRes.count ?? 0,
         events: eventsRes.count ?? 0,
       })
+      setStageCounts(counts)
       setLoading(false)
     }
     load()
@@ -84,21 +102,31 @@ export default function CoachDashboard() {
           </Link>
         </div>
 
-        <div className="bg-gradient-to-r from-[#121B47] to-[#0134BD] text-white p-6 rounded-xl">
+        <div className="bg-gradient-to-r from-[#121B47] to-[#0134BD] text-white p-6 rounded-xl shadow-md">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp size={18} />
             <h3 className="text-lg font-bold">Recruiting Pipeline</h3>
           </div>
           <p className="text-blue-200 text-sm mb-4">Track prospects through the evaluation funnel: Saved → Contacted → Evaluation → Interview → Offer → Committed</p>
           <div className="flex items-center gap-2 text-sm flex-wrap">
-            {['Saved', 'Contacted', 'Eval', 'Interview', 'Offer', 'Committed'].map((stage, i) => (
-              <span key={stage} className="flex items-center gap-1">
-                <span className="px-2 py-0.5 bg-white/20 rounded text-xs">{stage}</span>
+            {[
+              { label: 'Saved', count: stageCounts.saved },
+              { label: 'Contacted', count: stageCounts.contacted },
+              { label: 'Eval', count: stageCounts.evaluation },
+              { label: 'Interview', count: stageCounts.interview },
+              { label: 'Offer', count: stageCounts.offer },
+              { label: 'Committed', count: stageCounts.committed },
+            ].map((stage, i) => (
+              <span key={stage.label} className="flex items-center gap-1">
+                <span className="px-2.5 py-1 bg-white/20 rounded text-xs font-semibold flex items-center gap-1.5">
+                  {stage.label}
+                  <span className="px-1.5 py-0.2 bg-[#0134BD] rounded-full text-[10px] text-white font-bold">{stage.count}</span>
+                </span>
                 {i < 5 && <ArrowRight size={12} className="text-blue-300" />}
               </span>
             ))}
           </div>
-          <Link to="/coach/shortlist" className="inline-flex items-center gap-1.5 mt-4 text-sm font-medium text-white bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
+          <Link to="/coach/shortlist" className="inline-flex items-center gap-1.5 mt-5 text-sm font-medium text-white bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition-colors">
             View Pipeline <ArrowRight size={14} />
           </Link>
         </div>
