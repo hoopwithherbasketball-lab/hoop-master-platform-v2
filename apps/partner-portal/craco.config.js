@@ -86,6 +86,11 @@ if (isDevServer) {
   try {
     const { withVisualEdits } = require("@emergentbase/visual-edits/craco");
     webpackConfig = withVisualEdits(webpackConfig);
+    
+    // Explicitly re-assert the webpack alias configuration in case it got overwritten
+    if (!webpackConfig.webpack) webpackConfig.webpack = {};
+    if (!webpackConfig.webpack.alias) webpackConfig.webpack.alias = {};
+    webpackConfig.webpack.alias['@'] = path.resolve(__dirname, 'src');
   } catch (err) {
     if (err.code === 'MODULE_NOT_FOUND' && err.message.includes('@emergentbase/visual-edits/craco')) {
       console.warn(
