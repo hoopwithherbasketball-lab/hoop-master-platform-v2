@@ -12,6 +12,7 @@ interface ReadinessStats {
 }
 
 export default function NILOverview() {
+  const partnerPortalUrl = (import.meta as any).env.VITE_PARTNER_PORTAL_URL || 'http://localhost:3002';
   const [summaries, setSummaries] = useState([
     { title: 'Brand Partnerships', value: 0, note: 'Active and pending deals' },
     { title: 'Opportunity Matches', value: 0, note: 'Best-fit NIL partners found' },
@@ -108,7 +109,7 @@ export default function NILOverview() {
               Manage Partners
             </Link>
             <a 
-              href="http://localhost:3002" 
+              href={partnerPortalUrl} 
               target="_blank" 
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-medium transition-colors"

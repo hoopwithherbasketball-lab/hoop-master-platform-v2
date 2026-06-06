@@ -6,6 +6,7 @@ import { ExternalLink } from 'lucide-react';
 export default function PartnerPortalIntegration() {
   const [partners, setPartners] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const partnerPortalUrl = (import.meta as any).env.VITE_PARTNER_PORTAL_URL || 'http://localhost:3002';
 
   useEffect(() => {
     async function load() {
@@ -35,7 +36,7 @@ export default function PartnerPortalIntegration() {
           <p className="text-sm text-blue-700">External partners can sign up at the dedicated portal url.</p>
         </div>
         <a 
-          href="http://localhost:3002" 
+          href={partnerPortalUrl} 
           target="_blank" 
           rel="noopener noreferrer" 
           className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm font-medium transition-colors"
