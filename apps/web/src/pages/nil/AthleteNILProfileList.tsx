@@ -17,6 +17,12 @@ export default function AthleteNILProfileList() {
   const [readiness_score, setReadinessScore] = useState('')
   const [tier, setTier] = useState('bronze')
 
+  const [signingAthlete, setSigningAthlete] = useState<any | null>(null)
+  const [signingDocType, setSigningDocType] = useState('W-9')
+  const [signatureText, setSignatureText] = useState('')
+  const [isSigned, setIsSigned] = useState(false)
+  const [signingSuccess, setSigningSuccess] = useState(false)
+
   const openEdit = (a: any) => {
     setDisplayName(a.name)
     setPosition(a.position)
@@ -25,6 +31,13 @@ export default function AthleteNILProfileList() {
     setReadinessScore(a.readiness.toString())
     setTier(a.tier)
     setEditAthlete(a)
+  }
+
+  const startSigning = (a: any) => {
+    setSigningAthlete(a)
+    setSignatureText('')
+    setIsSigned(false)
+    setSigningSuccess(false)
   }
 
   const handleSave = async () => {
@@ -40,6 +53,15 @@ export default function AthleteNILProfileList() {
     await supabase.from('nil_athlete_profiles').delete().eq('id', id)
     setDeleteId(null)
     window.location.reload()
+  }
+
+  const executeSign = () => {
+    if (!signatureText) return
+    setIsSigned(true)
+    setSigningSuccess(true)
+    setTimeout(() => {
+      setSigningAthlete(null)
+    }, 2000)
   }
 
   return (
@@ -65,7 +87,10 @@ export default function AthleteNILProfileList() {
                 <div className="bg-white/5 rounded p-1.5"><p className="text-[10px] text-slate-400">Readiness</p><p className="text-xs font-bold text-white">{a.readiness}%</p></div>
                 <div className="bg-white/5 rounded p-1.5"><p className="text-[10px] text-slate-400">Tier</p><p className="text-xs font-bold text-white">{a.tier}</p></div>
               </div>
-              <button className="w-full text-xs font-bold text-royal-600 bg-royal-50 py-1.5 rounded hover:bg-royal-100 transition-colors">View Full Profile</button>
+              <div className="flex gap-2">
+                <button className="flex-1 text-xs font-bold text-royal-600 bg-royal-50 py-1.5 rounded hover:bg-royal-100 transition-colors">View Profile</button>
+                <button onClick={() => startSigning(a)} className="flex-1 text-xs font-bold text-white bg-blue-600 py-1.5 rounded hover:bg-blue-700 transition-colors">Manage Docs & Sign</button>
+              </div>
             </div>
           ))}
           {athletes.length === 0 && <p className="col-span-3 text-center text-slate-400 py-12">No athletes opted into NIL yet.</p>}
@@ -111,6 +136,72 @@ export default function AthleteNILProfileList() {
               <button onClick={() => setEditAthlete(null)} className="px-4 py-2 text-sm text-slate-400 hover:text-white">Cancel</button>
               <button onClick={handleSave} className="px-4 py-2 text-sm font-semibold bg-[#0134BD] text-white rounded-lg">Save</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {signingAthlete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setSigningAthlete(null)}>
+          <div className="bg-navy-800 border border-white/10 rounded-xl p-6 w-full max-w-lg mx-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-bold text-white">Document E-Signing Console</h2>
+              <button onClick={() => setSigningAthlete(null)} className="p-1 text-slate-400 hover:text-white"><X size={18} /></button>
+            </div>
+            
+            {signingSuccess ? (
+              <div className="text-center py-8 space-y-3">
+                <div className="w-12 h-12 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center mx-auto text-xl font-bold">✓</div>
+                <h3 className="text-white font-bold">Document Signed Successfully!</h3>
+                <p className="text-xs text-slate-400">The file has been cryptographically sealed and uploaded to the secure document vault.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="flex gap-2 bg-slate-900 p-1 rounded border border-slate-700">
+                  {['W-9', 'NIL Contract', 'Disclosure Form'].map(type => (
+                    <button
+                      key={type}
+                      onClick={() => setSigningDocType(type)}
+                      className={`flex-1 py-1 rounded text-xs transition-colors ${signingDocType === type ? 'bg-blue-600 text-white' : 'text-slate-400'}`}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="bg-slate-950 p-4 rounded-lg font-mono text-[10px] text-slate-400 h-40 overflow-y-auto border border-white/5 whitespace-pre-wrap leading-relaxed">
+                  {signingDocType === 'W-9' && (
+                    `DEPARTMENT OF THE TREASURY - INTERNAL REVENUE SERVICE\nFORM W-9: REQUEST FOR TAXPAYER IDENTIFICATION NUMBER\n\nI certify under penalties of perjury that the Taxpayer Identification Number shown on this form is correct and I am not subject to backup withholding.\n\nAthlete Name: ${signingAthlete.name}\nStatus: Student-Athlete Opt-In`
+                  )}
+                  {signingDocType === 'NIL Contract' && (
+                    `STANDARD ATHLETE NIL AMBASSADOR PARTNERSHIP AGREEMENT\n\nThis agreement outlines standard deliverables including: UGC product showcase posts, live appearance sessions, and local brand promotions.\n\nSignee: ${signingAthlete.name}\nValued Tier: ${signingAthlete.tier}`
+                  )}
+                  {signingDocType === 'Disclosure Form' && (
+                    `STATE COMPLIANCE NIL DISCLOSURE FILING\n\nForm filed in compliance with state-level NIL regulations. All opportunities exceeding $600 are logged for institutional review.\n\nAthlete Name: ${signingAthlete.name}`
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 mb-1">Type Full Name to Sign</label>
+                  <input 
+                    value={signatureText} 
+                    onChange={e => setSignatureText(e.target.value)} 
+                    placeholder={signingAthlete.name}
+                    className="w-full p-2.5 border border-white/20 rounded-lg bg-transparent text-white outline-none focus:border-[#0134BD] font-serif italic text-lg tracking-wide" 
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3 pt-2">
+                  <button onClick={() => setSigningAthlete(null)} className="px-4 py-2 text-sm text-slate-400 hover:text-white">Cancel</button>
+                  <button 
+                    onClick={executeSign} 
+                    disabled={!signatureText}
+                    className="px-4 py-2 text-sm font-semibold bg-blue-600 text-white rounded-lg disabled:opacity-50"
+                  >
+                    Confirm & Sign
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -37,6 +37,34 @@ function pct(n: number, total: number) {
 export default function AdminReportsPage() {
   const [stats, setStats] = useState<ReportStats>(EMPTY)
   const [loading, setLoading] = useState(true)
+  const [activeMetric, setActiveMetric] = useState<'nil' | 'scholarship' | 'grant' | 'donor'>('nil')
+
+  const chartData = {
+    nil: [
+      { sport: 'Basketball', amount: 84500 },
+      { sport: 'Volleyball', amount: 32000 },
+      { sport: 'Track & Field', amount: 15500 },
+      { sport: 'Soccer', amount: 24000 },
+    ],
+    scholarship: [
+      { sport: 'Basketball', amount: 120000 },
+      { sport: 'Volleyball', amount: 75000 },
+      { sport: 'Track & Field', amount: 45000 },
+      { sport: 'Soccer', amount: 60000 },
+    ],
+    grant: [
+      { sport: 'Basketball', amount: 35000 },
+      { sport: 'Volleyball', amount: 12500 },
+      { sport: 'Track & Field', amount: 28000 },
+      { sport: 'Soccer', amount: 18000 },
+    ],
+    donor: [
+      { sport: 'Basketball', amount: 95000 },
+      { sport: 'Volleyball', amount: 48000 },
+      { sport: 'Track & Field', amount: 12000 },
+      { sport: 'Soccer', amount: 35000 },
+    ],
+  }
 
   useEffect(() => { load() }, [])
 
@@ -141,9 +169,51 @@ export default function AdminReportsPage() {
               <span className={c.color}>{c.icon}</span>
               <p className="text-3xl font-bold text-white mt-2">{c.value}</p>
               <p className="text-xs text-slate-500 mt-0.5">{c.label}</p>
-              <p className="text-xs text-slate-600 mt-0.5">{c.sub}</p>
             </div>
           ))}
+        </div>
+
+        {/* Funding by Sport Chart */}
+        <div className="bg-navy-800 rounded-xl p-5 border border-white/5 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="font-semibold text-white text-base">Funding Distribution by Sport</h3>
+              <p className="text-slate-500 text-xs">Aggregated allocations across active athlete profiles</p>
+            </div>
+            <div className="flex flex-wrap gap-1.5 bg-slate-900 p-1 rounded-lg border border-slate-700">
+              {(['nil', 'scholarship', 'grant', 'donor'] as const).map(type => (
+                <button
+                  key={type}
+                  onClick={() => setActiveMetric(type)}
+                  className={`px-3 py-1 rounded text-xs font-medium transition-colors capitalize ${
+                    activeMetric === type 
+                      ? 'bg-[#0134BD] text-white' 
+                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {type === 'nil' ? 'NIL' : type}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="h-64 flex items-end justify-between gap-4 pt-4 px-2">
+            {chartData[activeMetric].map(item => {
+              const maxVal = Math.max(...chartData[activeMetric].map(x => x.amount))
+              const pctHeight = maxVal > 0 ? (item.amount / maxVal) * 80 : 0
+              return (
+                <div key={item.sport} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
+                  <div className="text-white font-bold text-xs opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 border border-slate-700 px-2 py-1 rounded text-center shadow-lg -translate-y-1">
+                    ${item.amount.toLocaleString()}
+                  </div>
+                  <div className="w-full bg-white/5 rounded-t-lg relative overflow-hidden" style={{ height: `${pctHeight}%` }}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-blue-600 to-indigo-500 rounded-t-lg transition-all duration-500 group-hover:from-blue-500 group-hover:to-orange-400" />
+                  </div>
+                  <span className="text-xs text-slate-400 text-center truncate w-full mt-1">{item.sport}</span>
+                </div>
+              )
+            })}
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">

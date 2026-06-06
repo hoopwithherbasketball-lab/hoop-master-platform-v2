@@ -70,6 +70,7 @@ import AdminFundingPage from './pages/admin/AdminFundingPage'
 import AdminEvaluationsPage from './pages/admin/AdminEvaluationsPage'
 import AdminPlayerDetailPage from './pages/admin/AdminPlayerDetailPage'
 import AdminReportsPage from './pages/admin/AdminReportsPage'
+import AdminAuditLogsPage from './pages/admin/AdminAuditLogsPage'
 import AdminTrainingPage from './pages/admin/AdminTrainingPage'
 import AdminIntakeSubmissionsPage from './pages/admin/AdminIntakeSubmissionsPage'
 import AdminCommunityFeedPage from './pages/admin/AdminCommunityFeedPage'
@@ -150,6 +151,7 @@ function AppRoutes() {
       <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
       <Route path="/admin/players/:id" element={<ProtectedRoute role="admin"><AdminPlayerDetailPage /></ProtectedRoute>} />
       <Route path="/admin/reports" element={<ProtectedRoute role="admin"><AdminReportsPage /></ProtectedRoute>} />
+      <Route path="/admin/crm-audit" element={<ProtectedRoute role="admin"><AdminAuditLogsPage /></ProtectedRoute>} />
       <Route path="/admin/training" element={<ProtectedRoute role="admin"><AdminTrainingPage /></ProtectedRoute>} />
       <Route path="/admin/intake" element={<ProtectedRoute role="admin"><AdminIntakeSubmissionsPage /></ProtectedRoute>} />
       <Route path="/admin/feed" element={<ProtectedRoute role="admin"><AdminCommunityFeedPage /></ProtectedRoute>} />

@@ -47,6 +47,7 @@ const adminNav: NavItem[] = [
   { label: 'Audits', to: '/admin/audits', icon: <ClipboardList size={16} /> },
   { label: 'Players', to: '/admin/players', icon: <User size={16} /> },
   { label: 'Reports', to: '/admin/reports', icon: <BarChart3 size={16} /> },
+  { label: 'Audit Trail', to: '/admin/crm-audit', icon: <ArrowLeftRight size={16} /> },
   { label: 'Training Content', to: '/admin/training', icon: <BookOpen size={16} /> },
   { label: 'Intake Submissions', to: '/admin/intake', icon: <User size={16} /> },
   { label: 'Community Feed', to: '/admin/feed', icon: <MessageSquare size={16} /> },
