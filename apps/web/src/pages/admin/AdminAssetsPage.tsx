@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../../lib/supabase'
+import { getCdnUrl } from '../../lib/cdn'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import { Plus, Edit3, Trash2, X, FileVideo } from 'lucide-react'
 
@@ -23,6 +24,7 @@ export default function AdminAssetsPage() {
   const [saving, setSaving] = useState(false)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [tagInput, setTagInput] = useState('')
+  const [uploading, setUploading] = useState(false)
 
   const load = useCallback(async () => {
     try {
@@ -46,6 +48,24 @@ export default function AdminAssetsPage() {
       setForm(p => ({ ...p, tags: [...p.tags, tagInput.trim()] }))
       setTagInput('')
     }
+  }
+
+  const uploadFile = async (file: File, field: 'thumbnail_url' | 'storage_path') => {
+    setUploading(true)
+    try {
+      const bucket = form.category === 'training' 
+        ? (field === 'thumbnail_url' ? 'training-thumbnails' : 'training-videos')
+        : (field === 'thumbnail_url' ? `channel-${form.category}-thumbnails` : `channel-${form.category}-videos`)
+      
+      const ext = file.name.split('.').pop()
+      const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      const { error } = await supabase.storage.from(bucket).upload(path, file)
+      if (error) { console.error('upload error:', error); setUploading(false); return }
+      
+      const cdnUrl = getCdnUrl(bucket, path)
+      setForm(prev => ({ ...prev, [field]: cdnUrl }))
+    } catch (e) { console.error('uploadFile:', e) }
+    setUploading(false)
   }
 
   const save = async () => {
@@ -145,12 +165,24 @@ export default function AdminAssetsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-slate-400 mb-1">Storage Path (URL)</label>
-                <input value={form.storage_path} onChange={e => setForm(p => ({ ...p, storage_path: e.target.value }))} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+                <label className="block text-xs text-slate-400 mb-1">Storage Path (Video URL)</label>
+                <div className="flex gap-2 items-center">
+                  <input value={form.storage_path} onChange={e => setForm(p => ({ ...p, storage_path: e.target.value }))} className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+                  <label className="cursor-pointer px-3 py-2 bg-white/10 rounded-lg text-xs text-slate-300 hover:bg-white/20 whitespace-nowrap">
+                    {uploading ? '...' : 'Upload'}
+                    <input type="file" accept="video/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'storage_path') }} />
+                  </label>
+                </div>
               </div>
               <div>
                 <label className="block text-xs text-slate-400 mb-1">Thumbnail URL</label>
-                <input value={form.thumbnail_url} onChange={e => setForm(p => ({ ...p, thumbnail_url: e.target.value }))} className="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+                <div className="flex gap-2 items-center">
+                  <input value={form.thumbnail_url} onChange={e => setForm(p => ({ ...p, thumbnail_url: e.target.value }))} className="flex-1 bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white" />
+                  <label className="cursor-pointer px-3 py-2 bg-white/10 rounded-lg text-xs text-slate-300 hover:bg-white/20 whitespace-nowrap">
+                    {uploading ? '...' : 'Upload'}
+                    <input type="file" accept="image/*" className="hidden" onChange={e => { const f = e.target.files?.[0]; if (f) uploadFile(f, 'thumbnail_url') }} />
+                  </label>
+                </div>
               </div>
               <div>
                 <label className="block text-xs text-slate-400 mb-1">Tags</label>
