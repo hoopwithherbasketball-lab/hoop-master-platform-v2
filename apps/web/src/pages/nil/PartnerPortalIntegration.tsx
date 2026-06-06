@@ -6,7 +6,20 @@ import { ExternalLink } from 'lucide-react';
 export default function PartnerPortalIntegration() {
   const [partners, setPartners] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const partnerPortalUrl = (import.meta as any).env.VITE_PARTNER_PORTAL_URL || 'http://localhost:3002';
+
+  const getPartnerPortalUrl = () => {
+    if (typeof window === 'undefined') return 'https://platform.elitegbb.com';
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return (import.meta as any).env.VITE_PARTNER_PORTAL_URL || 'http://localhost:3002';
+    }
+    if (hostname === 'app.elitegbb.com') {
+      return 'https://platform.elitegbb.com';
+    }
+    return 'https://platform.elitegbb.com';
+  };
+
+  const partnerPortalUrl = getPartnerPortalUrl();
 
   useEffect(() => {
     async function load() {
