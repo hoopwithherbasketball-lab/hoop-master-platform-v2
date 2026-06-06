@@ -4,8 +4,12 @@ import { supabase } from '@hoop-master/supabase'
 export interface NILCompany {
   id: string
   name: string
-  category: string
-  stage: string
+  industry: string
+  contact_name: string
+  contact_email: string
+  website: string
+  notes: string
+  status: string
 }
 
 export function useNILCompanies() {
@@ -16,7 +20,16 @@ export function useNILCompanies() {
     const fetch = async () => {
       try {
         const { data } = await supabase.from('nil_companies').select('*').order('name')
-        setCompanies((data ?? []).map(c => ({ id: c.id, name: c.name, category: c.category, stage: c.stage })))
+        setCompanies((data ?? []).map(c => ({
+          id: c.id,
+          name: c.name,
+          industry: c.industry,
+          contact_name: c.contact_name,
+          contact_email: c.contact_email,
+          website: c.website,
+          notes: c.notes,
+          status: c.status
+        })))
       } catch (e) { console.error('useNILCompanies:', e) }
       setLoading(false)
     }

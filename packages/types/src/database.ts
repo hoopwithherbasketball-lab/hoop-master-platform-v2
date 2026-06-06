@@ -381,26 +381,29 @@ export interface Lead {
   created_at: string
 }
 
+export type NILCompanyStatus = 'prospect' | 'outreach' | 'negotiating' | 'partner' | 'inactive'
+
 export interface NILCompany {
   id: string
   name: string
-  category: string
-  stage: NILCompanyStage
-  logo_url: string
+  industry: string
+  contact_name: string
+  contact_email: string
   website: string
-  description: string
+  notes: string
+  status: NILCompanyStatus
   created_at: string
   updated_at: string
 }
 
 export interface NILOpportunity {
   id: string
-  athlete_name: string
-  brand: string
-  value_cents: number
-  status: NILOpportunityStatus
-  athlete_profile_id: string | null
   company_id: string | null
+  title: string
+  description: string
+  value_cents: number
+  deadline: string | null
+  status: NILOpportunityStatus
   created_at: string
   updated_at: string
 }
@@ -419,14 +422,16 @@ export interface NILAthleteProfile {
   updated_at: string
 }
 
+export type NILOutreachStatus = 'draft' | 'sent' | 'replied' | 'ignored'
+
 export interface NILOutreach {
   id: string
-  from_entity: string
-  subject: string
-  body: string
-  status: 'open' | 'pending' | 'replied' | 'closed'
-  athlete_profile_id: string | null
+  athlete_id: string | null
   company_id: string | null
+  subject: string
+  status: NILOutreachStatus
+  sent_at: string | null
+  notes: string
   created_at: string
 }
 
