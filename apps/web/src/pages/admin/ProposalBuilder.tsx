@@ -20,17 +20,37 @@ export default function ProposalBuilder() {
   const [generatedLink, setGeneratedLink] = useState('')
 
   useEffect(() => {
-    async function load() {
+    async function init() {
+      // 1. Debugging Session
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log("--- AUTH DEBUG ---");
+      console.log("Session:", session);
+      console.log("Access Token Present:", !!session?.access_token);
+
+      if (!session) {
+        console.error("No active session detected! You must be logged in.");
+        // Optional: Redirect to login if not in production
+        return; 
+      }
+
+      // 2. Load Data only if session exists
       const [pRes, iRes] = await Promise.all([
         supabase.from('crm_partners').select('id, business_name').order('business_name'),
         supabase.from('sponsorship_inventory').select('id, slot_name, price, is_available').eq('is_available', true)
-      ])
-      if (pRes.data) setPartners(pRes.data)
-      if (iRes.data) setInventory(iRes.data)
-      setLoading(false)
+      ]);
+
+      if (pRes.error || iRes.error) {
+        console.error("Fetch Error:", pRes.error || iRes.error);
+        return;
+      }
+
+      if (pRes.data) setPartners(pRes.data);
+      if (iRes.data) setInventory(iRes.data);
+      setLoading(false);
     }
-    load()
-  }, [])
+
+    init();
+  }, []);
 
   const handleToggleSlot = (id: string) => {
     setSelectedSlots(prev => prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id])
