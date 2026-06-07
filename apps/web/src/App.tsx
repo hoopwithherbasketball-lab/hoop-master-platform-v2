@@ -186,7 +186,6 @@ function AppRoutes() {
       <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
       <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
       <Route path="/nil/partner-portal" element={<ProtectedRoute role="admin"><PartnerPortalIntegration /></ProtectedRoute>} />
-      <Route path="/nil/proposals" element={<ProtectedRoute role="admin"><ProposalBuilderPage /></ProtectedRoute>} />
       <Route path="/nil/proposals/:id/edit" element={<ProtectedRoute role="admin"><ProposalEditor /></ProtectedRoute>} />
       <Route path="/elitegbb" element={<ProtectedRoute><EliteGBBHubPage /></ProtectedRoute>} />
       <Route path="/elitegbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
