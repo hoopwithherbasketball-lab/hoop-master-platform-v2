@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight, Award } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight, Award, Sparkles } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,6 +19,7 @@ const playerNav: NavItem[] = [
   { label: 'Resources', to: '/dashboard/resources', icon: <BookOpen size={16} /> },
   { label: 'Parent Center', to: '/dashboard/parent', icon: <GraduationCap size={16} /> },
   { label: 'Funding & Grants', to: '/dashboard/funding', icon: <Award size={16} /> },
+  { label: 'NIL Roadmap', to: '/dashboard/nil/roadmap', icon: <Sparkles size={16} /> },
 ]
 
 const coachNav: NavItem[] = [

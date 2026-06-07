@@ -36,6 +36,7 @@ import OnePagerPage from './pages/dashboard/OnePagerPage'
 import ClassTrackingPage from './pages/dashboard/ClassTrackingPage'
 import ResourcesDashboardPage from './pages/dashboard/ResourcesDashboardPage'
 import ParentDashboardPage from './pages/dashboard/ParentDashboardPage'
+import NILRoadmapPage from './pages/dashboard/NILRoadmapPage'
 import CoachDashboard from './pages/coach/CoachDashboard'
 import CoachSearchPage from './pages/coach/CoachSearchPage'
 import CoachShortlistPage from './pages/coach/CoachShortlistPage'
@@ -136,6 +137,7 @@ function AppRoutes() {
       <Route path="/dashboard/resources" element={<ProtectedRoute><ResourcesDashboardPage /></ProtectedRoute>} />
       <Route path="/dashboard/parent" element={<ProtectedRoute><ParentDashboardPage /></ProtectedRoute>} />
       <Route path="/dashboard/funding" element={<ProtectedRoute><FundingPage /></ProtectedRoute>} />
+      <Route path="/dashboard/nil/roadmap" element={<ProtectedRoute><NILRoadmapPage /></ProtectedRoute>} />
       <Route path="/coach" element={<ProtectedRoute><CoachDashboard /></ProtectedRoute>} />
       <Route path="/coach/search" element={<ProtectedRoute><CoachSearchPage /></ProtectedRoute>} />
       <Route path="/coach/shortlist" element={<ProtectedRoute><CoachShortlistPage /></ProtectedRoute>} />
