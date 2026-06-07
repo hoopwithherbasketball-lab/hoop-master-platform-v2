@@ -177,7 +177,7 @@ function AppRoutes() {
       <Route path="/admin/pages" element={<ProtectedRoute role="admin"><AdminPageBuilder /></ProtectedRoute>} />
       <Route path="/admin/pages/:slug" element={<ProtectedRoute role="admin"><AdminPageEditor /></ProtectedRoute>} />
       <Route path="/admin/sponsors" element={<ProtectedRoute role="admin"><SponsorsDashboard /></ProtectedRoute>} />
-      <Route path="/admin/proposals" element={<ProtectedRoute role="admin"><ProposalBuilder /></ProtectedRoute>} />
+      <Route path="/nil/proposals" element={<ProtectedRoute role="admin"><ProposalBuilder /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
