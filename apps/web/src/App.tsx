@@ -90,6 +90,7 @@ import EmbedPlayerPage from './pages/public/EmbedPlayerPage'
 import EmbedDocsPage from './pages/public/EmbedDocsPage'
 import AdminPageBuilder from './pages/admin/AdminPageBuilder'
 import AdminPageEditor from './pages/admin/AdminPageEditor'
+import SponsorsDashboard from './pages/admin/SponsorsDashboard'
 import DynamicPage from './pages/public/DynamicPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
@@ -172,6 +173,7 @@ function AppRoutes() {
       <Route path="/admin/tenants" element={<ProtectedRoute role="admin"><AdminTenantsPage /></ProtectedRoute>} />
       <Route path="/admin/pages" element={<ProtectedRoute role="admin"><AdminPageBuilder /></ProtectedRoute>} />
       <Route path="/admin/pages/:slug" element={<ProtectedRoute role="admin"><AdminPageEditor /></ProtectedRoute>} />
+      <Route path="/admin/sponsors" element={<ProtectedRoute role="admin"><SponsorsDashboard /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
