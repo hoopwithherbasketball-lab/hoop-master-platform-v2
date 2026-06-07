@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../lib/auth'
 import { PageShell } from '@hoop-master/ui'
 import { CircleCheck as CheckCircle, ShoppingBag, ArrowRight, Loader as Loader2 } from 'lucide-react'
+import { SERVICE_CONFIGS, type Deliverable } from './ServicesPage'
 
 interface ServiceOffer {
   id: string
@@ -11,7 +12,6 @@ interface ServiceOffer {
   slug: string
   description: string | null
   price_cents: number
-  features: string[] | null
 }
 
 type CheckoutState = 'form' | 'submitting' | 'success' | 'error'
@@ -35,10 +35,13 @@ export default function CheckoutPage() {
     if (!slug) { setLoadingOffer(false); return }
     supabase
       .from('service_offers')
-      .select('id, name, slug, description, price_cents, features')
+      .select('id, name, slug, description, price_cents')
       .eq('slug', slug)
+      .eq('active', true)
+      .limit(1)
       .maybeSingle()
-      .then(({ data }) => {
+      .then(({ data, error }) => {
+        if (error) console.error('[CheckoutPage] DB Error loading offer:', error.message)
         setOffer(data)
         setLoadingOffer(false)
       })
@@ -144,7 +147,12 @@ export default function CheckoutPage() {
     )
   }
 
-  const features: string[] = Array.isArray(offer.features) ? offer.features : []
+  const config = SERVICE_CONFIGS[offer.slug]
+  const renderFeatures = config?.deliverables || [
+    { text: 'Professional evaluation and support' },
+    { text: 'Customized strategy session' },
+    { text: 'Ongoing coach communication' }
+  ]
 
   return (
     <PageShell title={`Checkout — ${offer.name}`} description={`Complete your secure checkout for ${offer.name}.`} badge="Checkout">
@@ -159,16 +167,14 @@ export default function CheckoutPage() {
             </div>
             <span className="text-2xl font-bold text-[#FB6C1D] shrink-0">{formatPrice(offer.price_cents)}</span>
           </div>
-          {features.length > 0 && (
-            <div className="space-y-2 mb-4">
-              {features.map((f: string) => (
-                <div key={f} className="flex items-center text-sm text-slate-400 gap-2">
-                  <CheckCircle size={14} className="text-[#0134BD] shrink-0" />
-                  {f}
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="space-y-2 mb-4">
+            {renderFeatures.map((d: Deliverable, i: number) => (
+              <div key={i} className="flex items-center text-sm text-slate-400 gap-2">
+                <CheckCircle size={14} className="text-[#0134BD] shrink-0" />
+                <span className={d.isKeyFeature ? 'font-semibold text-white' : ''}>{d.text}</span>
+              </div>
+            ))}
+          </div>
           <div className="flex items-center justify-between pt-4 border-t border-white/10">
             <span className="font-semibold text-white">Total</span>
             <span className="text-2xl font-bold text-white">{formatPrice(offer.price_cents)}</span>

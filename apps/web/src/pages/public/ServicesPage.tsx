@@ -38,7 +38,7 @@ interface DBServiceOffer {
 }
 
 // --- Configuration ---
-const SERVICE_CONFIGS: Record<string, { family: ProductFamily; tag?: string; description?: string; deliverables: Deliverable[] }> = {
+export const SERVICE_CONFIGS: Record<string, { family: ProductFamily; tag?: string; description?: string; deliverables: Deliverable[] }> = {
   // Quick Wins
   'one-pager': {
     family: 'QUICK_WINS',
