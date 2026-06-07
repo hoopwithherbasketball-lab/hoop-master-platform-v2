@@ -67,6 +67,42 @@ const TEMPLATE_ICONS: Record<string, any> = {
   "media-content": Film,
   "apparel-equipment": Shirt,
   "nil-partnership": Star,
+  "showcase-event": Trophy,
+  "championship-series": Trophy,
+  "all-star-game": Trophy,
+  "recruiting-circuit": Trophy,
+  "travel-tournament": Trophy,
+  "social-media-partner": Film,
+  "video-production": Film,
+  "podcast-partner": Film,
+  "streaming-partner": Film,
+  "email-marketing": Mail,
+  "academic-excellence": Heart,
+  "leadership-development": Heart,
+  "skills-camp": Trophy,
+  "mentorship-program": Heart,
+  "college-prep": Heart,
+  "nutrition-partner": Heart,
+  "physical-therapy": Activity,
+  "mental-health": Heart,
+  "fitness-training": Activity,
+  "career-readiness": Building2,
+  "financial-literacy": BarChart3,
+  "entrepreneurship-partner": Building2,
+  "womens-empowerment": Heart,
+  "diversity-inclusion": Heart,
+  "community-outreach": Heart,
+  "youth-development": Heart,
+  "footwear-partner": Shirt,
+  "technology-partner": Building2,
+  "transportation-partner": Building2,
+  "housing-partner": Building2,
+  "player-of-month": Trophy,
+  "coach-award": Trophy,
+  "scholar-athlete": Trophy,
+  "legacy-partner": Trophy,
+  "performance-analytics": BarChart3,
+  "recruiting-data": BarChart3,
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -132,6 +168,303 @@ const STATIC_TEMPLATES = [
     description: "Partner with HWH featured athletes for authentic community campaigns.",
     default_tiers: [
       { tier_name: "NIL Brand Ambassador", commitment: "Provide monthly financial support or product compensation.", deliverables: "Social media posts, event appearances, and co-branded outreach campaigns." }
+    ]
+  },
+  // Event & Tournament Partners
+  {
+    id: "showcase-event",
+    name: "Showcase Event Partner",
+    description: "Sponsor specific basketball showcases/tournaments",
+    default_tiers: [
+      { tier_name: "Showcase Event Sponsor", commitment: "Sponsorship of $2,500 per tournament.", deliverables: "Title placement on tournament courts, banners, and player registration page." }
+    ]
+  },
+  {
+    id: "championship-series",
+    name: "Championship Series Partner",
+    description: "Fund season-ending championship events",
+    default_tiers: [
+      { tier_name: "Championship Series Title Partner", commitment: "$5,000 seasonal contribution.", deliverables: "Exclusive naming rights, championship trophy presentation branding, and VIP seating." }
+    ]
+  },
+  {
+    id: "all-star-game",
+    name: "All-Star Game Partner",
+    description: "Sponsor annual all-star exhibitions",
+    default_tiers: [
+      { tier_name: "All-Star Game Sponsor", commitment: "$3,000 contribution.", deliverables: "Logo on all-star selection jerseys, MVP trophy sponsorship, and halftime show activation." }
+    ]
+  },
+  {
+    id: "recruiting-circuit",
+    name: "Recruiting Circuit Partner",
+    description: "Support multi-game recruiting circuits",
+    default_tiers: [
+      { tier_name: "Circuit Partner", commitment: "$4,500 contribution.", deliverables: "Logo on all college scout packets, live stream overlay integration, and court-side banners." }
+    ]
+  },
+  {
+    id: "travel-tournament",
+    name: "Travel Tournament Partner",
+    description: "Fund out-of-state travel competition fees",
+    default_tiers: [
+      { tier_name: "Travel Scholarship Partner", commitment: "$2,000 per team travel.", deliverables: "Logo on team travel gear, team social media travel vlog updates, and post-tourney photo recap." }
+    ]
+  },
+  // Digital & Content Partners
+  {
+    id: "social-media-partner",
+    name: "Social Media Partner",
+    description: "Sponsor Instagram/TikTok content creation",
+    default_tiers: [
+      { tier_name: "Official Social Sponsor", commitment: "$1,500 per month.", deliverables: "Sponsor tag in all weekly reels, stories, and player profile highlight reels." }
+    ]
+  },
+  {
+    id: "video-production",
+    name: "Video Production Partner",
+    description: "Fund highlight reels and game footage",
+    default_tiers: [
+      { tier_name: "Media Highlight Sponsor", commitment: "$2,000 seasonal funding.", deliverables: "Lower third logo watermark on all highlight reels, youtube description link." }
+    ]
+  },
+  {
+    id: "podcast-partner",
+    name: "Podcast Partner",
+    description: "Sponsor Hoop With Her audio content",
+    default_tiers: [
+      { tier_name: "Podcast Series Sponsor", commitment: "$500 per episode series.", deliverables: "30-second audio read-out mid-roll, link in episode show notes, and overlay banner." }
+    ]
+  },
+  {
+    id: "streaming-partner",
+    name: "Streaming Partner",
+    description: "Support live game streaming on Roku/channel",
+    default_tiers: [
+      { tier_name: "Official Stream Sponsor", commitment: "$3,500 per season.", deliverables: "Watermarked logo on streams, commercial breaks, pre-roll video ads." }
+    ]
+  },
+  {
+    id: "email-marketing",
+    name: "Email Marketing Partner",
+    description: "Sponsor newsletter communications",
+    default_tiers: [
+      { tier_name: "Newsletter Sponsor", commitment: "$1,000 annual fee.", deliverables: "Header banner logo on all weekly HWH emails sent to parents and scouts." }
+    ]
+  },
+  // Education & Development Partners
+  {
+    id: "academic-excellence",
+    name: "Academic Excellence Partner",
+    description: "Support student-athlete tutoring/mentorship",
+    default_tiers: [
+      { tier_name: "Academic Success Partner", commitment: "$1,500 academic year.", deliverables: "Sponsor name on scholar-athlete report cards, recognition at awards banquet." }
+    ]
+  },
+  {
+    id: "leadership-development",
+    name: "Leadership Development Partner",
+    description: "Fund coach training and athlete workshops",
+    default_tiers: [
+      { tier_name: "Leadership Workshop Partner", commitment: "$2,000 per program.", deliverables: "Keynote presentation speaking slot, workshop workbook branding." }
+    ]
+  },
+  {
+    id: "skills-camp",
+    name: "Skills Camp Partner",
+    description: "Sponsor off-season training camps",
+    default_tiers: [
+      { tier_name: "Skills Camp Partner", commitment: "$1,500 per camp.", deliverables: "Logo on camp t-shirts, promotional flyer inclusion, and court banner." }
+    ]
+  },
+  {
+    id: "mentorship-program",
+    name: "Mentorship Program Partner",
+    description: "Support athlete-to-athlete mentoring",
+    default_tiers: [
+      { tier_name: "Mentorship Circle Partner", commitment: "$1,200 annual fee.", deliverables: "Logo on mentoring journals, featured placement in parent community portal." }
+    ]
+  },
+  {
+    id: "college-prep",
+    name: "College Prep Partner",
+    description: "Fund SAT/ACT prep and college application assistance",
+    default_tiers: [
+      { tier_name: "College Bound Partner", commitment: "$2,500 annual fund.", deliverables: "Sponsorship recognition during college readiness workshops, web bio link." }
+    ]
+  },
+  // Health & Wellness Partners
+  {
+    id: "nutrition-partner",
+    name: "Nutrition Partner",
+    description: "Provide healthy meals/snacks for teams",
+    default_tiers: [
+      { tier_name: "Official Nutrition Sponsor", commitment: "Healthy snack bars or meals for 150 athletes per tournament.", deliverables: "Product sampling booth, custom coupon cards for parents, logo on nutrition materials." }
+    ]
+  },
+  {
+    id: "physical-therapy",
+    name: "Physical Therapy Partner",
+    description: "Fund injury prevention/recovery programs",
+    default_tiers: [
+      { tier_name: "Recovery Station Sponsor", commitment: "On-site athletic trainer or recovery tent at tournaments.", deliverables: "PT station banner, safety/recovery tips flyer co-branding, web banner." }
+    ]
+  },
+  {
+    id: "mental-health",
+    name: "Mental Health Partner",
+    description: "Support athlete wellness counseling",
+    default_tiers: [
+      { tier_name: "Mindfulness & Mental Health Sponsor", commitment: "$2,000 program fund.", deliverables: "Logo on HWH breathing/mindfulness apps guidelines, guest blog contribution." }
+    ]
+  },
+  {
+    id: "fitness-training",
+    name: "Fitness Training Partner",
+    description: "Sponsor strength & conditioning programs",
+    default_tiers: [
+      { tier_name: "Strength Partner", commitment: "Provide training routines or off-season gym access.", deliverables: "Logo on training charts, social media training tip videos integration." }
+    ]
+  },
+  // Career & Life Skills Partners
+  {
+    id: "career-readiness",
+    name: "Career Readiness Partner",
+    description: "Fund job shadowing and internship programs",
+    default_tiers: [
+      { tier_name: "Career Readiness Partner", commitment: "Provide 2 paid micro-internships for collegiate athletes.", deliverables: "Spotlight on LinkedIn and website, featured panel invitation." }
+    ]
+  },
+  {
+    id: "financial-literacy",
+    name: "Financial Literacy Partner",
+    description: "Support NIL education and money management",
+    default_tiers: [
+      { tier_name: "NIL Financial Partner", commitment: "$2,500 workshop series.", deliverables: "Sponsor logo on financial literacy booklets, web bio feature link." }
+    ]
+  },
+  {
+    id: "entrepreneurship-partner",
+    name: "Entrepreneurship Partner",
+    description: "Sponsor business workshops for athletes",
+    default_tiers: [
+      { tier_name: "Youth Entrepreneurship Sponsor", commitment: "$3,000 funding.", deliverables: "Keynote presentation at HWH Business Bootcamp, customized participant awards." }
+    ]
+  },
+  // Community & Culture Partners
+  {
+    id: "womens-empowerment",
+    name: "Women's Empowerment Partner",
+    description: "Align with girls' leadership mission",
+    default_tiers: [
+      { tier_name: "Empowerment Title Partner", commitment: "$5,000 annual contribution.", deliverables: "Custom community leadership scholarship logo, permanent website footer placement." }
+    ]
+  },
+  {
+    id: "diversity-inclusion",
+    name: "Diversity & Inclusion Partner",
+    description: "Support underrepresented athlete access",
+    default_tiers: [
+      { tier_name: "Access & Inclusion Sponsor", commitment: "$3,000 scholarship program.", deliverables: "Featured on HWH diversity spotlight posts, logo on scholarship awards." }
+    ]
+  },
+  {
+    id: "community-outreach",
+    name: "Community Outreach Partner",
+    description: "Fund free youth basketball clinics",
+    default_tiers: [
+      { tier_name: "Free Clinic Sponsor", commitment: "$1,500 clinic series funding.", deliverables: "Logo on clinic participant tees, community center posters." }
+    ]
+  },
+  {
+    id: "youth-development",
+    name: "Youth Development Partner",
+    description: "Support broader after-school programs",
+    default_tiers: [
+      { tier_name: "After-School Development Partner", commitment: "$2,500 contribution.", deliverables: "Name in HWH local program guide, flyer logo distribution." }
+    ]
+  },
+  // Consumer Products Partners
+  {
+    id: "footwear-partner",
+    name: "Footwear Partner",
+    description: "Specific shoe brand sponsorship (e.g., Nike, Adidas)",
+    default_tiers: [
+      { tier_name: "Official Footwear Outfitter", commitment: "Provide team sneakers and slides for travel players.", deliverables: "Product showcase in HWH tournament check-in lobby, exclusive social tag posts." }
+    ]
+  },
+  {
+    id: "technology-partner",
+    name: "Technology Partner",
+    description: "Apps, devices, or tech equipment for athletes",
+    default_tiers: [
+      { tier_name: "Official Tech Sponsor", commitment: "Provide 15 training sensor tracking vests or camera gear.", deliverables: "Logo on advanced stats reports, app dashboard branding." }
+    ]
+  },
+  {
+    id: "transportation-partner",
+    name: "Transportation Partner",
+    description: "Ride services or fuel for travel",
+    default_tiers: [
+      { tier_name: "Official Travel Logistics Partner", commitment: "Fuel/van rental discount or $2,000 annual funding.", deliverables: "Logo on team travel vehicles, travel vlog sponsorship tags." }
+    ]
+  },
+  {
+    id: "housing-partner",
+    name: "Housing Partner",
+    description: "Accommodations for out-of-town events",
+    default_tiers: [
+      { tier_name: "Official Housing Partner", commitment: "Discounted room rates and group booking block.", deliverables: "Featured placement in parent hotel guide flyer, website hotel link." }
+    ]
+  },
+  // Recognition & Awards Partners
+  {
+    id: "player-of-month",
+    name: "Player of the Month Partner",
+    description: "Fund monthly athlete recognition",
+    default_tiers: [
+      { tier_name: "Athlete Spotlight Sponsor", commitment: "$1,000 annual fund.", deliverables: "Sponsor logo on monthly award certificates, featured social media post graphics." }
+    ]
+  },
+  {
+    id: "coach-award",
+    name: "Coach Award Partner",
+    description: "Sponsor annual coaching excellence awards",
+    default_tiers: [
+      { tier_name: "Coaching Excellence Sponsor", commitment: "$1,500 contribution.", deliverables: "Award naming rights, featured presentation at annual banquet, team photo." }
+    ]
+  },
+  {
+    id: "scholar-athlete",
+    name: "Scholar Athlete Partner",
+    description: "Fund academic achievement scholarships",
+    default_tiers: [
+      { tier_name: "Academic Scholarship Sponsor", commitment: "$2,500 scholarship funding.", deliverables: "Presenter credit during graduation banquet, permanent scholarship page logo." }
+    ]
+  },
+  {
+    id: "legacy-partner",
+    name: "Legacy Partner",
+    description: "Support hall of fame or historical recognition",
+    default_tiers: [
+      { tier_name: "Hall of Fame Legacy Sponsor", commitment: "$2,000 showcase contribution.", deliverables: "Logo on hall of fame plaque board, dedication catalog logo print." }
+    ]
+  },
+  // Analytics & Data Partners
+  {
+    id: "performance-analytics",
+    name: "Performance Analytics Partner",
+    description: "Fund advanced stats/tracking tech",
+    default_tiers: [
+      { tier_name: "Stats Hub Presenting Sponsor", commitment: "$3,000 seasonal support.", deliverables: "Branded watermarks on student player profile dashboard charts and metrics tables." }
+    ]
+  },
+  {
+    id: "recruiting-data",
+    name: "Recruiting Data Partner",
+    description: "Support database and ranking directories",
+    default_tiers: [
+      { tier_name: "Recruiting Database Sponsor", commitment: "$4,000 annual subscription/funding.", deliverables: "Logo on all college scout database login pages, monthly report PDF footers." }
     ]
   }
 ];
@@ -566,26 +899,28 @@ export default function ProposalBuilderPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  {STATIC_TEMPLATES.map((t) => {
-                    const Icon = TEMPLATE_ICONS[t.id] || FileText;
-                    const isSelected = selectedTemplate?.id === t.id;
-                    return (
-                      <button
-                        key={t.id}
-                        onClick={() => handleTemplateSelect(t)}
-                        className={`flex flex-col items-start p-3 rounded-xl border text-left transition-colors ${
-                          isSelected
-                            ? "bg-brand-orange/10 border-brand-orange text-white"
-                            : "bg-white/5 border-white/5 hover:bg-white/10 text-gray-300"
-                        }`}
-                      >
-                        <Icon className={`h-5 w-5 mb-2 ${isSelected ? "text-brand-orange" : "text-gray-400"}`} />
-                        <span className="text-xs font-semibold truncate w-full">{t.name}</span>
-                      </button>
-                    );
-                  })}
-                </div>
+                <ScrollArea className="h-[280px] pr-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    {STATIC_TEMPLATES.map((t) => {
+                      const Icon = TEMPLATE_ICONS[t.id] || FileText;
+                      const isSelected = selectedTemplate?.id === t.id;
+                      return (
+                        <button
+                          key={t.id}
+                          onClick={() => handleTemplateSelect(t)}
+                          className={`flex flex-col items-start p-3 rounded-xl border text-left transition-colors ${
+                            isSelected
+                              ? "bg-brand-orange/10 border-brand-orange text-white"
+                              : "bg-white/5 border-white/5 hover:bg-white/10 text-gray-300"
+                          }`}
+                        >
+                          <Icon className={`h-5 w-5 mb-2 ${isSelected ? "text-brand-orange" : "text-gray-400"}`} />
+                          <span className="text-xs font-semibold truncate w-full">{t.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
 
                 {filteredQuickTemplates.length > 0 && (
                   <Dialog open={showQuickTemplates} onOpenChange={setShowQuickTemplates}>
@@ -1493,7 +1828,13 @@ function getIntroText(templateId: string, orgName: string, formData: any) {
     "apparel-equipment": `We are seeking an equipment and outfitter partnership with ${orgName} to support HWH league players with uniforms and basketball gear. Brand alignment with HWH development camps showcases your products directly inside active regional courts.`,
     "nil-partnership": `Hoop With Her is establishing NIL (Name, Image, Likeness) partnerships. We invite ${orgName} to sponsor HWH brand ambassadors (featured player: ${formData.athleteName || "HWH Athlete"}). Our player-led content drives authentic reach and represents positive youth leadership in our local community.`,
   };
-  return intros[templateId] || "";
+  
+  if (intros[templateId]) return intros[templateId];
+  
+  // Dynamic fallback for new custom templates
+  const template = STATIC_TEMPLATES.find(t => t.id === templateId);
+  const templateName = template ? template.name : "Partnership Options";
+  return `My name is Lamont Revell Sr., Founder of Hoop With Her. We are seeking a collaboration with ${orgName} as a ${templateName} to empower female student-athletes, grow regional youth basketball, and build positive brand relationships.`;
 }
 
 function getWhyPartnerPoints(templateId: string) {
@@ -1529,7 +1870,12 @@ function getWhyPartnerPoints(templateId: string) {
       "Aligns your local business with positive, talented young role models.",
     ]
   };
-  return points[templateId] || [];
+  
+  return points[templateId] || [
+    "Empowers female student-athletes through elite basketball training and developmental leagues.",
+    "Provides visible local and regional brand alignment with Hoop With Her networks.",
+    "Engages supportive sports families, local communities, and high school fans."
+  ];
 }
 
 function getSeekingPoints(templateId: string, formData: any) {
@@ -1559,7 +1905,11 @@ function getSeekingPoints(templateId: string, formData: any) {
       `Ambassadorship duration of ${formData.dealDuration} under ${formData.exclusivityType.toLowerCase()} terms.`,
     ]
   };
-  return points[templateId] || [];
+  
+  return points[templateId] || [
+    `Financial sponsorship of ${formData.sponsorshipAmount || "$2,500"} or equivalent in-kind contribution.`,
+    "Collaborative marketing and activation during seasonal Hoop With Her programs."
+  ];
 }
 
 function getBringsPoints(templateId: string) {
@@ -1595,5 +1945,10 @@ function getBringsPoints(templateId: string) {
       "HWH compliant deal oversight and regular communication reports.",
     ]
   };
-  return points[templateId] || [];
+  
+  return points[templateId] || [
+    "Sponsor logo placement on program flyers, digital flyers, and HWH registration sheets.",
+    "On-site brand recognition, promotional banners, and social media showcase shoutouts.",
+    "Complimentary tickets to HWH tournament showcases and community workshops."
+  ];
 }
