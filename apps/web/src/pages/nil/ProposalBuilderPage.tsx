@@ -497,6 +497,19 @@ const STATIC_QUICK_TEMPLATES = [
   }
 ];
 
+interface SponsorshipTier {
+  tier_name: string;
+  display_order: number;
+  price_range: string;
+  benefits: string[];
+  inventory_rules: string;
+  deliverables: string;
+  media_entitlements: string;
+  event_entitlements: string;
+  digital_entitlements: string;
+  internal_notes: string;
+}
+
 interface Proposal {
   id: string;
   template_id: string;
@@ -507,6 +520,102 @@ interface Proposal {
   view_count?: number;
   last_viewed?: string;
   view_history?: { viewed_at: string }[];
+}
+
+function getDefaultTiers(templateId: string): SponsorshipTier[] {
+  const tiers: SponsorshipTier[] = [
+    {
+      tier_name: "Presenting Partner",
+      display_order: 1,
+      price_range: "$5,000+",
+      benefits: ["Official Title Naming Rights", "Primary Front-of-Jersey/Banner Branding", "Exclusive On-Site Activation Space", "VIP Backstage & Hospitality Access", "Full Digital Page Watermark & App Placement"],
+      inventory_rules: "Exclusive (1 available)",
+      deliverables: "Front of jersey branding, main gym court banner, pre-event email blast.",
+      media_entitlements: "Title watermark on livestreams, intro & outro commercials.",
+      event_entitlements: "On-site activation booth, 10 guest VIP tickets.",
+      digital_entitlements: "Homepage logo slider, custom bio link, email blast header banner.",
+      internal_notes: "Primary sponsor target. Pitch custom integrations."
+    },
+    {
+      tier_name: "Championship Partner",
+      display_order: 2,
+      price_range: "$3,000 - $4,999",
+      benefits: ["Secondary Jersey/Back-of-Shirt Branding", "Trophy Presentation Co-Branding", "On-Site Table Space", "Social Media Spotlight Post"],
+      inventory_rules: "Limited (2 available)",
+      deliverables: "Back of jersey branding, secondary court banner, social media spotlight.",
+      media_entitlements: "Logo overlay watermark on highlight videos.",
+      event_entitlements: "On-site promotional table, 5 guest passes.",
+      digital_entitlements: "Sponsor directory premium listing, social spotlight tags.",
+      internal_notes: "Focus on secondary logo placement."
+    },
+    {
+      tier_name: "All-Star Partner",
+      display_order: 3,
+      price_range: "$1,500 - $2,999",
+      benefits: ["Jersey Sleeve Logo Placement", "Award Certificate Co-Branding", "Story Mentions (Bi-weekly)"],
+      inventory_rules: "Limited (4 available)",
+      deliverables: "Jersey sleeve branding, flyer logo print.",
+      media_entitlements: "Logo overlay watermark on selective reels.",
+      event_entitlements: "Flyer insertion, 2 guest passes.",
+      digital_entitlements: "Sponsor directory standard listing.",
+      internal_notes: "Ideal for mid-tier local businesses."
+    },
+    {
+      tier_name: "Community Partner",
+      display_order: 4,
+      price_range: "$500 - $1,499",
+      benefits: ["Community Board Listing", "Logo on Flyer Back page", "Monthly Group Thank You Post"],
+      inventory_rules: "Unlimited",
+      deliverables: "Logo on poster board and flyer.",
+      media_entitlements: "None",
+      event_entitlements: "1 guest pass.",
+      digital_entitlements: "Website sponsor wall logo.",
+      internal_notes: "Standard regional sponsor level."
+    },
+    {
+      tier_name: "Entry Partner",
+      display_order: 5,
+      price_range: "$100 - $499",
+      benefits: ["Text-Only Directory Listing", "Website Text Link"],
+      inventory_rules: "Unlimited",
+      deliverables: "Text link in local resources sheet.",
+      media_entitlements: "None",
+      event_entitlements: "None",
+      digital_entitlements: "Website sponsor wall text link.",
+      internal_notes: "Entry level support tier."
+    }
+  ];
+
+  if (templateId === "social-media-partner") {
+    tiers[0].price_range = "$3,000/mo";
+    tiers[0].benefits = ["Watermark on all weekly reels & TikTok videos", "Exclusive Link-in-Bio Tagged Partner", "Monthly Dedicated Story Spotlight"];
+    tiers[0].deliverables = "Weekly reels watermarked branding, profile tag.";
+    tiers[1].price_range = "$2,000/mo";
+    tiers[1].benefits = ["Product placement in weekly reels", "Bi-weekly story mentions"];
+    tiers[2].price_range = "$1,000/mo";
+    tiers[3].price_range = "$500/mo";
+    tiers[4].price_range = "$200/mo";
+  } else if (templateId === "skills-camp") {
+    tiers[0].price_range = "$4,000";
+    tiers[0].benefits = ["Camp Naming Rights ('Camp Presented by Brand')", "Logo on Front of Camp T-Shirts", "10-min Opening Keynote Slot"];
+    tiers[1].price_range = "$2,500";
+    tiers[1].benefits = ["Logo on Back of Camp T-Shirts", "Promotional Booth in Lobby"];
+  } else if (templateId === "nutrition-partner") {
+    tiers[0].price_range = "$3,500 (or In-Kind)";
+    tiers[0].benefits = ["Official Nutrition/Snack Sponsor", "Exclusive Banner in Athlete Refueling Lounge", "Logo on Player Lunch Bags"];
+    tiers[1].price_range = "$2,000 (or In-Kind)";
+  } else if (templateId === "technology-partner") {
+    tiers[0].price_range = "$5,000";
+    tiers[0].benefits = ["Official Tech/Analytics Provider", "Logo on Player Stats Dashboards", "Advanced Metric Report Sponsor"];
+  } else if (templateId === "community-outreach") {
+    tiers[0].price_range = "$2,500";
+    tiers[0].benefits = ["Free Youth Clinic Series Title Sponsor", "Logo on Front of Clinic Jerseys", "Plaque presentation"];
+  } else if (templateId === "player-of-month") {
+    tiers[0].price_range = "$2,000";
+    tiers[0].benefits = ["Award Naming Rights ('Player of the Month Presented by Brand')", "Logo on Winner Plaques and Backdrop", "Special Social Video Feature"];
+  }
+  
+  return tiers;
 }
 
 const getDefaultFormData = (template: any) => ({
@@ -520,6 +629,12 @@ const getDefaultFormData = (template: any) => ({
   preparedBy: "Lamont Revell Sr.",
   yourPhone: "",
   yourEmail: "",
+  // Specific HWH and sponsor match details
+  proposalFormat: "detailed",
+  introMission: "Hoop With Her is a premier regional girls' basketball development platform based in Fayetteville, NC. Founded in 2023, HWH has supported over 450+ female athletes, guiding them to college scholarships, team leadership, and academic excellence. Our mission is to promote gender equity, high-performance training, and community leadership through the game of basketball.",
+  audienceDemographics: "Female athletes ages 10-18. Parent and family network with average household income of $85,000+. Consistently draws 10,000+ spectators and 25,000+ combined social outreach impressions per showcase season.",
+  sponsorshipPurpose: "Funds from this sponsorship directly offset regional facility rentals, travel team tournament fees, uniform production, high-performance training equipment, and local need-based scholar athletic grants.",
+  deadline: "August 30, 2026",
   // Template-specific fields
   numberOfCourts: "2",
   daysAndTimes: "Saturdays 9am-2pm",
@@ -534,12 +649,13 @@ const getDefaultFormData = (template: any) => ({
   dealDuration: "6 months",
   exclusivityType: "Non-exclusive",
   contentRequirements: "",
-  tiers: template?.default_tiers?.map((t: any) => ({ ...t })) || [],
+  tiers: template ? getDefaultTiers(template.id) : [],
 });
 
 export default function ProposalBuilderPage() {
-  const [selectedTemplate, setSelectedTemplate] = useState<any>(STATIC_TEMPLATES[0]);
-  const [formData, setFormData] = useState<any>(getDefaultFormData(STATIC_TEMPLATES[0]));
+  const [templates, setTemplates] = useState<any[]>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
+  const [formData, setFormData] = useState<any>(null);
   const [downloading, setDownloading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showQuickTemplates, setShowQuickTemplates] = useState(false);
@@ -548,14 +664,54 @@ export default function ProposalBuilderPage() {
   const [showAnalyticsDialog, setShowAnalyticsDialog] = useState(false);
   const [savedProposals, setSavedProposals] = useState<Proposal[]>([]);
   const [currentProposalId, setCurrentProposalId] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState("editor"); // editor, tracking, analytics
+  const [activeView, setActiveView] = useState("editor"); // editor, tracking, analytics, templates
   const [emailForm, setEmailForm] = useState({ recipient_email: "", recipient_name: "", subject: "", personal_message: "" });
   const [sendingEmail, setSendingEmail] = useState(false);
   const [selectedProposalAnalytics, setSelectedProposalAnalytics] = useState<Proposal | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  // Load proposals from LocalStorage
+  // Template Admin States
+  const [editingTemplate, setEditingTemplate] = useState<any | null>(null);
+  const [showAddTemplateDialog, setShowAddTemplateDialog] = useState(false);
+  const [newTemplateForm, setNewTemplateForm] = useState({
+    name: "",
+    description: "",
+    category: "General",
+    presetId: ""
+  });
+
+  // Load templates and proposals from LocalStorage
   useEffect(() => {
+    // Load templates
+    const localTemplates = localStorage.getItem("hwh_proposal_templates");
+    let loadedTemplates: any[] = [];
+    if (localTemplates) {
+      try {
+        loadedTemplates = JSON.parse(localTemplates);
+      } catch (e) {
+        console.error("Failed to parse templates", e);
+        loadedTemplates = STATIC_TEMPLATES;
+      }
+    } else {
+      // Initialize active and archived flag on static templates
+      loadedTemplates = STATIC_TEMPLATES.map((t: any) => ({
+        ...t,
+        active: true,
+        archived: false,
+        category: t.id.includes("nil") ? "NIL" : t.id.includes("media") || t.id.includes("social") ? "Digital" : "Events"
+      }));
+      localStorage.setItem("hwh_proposal_templates", JSON.stringify(loadedTemplates));
+    }
+    setTemplates(loadedTemplates);
+    
+    // Select first active template
+    const firstActive = loadedTemplates.find((t: any) => t.active && !t.archived) || loadedTemplates[0];
+    if (firstActive) {
+      setSelectedTemplate(firstActive);
+      setFormData(getDefaultFormData(firstActive));
+    }
+
+    // Load proposals
     const local = localStorage.getItem("hwh_proposals");
     if (local) {
       try {
@@ -565,6 +721,77 @@ export default function ProposalBuilderPage() {
       }
     }
   }, []);
+
+  const saveTemplatesToLocalStorage = (newTemplates: any[]) => {
+    localStorage.setItem("hwh_proposal_templates", JSON.stringify(newTemplates));
+    setTemplates(newTemplates);
+  };
+
+  const handleDuplicateTemplate = (template: any) => {
+    const newId = `custom-${Math.random().toString(36).substring(2, 9)}`;
+    const duplicated: any = {
+      ...template,
+      id: newId,
+      name: `${template.name} (Copy)`,
+      active: true,
+      archived: false,
+      default_tiers: template.default_tiers.map((t: any) => ({ ...t }))
+    };
+    const updated = [...templates, duplicated];
+    saveTemplatesToLocalStorage(updated);
+    alert(`Duplicated template into "${duplicated.name}"!`);
+  };
+
+  const handleArchiveTemplate = (templateId: string) => {
+    if (window.confirm("Are you sure you want to archive this template?")) {
+      const updated = templates.map(t => t.id === templateId ? { ...t, archived: true } : t);
+      saveTemplatesToLocalStorage(updated);
+    }
+  };
+
+  const handleToggleTemplateActive = (templateId: string) => {
+    const updated = templates.map(t => t.id === templateId ? { ...t, active: !t.active } : t);
+    saveTemplatesToLocalStorage(updated);
+  };
+
+  const handleSaveTemplateDetails = () => {
+    if (!editingTemplate) return;
+    const updated = templates.map(t => t.id === editingTemplate.id ? editingTemplate : t);
+    saveTemplatesToLocalStorage(updated);
+    setEditingTemplate(null);
+    alert("Template updated successfully!");
+  };
+
+  const handleCreateTemplate = () => {
+    if (!newTemplateForm.name) return;
+    const newId = `custom-${Math.random().toString(36).substring(2, 9)}`;
+    
+    // Choose presets default tiers
+    let presetTiers = [];
+    if (newTemplateForm.presetId) {
+      presetTiers = getDefaultTiers(newTemplateForm.presetId);
+    } else {
+      presetTiers = getDefaultTiers("default");
+    }
+
+    const newTemplate = {
+      id: newId,
+      name: newTemplateForm.name,
+      description: newTemplateForm.description || "Custom sponsorship template",
+      category: newTemplateForm.category,
+      active: true,
+      archived: false,
+      default_tiers: presetTiers
+    };
+
+    const updated = [...templates, newTemplate];
+    saveTemplatesToLocalStorage(updated);
+    setShowAddTemplateDialog(false);
+    setNewTemplateForm({ name: "", description: "", category: "General", presetId: "" });
+    setSelectedTemplate(newTemplate);
+    setFormData(getDefaultFormData(newTemplate));
+    setActiveView("editor");
+  };
 
   const saveToLocalStorage = (proposals: Proposal[]) => {
     localStorage.setItem("hwh_proposals", JSON.stringify(proposals));
@@ -596,7 +823,7 @@ export default function ProposalBuilderPage() {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const handleTierChange = (index: number, field: string, value: string) => {
+  const handleTierChange = (index: number, field: string, value: any) => {
     setFormData((prev: any) => {
       const newTiers = [...prev.tiers];
       newTiers[index] = { ...newTiers[index], [field]: value };
@@ -656,7 +883,7 @@ export default function ProposalBuilderPage() {
   };
 
   const loadProposal = (proposal: Proposal) => {
-    const template = STATIC_TEMPLATES.find(t => t.id === proposal.template_id);
+    const template = templates.find(t => t.id === proposal.template_id) || STATIC_TEMPLATES.find(t => t.id === proposal.template_id);
     if (template) {
       setSelectedTemplate(template);
       setFormData(proposal.form_data);
@@ -828,6 +1055,15 @@ export default function ProposalBuilderPage() {
               <BarChart3 className="h-4 w-4 mr-1.5" />
               Analytics Dashboard
             </Button>
+            <Button
+              variant={activeView === "templates" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setActiveView("templates")}
+              className={`text-xs ${activeView === "templates" ? "bg-brand-orange text-white hover:bg-brand-orange/90" : "text-gray-300 hover:text-white"}`}
+            >
+              <Building2 className="h-4 w-4 mr-1.5" />
+              Templates Admin
+            </Button>
           </div>
 
           <div className="flex gap-2 w-full sm:w-auto">
@@ -901,7 +1137,7 @@ export default function ProposalBuilderPage() {
 
                 <ScrollArea className="h-[280px] pr-2">
                   <div className="grid grid-cols-2 gap-2">
-                    {STATIC_TEMPLATES.map((t) => {
+                    {templates.filter(t => t.active && !t.archived).map((t) => {
                       const Icon = TEMPLATE_ICONS[t.id] || FileText;
                       const isSelected = selectedTemplate?.id === t.id;
                       return (
@@ -1007,7 +1243,24 @@ export default function ProposalBuilderPage() {
 
                   {/* Proposal values */}
                   <div className="space-y-4">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Proposal Properties</h3>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Proposal Design & Format</h3>
+                    <div className="space-y-2">
+                      <Label className="text-gray-300">Layout Format Option</Label>
+                      <Select
+                        value={formData.proposalFormat}
+                        onValueChange={(val) => handleInputChange("proposalFormat", val)}
+                      >
+                        <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-navy-900 border-white/10 text-white">
+                          <SelectItem value="one-pager">One-pager (Quick Pitch)</SelectItem>
+                          <SelectItem value="detailed">Detailed Presentation (In-depth)</SelectItem>
+                          <SelectItem value="letter">Formal Letter (Corporate)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="date" className="text-gray-300">Proposal Date</Label>
@@ -1028,14 +1281,61 @@ export default function ProposalBuilderPage() {
                         />
                       </div>
                     </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="validUntil" className="text-gray-300">Valid Until</Label>
+                        <Input
+                          id="validUntil"
+                          className="bg-white/5 border-white/10 text-white rounded-xl"
+                          value={formData.validUntil}
+                          onChange={(e) => handleInputChange("validUntil", e.target.value)}
+                          placeholder="e.g., 30 days"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="deadline" className="text-gray-300">Sponsor Sign Deadline</Label>
+                        <Input
+                          id="deadline"
+                          className="bg-white/5 border-white/10 text-white rounded-xl"
+                          value={formData.deadline}
+                          onChange={(e) => handleInputChange("deadline", e.target.value)}
+                          placeholder="e.g. August 30, 2026"
+                        />
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <Label htmlFor="validUntil" className="text-gray-300">Offer Expiration (Valid Until)</Label>
-                      <Input
-                        id="validUntil"
+                      <Label htmlFor="introMission" className="text-gray-300">Introduction & Mission Copy</Label>
+                      <Textarea
+                        id="introMission"
                         className="bg-white/5 border-white/10 text-white rounded-xl"
-                        value={formData.validUntil}
-                        onChange={(e) => handleInputChange("validUntil", e.target.value)}
-                        placeholder="e.g., 30 days"
+                        value={formData.introMission}
+                        onChange={(e) => handleInputChange("introMission", e.target.value)}
+                        rows={4}
+                        placeholder="Team overview, mission, values, community impact; number of players, years active, achievements"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="audienceDemographics" className="text-gray-300">Audience Demographics</Label>
+                      <Input
+                        id="audienceDemographics"
+                        className="bg-white/5 border-white/10 text-white rounded-xl"
+                        value={formData.audienceDemographics}
+                        onChange={(e) => handleInputChange("audienceDemographics", e.target.value)}
+                        placeholder="Age range, average household income (helps sponsors assess fit)"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="sponsorshipPurpose" className="text-gray-300">Purpose of Sponsorship</Label>
+                      <Textarea
+                        id="sponsorshipPurpose"
+                        className="bg-white/5 border-white/10 text-white rounded-xl"
+                        value={formData.sponsorshipPurpose}
+                        onChange={(e) => handleInputChange("sponsorshipPurpose", e.target.value)}
+                        rows={3}
+                        placeholder="Clear financial need: uniforms, travel, equipment, facility costs"
                       />
                     </div>
                   </div>
@@ -1225,7 +1525,7 @@ export default function ProposalBuilderPage() {
                       </Button>
                     </div>
 
-                    {formData.tiers.map((tier: any, index: number) => (
+                    {formData.tiers?.map((tier: any, index: number) => (
                       <div key={index} className="p-4 bg-white/5 border border-white/5 rounded-2xl space-y-3">
                         <div className="flex items-center justify-between">
                           <Label className="text-xs font-semibold text-gray-300">Package {index + 1}</Label>
@@ -1241,26 +1541,99 @@ export default function ProposalBuilderPage() {
                             </Button>
                           )}
                         </div>
-                        <Input
-                          value={tier.tier_name}
-                          onChange={(e) => handleTierChange(index, "tier_name", e.target.value)}
-                          placeholder="Package Name (e.g. Gold Tier)"
-                          className="bg-white/5 border-white/10 text-white font-medium rounded-xl"
-                        />
-                        <Textarea
-                          value={tier.commitment}
-                          onChange={(e) => handleTierChange(index, "commitment", e.target.value)}
-                          placeholder="Sponsor Commitment (e.g., $1,000 seasonal contribution)"
-                          rows={2}
-                          className="bg-white/5 border-white/10 text-white rounded-xl"
-                        />
-                        <Textarea
-                          value={tier.deliverables}
-                          onChange={(e) => handleTierChange(index, "deliverables", e.target.value)}
-                          placeholder="HWH Deliverables (e.g., Jersey branding, flyer logo)"
-                          rows={2}
-                          className="bg-white/5 border-white/10 text-white rounded-xl"
-                        />
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Package Name</Label>
+                            <Input
+                              value={tier.tier_name}
+                              onChange={(e) => handleTierChange(index, "tier_name", e.target.value)}
+                              placeholder="e.g. Presenting Partner"
+                              className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Price Range / Cost</Label>
+                            <Input
+                              value={tier.price_range}
+                              onChange={(e) => handleTierChange(index, "price_range", e.target.value)}
+                              placeholder="e.g., $5,000+"
+                              className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <Label className="text-[10px] text-gray-400">Deliverables</Label>
+                          <Textarea
+                            value={tier.deliverables || tier.commitment}
+                            onChange={(e) => handleTierChange(index, "deliverables", e.target.value)}
+                            placeholder="Deliverables description..."
+                            rows={2}
+                            className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <Label className="text-[10px] text-gray-400">Benefits / Perks (comma-separated)</Label>
+                          <Input
+                            value={Array.isArray(tier.benefits) ? tier.benefits.join(", ") : tier.benefits || ""}
+                            onChange={(e) => handleTierChange(index, "benefits", e.target.value.split(",").map(b => b.trim()))}
+                            placeholder="Benefit 1, Benefit 2, Benefit 3"
+                            className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Inventory Limits</Label>
+                            <Input
+                              value={tier.inventory_rules}
+                              onChange={(e) => handleTierChange(index, "inventory_rules", e.target.value)}
+                              placeholder="e.g., Limited (2 available)"
+                              className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Media Entitlements</Label>
+                            <Input
+                              value={tier.media_entitlements}
+                              onChange={(e) => handleTierChange(index, "media_entitlements", e.target.value)}
+                              placeholder="e.g., Livestream logo overlay"
+                              className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Event Access</Label>
+                            <Input
+                              value={tier.event_entitlements}
+                              onChange={(e) => handleTierChange(index, "event_entitlements", e.target.value)}
+                              placeholder="e.g., 5 VIP Passes"
+                              className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Digital Placement</Label>
+                            <Input
+                              value={tier.digital_entitlements}
+                              onChange={(e) => handleTierChange(index, "digital_entitlements", e.target.value)}
+                              placeholder="e.g., Homepage link"
+                              className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <Label className="text-[10px] text-gray-400">Internal Guidance / Notes</Label>
+                          <Input
+                            value={tier.internal_notes}
+                            onChange={(e) => handleTierChange(index, "internal_notes", e.target.value)}
+                            placeholder="Notes visible only to staff"
+                            className="bg-white/5 border-white/10 text-white text-xs rounded-xl"
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -1574,7 +1947,403 @@ export default function ProposalBuilderPage() {
               </DialogContent>
             </Dialog>
           </div>
+        ) : activeView === "templates" ? (
+          /* Templates Management View */
+          <div className="space-y-6">
+            <div className="flex justify-between items-center bg-navy-800/20 border border-white/5 rounded-3xl p-6">
+              <div>
+                <h3 className="text-lg font-bold text-white">Sponsorship Templates Admin</h3>
+                <p className="text-xs text-gray-400 mt-0.5">Manage starter presets, default tiers, deliverables, and entitlements for custom partner sheets.</p>
+              </div>
+              <Dialog open={showAddTemplateDialog} onOpenChange={setShowAddTemplateDialog}>
+                <DialogTrigger asChild>
+                  <Button className="bg-brand-orange hover:bg-brand-orange/90 text-white rounded-xl text-xs font-bold">
+                    <Plus className="h-4 w-4 mr-1.5" />
+                    Create Template
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-md bg-navy-900 border-white/10 text-white">
+                  <DialogHeader>
+                    <DialogTitle>Create Custom Template</DialogTitle>
+                    <DialogDescription className="text-gray-400">Initialize a custom partner template using starter presets.</DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 mt-4">
+                    <div className="space-y-2">
+                      <Label className="text-gray-300">Template Name</Label>
+                      <Input
+                        className="bg-white/5 border-white/10 text-white rounded-xl"
+                        value={newTemplateForm.name}
+                        onChange={(e) => setNewTemplateForm(prev => ({ ...prev, name: e.target.value }))}
+                        placeholder="e.g. Premium Footwear Partner"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label className="text-gray-300">Category</Label>
+                        <Select
+                          value={newTemplateForm.category}
+                          onValueChange={(val) => setNewTemplateForm(prev => ({ ...prev, category: val }))}
+                        >
+                          <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-navy-900 border-white/10 text-white">
+                            <SelectItem value="Events">🏟️ Events & Tourneys</SelectItem>
+                            <SelectItem value="Digital">📱 Digital & Content</SelectItem>
+                            <SelectItem value="Education">🎓 Education & Prep</SelectItem>
+                            <SelectItem value="Wellness">🏥 Health & Wellness</SelectItem>
+                            <SelectItem value="Life Skills">💼 Career & Life Skills</SelectItem>
+                            <SelectItem value="Culture">🎨 Community & Culture</SelectItem>
+                            <SelectItem value="Products">🛍️ Consumer Products</SelectItem>
+                            <SelectItem value="Awards">🏆 Awards & Recognition</SelectItem>
+                            <SelectItem value="Analytics">📊 Analytics & Data</SelectItem>
+                            <SelectItem value="General">💼 General Corporate</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-gray-300">Starter Preset</Label>
+                        <Select
+                          value={newTemplateForm.presetId}
+                          onValueChange={(val) => setNewTemplateForm(prev => ({ ...prev, presetId: val }))}
+                        >
+                          <SelectTrigger className="bg-white/5 border-white/10 text-white rounded-xl">
+                            <SelectValue placeholder="Blank Template" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-navy-900 border-white/10 text-white">
+                            <SelectItem value="">Default Tiers Only</SelectItem>
+                            <SelectItem value="showcase-event">Showcase Event Partner</SelectItem>
+                            <SelectItem value="social-media-partner">Social Media Partner</SelectItem>
+                            <SelectItem value="skills-camp">Skills Camp Partner</SelectItem>
+                            <SelectItem value="nutrition-partner">Nutrition Partner</SelectItem>
+                            <SelectItem value="technology-partner">Technology Partner</SelectItem>
+                            <SelectItem value="community-outreach">Community Outreach Partner</SelectItem>
+                            <SelectItem value="player-of-month">Player of the Month Partner</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-gray-300">Description</Label>
+                      <Textarea
+                        className="bg-white/5 border-white/10 text-white rounded-xl"
+                        value={newTemplateForm.description}
+                        onChange={(e) => setNewTemplateForm(prev => ({ ...prev, description: e.target.value }))}
+                        placeholder="Brief client-facing template summary..."
+                        rows={3}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter className="mt-4">
+                    <Button variant="outline" className="border-white/10 text-gray-300 hover:bg-white/5" onClick={() => setShowAddTemplateDialog(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleCreateTemplate} className="bg-brand-orange hover:bg-brand-orange/90 text-white">
+                      Create
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Grid list of templates */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {templates.filter(t => !t.archived).map((t) => {
+                const activeTiersCount = t.default_tiers?.length || 0;
+                return (
+                  <div key={t.id} className="bg-navy-800/20 border border-white/5 rounded-3xl p-6 flex flex-col justify-between space-y-4">
+                    <div>
+                      <div className="flex justify-between items-start">
+                        <span className="bg-white/5 text-slate-300 border border-white/10 rounded px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider">
+                          {t.category || "General"}
+                        </span>
+                        <Badge className={t.active ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20"}>
+                          {t.active ? "Active" : "Inactive"}
+                        </Badge>
+                      </div>
+                      <h4 className="font-bold text-white text-sm mt-3">{t.name}</h4>
+                      <p className="text-xs text-slate-400 mt-1.5 leading-relaxed truncate-2-lines">{t.description}</p>
+                      <p className="text-[10px] text-slate-500 mt-2 font-semibold">{activeTiersCount} Structured Packages Seeded</p>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 pt-4 border-t border-white/5">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setEditingTemplate(t)}
+                        className="flex-1 border-white/10 text-white text-[10px] hover:bg-white/5 rounded-lg font-bold"
+                      >
+                        Edit Tiers
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDuplicateTemplate(t)}
+                        title="Duplicate Template"
+                        className="border-white/10 text-white hover:bg-white/5 rounded-lg"
+                      >
+                        <Zap className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleToggleTemplateActive(t.id)}
+                        title={t.active ? "Set Inactive" : "Set Active"}
+                        className={`border-white/10 hover:bg-white/5 rounded-lg ${t.active ? "text-green-400" : "text-gray-400"}`}
+                      >
+                        <Check className="h-3.5 w-3.5" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleArchiveTemplate(t.id)}
+                        title="Archive Template"
+                        className="border-white/10 text-red-400 hover:bg-white/5 rounded-lg"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Edit Tiers and Details Modal */}
+            {editingTemplate && (
+              <Dialog open={!!editingTemplate} onOpenChange={(open) => !open && setEditingTemplate(null)}>
+                <DialogContent className="max-w-4xl bg-navy-900 border-white/10 text-white max-h-[85vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-brand-orange flex items-center gap-2">
+                      <Building2 className="h-5 w-5" />
+                      Edit Template Details & Tiers
+                    </DialogTitle>
+                    <DialogDescription className="text-gray-400">
+                      Configure standard price ranges, deliverables, and visibility entitlements for {editingTemplate.name}.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="space-y-6 mt-4">
+                    {/* General Metadata */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white/5 p-4 rounded-2xl border border-white/5">
+                      <div className="space-y-2">
+                        <Label className="text-gray-300 text-xs">Template Display Title</Label>
+                        <Input
+                          className="bg-slate-900 border-white/10 text-white rounded-xl"
+                          value={editingTemplate.name}
+                          onChange={(e) => setEditingTemplate((prev: any) => ({ ...prev, name: e.target.value }))}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label className="text-gray-300 text-xs">Category Class</Label>
+                        <Select
+                          value={editingTemplate.category}
+                          onValueChange={(val) => setEditingTemplate((prev: any) => ({ ...prev, category: val }))}
+                        >
+                          <SelectTrigger className="bg-slate-900 border-white/10 text-white rounded-xl">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-navy-900 border-white/10 text-white">
+                            <SelectItem value="Events">🏟️ Events & Tourneys</SelectItem>
+                            <SelectItem value="Digital">📱 Digital & Content</SelectItem>
+                            <SelectItem value="Education">🎓 Education & Prep</SelectItem>
+                            <SelectItem value="Wellness">🏥 Health & Wellness</SelectItem>
+                            <SelectItem value="Life Skills">💼 Career & Life Skills</SelectItem>
+                            <SelectItem value="Culture">🎨 Community & Culture</SelectItem>
+                            <SelectItem value="Products">🛍️ Consumer Products</SelectItem>
+                            <SelectItem value="Awards">🏆 Awards & Recognition</SelectItem>
+                            <SelectItem value="Analytics">📊 Analytics & Data</SelectItem>
+                            <SelectItem value="General">💼 General Corporate</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="md:col-span-2 space-y-2">
+                        <Label className="text-gray-300 text-xs">Client-Facing Description</Label>
+                        <Textarea
+                          className="bg-slate-900 border-white/10 text-white rounded-xl"
+                          value={editingTemplate.description}
+                          onChange={(e) => setEditingTemplate((prev: any) => ({ ...prev, description: e.target.value }))}
+                          rows={2}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Tiers List configuration */}
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center border-b border-white/10 pb-2">
+                        <h4 className="font-bold text-white text-sm">Package Tiers Model</h4>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            const newTier: SponsorshipTier = {
+                              tier_name: "New Tier",
+                              display_order: (editingTemplate.default_tiers?.length || 0) + 1,
+                              price_range: "$1,000",
+                              benefits: ["Benefit Perk 1"],
+                              inventory_rules: "Unlimited",
+                              deliverables: "Default deliverable details",
+                              media_entitlements: "None",
+                              event_entitlements: "None",
+                              digital_entitlements: "None",
+                              internal_notes: ""
+                            };
+                            setEditingTemplate((prev: any) => ({
+                              ...prev,
+                              default_tiers: [...(prev.default_tiers || []), newTier]
+                            }));
+                          }}
+                          className="text-brand-orange hover:bg-brand-orange/10 font-bold"
+                        >
+                          <Plus className="h-4 w-4 mr-1" />
+                          Add Tier Package
+                        </Button>
+                      </div>
+
+                      {editingTemplate.default_tiers?.map((tier: any, index: number) => (
+                        <div key={index} className="p-4 bg-white/5 border border-white/5 rounded-2xl space-y-3">
+                          <div className="flex items-center justify-between">
+                            <Label className="text-xs font-bold text-gray-300">Package Level {index + 1}</Label>
+                            {editingTemplate.default_tiers.length > 1 && (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => {
+                                  const updatedTiers = editingTemplate.default_tiers.filter((_: any, idx: number) => idx !== index);
+                                  setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updatedTiers }));
+                                }}
+                                className="text-red-400 hover:text-red-500 h-8 w-8 p-0"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            )}
+                          </div>
+                          
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                              <Label className="text-[10px] text-gray-400">Tier Name</Label>
+                              <Input
+                                value={tier.tier_name}
+                                onChange={(e) => {
+                                  const updated = [...editingTemplate.default_tiers];
+                                  updated[index].tier_name = e.target.value;
+                                  setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                                }}
+                                className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-[10px] text-gray-400">Price / range</Label>
+                              <Input
+                                value={tier.price_range}
+                                onChange={(e) => {
+                                  const updated = [...editingTemplate.default_tiers];
+                                  updated[index].price_range = e.target.value;
+                                  setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                                }}
+                                className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Deliverables</Label>
+                            <Input
+                              value={tier.deliverables}
+                              onChange={(e) => {
+                                const updated = [...editingTemplate.default_tiers];
+                                updated[index].deliverables = e.target.value;
+                                setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                                }}
+                              className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+
+                          <div className="space-y-1">
+                            <Label className="text-[10px] text-gray-400">Benefits Perks (comma-separated)</Label>
+                            <Input
+                              value={Array.isArray(tier.benefits) ? tier.benefits.join(", ") : tier.benefits || ""}
+                              onChange={(e) => {
+                                const updated = [...editingTemplate.default_tiers];
+                                updated[index].benefits = e.target.value.split(",").map(b => b.trim());
+                                setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                              }}
+                              placeholder="Perk 1, Perk 2"
+                              className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                            />
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                              <Label className="text-[10px] text-gray-400">Inventory Exclusivity</Label>
+                              <Input
+                                value={tier.inventory_rules}
+                                onChange={(e) => {
+                                  const updated = [...editingTemplate.default_tiers];
+                                  updated[index].inventory_rules = e.target.value;
+                                  setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                                }}
+                                className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-[10px] text-gray-400">Media Entitlements</Label>
+                              <Input
+                                value={tier.media_entitlements}
+                                onChange={(e) => {
+                                  const updated = [...editingTemplate.default_tiers];
+                                  updated[index].media_entitlements = e.target.value;
+                                  setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                                }}
+                                className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="space-y-1">
+                              <Label className="text-[10px] text-gray-400">Event Entitlements</Label>
+                              <Input
+                                value={tier.event_entitlements}
+                                onChange={(e) => {
+                                  const updated = [...editingTemplate.default_tiers];
+                                  updated[index].event_entitlements = e.target.value;
+                                  setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                                }}
+                                className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                              />
+                            </div>
+                            <div className="space-y-1">
+                              <Label className="text-[10px] text-gray-400">Digital Entitlements</Label>
+                              <Input
+                                value={tier.digital_entitlements}
+                                onChange={(e) => {
+                                  const updated = [...editingTemplate.default_tiers];
+                                  updated[index].digital_entitlements = e.target.value;
+                                  setEditingTemplate((prev: any) => ({ ...prev, default_tiers: updated }));
+                                }}
+                                className="bg-slate-900 border-white/10 text-white text-xs rounded-xl"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <DialogFooter className="mt-6 border-t border-white/10 pt-4">
+                    <Button variant="outline" className="border-white/10 text-gray-300 hover:bg-white/5" onClick={() => setEditingTemplate(null)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSaveTemplateDetails} className="bg-brand-orange hover:bg-brand-orange/90 text-white">
+                      Save Changes
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
         ) : (
+
           /* Analytics Overview View */
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1664,8 +2433,173 @@ function ProposalPreview({ template, formData }: { template: any; formData: any 
 
   const orgName = formData.organizationName || "[Organization Name]";
   const contactName = formData.contactName || "[Contact Name]";
+  const format = formData.proposalFormat || "detailed";
   const isNIL = template.id === "nil-partnership";
 
+  const renderTiersGrid = () => (
+    <div className="grid gap-4 md:grid-cols-2 mt-4">
+      {formData.tiers?.map((tier: any, i: number) => (
+        <div key={i} className="border border-gray-150 p-4 rounded-xl bg-gray-50 flex flex-col justify-between">
+          <div>
+            <div className="flex justify-between items-start gap-2">
+              <span className="font-bold text-[#1E3A8A] text-xs">{tier.tier_name}</span>
+              <span className="bg-[#1E3A8A]/10 text-[#1E3A8A] px-2 py-0.5 rounded text-[10px] font-bold">
+                {tier.price_range || "$ TBD"}
+              </span>
+            </div>
+            {tier.inventory_rules && (
+              <p className="text-[10px] text-gray-500 font-semibold mt-1 italic">{tier.inventory_rules}</p>
+            )}
+            <div className="text-[11px] text-gray-600 mt-2 space-y-1">
+              <p><strong>Deliverables:</strong> {tier.deliverables || tier.commitment}</p>
+              {tier.benefits && tier.benefits.length > 0 && (
+                <div>
+                  <strong>Key Perks:</strong>
+                  <ul className="list-disc pl-4 mt-0.5 space-y-0.5">
+                    {Array.isArray(tier.benefits) ? tier.benefits.map((b: string, idx: number) => (
+                      <li key={idx} className="text-[10px]">{b}</li>
+                    )) : typeof tier.benefits === "string" ? (tier.benefits as string).split(",").map((b: string, idx: number) => (
+                      <li key={idx} className="text-[10px]">{b.trim()}</li>
+                    )) : null}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+          {(tier.media_entitlements || tier.event_entitlements || tier.digital_entitlements) && (
+            <div className="border-t border-gray-200/50 pt-2 mt-3 space-y-1 text-[9px] text-gray-500">
+              {tier.media_entitlements && <p><strong>Media:</strong> {tier.media_entitlements}</p>}
+              {tier.event_entitlements && <p><strong>Event Access:</strong> {tier.event_entitlements}</p>}
+              {tier.digital_entitlements && <p><strong>Digital Placement:</strong> {tier.digital_entitlements}</p>}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+
+  // Layout 1: One-Pager Layout
+  if (format === "one-pager") {
+    return (
+      <div className="p-6 max-w-4xl mx-auto font-sans leading-relaxed text-zinc-800 bg-white space-y-4">
+        {/* Header Cover Page (Compact) */}
+        <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+          <img src={LOGO_URL} alt="HoopWithHer" className="w-14 h-14 object-contain" />
+          <div className="text-right">
+            <span className="bg-[#1E3A8A] text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wide uppercase">
+              {isNIL ? "NIL ONE-PAGER" : "SPONSOR ONE-PAGER"}
+            </span>
+            <h1 className="font-bold text-[#1E3A8A] text-sm mt-1">{template.name}</h1>
+          </div>
+        </div>
+
+        {/* Pitch Summary */}
+        <div className="grid md:grid-cols-3 gap-4 text-[11px] leading-relaxed">
+          <div className="md:col-span-2 bg-[#1E3A8A]/5 border border-[#1E3A8A]/10 p-3.5 rounded-xl space-y-2">
+            <h3 className="font-bold text-[#1E3A8A] text-xs uppercase tracking-wide">Mission & Proposal</h3>
+            <p className="text-gray-700">{formData.introMission || getIntroText(template.id, orgName, formData)}</p>
+          </div>
+          <div className="bg-gray-50 border border-gray-100 p-3.5 rounded-xl space-y-2">
+            <h3 className="font-bold text-gray-600 text-xs uppercase tracking-wide">Target Demographics</h3>
+            <p className="text-gray-600">{formData.audienceDemographics || "Female athletes 10-18. Fayettevile regional reach."}</p>
+          </div>
+        </div>
+
+        {/* Need & Purpose */}
+        <div className="bg-amber-500/5 border border-amber-500/10 p-3 rounded-xl text-[11px]">
+          <span className="font-bold text-amber-700 text-xs block mb-1">Sponsorship Purpose</span>
+          <p className="text-gray-700">{formData.sponsorshipPurpose}</p>
+        </div>
+
+        {/* Tiers Grid */}
+        <div>
+          <h2 className="text-xs font-bold text-[#1E3A8A] uppercase tracking-wide mb-1 border-b pb-1">
+            Available Sponsorship Packages
+          </h2>
+          {renderTiersGrid()}
+        </div>
+
+        {/* Call to Action & Acceptance Box */}
+        <div className="bg-gray-50 border border-gray-100 p-4 rounded-xl flex flex-col md:flex-row justify-between items-center gap-4 text-[10px]">
+          <div className="space-y-1">
+            <p><strong>Prepared By:</strong> {formData.preparedBy}</p>
+            <p><strong>Deadline to Apply:</strong> {formData.deadline || "TBD"}</p>
+            <p><strong>Contact Info:</strong> {formData.yourPhone} | {formData.yourEmail}</p>
+          </div>
+          <div className="text-right max-w-xs space-y-1 text-gray-500">
+            <p className="font-bold">Ready to support? Scan or sign below.</p>
+            <div className="border-b border-gray-300 h-6 w-32 ml-auto"></div>
+            <p>Authorized Rep Signature</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Layout 2: Formal Letter Layout
+  if (format === "letter") {
+    return (
+      <div className="p-8 max-w-4xl mx-auto font-sans leading-relaxed text-zinc-800 bg-white space-y-6 text-xs">
+        {/* Letter Head */}
+        <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+          <img src={LOGO_URL} alt="HoopWithHer" className="w-16 h-16 object-contain" />
+          <div className="text-right text-[10px] text-gray-500">
+            <p className="font-bold text-gray-700 text-xs">Hoop With Her Basketball</p>
+            <p>Fayetteville, North Carolina</p>
+            <p>Email: {formData.yourEmail || "sponsorships@hoopwithher.com"}</p>
+          </div>
+        </div>
+
+        {/* Addressed To Block */}
+        <div className="space-y-1">
+          <p className="font-semibold">{formData.date}</p>
+          <p className="text-gray-500 font-mono">Ref: {formData.proposalNumber}</p>
+          <br />
+          <p className="font-bold text-gray-800 uppercase">{orgName}</p>
+          {contactName && <p>Attn: {contactName}</p>}
+          {formData.contactEmail && <p>Email: {formData.contactEmail}</p>}
+        </div>
+
+        {/* Message Body */}
+        <div className="space-y-4 text-gray-700 text-xs leading-relaxed">
+          <p>Dear {contactName || "Partnership Coordinator"},</p>
+          <p>
+            {formData.introMission || getIntroText(template.id, orgName, formData)}
+          </p>
+          <p>
+            <strong>Audience Profile & Outreach fit:</strong> {formData.audienceDemographics}
+          </p>
+          <p>
+            <strong>Sponsorship Funding Purpose:</strong> {formData.sponsorshipPurpose}
+          </p>
+          <p>
+            Enclosed as an appendix, we have detailed our structured partnership levels. These range from entry-level community support to presenting rights, each offering quantified digital and event-branding visibility.
+          </p>
+          <p>
+            We would be honored to schedule a short Zoom or phone call to discuss how we can customize these entitlements to meet your marketing goals. Thank you for your time and support of female athletics.
+          </p>
+          
+          <br />
+          <div>
+            <p>Sincerely,</p>
+            <br />
+            <p className="font-bold text-[#1E3A8A]">{formData.preparedBy}</p>
+            <p className="text-gray-500 text-[10px]">Founder, Hoop With Her Girls Basketball</p>
+          </div>
+        </div>
+
+        {/* Page Break - Appendix Tiers */}
+        <div className="border-t border-dashed border-gray-200 pt-6 mt-8">
+          <h2 className="text-xs font-bold text-[#1E3A8A] uppercase tracking-wide mb-3">
+            Appendix: Partnership Packages & entitlements
+          </h2>
+          {renderTiersGrid()}
+        </div>
+      </div>
+    );
+  }
+
+  // Layout 3: Detailed Presentation Layout (Default)
   return (
     <div className="p-8 max-w-4xl mx-auto font-sans leading-relaxed text-zinc-800 bg-white">
       {/* Header */}
@@ -1720,16 +2654,34 @@ function ProposalPreview({ template, formData }: { template: any; formData: any 
         </div>
       )}
 
-      {/* Intro */}
+      {/* Intro & Mission */}
       <div className="mb-6 text-xs">
-        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide">Introduction</h2>
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Introduction & Mission</h2>
         <p className="mb-2">Dear {contactName},</p>
-        <p className="leading-relaxed text-gray-600">{getIntroText(template.id, orgName, formData)}</p>
+        <p className="leading-relaxed text-gray-600">
+          {formData.introMission || getIntroText(template.id, orgName, formData)}
+        </p>
+      </div>
+
+      {/* Target Audience Demographics */}
+      <div className="mb-6 text-xs">
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Audience Demographics</h2>
+        <p className="leading-relaxed text-gray-600">
+          {formData.audienceDemographics}
+        </p>
+      </div>
+
+      {/* Purpose of sponsorship */}
+      <div className="mb-6 text-xs">
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Purpose of Sponsorship</h2>
+        <p className="leading-relaxed text-gray-600">
+          {formData.sponsorshipPurpose}
+        </p>
       </div>
 
       {/* Pitch points */}
       <div className="mb-6 text-xs">
-        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide">Why This Partnership Works</h2>
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Why This Partnership Works</h2>
         <ul className="list-disc pl-5 space-y-1.5 text-gray-600">
           {getWhyPartnerPoints(template.id).map((point: string, i: number) => (
             <li key={i}>{point}</li>
@@ -1739,7 +2691,7 @@ function ProposalPreview({ template, formData }: { template: any; formData: any 
 
       {/* Seeking points */}
       <div className="mb-6 text-xs">
-        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide">Seeking Resources</h2>
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Seeking Resources</h2>
         <ul className="list-disc pl-5 space-y-1.5 text-gray-600">
           {getSeekingPoints(template.id, formData).map((point: string, i: number) => (
             <li key={i}>{point}</li>
@@ -1749,7 +2701,7 @@ function ProposalPreview({ template, formData }: { template: any; formData: any 
 
       {/* Brings points */}
       <div className="mb-6 text-xs">
-        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide">Hoop With Her Deliverables</h2>
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Hoop With Her Deliverables</h2>
         <ul className="list-disc pl-5 space-y-1.5 text-gray-600">
           {getBringsPoints(template.id).map((point: string, i: number) => (
             <li key={i}>{point}</li>
@@ -1759,32 +2711,54 @@ function ProposalPreview({ template, formData }: { template: any; formData: any 
 
       {/* Tiers list rendering */}
       <div className="mb-6 text-xs">
-        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide">Packages & Structures</h2>
-        <div className="border border-gray-100 rounded-2xl overflow-hidden">
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Packages & Structures</h2>
+        <div className="border border-gray-100 rounded-2xl overflow-hidden mb-4">
           <table className="w-full text-left border-collapse text-xs">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
                 <th className="p-3 font-semibold text-gray-600" style={{ width: "25%" }}>Tier Package</th>
-                <th className="p-3 font-semibold text-gray-600" style={{ width: "35%" }}>Commitment</th>
-                <th className="p-3 font-semibold text-gray-600" style={{ width: "40%" }}>Deliverables</th>
+                <th className="p-3 font-semibold text-gray-600" style={{ width: "25%" }}>Investment</th>
+                <th className="p-3 font-semibold text-gray-600" style={{ width: "50%" }}>Commitment Deliverables</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {formData.tiers.map((tier: any, i: number) => (
+              {formData.tiers?.map((tier: any, i: number) => (
                 <tr key={i} className="hover:bg-gray-50/50">
                   <td className="p-3 font-bold text-[#1E3A8A]">{tier.tier_name}</td>
-                  <td className="p-3 text-gray-600">{tier.commitment}</td>
-                  <td className="p-3 text-gray-600">{tier.deliverables}</td>
+                  <td className="p-3 font-bold text-gray-700">{tier.price_range || "$ TBD"}</td>
+                  <td className="p-3 text-gray-600">
+                    <p><strong>Deliverables:</strong> {tier.deliverables || tier.commitment}</p>
+                    {tier.benefits && tier.benefits.length > 0 && (
+                      <p className="text-[10px] text-gray-500 mt-1">
+                        <strong>Benefits:</strong> {Array.isArray(tier.benefits) ? tier.benefits.join(", ") : tier.benefits}
+                      </p>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        
+        {/* Entitlements & Exclusivity rules */}
+        <div className="bg-slate-50 border border-gray-100 rounded-2xl p-4 space-y-2">
+          <span className="font-bold text-xs text-[#1E3A8A]">Custom Visibility & Placement Rules</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10px] text-gray-600">
+            <div>
+              <p><strong>Inventory Limit:</strong> Presenting tier is capped at exactly one partner for absolute segment exclusivity.</p>
+              <p className="mt-1"><strong>Visibility/Media:</strong> Livestream overlay watermarks are delivered in real time for broadcast segments.</p>
+            </div>
+            <div>
+              <p><strong>Signage:</strong> Banner dimensions are 8x4 feet, positioned in key player/parent entry lines.</p>
+              <p className="mt-1"><strong>Action Deadline:</strong> This proposal sheet is valid under the stated expires period, subject to space availability.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Next Steps */}
       <div className="mb-8 text-xs text-gray-600">
-        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide">Next Steps</h2>
+        <h2 className="text-sm font-bold text-[#1E3A8A] mb-2 uppercase tracking-wide border-b pb-1">Next Steps</h2>
         <p className="leading-relaxed">
           We would welcome the opportunity to discuss this proposal and customize the deliverables. Please reach out to{" "}
           <strong>{formData.yourPhone || "[Your Phone]"}</strong> or email <strong>{formData.yourEmail || "[Your Email]"}</strong> to schedule a follow-up discussion.
