@@ -35,7 +35,7 @@ export default function DashboardOverview() {
       const [profileRes, eventsRes, ordersRes, intakeRes] = await Promise.all([
         supabase
           .from('player_profiles')
-          .select('first_name, last_name, overall_score')
+          .select('first_name, last_name, player_readiness_scores(overall_score)')
           .eq('user_id', user!.id)
           .maybeSingle(),
         supabase
@@ -56,9 +56,12 @@ export default function DashboardOverview() {
       const profile = profileRes.data
       const orders = ordersRes.data ?? []
 
+      const readinessData = profile?.player_readiness_scores as any
+      const overallScore = Array.isArray(readinessData) ? readinessData[0]?.overall_score : readinessData?.overall_score
+
       setIntakeComplete((intakeRes.count ?? 0) > 0)
       setStats({
-        readinessScore: profile?.overall_score ?? null,
+        readinessScore: overallScore ?? null,
         upcomingEvents: eventsRes.count ?? 0,
         serviceOrders: orders.length,
         pendingOrders: orders.filter(o => ['new', 'in_progress', 'awaiting_client_feedback'].includes(o.status)).length,
