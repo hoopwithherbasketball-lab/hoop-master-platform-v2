@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Toaster } from 'sonner'
 import { AuthProvider, ProtectedRoute } from './lib/auth'
 import type { UserRole } from './types/database'
 import ErrorBoundary from './components/ErrorBoundary'
+import ScrollToTop from './components/ScrollToTop'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import HomePage from './pages/public/HomePage'
@@ -90,6 +92,7 @@ import AdminPageEditor from './pages/admin/AdminPageEditor'
 import DynamicPage from './pages/public/DynamicPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
+import NotFoundPage from './pages/public/NotFoundPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (<div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1">{children}</div><Footer /></div>)
@@ -184,11 +187,21 @@ function AppRoutes() {
       <Route path="/elitegbb/member/:id" element={<ProtectedRoute><MemberProfilePage /></ProtectedRoute>} />
       <Route path="/elitegbb/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
       <Route path="/elitegbb/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )
 }
 
 export default function App() {
-  return (<BrowserRouter><AuthProvider><ErrorBoundary><AppRoutes /></ErrorBoundary></AuthProvider></BrowserRouter>)
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <AuthProvider>
+        <ErrorBoundary>
+          <AppRoutes />
+        </ErrorBoundary>
+      </AuthProvider>
+      <Toaster theme="dark" position="top-right" richColors />
+    </BrowserRouter>
+  )
 }

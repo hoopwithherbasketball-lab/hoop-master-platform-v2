@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { PageShell, CTABanner } from '@hoop-master/ui'
 import { Loader as Loader2, ShoppingBag, CircleCheck as CheckCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Skeleton } from '../../components/ui/skeleton'
 
 // --- Types ---
 export type ProductFamily = 'QUICK_WINS' | 'PACKAGES' | 'MEDIA' | 'TRAINING' | 'DEVELOPMENT'
@@ -188,7 +190,11 @@ const toTestId = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '
 
 function PricingCard({ product }: { product: ServiceProduct }) {
   return (
-    <article className="bg-navy-800 p-6 rounded-xl shadow-md border-t-4 border-[#0134BD] flex flex-col relative h-full">
+    <motion.article 
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      className="bg-navy-800 p-6 rounded-xl shadow-md border-t-4 border-[#0134BD] flex flex-col relative h-full"
+    >
       {product.tag && (
         <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#FB6C1D] text-white text-[10px] font-bold uppercase tracking-wider py-1 px-3 rounded-full shadow-sm whitespace-nowrap z-10">
           {product.tag}
@@ -213,7 +219,7 @@ function PricingCard({ product }: { product: ServiceProduct }) {
       >
         Select Package
       </Link>
-    </article>
+    </motion.article>
   )
 }
 
@@ -224,7 +230,9 @@ function TieredComparison({ products }: { products: ServiceProduct[] }) {
       {products.map(product => {
         const isHighlighted = product.tag === 'Most Popular' || product.tag === 'The Complete Journey';
         return (
-          <article 
+          <motion.article 
+            whileHover={{ y: isHighlighted ? -20 : -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
             key={product.id} 
             className={`flex flex-col relative rounded-2xl shadow-xl p-8 ${
               isHighlighted 
@@ -262,7 +270,7 @@ function TieredComparison({ products }: { products: ServiceProduct[] }) {
             >
               Select Package
             </Link>
-          </article>
+          </motion.article>
         )
       })}
     </div>
@@ -325,8 +333,22 @@ export default function ServicesPage() {
       badge="Premium Services"
     >
       {loading ? (
-        <div className="flex items-center justify-center py-24">
-          <Loader2 size={32} className="animate-spin text-[#0134BD]" />
+        <div className="max-w-7xl mx-auto py-16 space-y-24 px-4">
+          <div className="space-y-6">
+            <Skeleton className="h-8 w-64 mx-auto bg-slate-800" />
+            <Skeleton className="h-4 w-96 mx-auto bg-slate-800" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto pt-8">
+              <Skeleton className="h-[400px] w-full rounded-2xl bg-slate-800" />
+              <Skeleton className="h-[440px] w-full rounded-2xl bg-slate-800 transform md:-translate-y-4" />
+              <Skeleton className="h-[400px] w-full rounded-2xl bg-slate-800" />
+            </div>
+          </div>
+          <div className="space-y-6">
+            <Skeleton className="h-8 w-48 bg-slate-800" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-[320px] w-full rounded-xl bg-slate-800" />)}
+            </div>
+          </div>
         </div>
       ) : products.length === 0 ? (
         <div className="text-center py-16">
