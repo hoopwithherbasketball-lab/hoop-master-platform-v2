@@ -91,7 +91,9 @@ import EmbedDocsPage from './pages/public/EmbedDocsPage'
 import AdminPageBuilder from './pages/admin/AdminPageBuilder'
 import AdminPageEditor from './pages/admin/AdminPageEditor'
 import SponsorsDashboard from './pages/admin/SponsorsDashboard'
+import ProposalBuilder from './pages/admin/ProposalBuilder'
 import DynamicPage from './pages/public/DynamicPage'
+import PitchPage from './pages/public/PitchPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
 import NotFoundPage from './pages/public/NotFoundPage'
@@ -122,6 +124,7 @@ function AppRoutes() {
       <Route path="/embed/:slug" element={<EmbedPlayerPage />} />
       <Route path="/embed/docs" element={<PublicLayout><EmbedDocsPage /></PublicLayout>} />
       <Route path="/p/:slug" element={<PublicLayout><DynamicPage /></PublicLayout>} />
+      <Route path="/pitch/:id" element={<PublicLayout><PitchPage /></PublicLayout>} />
       <Route path="/partner-onboarding" element={<PartnerOnboardingPage />} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
@@ -174,6 +177,7 @@ function AppRoutes() {
       <Route path="/admin/pages" element={<ProtectedRoute role="admin"><AdminPageBuilder /></ProtectedRoute>} />
       <Route path="/admin/pages/:slug" element={<ProtectedRoute role="admin"><AdminPageEditor /></ProtectedRoute>} />
       <Route path="/admin/sponsors" element={<ProtectedRoute role="admin"><SponsorsDashboard /></ProtectedRoute>} />
+      <Route path="/admin/proposals" element={<ProtectedRoute role="admin"><ProposalBuilder /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
