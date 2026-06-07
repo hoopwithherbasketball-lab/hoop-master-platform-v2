@@ -24,9 +24,6 @@ export default function ProposalBuilder() {
       // 1. Auth Check
       const { data: { session } } = await supabase.auth.getSession();
       
-      console.log("--- AUTH DEBUG ---");
-      console.log("Session exists:", !!session);
-      
       if (!session) {
         toast.error("You are not logged in. Please sign in to access the CRM.");
         setLoading(false);
@@ -63,7 +60,6 @@ export default function ProposalBuilder() {
     const items = selectedSlots.map(id => inventory.find(i => i.id === id)).filter(Boolean)
     const baseTotal = items.reduce((acc, curr) => acc + (curr?.price || 0), 0)
     const finalPrice = customPrice ? parseFloat(customPrice) : baseTotal
-
     const package_details = { items, baseTotal, finalPrice }
 
     const { data, error } = await supabase.from('proposals').insert({
@@ -77,11 +73,11 @@ export default function ProposalBuilder() {
       console.error(error);
       toast.error('Failed to generate proposal. Check Admin permissions.');
     } else if (data) {
-      toast.success('Proposal Generated!');
-      setGeneratedLink(`${window.location.origin}/pitch/${data.id}`);
-      setSelectedPartner('');
-      setSelectedSlots([]);
-      setCustomPrice('');
+      toast.success('Proposal Generated!')
+      setGeneratedLink(`${window.location.origin}/pitch/${data.id}`)
+      setSelectedPartner('')
+      setSelectedSlots([])
+      setCustomPrice('')
     }
   }
 
@@ -174,6 +170,7 @@ export default function ProposalBuilder() {
               </div>
             )}
           </div>
+
         </div>
       )}
     </DashboardLayout>
