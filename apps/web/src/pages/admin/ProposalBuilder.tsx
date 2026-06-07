@@ -21,19 +21,19 @@ export default function ProposalBuilder() {
 
   useEffect(() => {
     async function init() {
-      // 1. Debugging Session
+      // 1. Auth Check
       const { data: { session } } = await supabase.auth.getSession();
+      
       console.log("--- AUTH DEBUG ---");
-      console.log("Session:", session);
-      console.log("Access Token Present:", !!session?.access_token);
-
+      console.log("Session exists:", !!session);
+      
       if (!session) {
-        console.error("No active session detected! You must be logged in.");
-        // Optional: Redirect to login if not in production
-        return; 
+        toast.error("You are not logged in. Please sign in to access the CRM.");
+        setLoading(false);
+        return;
       }
 
-      // 2. Load Data only if session exists
+      // 2. Fetch Data
       const [pRes, iRes] = await Promise.all([
         supabase.from('crm_partners').select('id, business_name').order('business_name'),
         supabase.from('sponsorship_inventory').select('id, slot_name, price, is_available').eq('is_available', true)
@@ -41,14 +41,13 @@ export default function ProposalBuilder() {
 
       if (pRes.error || iRes.error) {
         console.error("Fetch Error:", pRes.error || iRes.error);
-        return;
+        toast.error("Failed to load CRM data. Ensure you have Admin permissions.");
+      } else {
+        setPartners(pRes.data || []);
+        setInventory(iRes.data || []);
       }
-
-      if (pRes.data) setPartners(pRes.data);
-      if (iRes.data) setInventory(iRes.data);
       setLoading(false);
     }
-
     init();
   }, []);
 
@@ -74,16 +73,15 @@ export default function ProposalBuilder() {
     }).select('id').single()
 
     setGenerating(false)
-
     if (error) {
-      toast.error('Failed to generate proposal')
+      console.error(error);
+      toast.error('Failed to generate proposal. Check Admin permissions.');
     } else if (data) {
-      toast.success('Proposal Generated!')
-      setGeneratedLink(`${window.location.origin}/pitch/${data.id}`)
-      // Reset form
-      setSelectedPartner('')
-      setSelectedSlots([])
-      setCustomPrice('')
+      toast.success('Proposal Generated!');
+      setGeneratedLink(`${window.location.origin}/pitch/${data.id}`);
+      setSelectedPartner('');
+      setSelectedSlots([]);
+      setCustomPrice('');
     }
   }
 
