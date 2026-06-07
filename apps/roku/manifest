@@ -1,0 +1,13 @@
+title=Hoop With Her
+subtitle=Next Gen Basketball Content
+major_version=1
+minor_version=0
+build_version=0
+ui_resolutions=fhd,hd
+bg_color=#000000
+splash_screen_fhd=pkg:/images/splash_fhd.jpg
+splash_screen_hd=pkg:/images/splash_fhd.jpg
+splash_min_time=1000
+
+# Environment Variables
+API_BASE_URL=https://api.hoopwithher.com

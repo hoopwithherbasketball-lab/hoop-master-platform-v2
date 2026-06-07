@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="RowListItem" extends="Group">
+    <interface>
+        <field id="itemContent" type="node" onChange="onContentChange" />
+        <field id="itemHasFocus" type="boolean" onChange="onFocusChange" />
+    </interface>
+    
+    <script type="text/brightscript" uri="pkg:/components/RowListItem.brs" />
+    
+    <children>
+        <Poster 
+            id="itemPoster" 
+            width="320" 
+            height="180" 
+            loadDisplayMode="scaleToZoom"
+            shape="roundedRect"
+        />
+        
+        <Rectangle 
+            id="focusRing" 
+            width="328" 
+            height="188" 
+            translation="[-4, -4]" 
+            color="#fb6c1d" 
+            opacity="0" 
+        />
+        
+        <Label 
+            id="itemTitle" 
+            width="320" 
+            translation="[0, 190]" 
+            font="font:SmallBoldSystemFont" 
+            color="#ffffff" 
+            wrap="false" 
+        />
+    </children>
+</component>

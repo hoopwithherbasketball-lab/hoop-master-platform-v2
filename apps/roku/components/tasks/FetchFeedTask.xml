@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="FetchFeedTask" extends="Task">
+    <interface>
+        <!-- The ContentNode tree representing the grouped Roku feed -->
+        <field id="content" type="node" />
+        <field id="errorMsg" type="string" value="" />
+    </interface>
+    <script type="text/brightscript" uri="pkg:/components/tasks/FetchFeedTask.brs" />
+</component>

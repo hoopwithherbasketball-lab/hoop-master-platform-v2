@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="MainScene" extends="Scene">
+    <script type="text/brightscript" uri="pkg:/components/MainScene.brs" />
+    
+    <children>
+        <!-- Background -->
+        <Rectangle id="background" width="1920" height="1080" color="#050a1f" />
+        
+        <!-- Loading Spinner -->
+        <BusySpinner id="spinner" translation="[960, 540]" visible="true" />
+        
+        <!-- Error Label -->
+        <Label id="errorLabel" text="" width="1000" translation="[460, 500]" font="font:LargeBoldSystemFont" color="#fb6c1d" horizAlign="center" visible="false" />
+        
+        <!-- Main Content Carousels -->
+        <RowList 
+            id="rowList" 
+            translation="[100, 150]" 
+            itemComponentName="RowListItem" 
+            numRows="3" 
+            itemSize="[1920, 300]" 
+            rowItemSize="[[320, 180]]" 
+            rowItemSpacing="[[30, 0]]" 
+            showRowLabel="true" 
+            rowLabelColor="#ffffff"
+            visible="false" 
+        />
+        
+        <!-- Native HLS Video Player -->
+        <Video id="videoPlayer" width="1920" height="1080" visible="false" />
+        
+        <!-- Invisible Task Node -->
+        <FetchFeedTask id="fetchTask" />
+    </children>
+</component>
