@@ -25,6 +25,7 @@ import DashboardOverview from './pages/dashboard/DashboardOverview'
 import ProfilePage from './pages/dashboard/ProfilePage'
 import ProfileOptimizerPage from './pages/dashboard/ProfileOptimizerPage'
 import ReadinessPage from './pages/dashboard/ReadinessPage'
+import CoachDashboard from './pages/dashboard/CoachDashboard'
 import EventsPage from './pages/dashboard/EventsPage'
 import ServicesOrdersPage from './pages/dashboard/ServicesOrdersPage'
 import ServiceOrderDetailPage from './pages/dashboard/ServiceOrderDetailPage'
@@ -39,7 +40,7 @@ import ClassTrackingPage from './pages/dashboard/ClassTrackingPage'
 import ResourcesDashboardPage from './pages/dashboard/ResourcesDashboardPage'
 import ParentDashboardPage from './pages/dashboard/ParentDashboardPage'
 import NILRoadmapPage from './pages/dashboard/NILRoadmapPage'
-import CoachDashboard from './pages/coach/CoachDashboard'
+import CoachDashboardLegacy from './pages/coach/CoachDashboard'
 import CoachSearchPage from './pages/coach/CoachSearchPage'
 import CoachShortlistPage from './pages/coach/CoachShortlistPage'
 import CoachEventsPage from './pages/coach/CoachEventsPage'
@@ -141,7 +142,8 @@ function AppRoutes() {
       <Route path="/dashboard/parent" element={<ProtectedRoute><ParentDashboardPage /></ProtectedRoute>} />
       <Route path="/dashboard/funding" element={<ProtectedRoute><FundingPage /></ProtectedRoute>} />
       <Route path="/dashboard/nil/roadmap" element={<ProtectedRoute><NILRoadmapPage /></ProtectedRoute>} />
-      <Route path="/coach" element={<ProtectedRoute><CoachDashboard /></ProtectedRoute>} />
+      <Route path="/dashboard/coach" element={<ProtectedRoute><CoachDashboard /></ProtectedRoute>} />
+      <Route path="/coach" element={<ProtectedRoute><CoachDashboardLegacy /></ProtectedRoute>} />
       <Route path="/coach/search" element={<ProtectedRoute><CoachSearchPage /></ProtectedRoute>} />
       <Route path="/coach/shortlist" element={<ProtectedRoute><CoachShortlistPage /></ProtectedRoute>} />
       <Route path="/coach/events" element={<ProtectedRoute><CoachEventsPage /></ProtectedRoute>} />
