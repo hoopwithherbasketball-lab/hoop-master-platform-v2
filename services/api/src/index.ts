@@ -6,6 +6,7 @@ import { analyticsRouter } from './routes/analytics.js'
 import { playerConfigRouter } from './routes/player-config.js'
 import { bifRouter } from './routes/bif.js'
 import { paymentsRouter } from './routes/payments.js'
+import { rokuRouter } from './routes/roku.js'
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -26,6 +27,7 @@ app.use('/api/analytics', analyticsRouter)
 app.use('/api/player', playerConfigRouter)
 app.use('/api/bif', bifRouter)
 app.use('/api/payments', paymentsRouter)
+app.use('/api/roku', rokuRouter)
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), supabase: !!supabaseUrl })

@@ -83,7 +83,9 @@ paymentsRouter.post('/webhook', async (req, res) => {
 
     if (webhookSecret) {
       try {
-        const stripe = new Stripe(stripeKey, { apiVersion: '2024-11-20.acacia' })
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+          apiVersion: '2026-05-27.dahlia' as any,
+        })
         const sig = req.headers['stripe-signature'];
         if (!sig) throw new Error('Missing stripe-signature header')
         event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);

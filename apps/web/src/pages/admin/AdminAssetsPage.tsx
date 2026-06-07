@@ -2,18 +2,20 @@ import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '../../lib/supabase'
 import { getCdnUrl } from '../../lib/cdn'
 import DashboardLayout from '../../components/layout/DashboardLayout'
-import { Plus, Edit3, Trash2, X, FileVideo } from 'lucide-react'
+import { Plus, Edit3, Trash2, X, FileVideo, Tv, Tv2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface MediaAsset {
   id: string; title: string; description: string; duration_seconds: number
   storage_path: string; thumbnail_url: string; status: string
   category: string; tags: string[]; created_at: string
+  publish_to_roku: boolean
 }
 
 const STATUSES = ['draft', 'processing', 'ready', 'failed', 'archived']
 const CATEGORIES = ['game_film', 'highlight', 'training', 'interview', 'behind_scenes', 'promotional', 'uncategorized']
 
-const emptyForm = { title: '', description: '', duration_seconds: 0, storage_path: '', thumbnail_url: '', status: 'draft', category: 'uncategorized', tags: [] as string[] }
+const emptyForm = { title: '', description: '', duration_seconds: 0, storage_path: '', thumbnail_url: '', status: 'draft', category: 'uncategorized', tags: [] as string[], publish_to_roku: false }
 
 export default function AdminAssetsPage() {
   const [assets, setAssets] = useState<MediaAsset[]>([])
@@ -39,7 +41,7 @@ export default function AdminAssetsPage() {
   const openNew = () => { setEditing(null); setForm(emptyForm); setShowModal(true) }
   const openEdit = (a: MediaAsset) => {
     setEditing(a.id)
-    setForm({ title: a.title, description: a.description, duration_seconds: a.duration_seconds, storage_path: a.storage_path, thumbnail_url: a.thumbnail_url, status: a.status, category: a.category, tags: a.tags || [] })
+    setForm({ title: a.title, description: a.description, duration_seconds: a.duration_seconds, storage_path: a.storage_path, thumbnail_url: a.thumbnail_url, status: a.status, category: a.category, tags: a.tags || [], publish_to_roku: a.publish_to_roku || false })
     setShowModal(true)
   }
 
@@ -89,6 +91,23 @@ export default function AdminAssetsPage() {
     catch (e) { console.error(e) }
   }
 
+  const toggleRokuPublish = async () => {
+    if (!editing) return
+    const newState = !form.publish_to_roku
+    setForm(p => ({ ...p, publish_to_roku: newState }))
+    
+    try {
+      await supabase.from('media_assets').update({ publish_to_roku: newState, updated_at: new Date().toISOString() }).eq('id', editing)
+      if (newState) toast.success("Asset is now live on Roku")
+      else toast.success("Asset removed from Roku")
+      load() // Refresh background list
+    } catch (e) {
+      console.error(e)
+      toast.error("Failed to update Roku status")
+      setForm(p => ({ ...p, publish_to_roku: !newState })) // Revert UI
+    }
+  }
+
   const formatDuration = (s: number) => { const m = Math.floor(s / 60); return `${m}m ${s % 60}s` }
 
   return (
@@ -106,6 +125,7 @@ export default function AdminAssetsPage() {
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Category</th>
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Duration</th>
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Status</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Roku</th>
                 <th className="px-4 py-3 text-right text-xs text-slate-400 uppercase">Actions</th>
               </tr>
             </thead>
@@ -124,6 +144,9 @@ export default function AdminAssetsPage() {
                   <td className="px-4 py-3 text-slate-300">{a.category}</td>
                   <td className="px-4 py-3 text-slate-300">{formatDuration(a.duration_seconds)}</td>
                   <td className="px-4 py-3"><span className={`px-2 py-0.5 rounded-full text-xs ${a.status === 'ready' ? 'bg-green-500/20 text-green-400' : a.status === 'processing' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-slate-500/20 text-slate-400'}`}>{a.status}</span></td>
+                  <td className="px-4 py-3">
+                    {a.publish_to_roku ? <span className="inline-flex items-center gap-1 text-[#6F1AB6] bg-[#6F1AB6]/10 px-2 py-0.5 rounded-full text-xs font-bold"><Tv size={12}/> Live</span> : <span className="text-slate-500 text-xs">-</span>}
+                  </td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={() => openEdit(a)} className="p-1 text-slate-400 hover:text-white"><Edit3 size={14} /></button>
                     <button onClick={() => setDeleteId(a.id)} className="p-1 text-slate-400 hover:text-red-400"><Trash2 size={14} /></button>
@@ -139,8 +162,24 @@ export default function AdminAssetsPage() {
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
           <div className="bg-slate-800 rounded-xl w-full max-w-lg p-6 space-y-4">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center border-b border-slate-700 pb-4">
               <h3 className="text-lg font-semibold text-white">{editing ? 'Edit Asset' : 'New Asset'}</h3>
+              
+              {editing && form.status === 'ready' && (
+                <div className="flex items-center gap-3 bg-slate-700/50 px-4 py-2 rounded-lg ml-auto mr-4 border border-slate-600/50">
+                  <div className="flex items-center gap-2">
+                    <Tv2 size={16} className={form.publish_to_roku ? "text-[#6F1AB6]" : "text-slate-400"} />
+                    <span className="text-sm font-medium text-white">Publish to Roku Channel</span>
+                  </div>
+                  <button 
+                    onClick={toggleRokuPublish}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${form.publish_to_roku ? 'bg-[#6F1AB6]' : 'bg-slate-500'}`}
+                  >
+                    <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${form.publish_to_roku ? 'translate-x-4' : 'translate-x-1'}`} />
+                  </button>
+                </div>
+              )}
+
               <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-white"><X size={20} /></button>
             </div>
             <div className="space-y-3">
