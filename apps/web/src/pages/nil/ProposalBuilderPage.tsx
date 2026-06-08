@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { supabase } from "@/lib/supabase";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
@@ -711,15 +712,27 @@ export default function ProposalBuilderPage() {
       setFormData(getDefaultFormData(firstActive));
     }
 
-    // Load proposals
-    const local = localStorage.getItem("hwh_proposals");
-    if (local) {
-      try {
-        setSavedProposals(JSON.parse(local));
-      } catch (e) {
-        console.error("Failed to parse proposals", e);
+    // Load proposals from Supabase
+    const fetchProposals = async () => {
+      const { data, error } = await supabase.from("proposals").select("*").order("created_at", { ascending: false });
+      if (!error && data) {
+        const formatted = data.map(dbRow => ({
+          id: dbRow.id,
+          template_id: dbRow.package_details?.legacy_template_id,
+          form_data: dbRow.package_details?.legacy_form_data,
+          status: dbRow.status.toLowerCase(),
+          created_at: dbRow.created_at,
+          updated_at: dbRow.created_at,
+          view_count: dbRow.package_details?.legacy_view_count || 0,
+          last_viewed: dbRow.package_details?.legacy_last_viewed,
+          view_history: dbRow.package_details?.legacy_view_history || []
+        }));
+        setSavedProposals(formatted);
+      } else if (error) {
+        console.error("Failed to load proposals from Supabase:", error);
       }
-    }
+    };
+    fetchProposals();
   }, []);
 
   const saveTemplatesToLocalStorage = (newTemplates: any[]) => {
@@ -793,10 +806,8 @@ export default function ProposalBuilderPage() {
     setActiveView("editor");
   };
 
-  const saveToLocalStorage = (proposals: Proposal[]) => {
-    localStorage.setItem("hwh_proposals", JSON.stringify(proposals));
-    setSavedProposals(proposals);
-  };
+  // Replaced by direct Supabase interactions
+  // const saveToLocalStorage = (proposals: Proposal[]) => { ... }
 
   const handleTemplateSelect = (template: any) => {
     setSelectedTemplate(template);
@@ -845,40 +856,66 @@ export default function ProposalBuilderPage() {
     }));
   };
 
-  const saveProposal = (status = "draft") => {
+  const saveProposal = async (status = "draft") => {
     setSaving(true);
     const now = new Date().toISOString();
-    let updated: Proposal[] = [];
+    const dbStatus = status.charAt(0).toUpperCase() + status.slice(1);
 
     if (currentProposalId) {
-      updated = savedProposals.map(p => {
-        if (p.id === currentProposalId) {
-          return {
-            ...p,
-            form_data: formData,
-            status,
-            updated_at: now
-          };
+      // Update existing
+      const existingProposal = savedProposals.find(p => p.id === currentProposalId);
+      const { error } = await supabase.from("proposals").update({
+        status: dbStatus,
+        package_details: {
+          legacy_template_id: selectedTemplate.id,
+          legacy_form_data: formData,
+          legacy_view_count: existingProposal?.view_count || 0,
+          legacy_last_viewed: existingProposal?.last_viewed,
+          legacy_view_history: existingProposal?.view_history || []
         }
-        return p;
-      });
-    } else {
-      const newId = Math.random().toString(36).substring(2, 11);
-      const newProposal: Proposal = {
-        id: newId,
-        template_id: selectedTemplate.id,
-        form_data: formData,
-        status,
-        created_at: now,
-        updated_at: now,
-        view_count: 0,
-        view_history: []
-      };
-      setCurrentProposalId(newId);
-      updated = [newProposal, ...savedProposals];
-    }
+      }).eq("id", currentProposalId);
 
-    saveToLocalStorage(updated);
+      if (!error) {
+        setSavedProposals(prev => prev.map(p => {
+          if (p.id === currentProposalId) {
+            return { ...p, form_data: formData, status, updated_at: now };
+          }
+          return p;
+        }));
+      } else {
+        console.error("Failed to update proposal in Supabase", error);
+      }
+    } else {
+      // Insert new
+      const { data, error } = await supabase.from("proposals").insert({
+        status: dbStatus,
+        package_details: {
+          legacy_template_id: selectedTemplate.id,
+          legacy_form_data: formData,
+          legacy_view_count: 0,
+          legacy_last_viewed: null,
+          legacy_view_history: []
+        }
+      }).select().single();
+
+      if (!error && data) {
+        const newId = data.id;
+        setCurrentProposalId(newId);
+        const newProposal: Proposal = {
+          id: newId,
+          template_id: selectedTemplate.id,
+          form_data: formData,
+          status,
+          created_at: now,
+          updated_at: now,
+          view_count: 0,
+          view_history: []
+        };
+        setSavedProposals(prev => [newProposal, ...prev]);
+      } else {
+        console.error("Failed to create proposal in Supabase", error);
+      }
+    }
     setSaving(false);
   };
 
@@ -893,39 +930,61 @@ export default function ProposalBuilderPage() {
     setShowSavedProposals(false);
   };
 
-  const updateProposalStatus = (proposalId: string, newStatus: string) => {
-    const updated = savedProposals.map(p => {
-      if (p.id === proposalId) {
-        const viewHistory = [...(p.view_history || [])];
-        let viewCount = p.view_count || 0;
-        let lastViewed = p.last_viewed;
-        
-        if (newStatus === "viewed" && p.status !== "viewed") {
-          viewCount += 1;
-          lastViewed = new Date().toISOString();
-          viewHistory.push({ viewed_at: lastViewed });
-        }
+  const updateProposalStatus = async (proposalId: string, newStatus: string) => {
+    const p = savedProposals.find(prop => prop.id === proposalId);
+    if (!p) return;
 
-        return {
-          ...p,
-          status: newStatus,
-          view_count: viewCount,
-          last_viewed: lastViewed,
-          view_history: viewHistory,
-          updated_at: new Date().toISOString()
-        };
+    const dbStatus = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+    const viewHistory = [...(p.view_history || [])];
+    let viewCount = p.view_count || 0;
+    let lastViewed = p.last_viewed;
+    
+    if (newStatus === "viewed" && p.status !== "viewed") {
+      viewCount += 1;
+      lastViewed = new Date().toISOString();
+      viewHistory.push({ viewed_at: lastViewed });
+    }
+
+    const { error } = await supabase.from("proposals").update({
+      status: dbStatus,
+      package_details: {
+        legacy_template_id: p.template_id,
+        legacy_form_data: p.form_data,
+        legacy_view_count: viewCount,
+        legacy_last_viewed: lastViewed,
+        legacy_view_history: viewHistory
       }
-      return p;
-    });
-    saveToLocalStorage(updated);
+    }).eq("id", proposalId);
+
+    if (!error) {
+      setSavedProposals(prev => prev.map(prop => {
+        if (prop.id === proposalId) {
+          return {
+            ...prop,
+            status: newStatus,
+            view_count: viewCount,
+            last_viewed: lastViewed,
+            view_history: viewHistory,
+            updated_at: new Date().toISOString()
+          };
+        }
+        return prop;
+      }));
+    } else {
+      console.error("Failed to update status in Supabase", error);
+    }
   };
 
-  const deleteProposal = (proposalId: string) => {
-    const updated = savedProposals.filter(p => p.id !== proposalId);
-    saveToLocalStorage(updated);
-    if (currentProposalId === proposalId) {
-      setCurrentProposalId(null);
-      setFormData(getDefaultFormData(selectedTemplate));
+  const deleteProposal = async (proposalId: string) => {
+    const { error } = await supabase.from("proposals").delete().eq("id", proposalId);
+    if (!error) {
+      setSavedProposals(prev => prev.filter(p => p.id !== proposalId));
+      if (currentProposalId === proposalId) {
+        setCurrentProposalId(null);
+        setFormData(getDefaultFormData(selectedTemplate));
+      }
+    } else {
+      console.error("Failed to delete from Supabase", error);
     }
   };
 
