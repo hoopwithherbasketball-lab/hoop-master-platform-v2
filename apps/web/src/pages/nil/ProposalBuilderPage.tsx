@@ -994,7 +994,7 @@ export default function ProposalBuilderPage() {
     }
   };
 
-  const filteredQuickTemplates = STATIC_QUICK_TEMPLATES.filter(qt => qt.template_type === selectedTemplate.id);
+  const filteredQuickTemplates = STATIC_QUICK_TEMPLATES.filter(qt => qt.template_type === selectedTemplate?.id);
 
   // Compute stats locally
   const stats = {
