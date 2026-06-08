@@ -933,7 +933,7 @@ export default function ProposalBuilderPage() {
     setEmailForm({
       recipient_email: formData.contactEmail || "",
       recipient_name: formData.contactName || "",
-      subject: `Partnership Proposal from HoopWithHer - ${formData.organizationName || ""}`,
+      subject: `Partnership Proposal from HoopWithHer - ${formData?.organizationName || ""}`,
       personal_message: ""
     });
     setShowEmailDialog(true);
@@ -985,7 +985,7 @@ export default function ProposalBuilderPage() {
         heightLeft -= pageHeight;
       }
 
-      const fileName = `HWH_Partnership_Proposal_${formData.organizationName || "Draft"}_${new Date().toISOString().split("T")[0]}.pdf`;
+      const fileName = `HWH_Partnership_Proposal_${formData?.organizationName || "Draft"}_${new Date().toISOString().split("T")[0]}.pdf`;
       pdf.save(fileName);
     } catch (err) {
       console.error("Failed to generate PDF:", err);
@@ -1200,7 +1200,7 @@ export default function ProposalBuilderPage() {
                       <Input
                         id="organizationName"
                         className="bg-white/5 border-white/10 text-white rounded-xl"
-                        value={formData.organizationName}
+                        value={formData?.organizationName || ""}
                         onChange={(e) => handleInputChange("organizationName", e.target.value)}
                         placeholder="Enter organization name"
                       />
@@ -2430,8 +2430,9 @@ export default function ProposalBuilderPage() {
 // Sub-components: Preview Rendering
 function ProposalPreview({ template, formData }: { template: any; formData: any }) {
   if (!template) return null;
+  if (!formData) formData = {};
 
-  const orgName = formData.organizationName || "[Organization Name]";
+  const orgName = formData?.organizationName || "[Organization Name]";
   const contactName = formData.contactName || "[Contact Name]";
   const format = formData.proposalFormat || "detailed";
   const isNIL = template.id === "nil-partnership";
