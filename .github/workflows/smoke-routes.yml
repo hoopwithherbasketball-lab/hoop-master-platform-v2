@@ -1,0 +1,30 @@
+name: Route Smoke Test
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npx turbo build --filter=web
+
+      - name: Verify key files exist
+        run: |
+          test -f apps/web/src/pages/admin/EliteGBBDashboard.tsx
+          test -f apps/web/src/components/AcademicPathwaySelector.tsx
+          test -f apps/web/src/components/ProposalBuilder.tsx
+          test -f REMAINING_MIGRATIONS.sql
+          test -f EliteGBB_Data_Audit.md

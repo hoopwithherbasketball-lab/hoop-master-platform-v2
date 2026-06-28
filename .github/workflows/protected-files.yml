@@ -1,0 +1,26 @@
+name: Protected Files
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  protect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Block sensitive changes
+        run: |
+          git fetch origin main
+          CHANGED=$(git diff --name-only origin/main...HEAD)
+
+          echo "$CHANGED"
+
+          if echo "$CHANGED" | grep -E '(^\.env$|apps/web/\.env$|supabase/migrations/|ALL_MIGRATIONS.sql|REMAINING_MIGRATIONS.sql)'; then
+            echo "Sensitive platform files changed. Manual review required."
+            exit 1
+          fi
