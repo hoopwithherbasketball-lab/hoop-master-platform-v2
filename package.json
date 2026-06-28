@@ -8,10 +8,10 @@
     "services/*"
   ],
   "scripts": {
-    "build:web": "node ./node_modules/turbo/bin/turbo build --filter=web",
-    "dev:web": "cd apps/web && node ../../node_modules/vite/bin/vite.js --host",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "build:web": "turbo build --filter=web",
+    "dev:web": "npm run dev -w apps/web -- --host",
+    "typecheck": "npm run build -w apps/web",
+    "lint": "turbo lint"
   },
   "devDependencies": {
     "ajv": "^8.20.0",
