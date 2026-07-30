@@ -8,10 +8,10 @@
     "services/*"
   ],
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "lint": "turbo lint",
-    "clean": "turbo clean"
+    "build:web": "turbo build --filter=web",
+    "dev:web": "npm run dev -w apps/web -- --host",
+    "typecheck": "npm run build -w apps/web",
+    "lint": "turbo lint"
   },
   "devDependencies": {
     "ajv": "^8.20.0",
