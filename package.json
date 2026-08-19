@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "dev": "turbo dev",
-    "build": "turbo build --concurrency=1",
+    "build": "node scripts/run-builds.js",
+    "build:turbo": "turbo build",
     "lint": "turbo lint",
     "clean": "turbo clean"
   },
