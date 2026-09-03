@@ -50,6 +50,7 @@ import AdminOverview from './pages/admin/AdminOverview'
 import AdminLeadsPage from './pages/admin/AdminLeadsPage'
 import AdminOrdersPage from './pages/admin/AdminOrdersPage'
 import AdminAuditsPage from './pages/admin/AdminAuditsPage'
+import EliteGBBDashboard from './pages/admin/EliteGBBDashboard'
 import NILOverview from "./pages/nil/NILOverview"
 import CompanyList from "./pages/nil/CompanyList"
 import OpportunityList from "./pages/nil/OpportunityList"
@@ -160,6 +161,7 @@ function AppRoutes() {
       <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
       <Route path="/admin/evaluations" element={<ProtectedRoute role="admin"><AdminEvaluationsPage /></ProtectedRoute>} />
       <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
+      <Route path="/admin/elitegbb" element={<ProtectedRoute role="admin"><EliteGBBDashboard /></ProtectedRoute>} />
       <Route path="/admin/players/:id" element={<ProtectedRoute role="admin"><AdminPlayerDetailPage /></ProtectedRoute>} />
       <Route path="/admin/reports" element={<ProtectedRoute role="admin"><AdminReportsPage /></ProtectedRoute>} />
       <Route path="/admin/crm-audit" element={<ProtectedRoute role="admin"><AdminAuditLogsPage /></ProtectedRoute>} />
