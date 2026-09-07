@@ -72,6 +72,7 @@ import AnalyticsPage from './pages/dashboard/AnalyticsPage'
 import FundingPage from './pages/dashboard/FundingPage'
 import AdminFundingPage from './pages/admin/AdminFundingPage'
 import AdminEvaluationsPage from './pages/admin/AdminEvaluationsPage'
+import CourtsideCommunicationPage from './pages/admin/CourtsideCommunicationPage'
 import AdminPlayerDetailPage from './pages/admin/AdminPlayerDetailPage'
 import AdminReportsPage from './pages/admin/AdminReportsPage'
 import AdminAuditLogsPage from './pages/admin/AdminAuditLogsPage'
@@ -159,6 +160,7 @@ function AppRoutes() {
       <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrdersPage /></ProtectedRoute>} />
       <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
       <Route path="/admin/evaluations" element={<ProtectedRoute role="admin"><AdminEvaluationsPage /></ProtectedRoute>} />
+      <Route path="/admin/courtside-communication" element={<ProtectedRoute role="admin"><CourtsideCommunicationPage /></ProtectedRoute>} />
       <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
       <Route path="/admin/players/:id" element={<ProtectedRoute role="admin"><AdminPlayerDetailPage /></ProtectedRoute>} />
       <Route path="/admin/reports" element={<ProtectedRoute role="admin"><AdminReportsPage /></ProtectedRoute>} />
