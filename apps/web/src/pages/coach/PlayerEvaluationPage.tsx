@@ -28,10 +28,14 @@ export default function PlayerEvaluationPage() {
   
   const [copied, setCopied] = useState(false)
   const [showForm, setShowForm] = useState(false)
-  const [overallScore, setOverallScore] = useState(80)
+  const [overallGrade, setOverallGrade] = useState('B')
+  const [athleticismScore, setAthleticismScore] = useState(7)
+  const [skillScore, setSkillScore] = useState(7)
+  const [iqScore, setIqScore] = useState(7)
+  const [characterScore, setCharacterScore] = useState(7)
+  const [academicsScore, setAcademicsScore] = useState(7)
+  const [recommendation, setRecommendation] = useState('watch')
   const [scoutNotesText, setScoutNotesText] = useState('')
-  const [strengthsText, setStrengthsText] = useState('')
-  const [gapsText, setGapsText] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
 
@@ -48,10 +52,14 @@ export default function PlayerEvaluationPage() {
     setSubmitError('')
     
     const res = await submitPlayerEvaluation({
-      overallScore,
-      strengths: strengthsText.split('\n').map(s => s.trim()).filter(Boolean),
-      areasToImprove: gapsText.split('\n').map(s => s.trim()).filter(Boolean),
+      overallGrade,
+      athleticismScore,
+      skillScore,
+      iqScore,
+      characterScore,
+      academicsScore,
       scoutNotes: scoutNotesText,
+      recommendation,
       evaluatorId: user.id
     })
     
@@ -59,9 +67,13 @@ export default function PlayerEvaluationPage() {
     if (res.success) {
       setShowForm(false)
       setScoutNotesText('')
-      setStrengthsText('')
-      setGapsText('')
-      setOverallScore(80)
+      setOverallGrade('B')
+      setAthleticismScore(7)
+      setSkillScore(7)
+      setIqScore(7)
+      setCharacterScore(7)
+      setAcademicsScore(7)
+      setRecommendation('watch')
     } else {
       setSubmitError(res.error || 'Failed to submit evaluation')
     }
@@ -90,36 +102,68 @@ export default function PlayerEvaluationPage() {
               <Star size={18} className="text-[#FB6C1D]" /> Submit New Scout Report
             </h2>
             {submitError && <p className="text-sm text-red-500 bg-red-500/10 p-3 rounded-lg">{submitError}</p>}
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="space-y-1.5 md:col-span-1">
-                <label className="text-xs font-semibold text-slate-400 block">Overall Score (0-100)</label>
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  value={overallScore}
-                  onChange={e => setOverallScore(Number(e.target.value))}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-400 block">Overall Grade (A-F)</label>
+                <select
+                  value={overallGrade}
+                  onChange={e => setOverallGrade(e.target.value)}
                   className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD]"
-                  required
+                >
+                  <option value="A+">A+</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                  <option value="F">F</option>
+                </select>
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-400 block">Athleticism (0-10)</label>
+                <input
+                  type="number" min="0" max="10" value={athleticismScore} onChange={e => setAthleticismScore(Number(e.target.value))}
+                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD]"
                 />
               </div>
-              <div className="space-y-1.5 md:col-span-1">
-                <label className="text-xs font-semibold text-slate-400 block">Strengths (one per line)</label>
-                <textarea
-                  placeholder="Excellent handles&#10;Active hands on defense"
-                  value={strengthsText}
-                  onChange={e => setStrengthsText(e.target.value)}
-                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD] h-20 resize-none"
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-400 block">Skill (0-10)</label>
+                <input
+                  type="number" min="0" max="10" value={skillScore} onChange={e => setSkillScore(Number(e.target.value))}
+                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD]"
                 />
               </div>
-              <div className="space-y-1.5 md:col-span-1">
-                <label className="text-xs font-semibold text-slate-400 block">Areas to Improve (one per line)</label>
-                <textarea
-                  placeholder="Left hand finish&#10;Off-ball rotation speed"
-                  value={gapsText}
-                  onChange={e => setGapsText(e.target.value)}
-                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD] h-20 resize-none"
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-400 block">IQ (0-10)</label>
+                <input
+                  type="number" min="0" max="10" value={iqScore} onChange={e => setIqScore(Number(e.target.value))}
+                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD]"
                 />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-400 block">Character (0-10)</label>
+                <input
+                  type="number" min="0" max="10" value={characterScore} onChange={e => setCharacterScore(Number(e.target.value))}
+                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD]"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-400 block">Academics (0-10)</label>
+                <input
+                  type="number" min="0" max="10" value={academicsScore} onChange={e => setAcademicsScore(Number(e.target.value))}
+                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD]"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-400 block">Recommendation</label>
+                <select
+                  value={recommendation}
+                  onChange={e => setRecommendation(e.target.value)}
+                  className="w-full bg-[#121B47]/50 border border-white/10 rounded-lg p-2.5 text-white text-sm outline-none focus:ring-1 focus:ring-[#0134BD]"
+                >
+                  <option value="offer">Offer</option>
+                  <option value="watch">Watch</option>
+                  <option value="pass">Pass</option>
+                </select>
               </div>
             </div>
             <div className="space-y-1.5">
@@ -192,43 +236,31 @@ export default function PlayerEvaluationPage() {
           <p className="text-gray-300 leading-relaxed whitespace-pre-wrap">{evalData.scoutNotes}</p>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-5">
-            <h3 className="font-bold text-green-400 mb-3 flex items-center gap-2"><Award size={16} /> Strengths</h3>
-            <ul className="space-y-2">{evalData.strengths.map(s => <li key={s} className="flex items-center gap-2 text-sm text-green-300"><span className="w-1.5 h-1.5 bg-green-500 rounded-full" />{s}</li>)}</ul>
-            {evalData.strengths.length === 0 && <p className="text-xs text-gray-400 italic">No strengths listed.</p>}
-          </div>
-          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-5">
-            <h3 className="font-bold text-amber-400 mb-3 flex items-center gap-2"><Target size={16} /> Areas to Improve</h3>
-            <ul className="space-y-2">{evalData.areasToImprove.map(s => <li key={s} className="flex items-center gap-2 text-sm text-amber-300"><span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />{s}</li>)}</ul>
-            {evalData.areasToImprove.length === 0 && <p className="text-xs text-gray-400 italic">No areas to improve listed.</p>}
-          </div>
-          <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-5">
-            <h3 className="font-bold text-blue-400 mb-3 flex items-center gap-2"><User size={16} /> Comparable</h3>
-            <p className="text-sm text-blue-300">{evalData.comparablePlayer || 'None specified'}</p>
-          </div>
-        </div>
-
         <div className="bg-navy-800 rounded-xl shadow-sm p-6">
           <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2"><MessageSquare size={18} /> Coach Referral Notes <span className="text-xs text-gray-400 font-normal">(Elite Track)</span></h2>
-          <div className="space-y-3 mb-4">
-            {referralNotes.length === 0 && <p className="text-sm text-gray-400 italic">No referral notes yet. Add your evaluation note.</p>}
+          <div className="space-y-3 mb-6">
             {referralNotes.map(n => (
-              <div key={n.id} className="p-3 bg-white/5 rounded-lg">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-medium text-sm text-white">{n.coachName}</span>
-                  <span className="text-xs text-gray-400">{n.date}</span>
-                </div>
-                <p className="text-sm text-gray-300">{n.content}</p>
+              <div key={n.id} className="bg-[#121B47]/50 p-3 rounded-lg border border-white/5">
+                <p className="text-sm text-gray-300">{n.note}</p>
+                <p className="text-xs text-gray-500 mt-2 text-right">{n.createdAt.slice(0, 10)} by {n.coachName}</p>
               </div>
             ))}
+            {referralNotes.length === 0 && <p className="text-sm text-gray-400 italic">No referral notes found.</p>}
           </div>
-          <div className="flex items-center gap-3">
-            <input value={newNote} onChange={e => setNewNote(e.target.value)} placeholder="Add a referral note..." className="flex-1 p-3 bg-[#121B47]/50 border border-white/10 rounded-lg outline-none focus:ring-2 focus:ring-[#0134BD] text-sm text-white" />
-            <button onClick={addNote} className="flex items-center gap-1 px-4 py-2.5 bg-[#0134BD] text-white rounded-lg font-medium text-sm hover:bg-[#002a80]"><Plus size={16} /> Add</button>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Add private referral note..."
+              value={newNote}
+              onChange={e => setNewNote(e.target.value)}
+              className="flex-1 bg-[#121B47]/50 border border-white/10 rounded-lg p-2 text-sm text-white outline-none focus:ring-1 focus:ring-[#0134BD]"
+              onKeyDown={e => e.key === 'Enter' && addNote()}
+            />
+            <button onClick={addNote} className="btn btn-secondary px-4 py-2 text-sm">Add Note</button>
           </div>
         </div>
       </div>
     </DashboardLayout>
   )
 }
+            {referralNotes.length === 0 && <p className="text-sm text-gray-400 italic">No referral notes yet. Add your evaluation note.</p>}

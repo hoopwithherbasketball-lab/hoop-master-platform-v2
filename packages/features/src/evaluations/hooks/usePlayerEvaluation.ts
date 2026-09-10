@@ -14,13 +14,11 @@ export interface PlayerEvaluation {
   gradClass: string
   school: string
   height: string
-  overall: number
+  overall: string
   projection: string
   categories: EvalCategory[]
   scoutNotes: string
-  strengths: string[]
-  areasToImprove: string[]
-  comparablePlayer: string
+  recommendation: string
   evalDate: string
   evaluator: string
 }
@@ -50,31 +48,28 @@ export function usePlayerEvaluation(playerId: string) {
 
         if (abortController.signal.aborted) return
 
-        // Get the latest submission/result for the player
-        const { data: submissionData } = await supabase
-          .from('audit_submissions')
-          .select('id')
+        // Get the latest coach evaluation for the player
+        const { data: latestEvaluation } = await supabase
+          .from('coach_evaluations')
+          .select('*')
           .eq('player_profile_id', playerId)
-          .order('submitted_at', { ascending: false })
+          .order('created_at', { ascending: false })
           .limit(1)
+          .maybeSingle()
 
         if (abortController.signal.aborted) return
 
-        const latestSubmission = submissionData?.[0]
-
-        let auditResult: { total_score: number; strengths: string; gaps: string; priority_actions: string; created_at: string; created_by: string } | null = null
-        if (latestSubmission?.id) {
-          const r = await supabase
-            .from('audit_results')
-            .select('total_score, strengths, gaps, priority_actions, created_at, created_by')
-            .eq('audit_submission_id', latestSubmission.id)
-            .maybeSingle()
-          if (abortController.signal.aborted) return
-          auditResult = r.data
-        }
-
         const fn = profileData?.first_name ?? ''
         const ln = profileData?.last_name ?? ''
+
+        const cats: EvalCategory[] = []
+        if (latestEvaluation) {
+          cats.push({ label: 'Athleticism', score: latestEvaluation.athleticism_score, notes: '' })
+          cats.push({ label: 'Skill', score: latestEvaluation.skill_score, notes: '' })
+          cats.push({ label: 'IQ', score: latestEvaluation.iq_score, notes: '' })
+          cats.push({ label: 'Character', score: latestEvaluation.character_score, notes: '' })
+          cats.push({ label: 'Academics', score: latestEvaluation.academics_score, notes: '' })
+        }
 
         setEvaluation({
           playerId,
@@ -83,15 +78,13 @@ export function usePlayerEvaluation(playerId: string) {
           gradClass: profileData?.class_year ? String(profileData.class_year) : '',
           school: profileData?.school_name ?? '',
           height: profileData?.height ?? '',
-          overall: auditResult?.total_score ?? 0,
-          projection: auditResult ? `Score: ${auditResult.total_score}` : 'Awaiting evaluation',
-          categories: [],
-          scoutNotes: auditResult?.priority_actions ?? 'No evaluation notes yet.',
-          strengths: auditResult?.strengths ? auditResult.strengths.split('\n').filter(Boolean) : [],
-          areasToImprove: auditResult?.gaps ? auditResult.gaps.split('\n').filter(Boolean) : [],
-          comparablePlayer: '',
-          evalDate: auditResult?.created_at ? auditResult.created_at.slice(0, 10) : '',
-          evaluator: auditResult?.created_by ? auditResult.created_by.slice(0, 8) : 'Staff',
+          overall: latestEvaluation?.overall_grade ?? 'N/A',
+          projection: latestEvaluation ? `Rec: ${latestEvaluation.recommendation}` : 'Awaiting evaluation',
+          categories: cats,
+          scoutNotes: latestEvaluation?.notes ?? 'No evaluation notes yet.',
+          recommendation: latestEvaluation?.recommendation ?? '',
+          evalDate: latestEvaluation?.created_at ? latestEvaluation.created_at.slice(0, 10) : '',
+          evaluator: latestEvaluation?.coach_id ?? 'Staff',
         })
       } catch (e) {
         console.error('usePlayerEvaluation:', e)
@@ -105,39 +98,33 @@ export function usePlayerEvaluation(playerId: string) {
   }, [playerId, refetchIndex])
 
   const submitPlayerEvaluation = async (data: {
-    overallScore: number
-    strengths: string[]
-    areasToImprove: string[]
+    overallGrade: string
+    athleticismScore: number
+    skillScore: number
+    iqScore: number
+    characterScore: number
+    academicsScore: number
     scoutNotes: string
+    recommendation: string
     evaluatorId: string
   }) => {
     try {
-      // 1. Insert into audit_submissions
-      const { data: submission, error: submissionError } = await supabase
-        .from('audit_submissions')
+      const { error } = await supabase
+        .from('coach_evaluations')
         .insert({
+          coach_id: data.evaluatorId,
           player_profile_id: playerId,
-          customer_user_id: data.evaluatorId,
-          goals: 'Coach Evaluation',
-        })
-        .select('id')
-        .single()
-
-      if (submissionError) throw submissionError
-
-      // 2. Insert into audit_results
-      const { error: resultError } = await supabase
-        .from('audit_results')
-        .insert({
-          audit_submission_id: submission.id,
-          total_score: data.overallScore,
-          strengths: data.strengths.filter(Boolean).join('\n'),
-          gaps: data.areasToImprove.filter(Boolean).join('\n'),
-          priority_actions: data.scoutNotes,
-          created_by: data.evaluatorId,
+          overall_grade: data.overallGrade,
+          athleticism_score: data.athleticismScore,
+          skill_score: data.skillScore,
+          iq_score: data.iqScore,
+          character_score: data.characterScore,
+          academics_score: data.academicsScore,
+          notes: data.scoutNotes,
+          recommendation: data.recommendation,
         })
 
-      if (resultError) throw resultError
+      if (error) throw error
 
       triggerRefetch()
       return { success: true }
@@ -155,13 +142,11 @@ export function usePlayerEvaluation(playerId: string) {
       gradClass: '',
       school: '',
       height: '',
-      overall: 0,
+      overall: '',
       projection: '',
       categories: [],
       scoutNotes: '',
-      strengths: [],
-      areasToImprove: [],
-      comparablePlayer: '',
+      recommendation: '',
       evalDate: '',
       evaluator: '',
     },
