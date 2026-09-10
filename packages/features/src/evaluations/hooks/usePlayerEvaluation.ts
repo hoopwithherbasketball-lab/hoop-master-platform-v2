@@ -128,9 +128,9 @@ export function usePlayerEvaluation(playerId: string) {
 
       triggerRefetch()
       return { success: true }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error submitting evaluation:', err)
-      return { success: false, error: err.message }
+      return { success: false, error: err instanceof Error ? err.message : String(err) }
     }
   }
 

@@ -1,7 +1,9 @@
+export type ProposalStatus = 'draft' | 'sent' | 'accepted' | 'rejected';
+
 export interface ProposalBlock {
   id: string;
   type: 'text' | 'hero' | 'features' | 'pricing';
-  content: any;
+  content: Record<string, unknown>;
   order: number;
 }
 
@@ -10,7 +12,7 @@ export interface Proposal {
   athlete_id: string | null;
   company_id: string | null;
   title: string;
-  status: 'draft' | 'sent' | 'accepted' | 'rejected';
+  status: ProposalStatus;
   amount: number | null;
   created_at?: string;
   updated_at?: string;

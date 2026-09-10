@@ -6,7 +6,7 @@ import { FeaturesBlock } from './FeaturesBlock';
 interface BlockRendererProps {
   block: {
     type: string;
-    content_json: any;
+    content_json: Record<string, unknown>;
   };
 }
 

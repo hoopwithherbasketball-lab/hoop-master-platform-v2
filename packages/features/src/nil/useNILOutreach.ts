@@ -1,6 +1,23 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
+interface NILOutreachRow {
+  id: string
+  subject: string
+  notes: string | null
+  created_at: string
+  status: string
+  nil_companies?: { name?: string | null } | null
+}
+
+function toError(value: unknown): Error {
+  return value instanceof Error ? value : new Error(String(value))
+}
+
+function errorMessage(value: unknown): string {
+  return value instanceof Error ? value.message : String(value)
+}
+
 export interface NILOutreachMessage {
   id: string
   from: string
@@ -25,7 +42,7 @@ export function useNILOutreach() {
         .order('created_at', { ascending: false })
       
       if (supaError) throw new Error(supaError.message)
-      setMessages((data ?? []).map((m: any) => ({
+      setMessages(((data ?? []) as NILOutreachRow[]).map((m) => ({
         id: m.id,
         from: m.nil_companies?.name || 'General Outreach',
         subject: m.subject,
@@ -33,9 +50,9 @@ export function useNILOutreach() {
         received: timeAgo(m.created_at),
         status: m.status,
       })))
-    } catch (e: any) {
+    } catch (e) {
       console.error('useNILOutreach:', e)
-      setError(e)
+      setError(toError(e))
     } finally {
       setLoading(false)
     }
@@ -45,27 +62,27 @@ export function useNILOutreach() {
     fetchOutreach()
   }, [])
 
-  const addOutreach = async (outreach: any) => {
+  const addOutreach = async (outreach: Record<string, unknown>) => {
     try {
       const { error: supaError } = await supabase.from('nil_outreach').insert([outreach])
       if (supaError) throw new Error(supaError.message)
       await fetchOutreach()
       return { success: true }
-    } catch (e: any) {
+    } catch (e) {
       console.error('Failed to add outreach:', e)
-      return { success: false, error: e.message }
+      return { success: false, error: errorMessage(e) }
     }
   }
 
-  const updateOutreach = async (id: string, updates: any) => {
+  const updateOutreach = async (id: string, updates: Record<string, unknown>) => {
     try {
       const { error: supaError } = await supabase.from('nil_outreach').update(updates).eq('id', id)
       if (supaError) throw new Error(supaError.message)
       await fetchOutreach()
       return { success: true }
-    } catch (e: any) {
+    } catch (e) {
       console.error('Failed to update outreach:', e)
-      return { success: false, error: e.message }
+      return { success: false, error: errorMessage(e) }
     }
   }
 

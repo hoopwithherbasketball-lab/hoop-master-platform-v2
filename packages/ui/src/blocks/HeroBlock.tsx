@@ -1,7 +1,23 @@
 import React from 'react';
 
-export function HeroBlock({ content }: { content: any }) {
-  const { title, subtitle, backgroundImage, ctaText, ctaUrl } = content;
+interface HeroBlockContent {
+  title?: unknown;
+  subtitle?: unknown;
+  backgroundImage?: unknown;
+  ctaText?: unknown;
+  ctaUrl?: unknown;
+}
+
+function asString(value: unknown): string {
+  return typeof value === 'string' ? value : '';
+}
+
+export function HeroBlock({ content }: { content: HeroBlockContent }) {
+  const title = asString(content.title);
+  const subtitle = asString(content.subtitle);
+  const backgroundImage = asString(content.backgroundImage);
+  const ctaText = asString(content.ctaText);
+  const ctaUrl = asString(content.ctaUrl);
   return (
     <div 
       className="relative bg-navy-900 text-white py-24 px-8 text-center"
