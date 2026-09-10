@@ -1,0 +1,88 @@
+datasource db {
+  provider = "postgresql" // Adjust if using a different existing relational DB (e.g., mysql, sqlserver)
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Athlete {
+  id              String                @id @default(uuid())
+  name            String
+  slug            String                @unique
+  graduationYear  Int
+  position        String
+  jerseyNumber    Int?
+  height          String?
+  wingspan        String?
+  coreGPA         Float?
+  
+  stats           Stats?
+  media           Media?
+  literacyTracker LiteracyTracker?
+  circuitWorkouts CircuitWorkout[]
+  openRunEvents   OpenRunRegistration[]
+}
+
+model Stats {
+  id           String   @id @default(uuid())
+  athleteId    String   @unique
+  athlete      Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  ppg          Float
+  apg          Float
+  rpg          Float
+  steals       Float
+  skillStack   Json     // E.g. ["Pick and Roll Ball Handler", "Perimeter Defender"]
+}
+
+model Media {
+  id                 String   @id @default(uuid())
+  athleteId          String   @unique
+  athlete            Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  highlightReel      String?
+  fullGameCuts       String?
+  graphicTemplateUrl String?  // For 1080x1350 spotlight posters
+}
+
+model LiteracyTracker {
+  id                 String   @id @default(uuid())
+  athleteId          String   @unique
+  athlete            Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  readingMilestones  Int      @default(0)
+  booksCompleted     Int      @default(0)
+  courtEligible      Boolean  @default(false)
+}
+
+model CircuitWorkout {
+  id               String   @id @default(uuid())
+  athleteId        String
+  athlete          Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  shootingMachine  Int      @default(0) // Tracks reps
+  jumpBoxes        Int      @default(0)
+  hurdles          Int      @default(0)
+  diyVertimax      Int      @default(0)
+  resistanceBands  Int      @default(0)
+  loggedAt         DateTime @default(now())
+}
+
+model OpenRunEvent {
+  id            String                @id @default(uuid())
+  date          DateTime
+  location      String
+  courtNumber   Int
+  description   String?
+  registrations OpenRunRegistration[]
+}
+
+model OpenRunRegistration {
+  id             String       @id @default(uuid())
+  athleteId      String
+  openRunEventId String
+  athlete        Athlete      @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  openRunEvent   OpenRunEvent @relation(fields: [openRunEventId], references: [id], onDelete: Cascade)
+  registeredAt   DateTime     @default(now())
+  
+  // An athlete can only register once per Open Run
+  @@unique([athleteId, openRunEventId])
+}
