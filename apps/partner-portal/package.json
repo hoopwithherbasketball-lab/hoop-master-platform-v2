@@ -65,7 +65,7 @@
   "scripts": {
     "start": "craco start",
     "dev": "craco start",
-    "build": "craco build",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 craco build",
     "test": "craco test"
   },
   "browserslist": {

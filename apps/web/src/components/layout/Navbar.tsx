@@ -42,21 +42,21 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-navy-900 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center"><span className="text-white font-display font-bold text-sm">GBB</span></div>
             <div><span className="font-display font-bold text-white text-lg leading-none">Elite GBB</span><span className="block text-xs text-slate-400 leading-none">ProCoach</span></div>
           </Link>
           <div className="hidden md:flex items-center gap-1">
-            <Link to="/watch" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Watch</Link>
-            <Link to="/browse" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Browse Players</Link>
-            <Link to="/services" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Services</Link>
-            {!user && <Link to="/elitegbb" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Create Profile</Link>}
-            <Link to="/recruiting-readiness" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Get Recruit-Ready</Link>
-            {!user && <Link to="/partner-onboarding" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Partners</Link>}
-            {!user && <Link to="/workshops" className="text-slate-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors">Workshops</Link>}
+            <Link to="/watch" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Watch</Link>
+            <Link to="/browse" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Browse Players</Link>
+            <Link to="/services" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Services</Link>
+            {!user && <Link to="/elitegbb" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Create Profile</Link>}
+            <Link to="/recruiting-readiness" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Get Recruit-Ready</Link>
+            {!user && <Link to="/partner-onboarding" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Partners</Link>}
+            {!user && <Link to="/workshops" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Workshops</Link>}
           </div>
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
             {user ? (
               <>
                 <NotificationBell />

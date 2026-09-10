@@ -6,7 +6,6 @@
     "declarationMap": true,
     "outDir": "dist",
     "emitDeclarationOnly": false,
-    "ignoreDeprecations": "6.0",
     "rootDir": "./src"
   },
   "include": ["src/**/*"],
