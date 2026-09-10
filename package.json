@@ -15,7 +15,8 @@
     "dev:web": "cd apps/web && node ../../node_modules/vite/bin/vite.js --host",
     "typecheck": "tsc --noEmit",
     "lint": "turbo lint",
-    "clean": "turbo clean"
+    "clean": "turbo clean",
+    "test:nil": "node tests/nil/nil-hub.test.cjs"
   },
   "devDependencies": {
     "ajv": "^8.20.0",

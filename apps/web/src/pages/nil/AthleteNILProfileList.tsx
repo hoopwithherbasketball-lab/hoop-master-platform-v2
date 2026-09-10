@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNILAthletes } from '@hoop-master/features/nil'
 import { supabase } from '../../lib/supabase'
 import { Edit3, Trash2, X } from 'lucide-react'
-import DashboardLayout from '../../components/layout/DashboardLayout'
+import NILLayout from '../../components/nil/NILLayout'
 
 const TIERS = ['bronze', 'silver', 'gold', 'platinum']
 
@@ -65,7 +65,7 @@ export default function AthleteNILProfileList() {
   }
 
   return (
-    <DashboardLayout variant="admin" title="Athlete NIL Profiles" subtitle="Athletes opted into NIL matchmaking.">
+    <NILLayout title="Athlete NIL Profiles" subtitle="Athletes opted into NIL matchmaking.">
       {loading ? (
         <div className="animate-pulse grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1,2,3].map(i => <div key={i} className="card h-48" />)}
@@ -218,6 +218,6 @@ export default function AthleteNILProfileList() {
           </div>
         </div>
       )}
-    </DashboardLayout>
+    </NILLayout>
   )
 }

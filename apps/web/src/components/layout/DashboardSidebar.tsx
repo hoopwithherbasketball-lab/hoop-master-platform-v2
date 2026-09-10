@@ -37,7 +37,7 @@ const nilNav: NavItem[] = [
   { label: 'Outreach Inbox', to: '/nil/outreach', icon: <Mail size={16} /> },
   { label: 'Compliance', to: '/nil/compliance', icon: <ShieldCheck size={16} /> },
   { label: 'Tasks', to: '/nil/tasks', icon: <CheckSquare size={16} /> },
-  { label: 'Compliance Queue', to: '/nil/compliance', icon: <ShieldCheck size={16} /> },
+  { label: 'Proposals', to: '/nil/proposals', icon: <ClipboardList size={16} /> },
 ]
 
 const adminNav: NavItem[] = [
@@ -79,7 +79,7 @@ export default function DashboardSidebar({ variant }: Props) {
 
   async function handleSignOut() { await signOut(); navigate('/') }
   function isActive(to: string) {
-    if (to === '/dashboard' || to === '/coach' || to === '/admin') return location.pathname === to
+    if (to === '/dashboard' || to === '/coach' || to === '/admin' || to === '/nil') return location.pathname === to
     return location.pathname.startsWith(to)
   }
 
