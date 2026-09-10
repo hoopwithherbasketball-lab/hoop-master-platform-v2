@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
+function toError(value: unknown): Error {
+  return value instanceof Error ? value : new Error(String(value))
+}
+
+function errorMessage(value: unknown): string {
+  return value instanceof Error ? value.message : String(value)
+}
+
 export interface NILAthlete {
   id: string
   name: string
@@ -37,9 +45,9 @@ export function useNILAthletes() {
         readiness: a.readiness_score,
         tier: a.tier,
       })))
-    } catch (e: any) {
+    } catch (e) {
       console.error('useNILAthletes:', e)
-      setError(e)
+      setError(toError(e))
     } finally {
       setLoading(false)
     }
@@ -49,7 +57,7 @@ export function useNILAthletes() {
     fetchAthletes()
   }, [])
 
-  const updateAthlete = async (id: string, updates: Partial<any>) => {
+  const updateAthlete = async (id: string, updates: Partial<Record<string, unknown>>) => {
     try {
       const { error: supaError } = await supabase
         .from('nil_athlete_profiles')
@@ -59,9 +67,9 @@ export function useNILAthletes() {
       if (supaError) throw new Error(supaError.message)
       await fetchAthletes()
       return { success: true }
-    } catch (e: any) {
+    } catch (e) {
       console.error('Failed to update athlete:', e)
-      return { success: false, error: e.message }
+      return { success: false, error: errorMessage(e) }
     }
   }
 

@@ -14,8 +14,8 @@ export interface PageBlock {
   page_id: string;
   type: BlockType;
   order_index: number;
-  content_json: any;
-  settings_json: any;
+  content_json: Record<string, unknown>;
+  settings_json: Record<string, unknown>;
 }
 
 export interface HeroBlockContent {

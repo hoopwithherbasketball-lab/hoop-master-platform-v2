@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
+function toError(value: unknown): Error {
+  return value instanceof Error ? value : new Error(String(value))
+}
+
+function errorMessage(value: unknown): string {
+  return value instanceof Error ? value.message : String(value)
+}
+
 export interface TaskStep {
   id: string
   label: string
@@ -39,9 +47,9 @@ export function useNILTasks() {
         steps: Array.isArray(t.steps) ? t.steps : [],
         notes: t.notes ?? null,
       })))
-    } catch (e: any) {
+    } catch (e) {
       console.error('useNILTasks:', e)
-      setError(e)
+      setError(toError(e))
     } finally {
       setLoading(false)
     }
@@ -51,27 +59,27 @@ export function useNILTasks() {
     fetchTasks()
   }, [])
 
-  const addTask = async (task: any) => {
+  const addTask = async (task: Record<string, unknown>) => {
     try {
       const { error: supaError } = await supabase.from('nil_tasks').insert([task])
       if (supaError) throw new Error(supaError.message)
       await fetchTasks()
       return { success: true }
-    } catch (e: any) {
+    } catch (e) {
       console.error('Failed to add task:', e)
-      return { success: false, error: e.message }
+      return { success: false, error: errorMessage(e) }
     }
   }
 
-  const updateTask = async (id: string, updates: any) => {
+  const updateTask = async (id: string, updates: Record<string, unknown>) => {
     try {
       const { error: supaError } = await supabase.from('nil_tasks').update(updates).eq('id', id)
       if (supaError) throw new Error(supaError.message)
       await fetchTasks()
       return { success: true }
-    } catch (e: any) {
+    } catch (e) {
       console.error('Failed to update task:', e)
-      return { success: false, error: e.message }
+      return { success: false, error: errorMessage(e) }
     }
   }
 
