@@ -19,6 +19,7 @@ import FAQPage from './pages/public/FAQPage'
 import PublicEventsPage from './pages/public/EventsPage'
 import CheckoutPage from './pages/public/CheckoutPage'
 import UITestPage from "./pages/UITestPage"
+import DynamicPage from './pages/public/DynamicPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import DashboardOverview from './pages/dashboard/DashboardOverview'
@@ -91,6 +92,7 @@ import AdminTenantsPage from './pages/admin/AdminTenantsPage'
 import EmbedPlayerPage from './pages/public/EmbedPlayerPage'
 import EmbedDocsPage from './pages/public/EmbedDocsPage'
 import AdminPageBuilder from './pages/admin/AdminPageBuilder'
+import AdminPageNew from './pages/admin/AdminPageNew'
 import AdminPageEditor from './pages/admin/AdminPageEditor'
 import SponsorsDashboard from './pages/admin/SponsorsDashboard'
 import ProposalBuilder from './pages/admin/ProposalBuilder'
@@ -120,6 +122,7 @@ function AppRoutes() {
       <Route path="/browse/:id" element={<PublicLayout><PlayerDetailPage /></PublicLayout>} />
       <Route path="/workshops" element={<PublicLayout><WorkshopsPage /></PublicLayout>} />
       <Route path="/ui-test" element={<PublicLayout><UITestPage /></PublicLayout>} />
+      <Route path="/p/:slug" element={<PublicLayout><DynamicPage /></PublicLayout>} />
       <Route path="/checkout/:slug" element={<PublicLayout><CheckoutPage /></PublicLayout>} />
       <Route path="/watch" element={<PublicLayout><ChannelsBrowsePage /></PublicLayout>} />
       <Route path="/watch/:slug" element={<ChannelWatchPage />} />
@@ -179,6 +182,7 @@ function AppRoutes() {
       <Route path="/admin/analytics" element={<ProtectedRoute role="admin"><AdminAnalyticsPage /></ProtectedRoute>} />
       <Route path="/admin/tenants" element={<ProtectedRoute role="admin"><AdminTenantsPage /></ProtectedRoute>} />
       <Route path="/admin/pages" element={<ProtectedRoute role="admin"><AdminPageBuilder /></ProtectedRoute>} />
+      <Route path="/admin/pages/new" element={<ProtectedRoute role="admin"><AdminPageNew /></ProtectedRoute>} />
       <Route path="/admin/pages/:slug" element={<ProtectedRoute role="admin"><AdminPageEditor /></ProtectedRoute>} />
       <Route path="/admin/sponsors" element={<ProtectedRoute role="admin"><SponsorsDashboard /></ProtectedRoute>} />
       <Route path="/nil/proposals" element={<ProtectedRoute role="admin"><ProposalBuilder /></ProtectedRoute>} />
