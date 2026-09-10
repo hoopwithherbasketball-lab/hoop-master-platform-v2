@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Download, Instagram } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from './ui/card';
+import { Button } from './ui/button';
+import { Badge } from './ui/badge';
+import { Download, MessageCircle } from 'lucide-react';
 
 export default function AcademicPathwaySelector() {
   const [selectedPathway, setSelectedPathway] = useState<string | null>(null);
@@ -71,7 +71,7 @@ export default function AcademicPathwaySelector() {
         <h4 className="font-semibold text-slate-800 mb-2">Need help deciding the best route for your athlete?</h4>
         <p className="text-slate-600 text-sm mb-4">Our coaching staff can review your current transcripts and help map out the optimal strategy.</p>
         <Button variant="outline" className="border-orange-500 text-orange-600 hover:bg-orange-50" onClick={() => window.open('https://instagram.com/hoopwithher', '_blank')}>
-          <Instagram className="mr-2" size={18} /> Direct Message Us on Instagram
+          <MessageCircle className="mr-2" size={18} /> Direct Message Us on Instagram
         </Button>
       </div>
     </div>

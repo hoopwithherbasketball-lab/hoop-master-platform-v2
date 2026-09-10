@@ -57,6 +57,7 @@ export default function CheckoutPage() {
     setState('submitting')
     setErrorMsg('')
 
+    // Create the order in Supabase
     const { data: order, error } = await supabase
       .from('service_orders')
       .insert({
@@ -71,13 +72,38 @@ export default function CheckoutPage() {
       .single()
 
     if (error) {
-      setErrorMsg('Something went wrong. Please try again.')
+      setErrorMsg('Something went wrong creating the order. Please try again.')
       setState('error')
       return
     }
 
-    setOrderId(order.id)
-    setState('success')
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      // Call the Express backend to generate the Stripe Checkout Session
+      const res = await fetch(`${apiUrl}/api/payments/checkout/session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: order.id,
+          serviceOfferId: offer.id,
+          successUrl: `${window.location.origin}/checkout/success`,
+          cancelUrl: window.location.href,
+        })
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to create checkout session');
+      }
+
+      const data = await res.json();
+      
+      // Redirect to Stripe Checkout URL (or sandbox mock)
+      window.location.href = data.url;
+    } catch (err: any) {
+      console.error('[CheckoutPage] Error calling payment API:', err)
+      setErrorMsg('Payment gateway is unavailable. Please try again later.')
+      setState('error')
+    }
   }
 
   const formatPrice = (cents: number) => `$${(cents / 100).toFixed(0)}`
@@ -110,42 +136,7 @@ export default function CheckoutPage() {
     )
   }
 
-  if (state === 'success') {
-    return (
-      <PageShell title="Order Confirmed" description="Your order has been placed successfully." badge="Checkout">
-        <div className="max-w-lg mx-auto text-center py-12">
-          <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-5">
-            <CheckCircle size={32} className="text-green-400" />
-          </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Order Confirmed!</h2>
-          <p className="text-slate-400 mb-1">Thank you, {name}. Your order for <strong className="text-white">{offer.name}</strong> has been placed.</p>
-          <p className="text-slate-500 text-sm mb-8">We'll reach out to <strong className="text-slate-300">{email}</strong> within 24 hours to get started.</p>
-          {user ? (
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                to={`/dashboard/services/${orderId}`}
-                className="flex items-center justify-center gap-2 bg-[#0134BD] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#002a80] transition-colors"
-              >
-                Track Order <ArrowRight size={16} />
-              </Link>
-              <Link to="/dashboard" className="px-6 py-3 rounded-lg font-semibold border border-white/20 text-slate-300 hover:text-white transition-colors">
-                Go to Dashboard
-              </Link>
-            </div>
-          ) : (
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/signup" className="flex items-center justify-center gap-2 bg-[#0134BD] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#002a80] transition-colors">
-                Create Account to Track Order <ArrowRight size={16} />
-              </Link>
-              <Link to="/" className="px-6 py-3 rounded-lg font-semibold border border-white/20 text-slate-300 hover:text-white transition-colors">
-                Back to Home
-              </Link>
-            </div>
-          )}
-        </div>
-      </PageShell>
-    )
-  }
+
 
   const config = SERVICE_CONFIGS[offer.slug]
   const renderFeatures = config?.deliverables || [

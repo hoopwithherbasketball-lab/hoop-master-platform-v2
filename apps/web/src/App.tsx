@@ -18,8 +18,8 @@ import ContactPage from './pages/public/ContactPage'
 import FAQPage from './pages/public/FAQPage'
 import PublicEventsPage from './pages/public/EventsPage'
 import CheckoutPage from './pages/public/CheckoutPage'
+import CheckoutSuccessPage from './pages/public/CheckoutSuccessPage'
 import UITestPage from "./pages/UITestPage"
-import DynamicPage from './pages/public/DynamicPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import DashboardOverview from './pages/dashboard/DashboardOverview'
@@ -123,6 +123,7 @@ function AppRoutes() {
       <Route path="/workshops" element={<PublicLayout><WorkshopsPage /></PublicLayout>} />
       <Route path="/ui-test" element={<PublicLayout><UITestPage /></PublicLayout>} />
       <Route path="/p/:slug" element={<PublicLayout><DynamicPage /></PublicLayout>} />
+      <Route path="/checkout/success" element={<PublicLayout><CheckoutSuccessPage /></PublicLayout>} />
       <Route path="/checkout/:slug" element={<PublicLayout><CheckoutPage /></PublicLayout>} />
       <Route path="/watch" element={<PublicLayout><ChannelsBrowsePage /></PublicLayout>} />
       <Route path="/watch/:slug" element={<ChannelWatchPage />} />

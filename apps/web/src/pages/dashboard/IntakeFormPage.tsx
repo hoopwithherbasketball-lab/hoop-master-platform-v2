@@ -21,8 +21,33 @@ export default function IntakeFormPage() {
   const { step, data, submitting, totalSteps, update, togglePrideTag, next, prev, submit } = useIntakeForm()
 
   const handleSubmit = async () => {
-    const ok = await submit()
-    if (ok) navigate('/dashboard')
+    const result = await submit()
+    if (result.ok) {
+      if (result.serviceOrderId) {
+        // Redirect to checkout API for Stripe session
+        try {
+          const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+          const res = await fetch(`${apiUrl}/api/payments/checkout/session`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              orderId: result.serviceOrderId,
+              serviceOfferId: 'intake-package', // Dummy, backend gets it from order
+              successUrl: `${window.location.origin}/checkout/success`,
+              cancelUrl: window.location.href,
+            })
+          });
+          const data = await res.json();
+          if (data.url) {
+            window.location.href = data.url;
+            return;
+          }
+        } catch (e) {
+          console.error('Failed to create stripe checkout session:', e);
+        }
+      }
+      navigate('/dashboard')
+    }
   }
 
   return (

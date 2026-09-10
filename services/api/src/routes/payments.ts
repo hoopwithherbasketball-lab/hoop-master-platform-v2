@@ -31,9 +31,18 @@ paymentsRouter.post('/checkout/session', async (req, res) => {
     // Load order details from Supabase to construct pricing
     const { data: order, error: orderErr } = await getSupabase()
       .from('service_orders')
-      .select('id, status, stripe_checkout_session_id')
+      .select(`
+        id, 
+        status, 
+        stripe_checkout_session_id,
+        service_offers (
+          name,
+          description,
+          price_cents
+        )
+      `)
       .eq('id', orderId)
-      .single()
+      .single() as any
 
     if (orderErr || !order) {
       return res.status(404).json({ error: `Service order ${orderId} not found.` })
@@ -41,12 +50,41 @@ paymentsRouter.post('/checkout/session', async (req, res) => {
 
     const stripeKey = process.env.STRIPE_SECRET_KEY
     if (stripeKey) {
-      // Live Stripe integration would occur here:
-      // const session = await stripe.checkout.sessions.create({ ... })
-      // For this build out, we structure the API payload and return the checkout session
+      const stripe = new Stripe(stripeKey, { apiVersion: '2026-05-27.dahlia' as any })
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        line_items: [
+          {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: order.service_offers.name,
+                description: order.service_offers.description || undefined,
+              },
+              unit_amount: order.service_offers.price_cents,
+            },
+            quantity: 1,
+          },
+        ],
+        client_reference_id: orderId,
+        metadata: {
+          orderId,
+          serviceOfferId
+        }
+      })
+      
+      // Update order with the generated session ID
+      await getSupabase()
+        .from('service_orders')
+        .update({ stripe_checkout_session_id: session.id })
+        .eq('id', orderId)
+
       res.json({
-        sessionId: 'cs_live_' + Math.random().toString(36).substring(2, 9),
-        url: `https://checkout.stripe.com/pay/cs_live_placeholder?orderId=${orderId}`,
+        sessionId: session.id,
+        url: session.url,
         mode: 'production'
       })
     } else {

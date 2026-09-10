@@ -209,11 +209,11 @@ export function useIntakeForm() {
       if (intakeErr) throw intakeErr
 
       setSubmitting(false)
-      return true
+      return { ok: true, serviceOrderId }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Submission failed')
       setSubmitting(false)
-      return false
+      return { ok: false }
     }
   }
 
