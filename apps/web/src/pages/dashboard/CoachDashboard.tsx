@@ -51,13 +51,17 @@ function EvaluationModal({
     setIsSubmitting(true)
 
     // Send the evaluation to the existing audit_submissions tables
-    const res = await submitPlayerEvaluation({
-      overallScore: score,
-      strengths: ['Mechanics', 'Footwork'], // Mocked for brevity in MVP
-      areasToImprove: ['Basketball IQ'],
-      scoutNotes: scoutNotes,
-      evaluatorId: evaluatorId
-    })
+      const res = await submitPlayerEvaluation({
+        overallGrade: 'B',
+        athleticismScore: Math.round(score / 10),
+        skillScore: Math.round(score / 10),
+        iqScore: Math.round(score / 10),
+        characterScore: Math.round(score / 10),
+        academicsScore: Math.round(score / 10),
+        recommendation: 'watch',
+        scoutNotes: scoutNotes,
+        evaluatorId: evaluatorId
+      })
 
     setIsSubmitting(false)
     if (res.success) {

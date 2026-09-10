@@ -7,16 +7,16 @@ import DashboardLayout from '../../components/layout/DashboardLayout'
 import { ArrowLeft, TrendingUp, Award, Target, User, Plus, MessageSquare, Share2, Check, Star } from 'lucide-react'
 
 function scoreColor(s: number): string {
-  if (s >= 90) return 'text-green-600'
-  if (s >= 80) return 'text-blue-600'
-  if (s >= 70) return 'text-amber-600'
+  if (s >= 9) return 'text-green-600'
+  if (s >= 8) return 'text-blue-600'
+  if (s >= 7) return 'text-amber-600'
   return 'text-red-400'
 }
 
 function scoreBar(s: number): string {
-  if (s >= 90) return 'bg-green-500'
-  if (s >= 80) return 'bg-blue-500'
-  if (s >= 70) return 'bg-amber-500'
+  if (s >= 9) return 'bg-green-500'
+  if (s >= 8) return 'bg-blue-500'
+  if (s >= 7) return 'bg-amber-500'
   return 'bg-red-500'
 }
 
@@ -224,7 +224,7 @@ export default function PlayerEvaluationPage() {
                 <span className={`text-xl font-bold ${scoreColor(cat.score)}`}>{cat.score}</span>
               </div>
               <div className="w-full bg-white/10 rounded-full h-2 mb-2">
-                <div className={`h-2 rounded-full ${scoreBar(cat.score)}`} style={{ width: `${cat.score}%` }} />
+                <div className={`h-2 rounded-full ${scoreBar(cat.score)}`} style={{ width: `${cat.score * 10}%` }} />
               </div>
               <p className="text-sm text-slate-400">{cat.notes}</p>
             </div>
@@ -241,8 +241,8 @@ export default function PlayerEvaluationPage() {
           <div className="space-y-3 mb-6">
             {referralNotes.map(n => (
               <div key={n.id} className="bg-[#121B47]/50 p-3 rounded-lg border border-white/5">
-                <p className="text-sm text-gray-300">{n.note}</p>
-                <p className="text-xs text-gray-500 mt-2 text-right">{n.createdAt.slice(0, 10)} by {n.coachName}</p>
+                <p className="text-sm text-gray-300">{n.content}</p>
+                <p className="text-xs text-gray-500 mt-2 text-right">{n.date} by {n.coachName}</p>
               </div>
             ))}
             {referralNotes.length === 0 && <p className="text-sm text-gray-400 italic">No referral notes found.</p>}
@@ -259,8 +259,6 @@ export default function PlayerEvaluationPage() {
             <button onClick={addNote} className="btn btn-secondary px-4 py-2 text-sm">Add Note</button>
           </div>
         </div>
-      </div>
     </DashboardLayout>
   )
 }
-            {referralNotes.length === 0 && <p className="text-sm text-gray-400 italic">No referral notes yet. Add your evaluation note.</p>}
