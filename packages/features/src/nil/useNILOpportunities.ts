@@ -12,23 +12,56 @@ export interface NILOpportunity {
 export function useNILOpportunities() {
   const [opportunities, setOpportunities] = useState<NILOpportunity[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const { data } = await supabase.from('nil_opportunities').select('*').order('created_at', { ascending: false })
-        setOpportunities((data ?? []).map(o => ({
-          id: o.id,
-          athlete_name: o.athlete_name,
-          brand: o.brand,
-          value: `$${(o.value_cents / 100).toLocaleString()}`,
-          status: o.status,
-        })))
-      } catch (e) { console.error('useNILOpportunities:', e) }
+  const fetchOpportunities = async () => {
+    setLoading(true)
+    setError(null)
+    try {
+      const { data, error: supaError } = await supabase.from('nil_opportunities').select('*').order('created_at', { ascending: false })
+      if (supaError) throw new Error(supaError.message)
+      setOpportunities((data ?? []).map(o => ({
+        id: o.id,
+        athlete_name: o.athlete_name,
+        brand: o.brand,
+        value: o.value_cents ? `$${(o.value_cents / 100).toLocaleString()}` : 'TBD',
+        status: o.status,
+      })))
+    } catch (e: any) {
+      console.error('useNILOpportunities:', e)
+      setError(e)
+    } finally {
       setLoading(false)
     }
-    fetch()
+  }
+
+  useEffect(() => {
+    fetchOpportunities()
   }, [])
 
-  return { opportunities, loading }
+  const addOpportunity = async (opp: any) => {
+    try {
+      const { error: supaError } = await supabase.from('nil_opportunities').insert([opp])
+      if (supaError) throw new Error(supaError.message)
+      await fetchOpportunities()
+      return { success: true }
+    } catch (e: any) {
+      console.error('Failed to add opportunity:', e)
+      return { success: false, error: e.message }
+    }
+  }
+
+  const updateOpportunity = async (id: string, updates: any) => {
+    try {
+      const { error: supaError } = await supabase.from('nil_opportunities').update(updates).eq('id', id)
+      if (supaError) throw new Error(supaError.message)
+      await fetchOpportunities()
+      return { success: true }
+    } catch (e: any) {
+      console.error('Failed to update opportunity:', e)
+      return { success: false, error: e.message }
+    }
+  }
+
+  return { opportunities, loading, error, refetch: fetchOpportunities, addOpportunity, updateOpportunity }
 }

@@ -62,7 +62,6 @@ import TaskBoard from "./pages/nil/TaskBoard"
 import PartnerPortalIntegration from "./pages/nil/PartnerPortalIntegration"
 import ProposalBuilderPage from "./pages/nil/ProposalBuilderPage"
 import ProposalEditor from "./pages/nil/ProposalEditor"
-import AcademicPathwaySelector from './components/AcademicPathwaySelector'
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
 import EliteGBBHubPage from './pages/connectgbb/ConnectGBBHubPage'
 import CommunityFeedPage from './pages/connectgbb/CommunityFeedPage'
@@ -146,7 +145,6 @@ function AppRoutes() {
       <Route path="/dashboard/portal" element={<ProtectedRoute><PlayerPortalPage /></ProtectedRoute>} />
       <Route path="/dashboard/onepager" element={<ProtectedRoute><OnePagerPage /></ProtectedRoute>} />
       <Route path="/dashboard/class-tracking" element={<ProtectedRoute><ClassTrackingPage /></ProtectedRoute>} />
-      <Route path="/dashboard/academic-pathway" element={<ProtectedRoute><AcademicPathwaySelector /></ProtectedRoute>} />
       <Route path="/dashboard/film-index" element={<ProtectedRoute><FilmIndexPage /></ProtectedRoute>} />
       <Route path="/dashboard/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
       <Route path="/dashboard/resources" element={<ProtectedRoute><ResourcesDashboardPage /></ProtectedRoute>} />
