@@ -259,6 +259,7 @@ export default function PlayerEvaluationPage() {
             <button onClick={addNote} className="btn btn-secondary px-4 py-2 text-sm">Add Note</button>
           </div>
         </div>
+      </div>
     </DashboardLayout>
   )
 }
