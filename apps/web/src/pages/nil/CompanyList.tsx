@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { useNILCompanies } from '@hoop-master/features/nil'
 import { supabase } from '../../lib/supabase'
 import { Plus, Edit3, Trash2, X, Mail, Search, Globe, User, Send, Check, Upload } from 'lucide-react'
-import DashboardLayout from '../../components/layout/DashboardLayout'
+import NILLayout from '../../components/nil/NILLayout'
 
 const INDUSTRIES = ['Restaurant', 'Fitness Studio', 'Salon', 'Service Provider', 'Local Brand', 'Other']
 const STATUSES = ['prospect', 'outreach', 'negotiating', 'partner', 'inactive']
@@ -297,8 +297,7 @@ export default function CompanyList() {
   }, [companies, searchQuery, industryFilter, offerFilter, statusFilter])
 
   return (
-    <DashboardLayout
-      variant="admin"
+    <NILLayout
       title="NIL Brand Partners"
       subtitle="Target local brands and initiate NIL sponsorship outreach."
       action={
@@ -364,7 +363,7 @@ export default function CompanyList() {
             onChange={e => setStatusFilter(e.target.value)}
             className="p-2 border border-white/10 rounded-lg bg-navy-800 text-white text-sm outline-none focus:border-[#0134BD]"
           >
-            <option value="">All CRM Statuses</option>
+            <option value="">All brand statuses</option>
             {STATUSES.map(st => <option key={st} value={st} className="capitalize">{st}</option>)}
           </select>
         </div>
@@ -649,6 +648,6 @@ export default function CompanyList() {
           </div>
         </div>
       )}
-    </DashboardLayout>
+    </NILLayout>
   )
 }

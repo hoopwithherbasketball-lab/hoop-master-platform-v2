@@ -1,124 +1,385 @@
-import { useState } from 'react'
+import { useMemo, useState, type FormEvent } from 'react'
 import { useNILOpportunities } from '@hoop-master/features/nil'
 import { supabase } from '../../lib/supabase'
-import { Plus, Edit3, Trash2, X } from 'lucide-react'
-import DashboardLayout from '../../components/layout/DashboardLayout'
+import { Edit3, Plus, Search, Target } from 'lucide-react'
+import { toast } from 'sonner'
+import NILLayout from '../../components/nil/NILLayout'
+import {
+  NILEmpty,
+  NILError,
+  NILLoading,
+  NILStatus,
+  nilButton,
+} from '../../components/nil/NILStates'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '../../components/ui/dialog'
 
-const STATUSES = ['matched', 'review', 'negotiation', 'active', 'completed', 'cancelled']
+const STATUSES = [
+  'matched',
+  'review',
+  'negotiation',
+  'active',
+  'completed',
+  'cancelled',
+]
+type Opportunity = ReturnType<
+  typeof useNILOpportunities
+>['opportunities'][number]
+const initialForm = {
+  athlete_name: '',
+  brand: '',
+  value: '0',
+  status: 'matched',
+}
 
 export default function OpportunityList() {
-  const { opportunities, loading } = useNILOpportunities()
-  const [modal, setModal] = useState<{ type: 'create' | 'edit'; opportunity?: any } | null>(null)
+  const { opportunities, loading, error, refetch } = useNILOpportunities()
+  const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState('')
+  const [editing, setEditing] = useState<Opportunity | null>(null)
+  const [open, setOpen] = useState(false)
+  const [form, setForm] = useState(initialForm)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
   const [deleteId, setDeleteId] = useState<string | null>(null)
-  const [athlete_name, setAthleteName] = useState('')
-  const [brand, setBrand] = useState('')
-  const [valueCents, setValueCents] = useState('')
-  const [status, setStatus] = useState('matched')
-
-  const openCreate = () => { setAthleteName(''); setBrand(''); setValueCents(''); setStatus('matched'); setModal({ type: 'create' }) }
-  const openEdit = (o: any) => { setAthleteName(o.athlete_name); setBrand(o.brand); setValueCents(''); setStatus(o.status); setModal({ type: 'edit', opportunity: o }) }
-
-  const handleSave = async () => {
-    const payload = { athlete_name, brand, value_cents: Math.round(parseFloat(valueCents) * 100) || 0, status }
-    if (modal?.type === 'create') {
-      await supabase.from('nil_opportunities').insert(payload)
-    } else if (modal?.type === 'edit' && modal.opportunity) {
-      await supabase.from('nil_opportunities').update(payload).eq('id', modal.opportunity.id)
+  const visible = useMemo(
+    () =>
+      opportunities.filter(
+        (o) =>
+          (!filter || o.status === filter) &&
+          `${o.athlete_name} ${o.brand}`
+            .toLowerCase()
+            .includes(search.toLowerCase())
+      ),
+    [opportunities, search, filter]
+  )
+  function showForm(opportunity?: Opportunity) {
+    setEditing(opportunity ?? null)
+    setForm(
+      opportunity
+        ? {
+            athlete_name: opportunity.athlete_name,
+            brand: opportunity.brand,
+            value: String(opportunity.value_cents / 100),
+            status: opportunity.status,
+          }
+        : initialForm
+    )
+    setSaveError('')
+    setOpen(true)
+  }
+  async function save(event: FormEvent) {
+    event.preventDefault()
+    if (!form.brand.trim() || !form.athlete_name.trim()) {
+      setSaveError('Enter a brand and athlete name.')
+      return
     }
-    setModal(null)
-    window.location.reload()
+    const dollars = Number(form.value)
+    if (!Number.isFinite(dollars) || dollars < 0) {
+      setSaveError('Enter a valid opportunity value.')
+      return
+    }
+    setSaving(true)
+    setSaveError('')
+    const payload = {
+      athlete_name: form.athlete_name.trim(),
+      brand: form.brand.trim(),
+      value_cents: Math.round(dollars * 100),
+      status: form.status,
+    }
+    try {
+      const query = editing
+        ? supabase
+            .from('nil_opportunities')
+            .update(payload)
+            .eq('id', editing.id)
+        : supabase.from('nil_opportunities').insert(payload)
+      const result = await query.select('id').single()
+      if (result.error || !result.data)
+        throw new Error(
+          'The opportunity was not saved. Please retry or check your account permissions.'
+        )
+      setOpen(false)
+      toast.success(editing ? 'Opportunity updated' : 'Opportunity created')
+      await refetch()
+    } catch (e) {
+      setSaveError(
+        e instanceof Error ? e.message : 'Unable to save opportunity.'
+      )
+    } finally {
+      setSaving(false)
+    }
   }
-
-  const handleDelete = async (id: string) => {
-    await supabase.from('nil_opportunities').delete().eq('id', id)
-    setDeleteId(null)
-    window.location.reload()
+  async function remove() {
+    if (!deleteId) return
+    setSaving(true)
+    setSaveError('')
+    try {
+      const result = await supabase
+        .from('nil_opportunities')
+        .delete()
+        .eq('id', deleteId)
+        .select('id')
+        .single()
+      if (result.error || !result.data)
+        throw new Error('The opportunity was not deleted. Please try again.')
+      setDeleteId(null)
+      toast.success('Opportunity deleted')
+      await refetch()
+    } catch (e) {
+      setSaveError(
+        e instanceof Error ? e.message : 'Unable to delete opportunity.'
+      )
+    } finally {
+      setSaving(false)
+    }
   }
-
   return (
-    <DashboardLayout variant="admin" title="Opportunities" subtitle="Track active NIL partner opportunities." action={<button onClick={openCreate} className="flex items-center gap-1.5 bg-[#0134BD] text-white px-3 py-1.5 rounded-lg text-sm font-semibold"><Plus size={16} /> New Opportunity</button>}>
-      {loading ? (
-        <div className="animate-pulse space-y-3">{[1,2,3].map(i => <div key={i} className="card h-14" />)}</div>
+    <NILLayout
+      title="Opportunities"
+      subtitle="Build your pipeline from first match to active partnership."
+      action={
+        <button onClick={() => showForm()} className={nilButton}>
+          <Plus size={16} />
+          New opportunity
+        </button>
+      }
+    >
+      <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-[#111722] p-4 sm:flex-row">
+        <div className="relative flex-1">
+          <Search
+            size={16}
+            className="absolute left-3 top-3.5 text-slate-500"
+          />
+          <label htmlFor="opportunity-search" className="sr-only">
+            Search opportunities
+          </label>
+          <input
+            id="opportunity-search"
+            className="input !pl-10"
+            placeholder="Search by athlete or brand"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <label htmlFor="opportunity-status" className="sr-only">
+          Filter opportunities by status
+        </label>
+        <select
+          id="opportunity-status"
+          className="input sm:!w-48"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          <option value="">All stages</option>
+          {STATUSES.map((s) => (
+            <option key={s} value={s}>
+              {s.charAt(0).toUpperCase() + s.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
+      {error ? (
+        <NILError
+          message="Opportunities could not be loaded."
+          retry={() => void refetch()}
+        />
+      ) : loading ? (
+        <NILLoading />
+      ) : visible.length === 0 ? (
+        <NILEmpty
+          title={
+            search || filter
+              ? 'No matching opportunities.'
+              : 'A new opportunity starts with a connection.'
+          }
+        >
+          {search || filter ? (
+            <button
+              onClick={() => {
+                setSearch('')
+                setFilter('')
+              }}
+              className="text-blue-300"
+            >
+              Clear search and filters
+            </button>
+          ) : (
+            <button onClick={() => showForm()} className="text-blue-300">
+              Add your first opportunity →
+            </button>
+          )}
+        </NILEmpty>
       ) : (
-        <div className="card overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-white/5 border-b border-white/10">
-              <tr>
-                <th className="px-4 py-3 text-left uppercase text-slate-500 text-xs">Athlete</th>
-                <th className="px-4 py-3 text-left uppercase text-slate-500 text-xs">Brand</th>
-                <th className="px-4 py-3 text-left uppercase text-slate-500 text-xs">Value</th>
-                <th className="px-4 py-3 text-left uppercase text-slate-500 text-xs">Status</th>
-                <th className="px-4 py-3 text-right uppercase text-slate-500 text-xs">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/10">
-              {opportunities.map(o => (
-                <tr key={o.id} className="hover:bg-white/5">
-                  <td className="px-4 py-4 text-gray-200">{o.athlete_name}</td>
-                  <td className="px-4 py-4 text-slate-400">{o.brand}</td>
-                  <td className="px-4 py-4 text-slate-400">{o.value}</td>
-                  <td className="px-4 py-4"><span className="capitalize text-slate-400">{o.status}</span></td>
-                  <td className="px-4 py-4 text-right">
-                    <div className="flex justify-end gap-1">
-                      <button onClick={() => openEdit(o)} className="p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded"><Edit3 size={15} /></button>
-                      <button onClick={() => setDeleteId(o.id)} className="p-1.5 text-rose-400 hover:bg-rose-500/20 rounded"><Trash2 size={15} /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {opportunities.length === 0 && <tr><td colSpan={5} className="px-4 py-12 text-center text-slate-400">No opportunities yet.</td></tr>}
-            </tbody>
-          </table>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {visible.map((o) => (
+            <article
+              key={o.id}
+              className="rounded-2xl border border-white/10 bg-[#141c29] p-5"
+            >
+              <div className="flex justify-between">
+                <span className="rounded-lg bg-blue-400/10 p-2.5 text-blue-300">
+                  <Target size={20} />
+                </span>
+                <NILStatus status={o.status} />
+              </div>
+              <h2 className="mt-5 break-words font-sans text-lg font-semibold">
+                {o.brand}
+              </h2>
+              <p className="mt-1 text-sm text-slate-400">{o.athlete_name}</p>
+              <p className="mt-5 text-2xl font-semibold tabular-nums">
+                {o.value}
+              </p>
+              <p className="mt-1 text-xs text-slate-500">
+                Proposed opportunity value
+              </p>
+              <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
+                <button
+                  onClick={() => showForm(o)}
+                  className="inline-flex items-center gap-2 rounded-lg px-2 py-1 text-xs font-semibold text-blue-300 hover:bg-white/5"
+                >
+                  <Edit3 size={14} />
+                  Edit opportunity
+                </button>
+                <button
+                  onClick={() => {
+                    setDeleteId(o.id)
+                    setSaveError('')
+                  }}
+                  className="rounded-lg px-2 py-1 text-xs text-slate-400 hover:text-rose-300"
+                >
+                  Delete
+                </button>
+              </div>
+            </article>
+          ))}
         </div>
       )}
-
-      {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setModal(null)}>
-          <div className="bg-navy-800 border border-white/10 rounded-xl p-6 w-full max-w-lg mx-4" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-bold text-white">{modal.type === 'create' ? 'New Opportunity' : 'Edit Opportunity'}</h2>
-              <button onClick={() => setModal(null)} className="p-1 text-slate-400 hover:text-white"><X size={18} /></button>
-            </div>
-            <div className="space-y-4">
+      <Dialog
+        open={open}
+        onOpenChange={(value) => {
+          if (!saving) setOpen(value)
+        }}
+      >
+        <DialogContent className="max-h-[90dvh] w-[calc(100%_-_2rem)] overflow-y-auto rounded-xl border-white/10 bg-[#111722]">
+          <DialogTitle className="font-sans">
+            {editing ? 'Edit opportunity' : 'New opportunity'}
+          </DialogTitle>
+          <DialogDescription className="text-slate-400">
+            Record an athlete and brand opportunity directly in your NIL
+            workspace.
+          </DialogDescription>
+          <form onSubmit={save} className="space-y-4">
+            <fieldset disabled={saving} className="space-y-4">
+              {[
+                { id: 'athlete_name', label: 'Athlete name' },
+                { id: 'brand', label: 'Brand' },
+              ].map(({ id, label }) => (
+                <div key={id}>
+                  <label htmlFor={`opp-${id}`} className="label">
+                    {label}
+                  </label>
+                  <input
+                    id={`opp-${id}`}
+                    required
+                    maxLength={200}
+                    className="input"
+                    value={form[id as 'brand' | 'athlete_name']}
+                    onChange={(e) => setForm({ ...form, [id]: e.target.value })}
+                  />
+                </div>
+              ))}
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Athlete Name</label>
-                <input value={athlete_name} onChange={e => setAthleteName(e.target.value)} className="w-full p-2.5 border border-white/20 rounded-lg bg-transparent text-white outline-none focus:border-[#0134BD]" />
+                <label htmlFor="opp-value" className="label">
+                  Value (USD)
+                </label>
+                <input
+                  id="opp-value"
+                  required
+                  type="number"
+                  min="0"
+                  max="21474836.47"
+                  step="0.01"
+                  className="input"
+                  value={form.value}
+                  onChange={(e) => setForm({ ...form, value: e.target.value })}
+                />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Brand</label>
-                <input value={brand} onChange={e => setBrand(e.target.value)} className="w-full p-2.5 border border-white/20 rounded-lg bg-transparent text-white outline-none focus:border-[#0134BD]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Value ($)</label>
-                <input type="number" step="0.01" min="0" value={valueCents} onChange={e => setValueCents(e.target.value)} className="w-full p-2.5 border border-white/20 rounded-lg bg-transparent text-white outline-none focus:border-[#0134BD]" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Status</label>
-                <select value={status} onChange={e => setStatus(e.target.value)} className="w-full p-2.5 border border-white/20 rounded-lg bg-navy-800 text-white outline-none focus:border-[#0134BD]">
-                  {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+                <label htmlFor="opp-stage" className="label">
+                  Stage
+                </label>
+                <select
+                  id="opp-stage"
+                  className="input"
+                  value={form.status}
+                  onChange={(e) => setForm({ ...form, status: e.target.value })}
+                >
+                  {STATUSES.map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
                 </select>
               </div>
-            </div>
-            <div className="flex justify-end gap-3 mt-6">
-              <button onClick={() => setModal(null)} className="px-4 py-2 text-sm text-slate-400 hover:text-white">Cancel</button>
-              <button onClick={handleSave} className="px-4 py-2 text-sm font-semibold bg-[#0134BD] text-white rounded-lg">Save</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {deleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={() => setDeleteId(null)}>
-          <div className="bg-navy-800 border border-white/10 rounded-xl p-6 w-full max-w-sm mx-4" onClick={e => e.stopPropagation()}>
-            <h2 className="text-lg font-bold text-white mb-2">Delete Opportunity</h2>
-            <p className="text-sm text-slate-400 mb-5">Are you sure you want to delete this opportunity? This action cannot be undone.</p>
+            </fieldset>
+            {saveError && (
+              <p role="alert" className="text-sm text-rose-300">
+                {saveError}
+              </p>
+            )}
             <div className="flex justify-end gap-3">
-              <button onClick={() => setDeleteId(null)} className="px-4 py-2 text-sm text-slate-400 hover:text-white">Cancel</button>
-              <button onClick={() => handleDelete(deleteId)} className="px-4 py-2 text-sm font-semibold bg-red-600 text-white rounded-lg">Delete</button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={() => setOpen(false)}
+                className="px-3 py-2 text-sm text-slate-400"
+              >
+                Cancel
+              </button>
+              <button disabled={saving} className={nilButton}>
+                {saving ? 'Saving…' : 'Save opportunity'}
+              </button>
             </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={!!deleteId}
+        onOpenChange={(value) => {
+          if (!value && !saving) setDeleteId(null)
+        }}
+      >
+        <DialogContent className="w-[calc(100%_-_2rem)] rounded-xl border-white/10 bg-[#111722]">
+          <DialogTitle>Delete opportunity?</DialogTitle>
+          <DialogDescription className="text-slate-400">
+            This permanently removes the selected opportunity.
+          </DialogDescription>
+          {saveError && (
+            <p role="alert" className="text-sm text-rose-300">
+              {saveError}
+            </p>
+          )}
+          <div className="flex justify-end gap-3">
+            <button
+              disabled={saving}
+              onClick={() => setDeleteId(null)}
+              className="px-3 py-2 text-sm text-slate-400"
+            >
+              Cancel
+            </button>
+            <button
+              disabled={saving}
+              onClick={() => void remove()}
+              className="rounded-lg bg-rose-600 px-4 py-2 text-sm font-semibold disabled:opacity-50"
+            >
+              {saving ? 'Deleting…' : 'Delete opportunity'}
+            </button>
           </div>
-        </div>
-      )}
-    </DashboardLayout>
+        </DialogContent>
+      </Dialog>
+    </NILLayout>
   )
 }

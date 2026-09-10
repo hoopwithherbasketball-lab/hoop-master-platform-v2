@@ -6,6 +6,7 @@ export interface NILOpportunity {
   athlete_name: string
   brand: string
   value: string
+  value_cents: number
   status: string
 }
 
@@ -24,7 +25,8 @@ export function useNILOpportunities() {
         id: o.id,
         athlete_name: o.athlete_name,
         brand: o.brand,
-        value: o.value_cents ? `$${(o.value_cents / 100).toLocaleString()}` : 'TBD',
+        value_cents: o.value_cents ?? 0,
+        value: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format((o.value_cents ?? 0) / 100),
         status: o.status,
       })))
     } catch (e: any) {

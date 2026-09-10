@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNILTasks, type NILTask, type TaskStep } from '@hoop-master/features/nil'
 import { supabase } from '../../lib/supabase'
 import { Plus, CreditCard as Edit3, Trash2, X, Clock, TriangleAlert as AlertTriangle, Check, SquareCheck as CheckSquare, Square, ChevronDown, ChevronUp } from 'lucide-react'
-import DashboardLayout from '../../components/layout/DashboardLayout'
+import NILLayout from '../../components/nil/NILLayout'
 
 const PRIORITIES = ['low', 'medium', 'high', 'urgent']
 const STATUSES = ['todo', 'in_progress', 'completed']
@@ -90,7 +90,7 @@ export default function TaskBoard() {
   }
 
   return (
-    <DashboardLayout variant="admin" title="Tasks & Follow-ups" subtitle="Action items for NIL and outreach operations." action={<button onClick={openCreate} className="flex items-center gap-1.5 bg-[#0134BD] text-white px-3 py-1.5 rounded-lg text-sm font-semibold"><Plus size={16} /> New Task</button>}>
+    <NILLayout title="Tasks & Follow-ups" subtitle="Action items for NIL and outreach operations." action={<button onClick={openCreate} className="flex items-center gap-1.5 bg-[#0134BD] text-white px-3 py-1.5 rounded-lg text-sm font-semibold"><Plus size={16} /> New Task</button>}>
       {loading ? (
         <div className="animate-pulse grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1,2,3].map(i => <div key={i} className="space-y-3">{[1,2].map(j => <div key={j} className="card h-28" />)}</div>)}
@@ -267,6 +267,6 @@ export default function TaskBoard() {
           </div>
         </div>
       )}
-    </DashboardLayout>
+    </NILLayout>
   )
 }

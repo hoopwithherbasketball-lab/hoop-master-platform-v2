@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { AuthProvider, ProtectedRoute } from './lib/auth'
 import type { UserRole } from './types/database'
@@ -59,7 +59,7 @@ import AthleteNILProfileList from "./pages/nil/AthleteNILProfileList"
 import OutreachInbox from "./pages/nil/OutreachInbox"
 import ComplianceQueue from "./pages/nil/ComplianceQueue"
 import TaskBoard from "./pages/nil/TaskBoard"
-import PartnerPortalIntegration from "./pages/nil/PartnerPortalIntegration"
+import NILProposals from "./pages/nil/NILProposals"
 import ProposalBuilderPage from "./pages/nil/ProposalBuilderPage"
 import ProposalEditor from "./pages/nil/ProposalEditor"
 import AdminPlayersPage from './pages/admin/AdminPlayersPage'
@@ -94,7 +94,6 @@ import AdminPageBuilder from './pages/admin/AdminPageBuilder'
 import AdminPageNew from './pages/admin/AdminPageNew'
 import AdminPageEditor from './pages/admin/AdminPageEditor'
 import SponsorsDashboard from './pages/admin/SponsorsDashboard'
-import ProposalBuilder from './pages/admin/ProposalBuilder'
 import DynamicPage from './pages/public/DynamicPage'
 import PitchPage from './pages/public/PitchPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
@@ -184,7 +183,7 @@ function AppRoutes() {
       <Route path="/admin/pages/new" element={<ProtectedRoute role="admin"><AdminPageNew /></ProtectedRoute>} />
       <Route path="/admin/pages/:slug" element={<ProtectedRoute role="admin"><AdminPageEditor /></ProtectedRoute>} />
       <Route path="/admin/sponsors" element={<ProtectedRoute role="admin"><SponsorsDashboard /></ProtectedRoute>} />
-      <Route path="/nil/proposals" element={<ProtectedRoute role="admin"><ProposalBuilder /></ProtectedRoute>} />
+      <Route path="/nil/proposals" element={<ProtectedRoute role="admin"><NILProposals /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
@@ -192,7 +191,7 @@ function AppRoutes() {
       <Route path="/nil/outreach" element={<ProtectedRoute role="admin"><OutreachInbox /></ProtectedRoute>} />
       <Route path="/nil/compliance" element={<ProtectedRoute role="admin"><ComplianceQueue /></ProtectedRoute>} />
       <Route path="/nil/tasks" element={<ProtectedRoute role="admin"><TaskBoard /></ProtectedRoute>} />
-      <Route path="/nil/partner-portal" element={<ProtectedRoute role="admin"><PartnerPortalIntegration /></ProtectedRoute>} />
+      <Route path="/nil/partner-portal" element={<ProtectedRoute role="admin"><Navigate to="/nil/companies" replace /></ProtectedRoute>} />
       <Route path="/nil/proposals/advanced" element={<ProtectedRoute role="admin"><ProposalBuilderPage /></ProtectedRoute>} />
       <Route path="/nil/proposals/:id/edit" element={<ProtectedRoute role="admin"><ProposalEditor /></ProtectedRoute>} />
       <Route path="/elitegbb" element={<ProtectedRoute><EliteGBBHubPage /></ProtectedRoute>} />

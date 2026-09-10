@@ -25,3 +25,6 @@ jobs:
 
       - name: Build web app
         run: npx turbo build --filter=web
+
+      - name: Test independent NIL workflows
+        run: npm run test:nil

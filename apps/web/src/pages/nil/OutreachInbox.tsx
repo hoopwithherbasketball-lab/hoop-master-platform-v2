@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNILOutreach, useNILCompanies } from '@hoop-master/features/nil'
 import { supabase } from '../../lib/supabase'
 import { Plus, Edit3, Trash2, X, Eye } from 'lucide-react'
-import DashboardLayout from '../../components/layout/DashboardLayout'
+import NILLayout from '../../components/nil/NILLayout'
 
 const STATUSES = ['draft', 'sent', 'replied', 'ignored']
 
@@ -62,7 +62,7 @@ export default function OutreachInbox() {
   }
 
   return (
-    <DashboardLayout variant="admin" title="Outreach Log" subtitle="Log and track outreach communications with targeted brands." action={<button onClick={openCreate} className="flex items-center gap-1.5 bg-[#0134BD] hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors"><Plus size={16} /> Log Outreach</button>}>
+    <NILLayout title="Outreach Log" subtitle="Log and track outreach communications with targeted brands." action={<button onClick={openCreate} className="flex items-center gap-1.5 bg-[#0134BD] hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold transition-colors"><Plus size={16} /> Log Outreach</button>}>
       {loading ? (
         <div className="animate-pulse space-y-3">{[1,2,3].map(i => <div key={i} className="bg-navy-800 border border-white/10 h-16 rounded-xl" />)}</div>
       ) : (
@@ -185,6 +185,6 @@ export default function OutreachInbox() {
           </div>
         </div>
       )}
-    </DashboardLayout>
+    </NILLayout>
   )
 }

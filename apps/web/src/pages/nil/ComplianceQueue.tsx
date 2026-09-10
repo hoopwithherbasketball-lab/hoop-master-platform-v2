@@ -3,7 +3,7 @@ import { useNILCompliance } from '@hoop-master/features/nil'
 import { supabase } from '../../lib/supabase'
 import { Edit3, Trash2, X } from 'lucide-react'
 import { StatusBadge } from '@hoop-master/ui'
-import DashboardLayout from '../../components/layout/DashboardLayout'
+import NILLayout from '../../components/nil/NILLayout'
 
 const STATUSES = ['pending', 'approved', 'error']
 
@@ -40,7 +40,7 @@ export default function ComplianceQueue() {
   }
 
   return (
-    <DashboardLayout variant="admin" title="Compliance & Review" subtitle="Review athlete disclosures and sponsorship contracts.">
+    <NILLayout title="Compliance & Review" subtitle="Review athlete disclosures and sponsorship contracts.">
       {loading ? (
         <div className="animate-pulse space-y-3">{[1,2,3].map(i => <div key={i} className="card h-14" />)}</div>
       ) : (
@@ -115,6 +115,6 @@ export default function ComplianceQueue() {
           </div>
         </div>
       )}
-    </DashboardLayout>
+    </NILLayout>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../../lib/supabase";
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import NILLayout from "../../components/nil/NILLayout";
 import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
@@ -716,7 +716,7 @@ export default function ProposalBuilderPage() {
     const fetchProposals = async () => {
       const { data, error } = await supabase.from("proposals").select("*").order("created_at", { ascending: false });
       if (!error && data) {
-        const formatted = data.map(dbRow => ({
+        const formatted = data.filter(dbRow => dbRow.package_details?.source !== 'nil-hub').map(dbRow => ({
           id: dbRow.id,
           template_id: dbRow.package_details?.legacy_template_id,
           form_data: dbRow.package_details?.legacy_form_data,
@@ -1082,7 +1082,7 @@ export default function ProposalBuilderPage() {
     .slice(0, 5);
 
   return (
-    <DashboardLayout variant="admin" title="Proposal Builder" subtitle="Create, track, and manage dynamic NIL partnership proposals.">
+    <NILLayout title="Proposal Builder" subtitle="Create, track, and manage dynamic NIL partnership proposals.">
       <div className="space-y-6">
         {/* Navigation & Controls bar */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-navy-800/50 p-4 rounded-2xl border border-white/5">
@@ -2482,7 +2482,7 @@ export default function ProposalBuilderPage() {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </NILLayout>
   );
 }
 
