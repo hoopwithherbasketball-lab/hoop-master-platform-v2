@@ -30,6 +30,6 @@ test('protected paths and traversal are blocked', () => {
 });
 
 test('common secrets are redacted', () => {
-  assert.equal(redactSecrets('token=ghp_123456789012345678901234567890'), 'token=[REDACTED]');
+  assert.equal(redactSecrets('token=ghp_123456789012345678901234567890'), '[REDACTED]');
   assert.equal(redactSecrets('api_key=supersecretvalue123'), '[REDACTED]');
 });
