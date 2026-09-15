@@ -16,7 +16,10 @@
     "typecheck": "tsc --noEmit",
     "lint": "turbo lint",
     "clean": "turbo clean",
-    "test:nil": "node tests/nil/nil-hub.test.cjs"
+    "test:nil": "node tests/nil/nil-hub.test.cjs",
+    "agile": "node scripts/hwh-agile.mjs",
+    "agile:observe": "node scripts/hwh-agile.mjs --mode observe",
+    "agile:test": "node --test scripts/hwh-agile-policy.test.mjs"
   },
   "devDependencies": {
     "ajv": "^8.20.0",
