@@ -3,25 +3,27 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 const SUPABASE_URL_KEY = 'VITE_SUPABASE_URL'
 const SUPABASE_ANON_KEY = 'VITE_SUPABASE_ANON_KEY'
 
-function getEnvVal(key: string): string | undefined {
-  try {
-    if (typeof process !== 'undefined' && process.env && process.env[key]) {
-      return process.env[key]
-    }
-  } catch (e) {}
-  try {
-    if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env[key]) {
-      return (import.meta as any).env[key]
-    }
-  } catch (e) {}
-  try {
-    const raKey = `REACT_APP_${key.replace('VITE_', '')}`
-    if (typeof process !== 'undefined' && process.env && process.env[raKey]) {
-      return process.env[raKey]
-    }
-  } catch (e) {}
-  return undefined
+type EnvironmentValues = Record<string, string | undefined>
+type ImportMetaWithEnv = ImportMeta & { readonly env?: EnvironmentValues }
+type ProcessWithEnv = { readonly env?: EnvironmentValues }
+
+function getProcessEnv(key: string): string | undefined {
+  if (typeof process === 'undefined') return undefined
+  return (process as ProcessWithEnv).env?.[key]
 }
+
+function getImportMetaEnv(key: string): string | undefined {
+  return (import.meta as ImportMetaWithEnv).env?.[key]
+}
+
+function getEnvVal(key: string): string | undefined {
+  const viteValue = getProcessEnv(key) ?? getImportMetaEnv(key)
+  if (viteValue) return viteValue
+
+  const reactAppKey = `REACT_APP_${key.replace('VITE_', '')}`
+  return getProcessEnv(reactAppKey)
+}
+
 
 const supabaseUrl = getEnvVal(SUPABASE_URL_KEY)
 const supabaseAnonKey = getEnvVal(SUPABASE_ANON_KEY)

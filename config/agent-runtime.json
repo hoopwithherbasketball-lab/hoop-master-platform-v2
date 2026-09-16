@@ -1,9 +1,9 @@
 {
-  "artifact": "phase-8-agent-runtime",
+  "artifact": "phase-7-agent-runtime",
   "artifactVersion": "1.0.0",
   "artifactStatus": "implementation_active",
   "artifactCommitted": true,
-  "phase": 8,
+  "phase": 7,
   "runtimeStatus": "implementation_active",
   "mcpRuntimeMode": "restricted_enabled",
   "guardrailConfigReference": "config/agent-guardrails.json",
@@ -56,12 +56,12 @@
   "phaseSevenReadiness": {
     "autonomousExecutionAllowed": false,
     "implementationAgentsAllowed": true,
-    "nextPhase": 9
+    "nextPhase": 8
   },
   "phaseTransition": {
-    "fromPhase": 7,
-    "toPhase": 8,
-    "transitionStatus": "overseer_approved_ready_for_phase_8",
+    "fromPhase": 6,
+    "toPhase": 7,
+    "transitionStatus": "overseer_approved_ready_for_phase_7",
     "overseerApprovalRequired": true,
     "overseerApprovalRecorded": true,
     "overseerApprovedAt": "2026-06-05",

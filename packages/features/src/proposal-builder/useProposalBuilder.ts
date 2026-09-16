@@ -1,6 +1,26 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@hoop-master/supabase';
-import { ProposalWithBlocks, ProposalBlock } from './types';
+import { ProposalWithBlocks, ProposalBlock, ProposalStatus } from './types';
+
+type ProposalPackageDetails = {
+  title?: string;
+  athlete_id?: string | null;
+  company_id?: string | null;
+  amount?: number | null;
+  blocks?: ProposalBlock[];
+};
+
+function normalizeProposalStatus(value: unknown): ProposalStatus {
+  return typeof value === 'string' && value.toLowerCase() === 'sent' ? 'sent' : 'draft';
+}
+
+function toError(value: unknown): Error {
+  return value instanceof Error ? value : new Error(String(value));
+}
+
+function errorMessage(value: unknown): string {
+  return value instanceof Error ? value.message : String(value);
+}
 
 export function useProposalBuilder(proposalId?: string) {
   const [proposal, setProposal] = useState<ProposalWithBlocks | null>(null);
@@ -32,19 +52,19 @@ export function useProposalBuilder(proposalId?: string) {
 
       if (supaError) throw new Error(supaError.message);
 
-      const pkg = data.package_details || {};
+      const pkg = (data.package_details ?? {}) as ProposalPackageDetails;
       setProposal({
         id: data.id,
         title: pkg.title || 'Untitled Proposal',
         athlete_id: pkg.athlete_id || null,
         company_id: pkg.company_id || null,
-        status: data.status.toLowerCase() as any,
+        status: normalizeProposalStatus(data.status),
         amount: pkg.amount || 0,
         blocks: pkg.blocks || []
       });
-    } catch (e: any) {
+    } catch (e) {
       console.error('useProposalBuilder error:', e);
-      setError(e);
+      setError(toError(e));
     } finally {
       setLoading(false);
     }
@@ -82,7 +102,7 @@ export function useProposalBuilder(proposalId?: string) {
           setProposal(proposal);
           throw new Error(supaError.message);
         }
-      } catch (e: any) {
+      } catch (e) {
         console.error('useProposalBuilder saveBlocks:', e);
       }
     }
@@ -122,9 +142,9 @@ export function useProposalBuilder(proposalId?: string) {
         setProposal({ ...updatedProposal, id: res.data.id } as ProposalWithBlocks);
       }
       return { success: true, id: res.data?.id };
-    } catch (e: any) {
+    } catch (e) {
       console.error('saveFullProposal error:', e);
-      return { success: false, error: e.message };
+      return { success: false, error: errorMessage(e) };
     }
   };
 
