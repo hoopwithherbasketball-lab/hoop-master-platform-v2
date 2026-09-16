@@ -16,7 +16,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "turbo lint",
     "clean": "turbo clean",
-    "test:nil": "node tests/nil/nil-hub.test.cjs"
+    "test:nil": "node tests/nil/nil-hub.test.cjs",
+    "test:recruiting": "npm run build --workspace=@hoop-master/features && node --test tests/recruiting/recruiting-email-sequences.test.mjs"
   },
   "devDependencies": {
     "ajv": "^8.20.0",

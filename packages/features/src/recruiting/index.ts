@@ -1,2 +1,7 @@
-export const name = 'recruiting';
-export function describe() { return 'Placeholder module for recruiting feature.' }
+export * from './emailSequences'
+
+export const name = 'recruiting'
+
+export function describe() {
+  return 'Recruiting outreach sequences, templates, and personalization utilities.'
+}
