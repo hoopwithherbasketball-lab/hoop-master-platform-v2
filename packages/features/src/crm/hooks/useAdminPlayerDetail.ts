@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 import type { Database } from '@hoop-master/types'
@@ -42,7 +43,7 @@ export function useAdminPlayerDetail(id: string) {
         const p = profileRes.data as PlayerProfile
 
         type OrderRow = { service_offers: { name: string }[] }
-        const packageName = ((orderRes.data as unknown as OrderRow)?.service_offers?.[0]?.name) ?? 'None'
+        const packageName = ((orderRes.data as any as OrderRow)?.service_offers?.[0]?.name) ?? 'None'
 
         setDetail({
           id: p.id,

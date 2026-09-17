@@ -1,5 +1,6 @@
 import React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function TextContentBlock({ content }: { content: any }) {
   const { heading, text } = content;
   return (

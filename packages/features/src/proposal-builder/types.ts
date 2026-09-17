@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface ProposalBlock {
   id: string;
   type: 'text' | 'hero' | 'features' | 'pricing';

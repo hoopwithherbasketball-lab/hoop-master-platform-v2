@@ -13,7 +13,7 @@
     "build:turbo": "turbo build",
     "build:web": "node ./node_modules/turbo/bin/turbo build --filter=web",
     "dev:web": "cd apps/web && node ../../node_modules/vite/bin/vite.js --host",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "turbo run typecheck",
     "lint": "turbo lint",
     "clean": "turbo clean",
     "test:nil": "node tests/nil/nil-hub.test.cjs",
@@ -24,7 +24,8 @@
   "devDependencies": {
     "ajv": "^8.20.0",
     "ajv-keywords": "^5.1.0",
-    "turbo": "^2.9.9"
+    "turbo": "^2.9.9",
+    "typescript": "^5.9.3"
   },
   "packageManager": "npm@10.0.0"
 }

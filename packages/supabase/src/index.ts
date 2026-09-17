@@ -8,18 +8,26 @@ function getEnvVal(key: string): string | undefined {
     if (typeof process !== 'undefined' && process.env && process.env[key]) {
       return process.env[key]
     }
-  } catch (e) {}
+  } catch {
+    // ignore
+  }
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env[key]) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (import.meta as any).env[key]
     }
-  } catch (e) {}
+  } catch {
+    // ignore
+  }
   try {
     const raKey = `REACT_APP_${key.replace('VITE_', '')}`
     if (typeof process !== 'undefined' && process.env && process.env[raKey]) {
       return process.env[raKey]
     }
-  } catch (e) {}
+  } catch {
+    // ignore
+  }
   return undefined
 }
 
