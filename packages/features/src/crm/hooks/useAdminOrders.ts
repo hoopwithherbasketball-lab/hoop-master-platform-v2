@@ -4,6 +4,7 @@ import { supabase } from '@hoop-master/supabase'
 
 export interface ServiceOrderDisplay {
   id: string
+  fullId: string
   athlete: string
   athleteId: string
   service: string
@@ -69,6 +70,7 @@ export function useAdminOrders() {
         const fullName = profileName ?? r.customer_name ?? 'Unknown'
         return {
           id: r.id ? r.id.slice(0, 8) : '',
+          fullId: r.id,
           athlete: fullName,
           athleteId: r.player_profile_id ?? '',
           service: offer?.name ?? '',
@@ -84,5 +86,17 @@ export function useAdminOrders() {
     fetch()
   }, [])
 
-  return { orders, statusColors: STATUS_COLORS }
+  const updateOrderStatus = async (id: string, newStatus: string) => {
+    // Note: the order id in the state might be truncated (slice(0, 8)), but we need the full UUID to update.
+    // Wait, the state `id` is truncated: `id: r.id ? r.id.slice(0, 8) : ''`. 
+    // This makes it impossible to update by ID if we only have the truncated one.
+    // Let me fix that: keep full ID in state, or add `fullId` to the state.
+    const { error } = await supabase.from('service_orders').update({ status: newStatus }).eq('id', id)
+    if (!error) {
+      setOrders(prev => prev.map(o => o.fullId === id ? { ...o, status: newStatus } : o))
+    }
+    return { error }
+  }
+
+  return { orders, statusColors: STATUS_COLORS, updateOrderStatus }
 }
