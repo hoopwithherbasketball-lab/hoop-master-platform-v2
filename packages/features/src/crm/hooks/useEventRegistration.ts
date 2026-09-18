@@ -13,7 +13,18 @@ export interface EventInfo {
   price: number
 }
 
-function mapEvent(e: any): EventInfo {
+interface EventRow {
+  id: string
+  title: string
+  start_date: string | null
+  location: string | null
+  description: string | null
+  max_participants: number | null
+  current_participants: number | null
+  price: number | string | null
+}
+
+function mapEvent(e: EventRow): EventInfo {
   return {
     id: e.id,
     title: e.title,

@@ -9,6 +9,7 @@ import Footer from './components/layout/Footer'
 import HomePage from './pages/public/HomePage'
 import ServicesPage from './pages/public/ServicesPage'
 import RecruitingReadinessPage from './pages/public/RecruitingReadinessPage'
+import RecruitingRoadmapPage from './pages/public/RecruitingRoadmapPage'
 import NILReadinessPage from './pages/public/NILReadinessPage'
 import AuditPage from './pages/public/AuditPage'
 import BrowsePage from './pages/public/BrowsePage'
@@ -114,6 +115,7 @@ function AppRoutes() {
       <Route path="/faq" element={<PublicLayout><FAQPage /></PublicLayout>} />
       <Route path="/events" element={<PublicLayout><PublicEventsPage /></PublicLayout>} />
       <Route path="/recruiting-readiness" element={<PublicLayout><RecruitingReadinessPage /></PublicLayout>} />
+      <Route path="/recruiting-roadmap" element={<PublicLayout><RecruitingRoadmapPage /></PublicLayout>} />
       <Route path="/nil-readiness" element={<PublicLayout><NILReadinessPage /></PublicLayout>} />
       <Route path="/audit" element={<PublicLayout><AuditPage /></PublicLayout>} />
       <Route path="/browse" element={<PublicLayout><BrowsePage /></PublicLayout>} />

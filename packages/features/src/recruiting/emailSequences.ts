@@ -100,6 +100,9 @@ export const recruitingScenarios: RecruitingScenario[] = [
 ]
 
 export const recruitingPersonalizationFields: RecruitingPersonalizationField[] = [
+  { token: 'profile_status', label: 'Verified profile and film status', placeholder: 'Enter the actual review status', group: 'staff' },
+  { token: 'outreach_status', label: 'Verified outreach status', placeholder: 'Enter completed outreach or not started', group: 'staff' },
+  { token: 'coach_response_summary', label: 'Verified coach response summary', placeholder: 'Summarize confirmed responses or none', group: 'staff' },
   { token: 'athlete_first_name', label: 'Athlete first name', placeholder: 'Maya', group: 'athlete' },
   { token: 'athlete_full_name', label: 'Athlete full name', placeholder: 'Maya Johnson', group: 'athlete' },
   { token: 'grad_year', label: 'Graduation year', placeholder: '2028', group: 'athlete' },
@@ -120,6 +123,9 @@ export const recruitingPersonalizationFields: RecruitingPersonalizationField[] =
   { token: 'event_date', label: 'Event date', placeholder: 'October 12', group: 'event' },
   { token: 'event_location', label: 'Event location', placeholder: 'HOOP WITH HER Training Center', group: 'event' },
   { token: 'court_number', label: 'Court number', placeholder: 'Court 2', group: 'event' },
+  { token: 'jersey_number', label: 'Jersey number', placeholder: '12', group: 'event' },
+  { token: 'event_time', label: 'Game time and time zone', placeholder: '2:00 PM Eastern', group: 'event' },
+  { token: 'conversation_detail', label: 'Specific detail from your visit or call', placeholder: 'What you learned about the program', group: 'coach' },
   { token: 'event_result', label: 'Event result / takeaway', placeholder: '12 points, 6 assists, and strong on-ball defense', group: 'event' },
   { token: 'new_update', label: 'New recruiting update', placeholder: 'a new highlight reel and updated spring schedule', group: 'athlete' },
   { token: 'next_action', label: 'Next action', placeholder: 'review the target list by Friday', group: 'staff' },
@@ -483,7 +489,7 @@ Thank you,
         subject: '{{athlete_full_name}} at {{event_name}} | {{event_date}}',
         body: `Hi {{coach_name}},
 
-I will participate in {{event_name}} on {{event_date}} at {{event_location}}. I am scheduled for {{court_number}}.
+I will participate in {{event_name}} on {{event_date}} at {{event_location}}. I am scheduled for {{court_number}} at {{event_time}}, wearing jersey #{{jersey_number}} for {{club_team}}.
 
 Profile: {{profile_url}}
 Highlights: {{highlight_url}}
@@ -500,7 +506,7 @@ Thank you,
         subject: '{{event_name}} schedule | {{athlete_full_name}}, {{grad_year}} {{position}}',
         body: `Hi {{coach_name}},
 
-I will compete at {{event_name}} on {{event_date}} in {{event_location}}. My complete schedule is available here: {{schedule_url}}.
+I will compete at {{event_name}} on {{event_date}} in {{event_location}}. You can find me at {{court_number}}, {{event_time}}, wearing jersey #{{jersey_number}} for {{club_team}}. My complete schedule is available here: {{schedule_url}}.
 
 Profile: {{profile_url}}
 Film: {{highlight_url}}
@@ -538,6 +544,34 @@ I remain interested in {{program_name}} and appreciate your time.
     goal: 'Acknowledge interest and confirm the next action.',
     scenarios: ['coach_call', 'camp_invite', 'standard'],
     variants: [
+      {
+        id: 'engagement-visit-thank-you',
+        label: 'Thank-you after a visit',
+        whenToUse: 'After completing a campus visit and reflecting on what you learned.',
+        subject: 'Thank you for the visit | {{athlete_full_name}}',
+        body: `Hi {{coach_name}},
+
+Thank you for taking time to meet with me during my visit to {{program_name}}. I appreciated learning about {{conversation_detail}}.
+
+My next step is to {{next_action}}. Please let me know if there is additional information I can provide.
+
+Thank you,
+{{athlete_full_name}}`,
+      },
+      {
+        id: 'engagement-call-thank-you',
+        label: 'Thank-you after a call',
+        whenToUse: 'After a completed coach conversation, using only agreed next steps.',
+        subject: 'Thank you for our conversation | {{athlete_full_name}}',
+        body: `Hi {{coach_name}},
+
+Thank you for speaking with me about {{program_name}}. Our conversation about {{conversation_detail}} helped me understand the program better.
+
+As discussed, I will {{next_action}}. My current profile is available at {{profile_url}}.
+
+Thank you,
+{{athlete_full_name}}`,
+      },
       {
         id: 'engagement-call',
         label: 'Schedule a call',
@@ -663,9 +697,9 @@ Thank you for your understanding,
         body: `Hi {{athlete_first_name}} and family,
 
 Here is the current recruiting checkpoint:
-- Profile and film status: reviewed
-- Active outreach: in progress
-- Coach responses: documented in the recruiting workspace
+- Profile and film status: {{profile_status}}
+- Active outreach: {{outreach_status}}
+- Coach responses: {{coach_response_summary}}
 - Upcoming event information: {{schedule_url}}
 
 Current priority: {{new_update}}.

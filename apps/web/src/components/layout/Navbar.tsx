@@ -52,7 +52,7 @@ export default function Navbar() {
             <Link to="/browse" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Browse Players</Link>
             <Link to="/services" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Services</Link>
             {!user && <Link to="/elitegbb" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Create Profile</Link>}
-            <Link to="/recruiting-readiness" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Get Recruit-Ready</Link>
+            <Link to="/recruiting-roadmap" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Recruiting</Link>
             {!user && <Link to="/partner-onboarding" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Partners</Link>}
             {!user && <Link to="/workshops" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Workshops</Link>}
           </div>
@@ -127,7 +127,7 @@ export default function Navbar() {
           <Link to="/watch" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Watch</Link>
           <Link to="/browse" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Browse Players</Link>
           <Link to="/services" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Services</Link>
-          <Link to="/recruiting-readiness" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Get Recruit-Ready</Link>
+          <Link to="/recruiting-roadmap" onClick={() => setOpen(false)} className="block text-slate-300 px-3 py-2 text-sm rounded-lg hover:bg-white/10">Recruiting Workspace</Link>
           {user ? (
             <>
               <div className="border-t border-white/10 pt-3 mt-2">

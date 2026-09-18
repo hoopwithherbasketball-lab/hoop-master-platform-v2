@@ -44,18 +44,24 @@ const sampleValues: Record<string, string> = {
   coach_name: 'Coach Taylor',
   program_name: 'North State University',
   fit_reason: 'your transition style and strong kinesiology program',
-  profile_url: 'https://profiles.hoopwithher.com/maya-johnson',
-  highlight_url: 'https://film.hoopwithher.com/maya-highlights',
-  full_game_url: 'https://film.hoopwithher.com/maya-full-game',
-  schedule_url: 'https://profiles.hoopwithher.com/maya-johnson/schedule',
+  profile_url: 'https://example.com/maya-johnson',
+  highlight_url: 'https://example.com/maya-highlights',
+  full_game_url: 'https://example.com/maya-full-game',
+  schedule_url: 'https://example.com/maya-johnson/schedule',
   event_name: 'Fall Open Run',
   event_date: 'October 12',
   event_location: 'HOOP WITH HER Training Center',
   court_number: 'Court 2',
+  jersey_number: '12',
+  event_time: '2:00 PM Eastern',
+  conversation_detail: 'the academic support program (example)',
   event_result: '12 points, 6 assists, and strong on-ball defense',
   new_update: 'a new highlight reel and updated spring schedule',
   next_action: 'review the target list by Friday',
   staff_name: 'Jordan Smith',
+  profile_status: 'Awaiting film review (example)',
+  outreach_status: 'Not started (example)',
+  coach_response_summary: 'No replies recorded (example)',
 }
 
 const audienceLabels: Record<RecruitingEmailTemplate['audience'], string> = {
@@ -72,6 +78,8 @@ export default function AdminRecruitingOutreachPage() {
   const [selectedTemplateId, setSelectedTemplateId] = useState(recruitingEmailTemplates[0].id)
   const [selectedVariantId, setSelectedVariantId] = useState(recruitingEmailTemplates[0].variants[0].id)
   const [values, setValues] = useState<Record<string, string>>({})
+  const [sampleMode, setSampleMode] = useState(false)
+  const activeValues = sampleMode ? sampleValues : values
   const [copied, setCopied] = useState<'subject' | 'body' | 'draft' | null>(null)
 
   const filteredTemplates = useMemo(() => {
@@ -91,20 +99,20 @@ export default function AdminRecruitingOutreachPage() {
     })
   }, [query, scenarioFilter, stageFilter])
 
-  const selectedTemplate = recruitingEmailTemplates.find(template => template.id === selectedTemplateId)
+  const selectedTemplate = filteredTemplates.find(template => template.id === selectedTemplateId)
     ?? filteredTemplates[0]
-    ?? recruitingEmailTemplates[0]
-  const selectedVariant = selectedTemplate.variants.find(variant => variant.id === selectedVariantId)
-    ?? selectedTemplate.variants[0]
+  const selectedVariant = selectedTemplate?.variants.find(variant => variant.id === selectedVariantId)
+    ?? selectedTemplate?.variants[0]
 
   const fields = useMemo(() => {
+    if (!selectedTemplate || !selectedVariant) return []
     const tokens = new Set(getTemplateTokens({ ...selectedTemplate, variants: [selectedVariant] }))
     return recruitingPersonalizationFields.filter(field => tokens.has(field.token))
   }, [selectedTemplate, selectedVariant])
 
-  const renderedSubject = renderRecruitingTemplate(selectedVariant.subject, values)
-  const renderedBody = renderRecruitingTemplate(selectedVariant.body, values)
-  const missingTokens = getMissingTemplateTokens(`${selectedVariant.subject}\n${selectedVariant.body}`, values)
+  const renderedSubject = renderRecruitingTemplate(selectedVariant?.subject ?? '', activeValues)
+  const renderedBody = renderRecruitingTemplate(selectedVariant?.body ?? '', activeValues)
+  const missingTokens = getMissingTemplateTokens(`${selectedVariant?.subject ?? ''}\n${selectedVariant?.body ?? ''}`, activeValues)
 
   const selectTemplate = (template: RecruitingEmailTemplate) => {
     setSelectedTemplateId(template.id)
@@ -118,6 +126,7 @@ export default function AdminRecruitingOutreachPage() {
   }
 
   const copyText = async (kind: 'subject' | 'body' | 'draft', text: string) => {
+    if (sampleMode || !selectedVariant) return
     try {
       await navigator.clipboard.writeText(text)
       setCopied(kind)
@@ -128,8 +137,7 @@ export default function AdminRecruitingOutreachPage() {
     }
   }
 
-  const fillSample = () => setValues(previous => ({ ...sampleValues, ...previous }))
-  const resetPersonalization = () => setValues({})
+  const resetPersonalization = () => { setValues({}); setSampleMode(false) }
 
   return (
     <DashboardLayout
@@ -198,7 +206,7 @@ export default function AdminRecruitingOutreachPage() {
           </div>
         </section>
 
-        <div className="grid gap-6 xl:grid-cols-[minmax(280px,0.8fr)_minmax(420px,1.25fr)_minmax(380px,1fr)]">
+        <div className="grid gap-6 2xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.25fr)_minmax(0,1fr)]">
           <section className="min-w-0 rounded-2xl border border-white/10 bg-navy-800" aria-labelledby="template-library-heading">
             <div className="border-b border-white/10 p-4">
               <div className="flex items-center gap-2">
@@ -211,6 +219,7 @@ export default function AdminRecruitingOutreachPage() {
                   value={query}
                   onChange={event => setQuery(event.target.value)}
                   placeholder="Search templates..."
+                  aria-label="Search templates"
                   className="w-full rounded-lg border border-white/10 bg-white/5 py-2.5 pl-9 pr-3 text-sm text-white outline-none placeholder:text-slate-600 focus:border-[#4f7cff]"
                 />
               </div>
@@ -227,7 +236,7 @@ export default function AdminRecruitingOutreachPage() {
             <div className="max-h-[720px] space-y-2 overflow-y-auto p-3">
               {filteredTemplates.map(template => {
                 const stage = recruitingStages.find(item => item.id === template.stage)
-                const selected = template.id === selectedTemplate.id
+                const selected = template.id === selectedTemplate?.id
                 return (
                   <button
                     type="button"
@@ -257,6 +266,7 @@ export default function AdminRecruitingOutreachPage() {
             </div>
           </section>
 
+          {selectedTemplate && selectedVariant ? <>
           <section className="min-w-0 space-y-4" aria-labelledby="personalize-heading">
             <div className="rounded-2xl border border-white/10 bg-navy-800 p-5">
               <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-blue-300">{audienceLabels[selectedTemplate.audience]}</p>
@@ -303,7 +313,7 @@ export default function AdminRecruitingOutreachPage() {
                   <p className="mt-1 text-xs text-slate-500">Only fields used by this variation are shown.</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={fillSample} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-white/10">Use sample</button>
+                  <button type="button" onClick={() => { setSampleMode(previous => !previous); setCopied(null) }} aria-pressed={sampleMode} className="rounded-lg bg-white/5 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-white/10">{sampleMode ? 'Return to draft' : 'Preview sample'}</button>
                   <button type="button" onClick={resetPersonalization} className="flex items-center gap-1.5 rounded-lg bg-white/5 px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-white/10"><RotateCcw size={12} /> Clear</button>
                 </div>
               </div>
@@ -312,7 +322,8 @@ export default function AdminRecruitingOutreachPage() {
                   <label key={field.token} className={field.token === 'fit_reason' || field.token === 'new_update' || field.token === 'next_action' || field.token === 'event_result' ? 'sm:col-span-2' : ''}>
                     <span className="mb-1.5 block text-xs font-medium text-slate-300">{field.label}</span>
                     <input
-                      value={values[field.token] ?? ''}
+                      value={activeValues[field.token] ?? ''}
+                      disabled={sampleMode}
                       onChange={event => setValues(previous => ({ ...previous, [field.token]: event.target.value }))}
                       placeholder={field.placeholder}
                       className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none placeholder:text-slate-600 focus:border-[#4f7cff]"
@@ -323,7 +334,7 @@ export default function AdminRecruitingOutreachPage() {
             </div>
           </section>
 
-          <aside className="min-w-0 xl:sticky xl:top-20 xl:self-start" aria-labelledby="draft-preview-heading">
+          <aside className="min-w-0 break-words 2xl:sticky 2xl:top-20 2xl:self-start" aria-labelledby="draft-preview-heading">
             <div className="overflow-hidden rounded-2xl border border-white/10 bg-navy-800">
               <div className="flex items-center justify-between gap-3 border-b border-white/10 px-5 py-4">
                 <div>
@@ -332,6 +343,7 @@ export default function AdminRecruitingOutreachPage() {
                 </div>
                 <button
                   type="button"
+                  disabled={sampleMode}
                   onClick={() => copyText('draft', `Subject: ${renderedSubject}\n\n${renderedBody}`)}
                   className="flex items-center gap-1.5 rounded-lg bg-[#0134BD] px-3 py-2 text-xs font-semibold text-white hover:bg-blue-700"
                 >
@@ -340,7 +352,9 @@ export default function AdminRecruitingOutreachPage() {
                 </button>
               </div>
 
-              {missingTokens.length > 0 ? (
+              {sampleMode ? (
+                <div role="status" className="border-b border-amber-400/20 bg-amber-500/10 px-5 py-3 text-xs text-amber-100">Fictional sample preview — copying is disabled. Your real draft is preserved; return to it to edit or copy.</div>
+              ) : missingTokens.length > 0 ? (
                 <div className="border-b border-amber-400/20 bg-amber-500/10 px-5 py-3 text-xs text-amber-100/80">
                   <span className="font-semibold text-amber-100">{missingTokens.length} placeholder{missingTokens.length === 1 ? '' : 's'} remaining.</span> Fill the highlighted fields or replace bracketed text after copying.
                 </div>
@@ -354,7 +368,7 @@ export default function AdminRecruitingOutreachPage() {
                 <div>
                   <div className="mb-2 flex items-center justify-between gap-2">
                     <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">Subject</span>
-                    <button type="button" onClick={() => copyText('subject', renderedSubject)} className="flex items-center gap-1 text-[11px] font-semibold text-blue-300 hover:text-blue-200">
+                    <button type="button" disabled={sampleMode} onClick={() => copyText('subject', renderedSubject)} className="flex items-center gap-1 text-[11px] font-semibold text-blue-300 hover:text-blue-200">
                       {copied === 'subject' ? <Check size={11} /> : <Copy size={11} />} Copy
                     </button>
                   </div>
@@ -363,7 +377,7 @@ export default function AdminRecruitingOutreachPage() {
                 <div>
                   <div className="mb-2 flex items-center justify-between gap-2">
                     <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500">Email body</span>
-                    <button type="button" onClick={() => copyText('body', renderedBody)} className="flex items-center gap-1 text-[11px] font-semibold text-blue-300 hover:text-blue-200">
+                    <button type="button" disabled={sampleMode} onClick={() => copyText('body', renderedBody)} className="flex items-center gap-1 text-[11px] font-semibold text-blue-300 hover:text-blue-200">
                       {copied === 'body' ? <Check size={11} /> : <Copy size={11} />} Copy
                     </button>
                   </div>
@@ -382,6 +396,7 @@ export default function AdminRecruitingOutreachPage() {
               </div>
             </div>
           </aside>
+          </> : <p role="status" className="rounded-xl border border-white/10 p-6 text-slate-300">No matching template. Clear your filters to create a draft.</p>}
         </div>
       </div>
     </DashboardLayout>
