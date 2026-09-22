@@ -11,6 +11,9 @@ export type ConnectRole = 'player' | 'parent' | 'coach' | 'scout' | 'club_admin'
 export type CommunityMembershipStatus = 'pending' | 'active' | 'suspended'
 export type CommunityMembershipTier = 'starter' | 'pro' | 'elite'
 export type CommunityReportReason = 'spam' | 'abuse' | 'harassment' | 'misinformation' | 'other'
+export type CourtsideDrillType = 'OFFENSIVE_PG' | 'RELAY_PG' | 'SNAPSHOT_PG' | 'LATE_CLOCK_PG' | 'DEFENSIVE_QB' | 'HARDWOOD_CHESS'
+export type CourtsideEvalRole = 'POINT_GUARD' | 'RECEIVER_FLOOR_GENERAL' | 'DEFENSIVE_QUARTERBACK' | 'OFFENSIVE_CAPTAIN' | 'DEFENSIVE_CAPTAIN'
+export type CourtsideOutcome = 'CHECKMATE' | 'ADVANTAGE' | 'STALEMATE' | 'TURNOVER' | 'LOCKDOWN' | 'CONTESTED' | 'BREAKDOWN' | 'GRANDMASTER' | 'TACTICIAN' | 'NOVICE'
 
 export interface Database {
   public: {
@@ -59,6 +62,11 @@ export interface Database {
         Row: PlayerTask
         Insert: Omit<PlayerTask, 'id' | 'created_at'>
         Update: Partial<Omit<PlayerTask, 'id'>>
+      }
+      courtside_communication_evaluations: {
+        Row: CourtsideCommunicationEvaluation
+        Insert: Omit<CourtsideCommunicationEvaluation, 'id' | 'created_at' | 'evaluator_id'> & { evaluator_id?: string | null }
+        Update: Partial<Omit<CourtsideCommunicationEvaluation, 'id'>>
       }
       coach_saved_players: {
         Row: { id: string; coach_profile_id: string; player_profile_id: string; created_at: string }
@@ -365,6 +373,31 @@ export interface PlayerTask {
   description: string | null
   status: TaskStatus
   due_date: string | null
+  created_at: string
+}
+
+export interface CourtsideCommunicationEvaluation {
+  id: string
+  player_profile_id: string
+  evaluator_id: string | null
+  drill_type: CourtsideDrillType
+  evaluated_role: CourtsideEvalRole
+  outcome: CourtsideOutcome
+  event_name: string
+  defense_scheme: string
+  offensive_set: string
+  shot_clock_seconds: number
+  decision_window_seconds: number
+  communication_score: number
+  processing_score: number
+  command_score: number | null
+  spacing_score: number | null
+  advantage_creation_score: number | null
+  defensive_read_score: number | null
+  composure_score: number | null
+  rubric_scores: Record<string, number>
+  coach_notes: string
+  event_date: string
   created_at: string
 }
 

@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight, Award, Sparkles } from 'lucide-react'
+import { LayoutDashboard, User, Star, Calendar, ShoppingBag, BookOpen, Users, ClipboardList, ChartBar as BarChart3, LogOut, Target, GraduationCap, Building2, ShieldCheck, Mail, SquareCheck as CheckSquare, MessageSquare, Radio, Tv, CalendarClock, Megaphone, FileVideoCamera as FileVideo, ChartBar as BarChart, Globe, Flag, ArrowLeftRight, Award, Sparkles, Brain } from 'lucide-react'
 import { useAuth } from '../../lib/auth'
 import { useNavigate } from 'react-router-dom'
 
@@ -46,6 +46,7 @@ const adminNav: NavItem[] = [
   { label: 'Funding & Grants', to: '/admin/funding', icon: <Award size={16} /> },
   { label: 'Orders', to: '/admin/orders', icon: <ShoppingBag size={16} /> },
   { label: 'Audits', to: '/admin/audits', icon: <ClipboardList size={16} /> },
+  { label: 'Courtside Lab', to: '/admin/courtside-communication', icon: <Brain size={16} /> },
   { label: 'Players', to: '/admin/players', icon: <User size={16} /> },
   { label: 'Reports', to: '/admin/reports', icon: <BarChart3 size={16} /> },
   { label: 'Audit Trail', to: '/admin/crm-audit', icon: <ArrowLeftRight size={16} /> },
