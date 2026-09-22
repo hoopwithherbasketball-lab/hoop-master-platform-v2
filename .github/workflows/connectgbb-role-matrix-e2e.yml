@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build web and workspace packages
+        run: npm run build:web
+
       - name: Install Playwright Python
         run: |
           python -m pip install --upgrade pip
@@ -53,12 +56,13 @@ jobs:
           cat /tmp/web-ci.log
           exit 1
 
-      - name: Run role-matrix suite (local + preview)
+      - name: Run role-matrix suite (local + authorized preview)
         run: |
-          python tests/test_connectgbb_role_matrix_e2e.py \
-            --base-url "$BASE_URL_LOCAL" \
-            --base-url "$BASE_URL_PREVIEW" \
-            --preview-allowlist-token "$PREVIEW_ALLOWLIST_TOKEN"
+          targets=(--base-url "$BASE_URL_LOCAL")
+          if [[ -n "$PREVIEW_ALLOWLIST_TOKEN" ]]; then
+            targets+=(--base-url "$BASE_URL_PREVIEW" --preview-allowlist-token "$PREVIEW_ALLOWLIST_TOKEN")
+          fi
+          python tests/test_connectgbb_role_matrix_e2e.py "${targets[@]}"
 
       - name: Print local app logs on failure
         if: failure()
