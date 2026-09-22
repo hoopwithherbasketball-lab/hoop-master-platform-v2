@@ -104,6 +104,26 @@ export function useIntakeForm() {
     setSubmitting(true)
     setError('')
 
+    const requiredFields = [
+      { key: 'player_name', label: 'Player Name' },
+      { key: 'grad_class', label: 'Graduation Class' },
+      { key: 'gender', label: 'Gender' },
+      { key: 'primary_position', label: 'Primary Position' },
+      { key: 'parent_name', label: 'Parent Name' },
+      { key: 'parent_email', label: 'Parent Email' }
+    ];
+
+    const missing = requiredFields.filter(f => {
+      const val = data[f.key as keyof IntakeFormData];
+      return typeof val === 'string' && val.trim() === '';
+    });
+
+    if (missing.length > 0) {
+      setError(`Please complete all required fields on all steps (missing: ${missing.map(f => f.label).join(', ')}).`);
+      setSubmitting(false);
+      return { ok: false };
+    }
+
     try {
       const { data: profileData, error: profileErr } = await supabase.from('player_profiles').upsert({
         user_id: user?.id,

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
@@ -39,7 +40,7 @@ export function useAdminEvaluations() {
         if (!data) { setLoading(false); return }
 
         type AuditRow = { total_score: number; created_at: string; created_by: string; readiness_band: string; audit_submissions: { player_profile_id: string; player_profiles: { first_name: string; last_name: string; position: string; class_year: number; school_name: string }[] }[] }
-        const mapped: AdminEvalSummary[] = (data as unknown as AuditRow[]).map((r) => {
+        const mapped: AdminEvalSummary[] = (data as any as AuditRow[]).map((r) => {
           const sub = r.audit_submissions?.[0] ?? {} as AuditRow['audit_submissions'][0]
           const prof = sub.player_profiles?.[0] ?? {}
           return {

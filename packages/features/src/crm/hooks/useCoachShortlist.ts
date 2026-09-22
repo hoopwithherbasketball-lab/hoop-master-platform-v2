@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
@@ -55,7 +56,7 @@ export function useCoachShortlist() {
           .order('created_at', { ascending: false })
         if (fetchError) throw fetchError
         if (!data) { setEntries([]); return }
-        const rows = data as unknown as ShortlistRow[]
+        const rows = data as any as ShortlistRow[]
         setEntries(rows.map((r) => {
           const p = r.player_profiles?.[0] ?? {} as ShortlistRow['player_profiles'][0]
           return {
