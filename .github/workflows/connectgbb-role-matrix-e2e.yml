@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -35,9 +35,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          corepack enable
-          yarn install --immutable || yarn install
+        run: npm ci
 
       - name: Install Playwright Python
         run: |
@@ -47,9 +45,13 @@ jobs:
 
       - name: Start local web app
         run: |
-          corepack enable
-          yarn workspace web dev --host 0.0.0.0 --port 3000 > /tmp/web-ci.log 2>&1 &
-          sleep 8
+          npm run dev:web -- --port 3000 > /tmp/web-ci.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --output /dev/null http://localhost:3000/login; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/web-ci.log
+          exit 1
 
       - name: Run role-matrix suite (local + preview)
         run: |
