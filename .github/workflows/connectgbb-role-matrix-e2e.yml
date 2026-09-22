@@ -18,6 +18,8 @@ jobs:
       BASE_URL_LOCAL: http://localhost:3000
       BASE_URL_PREVIEW: https://status-hub-39.preview.emergentagent.com
       PREVIEW_ALLOWLIST_TOKEN: ${{ secrets.PREVIEW_E2E_ALLOWLIST_TOKEN }}
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
     steps:
       - name: Checkout repository
@@ -36,6 +38,13 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Check E2E backend configuration
+        run: |
+          if [[ -z "$VITE_SUPABASE_URL" || -z "$VITE_SUPABASE_ANON_KEY" ]]; then
+            echo "Role-matrix E2E needs VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY GitHub secrets."
+            exit 1
+          fi
 
       - name: Build web and workspace packages
         run: npm run build:web
