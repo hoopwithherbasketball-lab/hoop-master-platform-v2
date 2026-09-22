@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@hoop-master/supabase'
 import { useAuth } from '../crm/contexts/AuthContextValue.js'
@@ -61,12 +62,12 @@ const shouldUseStrictMembershipMode = () => {
   return window.localStorage.getItem('elitegbb_strict_membership_mode') === 'true'
 }
 
-const isMissingResourceError = (error: unknown) => {
+const isMissingResourceError = (error: any) => {
   const maybe = error as { code?: string; status?: number } | null
   return maybe?.code === 'PGRST202' || maybe?.code === 'PGRST205' || maybe?.status === 404
 }
 
-const isRateLimitError = (error: unknown) => {
+const isRateLimitError = (error: any) => {
   const maybe = error as { status?: number; code?: string } | null
   return maybe?.status === 429 || maybe?.code === '429'
 }

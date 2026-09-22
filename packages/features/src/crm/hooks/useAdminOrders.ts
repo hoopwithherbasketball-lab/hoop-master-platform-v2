@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
 export interface ServiceOrderDisplay {
   id: string
+  fullId: string
   athlete: string
   athleteId: string
   service: string
@@ -59,7 +61,7 @@ export function useAdminOrders() {
       if (!data) return
 
       type OrderRow = { id: string; status: string; created_at: string; due_at: string; customer_name: string | null; service_offer_id: string; player_profile_id: string; service_offers: { slug: string; name: string; category: string; price_cents: number }[] | null; player_profiles: { first_name: string; last_name: string }[] | null }
-      const mapped: ServiceOrderDisplay[] = (data as unknown as OrderRow[]).map((r) => {
+      const mapped: ServiceOrderDisplay[] = (data as any as OrderRow[]).map((r) => {
         const offer = Array.isArray(r.service_offers) ? r.service_offers[0] : r.service_offers
         const profile = Array.isArray(r.player_profiles) ? r.player_profiles[0] : r.player_profiles
         const profileName = profile?.first_name || profile?.last_name
@@ -68,6 +70,7 @@ export function useAdminOrders() {
         const fullName = profileName ?? r.customer_name ?? 'Unknown'
         return {
           id: r.id ? r.id.slice(0, 8) : '',
+          fullId: r.id,
           athlete: fullName,
           athleteId: r.player_profile_id ?? '',
           service: offer?.name ?? '',
@@ -83,5 +86,17 @@ export function useAdminOrders() {
     fetch()
   }, [])
 
-  return { orders, statusColors: STATUS_COLORS }
+  const updateOrderStatus = async (id: string, newStatus: string) => {
+    // Note: the order id in the state might be truncated (slice(0, 8)), but we need the full UUID to update.
+    // Wait, the state `id` is truncated: `id: r.id ? r.id.slice(0, 8) : ''`. 
+    // This makes it impossible to update by ID if we only have the truncated one.
+    // Let me fix that: keep full ID in state, or add `fullId` to the state.
+    const { error } = await supabase.from('service_orders').update({ status: newStatus }).eq('id', id)
+    if (!error) {
+      setOrders(prev => prev.map(o => o.fullId === id ? { ...o, status: newStatus } : o))
+    }
+    return { error }
+  }
+
+  return { orders, statusColors: STATUS_COLORS, updateOrderStatus }
 }

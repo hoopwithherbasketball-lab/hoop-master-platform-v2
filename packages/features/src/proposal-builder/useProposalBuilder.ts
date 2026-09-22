@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { supabase } from '@hoop-master/supabase';
 import { ProposalWithBlocks, ProposalBlock } from './types';

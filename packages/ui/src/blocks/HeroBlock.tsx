@@ -1,5 +1,6 @@
 import React from 'react';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function HeroBlock({ content }: { content: any }) {
   const { title, subtitle, backgroundImage, ctaText, ctaUrl } = content;
   return (

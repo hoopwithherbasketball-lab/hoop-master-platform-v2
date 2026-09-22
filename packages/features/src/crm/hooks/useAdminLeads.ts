@@ -51,5 +51,13 @@ export function useAdminLeads() {
     return true
   }), [allLeads, statusFilter, searchQuery])
 
-  return { leads: filtered, allLeads, statusFilter, setStatusFilter, searchQuery, setSearchQuery, statuses: STATUSES }
+  const updateLeadStatus = async (id: string, newStatus: string) => {
+    const { error } = await supabase.from('leads').update({ status: newStatus }).eq('id', id)
+    if (!error) {
+      setAllLeads(prev => prev.map(l => l.id === id ? { ...l, status: newStatus } : l))
+    }
+    return { error }
+  }
+
+  return { leads: filtered, allLeads, statusFilter, setStatusFilter, searchQuery, setSearchQuery, statuses: STATUSES, updateLeadStatus }
 }

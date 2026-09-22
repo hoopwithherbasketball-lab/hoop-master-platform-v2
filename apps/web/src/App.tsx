@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { AuthProvider, ProtectedRoute } from './lib/auth'
 import type { UserRole } from './types/database'
+import { PublicLayout as UIPublicLayout } from '@hoop-master/ui'
 import ErrorBoundary from './components/ErrorBoundary'
 import ScrollToTop from './components/ScrollToTop'
 import Navbar from './components/layout/Navbar'
@@ -101,7 +102,7 @@ import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
 import NotFoundPage from './pages/public/NotFoundPage'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
-  return (<div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1">{children}</div><Footer /></div>)
+  return <UIPublicLayout navbar={<Navbar />} footer={<Footer />}>{children}</UIPublicLayout>
 }
 
 function AppRoutes() {

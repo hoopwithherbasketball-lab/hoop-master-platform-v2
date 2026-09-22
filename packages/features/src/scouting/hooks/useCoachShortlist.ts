@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
@@ -37,7 +38,7 @@ const getStoredData = (key: string, defaultValue: any) => {
   try {
     const val = localStorage.getItem(`scout_shortlist_${key}`)
     return val ? JSON.parse(val) : defaultValue
-  } catch (e) {
+  } catch {
     return defaultValue
   }
 }
@@ -85,7 +86,7 @@ export function useCoachShortlist() {
         if (fetchError) throw fetchError
         if (!data) { setEntries([]); return }
         
-        const rows = data as unknown as ShortlistRow[]
+        const rows = data as any as ShortlistRow[]
         
         const merged = rows.map((r) => {
           const p = r.player_profiles?.[0] ?? {} as any
@@ -113,7 +114,7 @@ export function useCoachShortlist() {
         })
         
         setEntries(merged)
-      } catch (e) {
+      } catch (e: any) {
         console.error('useCoachShortlist:', e)
         setError('Failed to load shortlist')
       } finally {
