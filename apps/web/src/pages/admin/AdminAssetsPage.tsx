@@ -17,6 +17,21 @@ const CATEGORIES = ['game_film', 'highlight', 'training', 'interview', 'behind_s
 
 const emptyForm = { title: '', description: '', duration_seconds: 0, storage_path: '', thumbnail_url: '', status: 'draft', category: 'uncategorized', tags: [] as string[], publish_to_roku: false }
 
+function publicTvUrl(value: string | null | undefined, video = false): boolean {
+  try {
+    const url = new URL(value || '')
+    return url.protocol === 'https:' && !!url.hostname && !url.username && !url.password && !url.search && !url.hash
+      && (!video || /\.(m3u8|mp4)$/i.test(url.pathname))
+  } catch { return false }
+}
+
+function tvReadiness(asset: Pick<MediaAsset, 'status' | 'storage_path' | 'thumbnail_url'>): string | null {
+  if (asset.status !== 'ready') return 'Mark the asset ready before adding it to the TV catalog.'
+  if (!publicTvUrl(asset.storage_path, true)) return 'Use a public HTTPS .m3u8 or .mp4 video URL without tokens or query parameters.'
+  if (!publicTvUrl(asset.thumbnail_url)) return 'Add a public HTTPS thumbnail URL without tokens or query parameters.'
+  return null
+}
+
 export default function AdminAssetsPage() {
   const [assets, setAssets] = useState<MediaAsset[]>([])
   const [loading, setLoading] = useState(true)
@@ -27,12 +42,16 @@ export default function AdminAssetsPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [tagInput, setTagInput] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [publishSaving, setPublishSaving] = useState(false)
+  const [loadError, setLoadError] = useState('')
 
   const load = useCallback(async () => {
     try {
-      const { data } = await supabase.from('media_assets').select('*').order('created_at', { ascending: false })
+      const { data, error } = await supabase.from('media_assets').select('*').order('created_at', { ascending: false })
+      if (error) throw error
       setAssets(data ?? [])
-    } catch (e) { console.error(e) }
+      setLoadError('')
+    } catch (e) { console.error(e); setLoadError('Could not load media assets. Retry to refresh the catalog.') }
     setLoading(false)
   }, [])
 
@@ -72,16 +91,19 @@ export default function AdminAssetsPage() {
 
   const save = async () => {
     if (!form.title.trim()) return
+    if (form.publish_to_roku && tvReadiness(form)) { toast.error(tvReadiness(form) || 'Asset is not TV ready'); return }
     setSaving(true)
     try {
       if (editing) {
-        await supabase.from('media_assets').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editing)
+        const { error } = await supabase.from('media_assets').update({ ...form, updated_at: new Date().toISOString() }).eq('id', editing)
+        if (error) throw error
       } else {
-        await supabase.from('media_assets').insert(form)
+        const { error } = await supabase.from('media_assets').insert(form)
+        if (error) throw error
       }
       setShowModal(false)
-      load()
-    } catch (e) { console.error(e) }
+      void load()
+    } catch (e) { console.error(e); toast.error('Could not save this asset.') }
     setSaving(false)
   }
 
@@ -92,20 +114,25 @@ export default function AdminAssetsPage() {
   }
 
   const toggleRokuPublish = async () => {
-    if (!editing) return
+    if (!editing || publishSaving) return
     const newState = !form.publish_to_roku
-    setForm(p => ({ ...p, publish_to_roku: newState }))
+    const persisted = assets.find(asset => asset.id === editing)
+    if (newState && (!persisted || tvReadiness(persisted))) {
+      toast.error(persisted ? tvReadiness(persisted) || 'Asset is not TV ready' : 'Save the asset first.')
+      return
+    }
+    setPublishSaving(true)
     
     try {
-      await supabase.from('media_assets').update({ publish_to_roku: newState, updated_at: new Date().toISOString() }).eq('id', editing)
-      if (newState) toast.success("Asset is now live on Roku")
-      else toast.success("Asset removed from Roku")
-      load() // Refresh background list
+      const { error } = await supabase.from('media_assets').update({ publish_to_roku: newState, updated_at: new Date().toISOString() }).eq('id', editing)
+      if (error) throw error
+      setForm(p => ({ ...p, publish_to_roku: newState }))
+      toast.success(newState ? 'Added to the TV catalog' : 'Removed from the TV catalog')
+      void load()
     } catch (e) {
       console.error(e)
-      toast.error("Failed to update Roku status")
-      setForm(p => ({ ...p, publish_to_roku: !newState })) // Revert UI
-    }
+      toast.error('Failed to update the TV catalog')
+    } finally { setPublishSaving(false) }
   }
 
   const formatDuration = (s: number) => { const m = Math.floor(s / 60); return `${m}m ${s % 60}s` }
@@ -114,6 +141,7 @@ export default function AdminAssetsPage() {
     <DashboardLayout variant="admin" title="Media Assets" subtitle="Manage VOD content, films, and media files"
       action={<button onClick={openNew} className="flex items-center gap-1.5 bg-[#0134BD] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#002a80]"><Plus size={16} /> New Asset</button>}
     >
+      {loadError && <div role="alert" className="card mb-4 text-red-300">{loadError} <button className="underline" onClick={() => { setLoading(true); void load() }}>Retry</button></div>}
       {loading ? (
         <div className="animate-pulse space-y-3">{[1,2,3].map(i => <div key={i} className="card h-16" />)}</div>
       ) : (
@@ -125,7 +153,7 @@ export default function AdminAssetsPage() {
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Category</th>
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Duration</th>
                 <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Status</th>
-                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">Roku</th>
+                <th className="px-4 py-3 text-left text-xs text-slate-400 uppercase">TV catalog</th>
                 <th className="px-4 py-3 text-right text-xs text-slate-400 uppercase">Actions</th>
               </tr>
             </thead>
@@ -145,7 +173,7 @@ export default function AdminAssetsPage() {
                   <td className="px-4 py-3 text-slate-300">{formatDuration(a.duration_seconds)}</td>
                   <td className="px-4 py-3"><span className={`px-2 py-0.5 rounded-full text-xs ${a.status === 'ready' ? 'bg-green-500/20 text-green-400' : a.status === 'processing' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-slate-500/20 text-slate-400'}`}>{a.status}</span></td>
                   <td className="px-4 py-3">
-                    {a.publish_to_roku ? <span className="inline-flex items-center gap-1 text-[#6F1AB6] bg-[#6F1AB6]/10 px-2 py-0.5 rounded-full text-xs font-bold"><Tv size={12}/> Live</span> : <span className="text-slate-500 text-xs">-</span>}
+                    {a.publish_to_roku ? <span className="inline-flex items-center gap-1 text-[#6F1AB6] bg-[#6F1AB6]/10 px-2 py-0.5 rounded-full text-xs font-bold"><Tv size={12}/> Included</span> : <span className="text-slate-500 text-xs">-</span>}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button onClick={() => openEdit(a)} className="p-1 text-slate-400 hover:text-white"><Edit3 size={14} /></button>
@@ -153,7 +181,7 @@ export default function AdminAssetsPage() {
                   </td>
                 </tr>
               ))}
-              {assets.length === 0 && <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500">No assets yet</td></tr>}
+              {assets.length === 0 && !loadError && <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-500">No assets yet</td></tr>}
             </tbody>
           </table>
         </div>
@@ -165,14 +193,19 @@ export default function AdminAssetsPage() {
             <div className="flex justify-between items-center border-b border-slate-700 pb-4">
               <h3 className="text-lg font-semibold text-white">{editing ? 'Edit Asset' : 'New Asset'}</h3>
               
-              {editing && form.status === 'ready' && (
+              {editing && (
                 <div className="flex items-center gap-3 bg-slate-700/50 px-4 py-2 rounded-lg ml-auto mr-4 border border-slate-600/50">
                   <div className="flex items-center gap-2">
                     <Tv2 size={16} className={form.publish_to_roku ? "text-[#6F1AB6]" : "text-slate-400"} />
-                    <span className="text-sm font-medium text-white">Publish to Roku Channel</span>
+                    <span className="text-sm font-medium text-white">TV catalog</span>
                   </div>
                   <button 
                     onClick={toggleRokuPublish}
+                    disabled={publishSaving}
+                    type="button"
+                    role="switch"
+                    aria-label="Include asset in TV catalog"
+                    aria-checked={form.publish_to_roku}
                     className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${form.publish_to_roku ? 'bg-[#6F1AB6]' : 'bg-slate-500'}`}
                   >
                     <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${form.publish_to_roku ? 'translate-x-4' : 'translate-x-1'}`} />
@@ -182,6 +215,7 @@ export default function AdminAssetsPage() {
 
               <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-white"><X size={20} /></button>
             </div>
+            {editing && !form.publish_to_roku && <p className="text-xs text-slate-300">{tvReadiness(assets.find(a => a.id === editing) || form) || 'Ready for the TV catalog. Save any edits before switching it on.'}</p>}
             <div className="space-y-3">
               <div>
                 <label className="block text-xs text-slate-400 mb-1">Title</label>
@@ -247,7 +281,7 @@ export default function AdminAssetsPage() {
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button onClick={() => setShowModal(false)} className="px-4 py-2 text-sm text-slate-300 hover:text-white">Cancel</button>
-              <button onClick={save} disabled={saving} className="px-4 py-2 bg-[#0134BD] text-white rounded-lg text-sm font-medium hover:bg-[#002a80] disabled:opacity-50">{saving ? 'Saving...' : 'Save'}</button>
+              <button onClick={save} disabled={saving || publishSaving} className="px-4 py-2 bg-[#0134BD] text-white rounded-lg text-sm font-medium hover:bg-[#002a80] disabled:opacity-50">{saving ? 'Saving...' : 'Save'}</button>
             </div>
           </div>
         </div>

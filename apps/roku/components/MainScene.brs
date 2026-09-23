@@ -8,12 +8,11 @@ sub init()
     ' Listeners
     m.fetchTask.observeField("content", "onFeedLoaded")
     m.fetchTask.observeField("errorMsg", "onFeedError")
-    m.rowList.observeField("itemSelected", "onAssetSelected")
+    m.rowList.observeField("rowItemSelected", "onAssetSelected")
     m.videoPlayer.observeField("state", "onVideoStateChange")
     
     ' Execute Task
     m.fetchTask.control = "RUN"
-    m.spinner.poster.blendColor = "#fb6c1d" ' Brand orange spinner
 end sub
 
 sub onFeedLoaded()
@@ -21,24 +20,26 @@ sub onFeedLoaded()
     content = m.fetchTask.content
     
     if content <> invalid and content.getChildCount() > 0 then
+        m.errorLabel.visible = false
         m.rowList.content = content
         m.rowList.visible = true
         m.rowList.setFocus(true)
     else
-        m.errorLabel.text = "No media available at this time."
+        m.errorLabel.text = "No videos available. Press OK to refresh."
         m.errorLabel.visible = true
     end if
 end sub
 
 sub onFeedError()
     m.spinner.visible = false
-    m.errorLabel.text = m.fetchTask.errorMsg
+    m.errorLabel.text = m.fetchTask.errorMsg + " Press OK to retry."
     m.errorLabel.visible = true
 end sub
 
 sub onAssetSelected()
     rowIdx = m.rowList.rowItemSelected[0]
     colIdx = m.rowList.rowItemSelected[1]
+    if rowIdx < 0 or colIdx < 0 then return
     selectedItem = m.rowList.content.getChild(rowIdx).getChild(colIdx)
     
     if selectedItem.url <> invalid and selectedItem.url <> "" then
@@ -50,7 +51,8 @@ sub onAssetSelected()
         ' Configure Video
         vidContent = CreateObject("roSGNode", "ContentNode")
         vidContent.url = selectedItem.url
-        vidContent.streamFormat = "hls"
+        vidContent.streamFormat = selectedItem.streamFormat
+        vidContent.title = selectedItem.title
         
         m.videoPlayer.content = vidContent
         m.videoPlayer.control = "play"
@@ -81,6 +83,12 @@ end sub
 function onKeyEvent(key as String, press as Boolean) as Boolean
     handled = false
     if press then
+        if key = "OK" and m.errorLabel.visible then
+            m.errorLabel.visible = false
+            m.spinner.visible = true
+            m.fetchTask.control = "RUN"
+            return true
+        end if
         if key = "back" and m.videoPlayer.visible then
             ' Stop video and return to RowList
             m.videoPlayer.control = "stop"

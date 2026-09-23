@@ -19,14 +19,18 @@ sub loadContent()
     
     responseString = req.GetToString()
     
-    if responseString = "" then
+    if req.GetResponseCode() <> 200 or responseString = "" then
         m.top.errorMsg = "Failed to load content from server."
         return
     end if
     
     json = ParseJson(responseString)
     
-    if json = invalid or json.movies = invalid then
+    if json = invalid then
+        m.top.errorMsg = "Invalid content format received."
+        return
+    end if
+    if json.movies = invalid then
         m.top.errorMsg = "Invalid content format received."
         return
     end if
@@ -38,13 +42,19 @@ sub loadContent()
     for each item in json.movies
         ' Build the individual video node
         itemNode = CreateObject("roSGNode", "ContentNode")
+        if item.content = invalid or item.content.videos = invalid then continue for
+        if item.content.videos.Count() = 0 then continue for
+        video = item.content.videos[0]
+        if video.url = invalid or video.videoType = invalid then continue for
+        if video.videoType <> "HLS" and video.videoType <> "MP4" then continue for
         itemNode.title = item.title
         itemNode.description = item.shortDescription
         itemNode.HDPosterUrl = item.thumbnail
-        
-        ' Safely extract the HLS url
-        if item.content <> invalid and item.content.videos <> invalid and item.content.videos.Count() > 0 then
-            itemNode.url = item.content.videos[0].url
+        itemNode.url = video.url
+        if video.videoType = "MP4" then
+            itemNode.streamFormat = "mp4"
+        else
+            itemNode.streamFormat = "hls"
         end if
         
         ' Group by the first tag found, defaulting to "Featured"
