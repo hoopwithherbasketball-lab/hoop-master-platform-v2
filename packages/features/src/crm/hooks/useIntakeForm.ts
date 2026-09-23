@@ -112,7 +112,7 @@ export function useIntakeForm() {
       { key: 'parent_name', label: 'Parent Name' },
       { key: 'parent_email', label: 'Parent Email' }
     ];
-    
+
     const missing = requiredFields.filter(f => {
       const val = data[f.key as keyof IntakeFormData];
       return typeof val === 'string' && val.trim() === '';

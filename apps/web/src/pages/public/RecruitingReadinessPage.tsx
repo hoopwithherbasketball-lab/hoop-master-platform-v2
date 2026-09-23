@@ -37,7 +37,7 @@ const evaluationFactors = [
 
 const checklistItems = [
   'Complete academic profile with GPA and test scores',
-  'Have a professional highlight reel under 3 minutes',
+  'Have a focused highlight reel and a working full-game link',
   'Participate in varsity sports with measurable stats',
   'Attend recruiting camps or showcases',
   'Build relationships with college coaches',
@@ -84,6 +84,7 @@ export default function RecruitingReadinessPage() {
       description="Evaluate your college basketball recruiting potential and create a personalized development plan."
       badge="Recruiting Tools"
     >
+      <Link to="/recruiting-roadmap" className="block rounded-xl border border-amber-300/30 p-5 text-amber-200 mb-8">Open your recruiting workspace: grade checklists, email drafts, visits and college comparisons →</Link>
       <PageSection title="Current Readiness Snapshot">
         <div className="bg-navy-800 border border-white/10 rounded-lg p-6">
           <div className="flex flex-col lg:flex-row gap-8 items-start lg:items-center lg:justify-between">

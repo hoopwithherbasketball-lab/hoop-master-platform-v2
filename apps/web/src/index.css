@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@media print {
+  body:has(.recruiting-workspace) { background: white; color: #111; }
+  body:has(.recruiting-workspace) nav, body:has(.recruiting-workspace) footer { display: none; }
+  .recruiting-workspace { padding-top: 0; }
+  .recruiting-workspace, .recruiting-workspace * { color: #111 !important; background: transparent !important; box-shadow: none !important; }
+  .recruiting-workspace details > :not(summary) { display: block !important; }
+  .recruiting-workspace .grid { display: block; }
+  .recruiting-workspace fieldset { margin-bottom: 1rem; }
+  .recruiting-workspace button { display: none; }
+}
+
 @layer base {
   html { scroll-behavior: smooth; }
   body { @apply bg-[#121212] text-white antialiased; }

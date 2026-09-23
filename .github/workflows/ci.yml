@@ -28,3 +28,6 @@ jobs:
 
       - name: Test independent NIL workflows
         run: npm run test:nil
+
+      - name: Test recruiting workspace and outreach
+        run: npm run test:recruiting
