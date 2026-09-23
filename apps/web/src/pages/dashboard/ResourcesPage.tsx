@@ -3,6 +3,7 @@ import { BookOpen, Film, BarChart3, Target, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const resources = [
+  { icon: BookOpen, title: 'Recruiting Workspace', desc: 'Grade plans, coach email drafts, visit preparation and college comparisons', link: '/recruiting-roadmap' },
   { icon: BookOpen, title: 'Recruiting Guide', desc: 'Step-by-step guide to the college recruiting process', link: '/recruiting-readiness' },
   { icon: Film, title: 'Film Index', desc: 'Upload and organize your game film and highlights', link: '/dashboard/film-index' },
   { icon: BarChart3, title: 'Analytics', desc: 'Track your performance stats and season trends', link: '/dashboard/analytics' },

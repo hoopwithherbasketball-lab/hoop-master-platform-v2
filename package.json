@@ -13,10 +13,11 @@
     "build:turbo": "turbo build",
     "build:web": "node ./node_modules/turbo/bin/turbo build --filter=web",
     "dev:web": "cd apps/web && node ../../node_modules/vite/bin/vite.js --host",
-    "typecheck": "turbo run typecheck",
+    "typecheck": "node scripts/run-typechecks.cjs",
     "lint": "turbo lint",
     "clean": "turbo clean",
     "test:nil": "node tests/nil/nil-hub.test.cjs",
+    "test:recruiting": "npm run build --workspace=@hoop-master/features && node --test tests/recruiting/*.test.mjs && node tests/recruiting/components.test.cjs",
     "agile": "node scripts/hwh-agile.mjs",
     "agile:observe": "node scripts/hwh-agile.mjs --mode observe",
     "agile:test": "node --test scripts/hwh-agile-policy.test.mjs"
@@ -24,8 +25,7 @@
   "devDependencies": {
     "ajv": "^8.20.0",
     "ajv-keywords": "^5.1.0",
-    "turbo": "^2.9.9",
-    "typescript": "^5.9.3"
+    "turbo": "^2.9.9"
   },
   "packageManager": "npm@10.0.0"
 }

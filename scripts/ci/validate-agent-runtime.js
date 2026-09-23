@@ -32,19 +32,21 @@ function validatePhase(data, file, expectedPhase) {
 }
 
 function validateRuntime(runtime) {
-  if (![6, 7].includes(runtime.phase)) throw new ValidationError('phase must be 6 or 7 in runtime scaffold/implementation transition.');
+  if (![6, 7, 8].includes(runtime.phase)) throw new ValidationError('phase must be 6, 7 or 8 in the documented runtime transition.');
 
   if (runtime.phase === 6) {
     if (runtime.mcpRuntimeMode !== 'disabled') throw new ValidationError('mcpRuntimeMode must be "disabled" in Phase 6.');
     if (!Array.isArray(runtime.enabledAgents) || runtime.enabledAgents.length > 0) throw new ValidationError('enabledAgents must be an empty array in Phase 6.');
   }
 
-  if (runtime.phase === 7) {
-    if (runtime.mcpRuntimeMode !== 'restricted_enabled') throw new ValidationError('mcpRuntimeMode must be "restricted_enabled" in Phase 7.');
-    if (!runtime.phaseTransition) throw new ValidationError('phaseTransition block is required in agent-runtime.json for Phase 7.');
-    if (runtime.phaseTransition.transitionStatus !== 'overseer_approved_ready_for_phase_7') throw new ValidationError('phaseTransition.transitionStatus must be "overseer_approved_ready_for_phase_7" in Phase 7.');
-    if (runtime.phaseTransition.overseerApprovalRequired !== true) throw new ValidationError('phaseTransition.overseerApprovalRequired must be true in Phase 7.');
-    if (runtime.phaseTransition.overseerApprovalRecorded !== true) throw new ValidationError('phaseTransition.overseerApprovalRecorded must be true — Overseer approval is required to unlock Phase 7.');
+  if (runtime.phase === 7 || runtime.phase === 8) {
+    const phase = runtime.phase;
+    if (runtime.mcpRuntimeMode !== 'restricted_enabled') throw new ValidationError(`mcpRuntimeMode must be "restricted_enabled" in Phase ${phase}.`);
+    if (!runtime.phaseTransition) throw new ValidationError(`phaseTransition block is required in agent-runtime.json for Phase ${phase}.`);
+    if (runtime.phaseTransition.transitionStatus !== `overseer_approved_ready_for_phase_${phase}`) throw new ValidationError(`phaseTransition.transitionStatus must match approved Phase ${phase}.`);
+    if (runtime.phaseTransition.overseerApprovalRequired !== true) throw new ValidationError(`phaseTransition.overseerApprovalRequired must be true in Phase ${phase}.`);
+    if (runtime.phaseTransition.overseerApprovalRecorded !== true) throw new ValidationError(`Overseer approval is required to unlock Phase ${phase}.`);
+    if (phase === 8 && (runtime.phaseTransition.fromPhase !== 7 || runtime.phaseTransition.toPhase !== 8)) throw new ValidationError('Phase 8 must record the documented transition from Phase 7.');
   }
 
   const requiredBlockedActions = [
@@ -139,4 +141,5 @@ function run() {
   }
 }
 
-run();
+if (require.main === module) run();
+module.exports = { validateRuntime };

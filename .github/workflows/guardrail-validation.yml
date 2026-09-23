@@ -48,3 +48,6 @@ jobs:
 
       - name: Run runtime boundary validation
         run: ./scripts/ci/validate-agent-runtime.sh
+
+      - name: Test runtime boundary validation
+        run: node --test scripts/ci/validate-agent-runtime.test.cjs

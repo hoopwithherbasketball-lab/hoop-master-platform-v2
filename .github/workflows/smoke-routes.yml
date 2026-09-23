@@ -24,7 +24,14 @@ jobs:
       - name: Verify key files exist
         run: |
           test -f apps/web/src/pages/admin/EliteGBBDashboard.tsx
-          test -f apps/web/src/components/AcademicPathwaySelector.tsx
-          test -f apps/web/src/components/ProposalBuilder.tsx
+          test -f apps/web/src/pages/dashboard/ClassTrackingPage.tsx
+          test -f apps/web/src/pages/admin/ProposalBuilder.tsx
+          test -f REPO_AUDIT.md
+          test -f apps/web/src/pages/public/RecruitingRoadmapPage.tsx
+          test -f apps/web/src/pages/nil/ProposalBuilderPage.tsx
+          test -f apps/web/src/pages/public/ChannelsBrowsePage.tsx
+          test -f apps/web/src/pages/admin/AdminAssetsPage.tsx
+          test -f services/api/src/routes/roku.ts
+          grep -q 'path="/watch"' apps/web/src/App.tsx
+          grep -q 'path="/admin/assets"' apps/web/src/App.tsx
           test -f REMAINING_MIGRATIONS.sql
-          test -f EliteGBB_Data_Audit.md
