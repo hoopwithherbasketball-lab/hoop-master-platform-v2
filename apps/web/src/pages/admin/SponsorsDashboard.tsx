@@ -25,7 +25,7 @@ export default function SponsorsDashboard() {
   useEffect(() => { load() }, [])
 
   const load = async () => {
-    const { data } = await supabase.from('crm_partners').select('*').order('created_at', { ascending: false })
+    const { data } = await supabase.from('crm_partners').select('*').order('created_at', { ascending: false }).limit(100)
     if (data) setPartners(data)
   }
 

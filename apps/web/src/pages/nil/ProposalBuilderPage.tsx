@@ -714,7 +714,7 @@ export default function ProposalBuilderPage() {
 
     // Load proposals from Supabase
     const fetchProposals = async () => {
-      const { data, error } = await supabase.from("proposals").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("proposals").select("*").order("created_at", { ascending: false }).limit(100);
       if (!error && data) {
         const formatted = data.filter(dbRow => dbRow.package_details?.source !== 'nil-hub').map(dbRow => ({
           id: dbRow.id,

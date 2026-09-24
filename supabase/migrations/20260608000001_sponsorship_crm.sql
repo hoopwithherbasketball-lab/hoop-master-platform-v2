@@ -17,7 +17,7 @@ CREATE TABLE sponsorship_inventory (
   partner_id UUID REFERENCES crm_partners(id) ON DELETE SET NULL,
   
   -- The Media Bridge: Connecting inventory directly to Roku/Web broadcast assets
-  target_channel_id UUID REFERENCES channels(id) ON DELETE SET NULL,
+  target_channel_id UUID REFERENCES media_channels(id) ON DELETE SET NULL,
   target_asset_id UUID REFERENCES media_assets(id) ON DELETE SET NULL,
   
   created_at TIMESTAMPTZ DEFAULT NOW()

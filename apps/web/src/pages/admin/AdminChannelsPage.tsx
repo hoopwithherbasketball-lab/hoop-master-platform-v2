@@ -25,7 +25,7 @@ export default function AdminChannelsPage() {
 
   const load = useCallback(async () => {
     try {
-      const { data } = await supabase.from('media_channels').select('*').order('name')
+      const { data } = await supabase.from('media_channels').select('*').order('name').limit(100)
       setChannels(data ?? [])
     } catch (e) { console.error(e) }
     setLoading(false)

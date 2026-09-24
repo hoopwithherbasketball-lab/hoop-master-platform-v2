@@ -56,6 +56,7 @@ export function useAdminOrders() {
           player_profiles!left(first_name, last_name)
         `)
         .order('created_at', { ascending: false })
+        .limit(100)
 
       if (error) { console.error('useAdminOrders error:', error.message); return }
       if (!data) return

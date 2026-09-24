@@ -20,7 +20,7 @@ export function useNILOpportunities() {
     setLoading(true)
     setError(null)
     try {
-      const { data, error: supaError } = await supabase.from('nil_opportunities').select('*').order('created_at', { ascending: false })
+      const { data, error: supaError } = await supabase.from('nil_opportunities').select('id, title, status, created_at, company_name, description, amount, deadline, athlete_name, brand, value_cents').order('created_at', { ascending: false }).limit(50)
       if (supaError) throw new Error(supaError.message)
       setOpportunities((data ?? []).map(o => ({
         id: o.id,

@@ -23,9 +23,10 @@ export function useNILAthletes() {
     try {
       const { data, error: supaError } = await supabase
         .from('nil_athlete_profiles')
-        .select('*')
+        .select('id, first_name, last_name, school, sport, profile_status, readiness_score, display_name, position, class_year, followers, tier')
         .eq('opted_in', true)
         .order('readiness_score', { ascending: false })
+        .limit(100)
 
       if (supaError) throw new Error(supaError.message)
 

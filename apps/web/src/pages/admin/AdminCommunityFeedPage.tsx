@@ -42,6 +42,7 @@ export default function AdminCommunityFeedPage() {
           .from('community_posts')
           .select('*')
           .order('created_at', { ascending: false })
+          .limit(100)
 
         const { data: reportData } = await supabase
           .from('community_post_reports')

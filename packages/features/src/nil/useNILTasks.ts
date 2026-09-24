@@ -28,7 +28,7 @@ export function useNILTasks() {
     setLoading(true)
     setError(null)
     try {
-      const { data, error: supaError } = await supabase.from('nil_tasks').select('*').order('created_at', { ascending: false })
+      const { data, error: supaError } = await supabase.from('nil_tasks').select('id, title, status, created_at, athlete_id, due_date, target, priority, steps, notes').order('created_at', { ascending: false }).limit(50)
       if (supaError) throw new Error(supaError.message)
       setTasks((data ?? []).map(t => ({
         id: t.id,

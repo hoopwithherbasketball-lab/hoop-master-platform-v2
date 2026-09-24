@@ -25,7 +25,7 @@ export default function AdminTenantsPage() {
 
   const load = useCallback(async () => {
     try {
-      const { data } = await supabase.from('white_label_tenants').select('*').order('name')
+      const { data } = await supabase.from('white_label_tenants').select('*').order('name').limit(100)
       setTenants(data ?? [])
     } catch (e) { console.error(e) }
     setLoading(false)

@@ -63,7 +63,6 @@ CREATE TRIGGER audit_nil_compliance_records
 -- 3. Materialized View for Scaled Reporting
 CREATE MATERIALIZED VIEW IF NOT EXISTS crm_athlete_earnings_summary AS
 SELECT
-  p.sport,
   p.state,
   COALESCE(SUM(part.value_cents), 0) as total_earnings_cents,
   COUNT(part.id) as total_deals_count,
@@ -71,9 +70,9 @@ SELECT
   COUNT(CASE WHEN part.status = 'active' THEN 1 END) as active_deals_count
 FROM player_profiles p
 LEFT JOIN nil_partnerships part ON part.athlete_id = p.user_id
-GROUP BY p.sport, p.state;
+GROUP BY p.state;
 
-CREATE UNIQUE INDEX IF NOT EXISTS crm_earnings_summary_idx ON crm_athlete_earnings_summary(sport, state);
+CREATE UNIQUE INDEX IF NOT EXISTS crm_earnings_summary_idx ON crm_athlete_earnings_summary(state);
 
 -- Materialized View Refresh utility
 CREATE OR REPLACE FUNCTION refresh_crm_earnings_summary()

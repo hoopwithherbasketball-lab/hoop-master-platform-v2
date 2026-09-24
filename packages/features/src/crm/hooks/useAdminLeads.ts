@@ -28,7 +28,7 @@ export function useAdminLeads() {
 
   useEffect(() => {
     const fetch = async () => {
-      const { data, error } = await supabase.from('leads').select('*').order('created_at', { ascending: false })
+      const { data, error } = await supabase.from('leads').select('id, status, created_at, coach_name, school, requested_plan, lead_type, first_name, last_name, email, phone, notes, source, interest').order('created_at', { ascending: false }).limit(50)
       if (error) { console.error('useAdminLeads error:', error.message); return }
       if (data) {
         setAllLeads(data.map((r: LeadRow) => ({

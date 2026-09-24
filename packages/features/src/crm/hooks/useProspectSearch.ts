@@ -18,7 +18,7 @@ export interface Prospect {
 }
 
 const POSITIONS = ['PG', 'SG', 'SF', 'PF', 'C']
-const GRADES: string[] = []
+const GRADES: string[] = ['2024', '2025', '2026', '2027', '2028', '2029']
 
 export function useProspectSearch() {
   const [query, setQuery] = useState('')
@@ -33,19 +33,26 @@ export function useProspectSearch() {
     const fetch = async () => {
       setLoading(true)
       try {
-        const { data } = await supabase.from('player_profiles').select('*').order('created_at', { ascending: false })
+        const { data } = await supabase.from('player_profiles').select('id, first_name, last_name, position, class_year, state, height, school_name').order('created_at', { ascending: false }).limit(100)
         if (!data) return
-        setAllProspects((data as PlayerProfile[]).map(p => ({
-          id: p.id,
-          name: `${p.first_name} ${p.last_name}`.trim() || 'Unknown',
-          position: p.position ?? '',
-          grade: p.class_year ? String(p.class_year) : '',
-          rating: 0,
-          state: p.state ?? '',
-          height: p.height ?? '',
-          school: p.school_name ?? '',
-          saved: false,
-        })))
+        setAllProspects((data as PlayerProfile[]).map(p => {
+          let localRating = 0
+          try {
+            const val = localStorage.getItem(`scout_shortlist_${p.id}_rating`)
+            if (val) localRating = Number(val)
+          } catch (err) {}
+          return {
+            id: p.id,
+            name: `${p.first_name} ${p.last_name}`.trim() || 'Unknown',
+            position: p.position ?? '',
+            grade: p.class_year ? String(p.class_year) : '',
+            rating: localRating,
+            state: p.state ?? '',
+            height: p.height ?? '',
+            school: p.school_name ?? '',
+            saved: false,
+          }
+        }))
       } catch (e) { console.error('useProspectSearch fetch error:', e) }
       setLoading(false)
     }

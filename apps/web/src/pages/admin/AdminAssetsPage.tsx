@@ -30,7 +30,7 @@ export default function AdminAssetsPage() {
 
   const load = useCallback(async () => {
     try {
-      const { data } = await supabase.from('media_assets').select('*').order('created_at', { ascending: false })
+      const { data } = await supabase.from('media_assets').select('*').order('created_at', { ascending: false }).limit(100)
       setAssets(data ?? [])
     } catch (e) { console.error(e) }
     setLoading(false)

@@ -31,7 +31,7 @@ export default function AdminTrainingPage() {
 
   const load = useCallback(async () => {
     try {
-      const { data } = await supabase.from('training_videos').select('*').order('created_at', { ascending: false })
+      const { data } = await supabase.from('training_videos').select('*').order('created_at', { ascending: false }).limit(100)
       setVideos(data ?? [])
     } catch (e) { console.error(e) }
     setLoading(false)

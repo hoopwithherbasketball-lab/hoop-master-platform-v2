@@ -19,7 +19,7 @@ export default function AdminIntakeSubmissionsPage() {
 
   const load = useCallback(async () => {
     try {
-      const { data } = await supabase.from('intake_submissions').select('*').order('created_at', { ascending: false })
+      const { data } = await supabase.from('intake_submissions').select('*').order('created_at', { ascending: false }).limit(100)
       setSubmissions(data ?? [])
     } catch (e) { console.error(e) }
     setLoading(false)

@@ -22,7 +22,7 @@ export function useNILCompanies() {
     setLoading(true)
     setError(null)
     try {
-      const { data, error: supaError } = await supabase.from('nil_companies').select('*').order('name')
+      const { data, error: supaError } = await supabase.from('nil_companies').select('id, name, industry, status, contact_name, contact_email, website, notes').order('name').limit(50)
       if (supaError) throw new Error(supaError.message)
       setCompanies((data ?? []).map(c => ({
         id: c.id,

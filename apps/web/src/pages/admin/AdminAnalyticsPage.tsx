@@ -55,6 +55,7 @@ export default function AdminAnalyticsPage() {
         .select('event_type, watch_seconds, session_id')
         .eq('channel_id', selectedChannel)
         .gte('created_at', sinceDate.toISOString())
+        .limit(5000)
 
       if (events) {
         const plays = events.filter(e => e.event_type === 'play')
@@ -77,6 +78,7 @@ export default function AdminAnalyticsPage() {
         .eq('channel_id', selectedChannel)
         .gte('hour_bucket', sinceDate.toISOString())
         .order('hour_bucket', { ascending: true })
+        .limit(1000)
 
       setAggregates(agg ?? [])
     } catch (e) { console.error(e) }
