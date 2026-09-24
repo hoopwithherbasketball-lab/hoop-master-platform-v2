@@ -89,7 +89,7 @@ export function useAdminOrders() {
 
   const updateOrderStatus = async (id: string, newStatus: string) => {
     // Note: the order id in the state might be truncated (slice(0, 8)), but we need the full UUID to update.
-    // Wait, the state `id` is truncated: `id: r.id ? r.id.slice(0, 8) : ''`. 
+    // Wait, the state `id` is truncated: `id: r.id ? r.id.slice(0, 8) : ''`.
     // This makes it impossible to update by ID if we only have the truncated one.
     // Let me fix that: keep full ID in state, or add `fullId` to the state.
     const { error } = await supabase.from('service_orders').update({ status: newStatus }).eq('id', id)

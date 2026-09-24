@@ -26,6 +26,10 @@
       "types": "./dist/features/src/nil/index.d.ts"
     },
     "./nil/*": "./dist/features/src/nil/*",
+    "./recruiting": {
+      "import": "./dist/features/src/recruiting/index.js",
+      "types": "./dist/features/src/recruiting/index.d.ts"
+    },
     "./recruiting/*": "./dist/features/src/recruiting/*",
     "./evaluations": {
       "import": "./dist/features/src/evaluations/index.js",

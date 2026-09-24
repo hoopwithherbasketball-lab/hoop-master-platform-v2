@@ -18,6 +18,8 @@ jobs:
       BASE_URL_LOCAL: http://localhost:3000
       BASE_URL_PREVIEW: https://status-hub-39.preview.emergentagent.com
       PREVIEW_ALLOWLIST_TOKEN: ${{ secrets.PREVIEW_E2E_ALLOWLIST_TOKEN }}
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
     steps:
       - name: Checkout repository
@@ -27,7 +29,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -35,9 +37,17 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
+        run: npm ci
+
+      - name: Check E2E backend configuration
         run: |
-          corepack enable
-          yarn install --immutable || yarn install
+          if [[ -z "$VITE_SUPABASE_URL" || -z "$VITE_SUPABASE_ANON_KEY" ]]; then
+            echo "Role-matrix E2E needs VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY GitHub secrets."
+            exit 1
+          fi
+
+      - name: Build web and workspace packages
+        run: npm run build:web
 
       - name: Install Playwright Python
         run: |
@@ -47,16 +57,21 @@ jobs:
 
       - name: Start local web app
         run: |
-          corepack enable
-          yarn workspace web dev --host 0.0.0.0 --port 3000 > /tmp/web-ci.log 2>&1 &
-          sleep 8
+          npm run dev:web -- --port 3000 > /tmp/web-ci.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --output /dev/null http://localhost:3000/login; then exit 0; fi
+            sleep 2
+          done
+          cat /tmp/web-ci.log
+          exit 1
 
-      - name: Run role-matrix suite (local + preview)
+      - name: Run role-matrix suite (local + authorized preview)
         run: |
-          python tests/test_connectgbb_role_matrix_e2e.py \
-            --base-url "$BASE_URL_LOCAL" \
-            --base-url "$BASE_URL_PREVIEW" \
-            --preview-allowlist-token "$PREVIEW_ALLOWLIST_TOKEN"
+          targets=(--base-url "$BASE_URL_LOCAL")
+          if [[ -n "$PREVIEW_ALLOWLIST_TOKEN" ]]; then
+            targets+=(--base-url "$BASE_URL_PREVIEW" --preview-allowlist-token "$PREVIEW_ALLOWLIST_TOKEN")
+          fi
+          python tests/test_connectgbb_role_matrix_e2e.py "${targets[@]}"
 
       - name: Print local app logs on failure
         if: failure()

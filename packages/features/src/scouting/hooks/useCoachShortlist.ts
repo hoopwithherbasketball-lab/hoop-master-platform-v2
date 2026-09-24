@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
@@ -34,16 +33,16 @@ interface ShortlistRow {
   }[]
 }
 
-const getStoredData = (key: string, defaultValue: any) => {
+const getStoredData = <T>(key: string, defaultValue: T): T => {
   try {
     const val = localStorage.getItem(`scout_shortlist_${key}`)
-    return val ? JSON.parse(val) : defaultValue
+    return val ? JSON.parse(val) as T : defaultValue
   } catch {
     return defaultValue
   }
 }
 
-const setStoredData = (key: string, value: any) => {
+const setStoredData = (key: string, value: unknown) => {
   try {
     localStorage.setItem(`scout_shortlist_${key}`, JSON.stringify(value))
   } catch (e) {
@@ -86,25 +85,25 @@ export function useCoachShortlist() {
         if (fetchError) throw fetchError
         if (!data) { setEntries([]); return }
         
-        const rows = data as any as ShortlistRow[]
+        const rows = data as unknown as ShortlistRow[]
         
         const merged = rows.map((r) => {
-          const p = r.player_profiles?.[0] ?? {} as any
+          const p = r.player_profiles?.[0]
           const dbId = r.id
           
-          const localStatus = getStoredData(`${dbId}_status`, 'saved')
-          const localNotes = getStoredData(`${dbId}_notes`, '')
-          const localTags = getStoredData(`${dbId}_tags`, [])
-          const localRating = getStoredData(`${dbId}_rating`, 0)
+          const localStatus = getStoredData<ShortlistEntry['status']>(`${dbId}_status`, 'saved')
+          const localNotes = getStoredData<string>(`${dbId}_notes`, '')
+          const localTags = getStoredData<string[]>(`${dbId}_tags`, [])
+          const localRating = getStoredData<number>(`${dbId}_rating`, 0)
 
           return {
             id: dbId,
             playerId: r.player_profile_id,
-            name: `${p.first_name ?? ''} ${p.last_name ?? ''}`.trim() || 'Unknown',
-            position: p.position ?? '',
-            grade: p.class_year ? String(p.class_year) : '',
-            school: p.school_name ?? '',
-            state: p.state ?? '',
+            name: `${p?.first_name ?? ''} ${p?.last_name ?? ''}`.trim() || 'Unknown',
+            position: p?.position ?? '',
+            grade: p?.class_year ? String(p.class_year) : '',
+            school: p?.school_name ?? '',
+            state: p?.state ?? '',
             rating: localRating,
             status: localStatus,
             tags: localTags,
@@ -114,7 +113,7 @@ export function useCoachShortlist() {
         })
         
         setEntries(merged)
-      } catch (e: any) {
+      } catch (e) {
         console.error('useCoachShortlist:', e)
         setError('Failed to load shortlist')
       } finally {

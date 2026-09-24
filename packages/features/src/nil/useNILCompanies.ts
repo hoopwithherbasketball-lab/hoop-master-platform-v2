@@ -2,6 +2,14 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@hoop-master/supabase'
 
+function toError(value: unknown): Error {
+  return value instanceof Error ? value : new Error(String(value))
+}
+
+function errorMessage(value: unknown): string {
+  return value instanceof Error ? value.message : String(value)
+}
+
 export interface NILCompany {
   id: string
   name: string
@@ -34,9 +42,9 @@ export function useNILCompanies() {
         notes: c.notes,
         status: c.status
       })))
-    } catch (e: any) {
+    } catch (e) {
       console.error('useNILCompanies:', e)
-      setError(e)
+      setError(toError(e))
     } finally {
       setLoading(false)
     }
@@ -52,9 +60,9 @@ export function useNILCompanies() {
       if (supaError) throw new Error(supaError.message)
       await fetchCompanies()
       return { success: true }
-    } catch (e: any) {
+    } catch (e) {
       console.error('Failed to add company:', e)
-      return { success: false, error: e.message }
+      return { success: false, error: errorMessage(e) }
     }
   }
 
@@ -64,9 +72,9 @@ export function useNILCompanies() {
       if (supaError) throw new Error(supaError.message)
       await fetchCompanies()
       return { success: true }
-    } catch (e: any) {
+    } catch (e) {
       console.error('Failed to update company:', e)
-      return { success: false, error: e.message }
+      return { success: false, error: errorMessage(e) }
     }
   }
 

@@ -47,6 +47,7 @@ const adminNav: NavItem[] = [
   { label: 'Orders', to: '/admin/orders', icon: <ShoppingBag size={16} /> },
   { label: 'Audits', to: '/admin/audits', icon: <ClipboardList size={16} /> },
   { label: 'Players', to: '/admin/players', icon: <User size={16} /> },
+  { label: 'Recruiting Outreach', to: '/admin/recruiting/outreach', icon: <Mail size={16} /> },
   { label: 'Reports', to: '/admin/reports', icon: <BarChart3 size={16} /> },
   { label: 'Audit Trail', to: '/admin/crm-audit', icon: <ArrowLeftRight size={16} /> },
   { label: 'Training Content', to: '/admin/training', icon: <BookOpen size={16} /> },

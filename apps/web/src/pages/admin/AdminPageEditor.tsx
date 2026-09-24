@@ -68,10 +68,10 @@ export default function AdminPageEditor() {
       page_id: page?.id,
       type,
       order_index: blocks.length,
-      content_json: type === 'hero' 
-        ? { title: 'Hero Title', subtitle: 'Subtitle text', ctaText: 'Click Me', ctaUrl: '#' } 
-        : type === 'features' 
-        ? { title: 'Features', features: [{ title: 'Feature 1', description: 'Description', icon: '🌟' }] } 
+      content_json: type === 'hero'
+        ? { title: 'Hero Title', subtitle: 'Subtitle text', ctaText: 'Click Me', ctaUrl: '#' }
+        : type === 'features'
+        ? { title: 'Features', features: [{ title: 'Feature 1', description: 'Description', icon: '🌟' }] }
         : { heading: 'Heading', text: '<p>New text block</p>' },
       settings_json: {}
     };
@@ -114,7 +114,7 @@ export default function AdminPageEditor() {
     try {
       // Basic sync: delete all and insert current state to ensure order and deletions match
       await supabase.from('page_builder_blocks').delete().eq('page_id', page.id);
-      
+
       if (blocks.length > 0) {
         await supabase.from('page_builder_blocks').insert(blocks);
       }
