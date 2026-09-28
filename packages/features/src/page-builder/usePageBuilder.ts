@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@hoop-master/supabase';
-import type { Page, PageBlock } from './types';
+import type { Page, DBPageBlock } from './types';
 
 export function usePageBuilder(slug?: string) {
   const [page, setPage] = useState<Page | null>(null);
-  const [blocks, setBlocks] = useState<PageBlock[]>([]);
+  const [blocks, setBlocks] = useState<DBPageBlock[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function usePageBuilder(slug?: string) {
           .order('order_index', { ascending: true });
         
         if (blockData) {
-          setBlocks(blockData as PageBlock[]);
+          setBlocks(blockData as DBPageBlock[]);
         }
       }
       setLoading(false);

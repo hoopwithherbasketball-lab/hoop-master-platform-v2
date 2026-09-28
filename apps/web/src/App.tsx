@@ -103,6 +103,8 @@ import PitchPage from './pages/public/PitchPage'
 import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
 import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
 import NotFoundPage from './pages/public/NotFoundPage'
+import AdminPageBuilderPage from './pages/admin/AdminPageBuilderPage'
+import DynamicPagePreview from './pages/public/DynamicPagePreview'
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return <UIPublicLayout navbar={<Navbar />} footer={<Footer />}>{children}</UIPublicLayout>
@@ -135,6 +137,7 @@ function AppRoutes() {
       <Route path="/p/:slug" element={<PublicLayout><DynamicPage /></PublicLayout>} />
       <Route path="/pitch/:id" element={<PublicLayout><PitchPage /></PublicLayout>} />
       <Route path="/partner-onboarding" element={<PartnerOnboardingPage />} />
+      <Route path="/p/:slug" element={<DynamicPagePreview />} />
       <Route path="/login" element={<PublicLayout><LoginPage /></PublicLayout>} />
       <Route path="/signup" element={<PublicLayout><SignupPage /></PublicLayout>} />
       <Route path="/dashboard" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
@@ -191,6 +194,7 @@ function AppRoutes() {
       <Route path="/admin/pages/:slug" element={<ProtectedRoute role="admin"><AdminPageEditor /></ProtectedRoute>} />
       <Route path="/admin/sponsors" element={<ProtectedRoute role="admin"><SponsorsDashboard /></ProtectedRoute>} />
       <Route path="/nil/proposals" element={<ProtectedRoute role="admin"><NILProposals /></ProtectedRoute>} />
+      <Route path="/admin/page-builder-mvp" element={<ProtectedRoute role="admin"><AdminPageBuilderPage /></ProtectedRoute>} />
       <Route path="/nil" element={<ProtectedRoute role="admin"><NILOverview /></ProtectedRoute>} />
       <Route path="/nil/companies" element={<ProtectedRoute role="admin"><CompanyList /></ProtectedRoute>} />
       <Route path="/nil/opportunities" element={<ProtectedRoute role="admin"><OpportunityList /></ProtectedRoute>} />
