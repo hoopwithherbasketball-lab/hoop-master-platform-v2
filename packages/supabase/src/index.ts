@@ -17,7 +17,7 @@ function getImportMetaEnv(key: string): string | undefined {
 }
 
 function getEnvVal(key: string): string | undefined {
-  const viteValue = getProcessEnv(key) || getImportMetaEnv(key)
+  const viteValue = getProcessEnv(key) ?? getImportMetaEnv(key)
   if (viteValue) return viteValue
 
   const reactAppKey = `REACT_APP_${key.replace('VITE_', '')}`

@@ -13,7 +13,7 @@ type ProposalPackageDetails = {
 
 function normalizeProposalStatus(value: unknown): ProposalStatus {
   const status = typeof value === 'string' ? value.toLowerCase() : '';
-  return status === 'sent' || status === 'accepted' || status === 'rejected' ? status : 'draft';
+  return status === 'sent' || status === 'accepted' || status === 'rejected' ? (status as ProposalStatus) : 'draft';
 }
 
 function toError(value: unknown): Error {
