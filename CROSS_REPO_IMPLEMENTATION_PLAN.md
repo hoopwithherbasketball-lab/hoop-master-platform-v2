@@ -39,16 +39,16 @@ This satisfies the Phase 4 requirement to explicitly decide which non-core surfa
 
 | Feature | Target app/package | Source repo/path | Status | Priority |
 |---|---|---|---|---|
-| Public MVP shell (marketing + nav + auth entry) | `apps/web` | Existing target implementation + selective legacy content assets from `elitegbb` | PARTIAL | P0 |
-| ConnectGBB member platform | `packages/features/src/connectgbb` + routed surfaces in `apps/web/src/pages/connectgbb/*` | `lrevell8-arch/elitegbb` (exact paths pending Phase 3 artifacts) | MISSING | P0 |
-| Player profiles | `packages/features/src/recruiting` + `packages/features/src/crm` + `apps/web` profile routes | `lrevell8-arch/elitegbb` profile/evaluation paths (pending artifacts) | PARTIAL | P0 |
-| Rankings/watchlists | `packages/features/src/recruiting` | `lrevell8-arch/elitegbb` ranking/watchlist modules (pending artifacts) | MISSING | P1 |
-| CRM/forms workflows | `packages/features/src/crm` + `apps/web/src/pages/dashboard` + `packages/supabase` | `lrevell8-arch/elitegbb` forms/intake modules (pending artifacts) | PARTIAL | P0 |
-| Evaluation builder/workflow | `packages/features/src/coaching` + `apps/web/src/pages/coach` + `apps/web/src/pages/admin` | `lrevell8-arch/elitegbb` evaluations modules (pending artifacts) | MISSING | P0 |
-| Admin dashboard hardening | `apps/web/src/pages/admin` + feature packages | Shared target + legacy admin capabilities (pending artifacts) | BUILT/PARTIAL | P1 |
-| Page Builder MVP | `apps/web/src/pages/admin/builder/*` (+ optional `packages/page-builder` if introduced later) | Net-new in target; may borrow UX patterns from legacy | MISSING | P1 |
+| Public MVP shell (marketing + nav + auth entry) | `apps/web` | Existing target implementation + selective legacy content assets from `elitegbb` | BUILT | P0 |
+| ConnectGBB member platform | `packages/features/src/connectgbb` + routed surfaces in `apps/web/src/pages/connectgbb/*` | `lrevell8-arch/elitegbb` (exact paths pending Phase 3 artifacts) | BUILT | P0 |
+| Player profiles | `packages/features/src/recruiting` + `packages/features/src/crm` + `apps/web` profile routes | `lrevell8-arch/elitegbb` profile/evaluation paths (pending artifacts) | BUILT | P0 |
+| Rankings/watchlists | `packages/features/src/recruiting` | `lrevell8-arch/elitegbb` ranking/watchlist modules (pending artifacts) | PARTIAL | P1 |
+| CRM/forms workflows | `packages/features/src/crm` + `apps/web/src/pages/dashboard` + `packages/supabase` | `lrevell8-arch/elitegbb` forms/intake modules (pending artifacts) | BUILT | P0 |
+| Evaluation builder/workflow | `packages/features/src/evaluations` + `apps/web/src/pages/coach` + `apps/web/src/pages/admin` | `lrevell8-arch/elitegbb` evaluations modules (pending artifacts) | BUILT | P0 |
+| Admin dashboard hardening | `apps/web/src/pages/admin` + feature packages | Shared target + legacy admin capabilities (pending artifacts) | BUILT | P1 |
+| Page Builder MVP | `apps/web/src/pages/admin/AdminPageBuilderPage.tsx` | Net-new in target; may borrow UX patterns from legacy | BUILT | P1 |
 | Payments (Stripe) | Server-side payment module in target runtime (`apps/api/payments/*` or equivalent Phase 10 service path) + `apps/web` checkout integration | Legacy payment/webhook patterns (pending artifacts) | PARTIAL | P0 |
-| Media/TV section | `apps/web/src/pages/public` + media feature package (if added) | Legacy media content integration paths (pending artifacts) | MISSING | P2 |
+| Media/TV section | `apps/web/src/pages/public/ChannelsBrowsePage.tsx` | Legacy media content integration paths (pending artifacts) | BUILT | P2 |
 
 ## 3) Recommended implementation sequence
 
