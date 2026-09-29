@@ -1,1 +1,131 @@
-// Email types for outreach and tracking\n\nexport type EmailCategory = 'outreach' | 'proposal' | 'compliance' | 'notification' | 'reminder' | 'followup'\nexport type EmailDeliveryStatus = 'pending' | 'sent' | 'delivered' | 'bounced' | 'failed'\nexport type EmailCampaignStatus = 'draft' | 'scheduled' | 'in_progress' | 'completed' | 'paused' | 'cancelled'\n\nexport interface EmailTracking {\n  id: string\n  outreach_id: string\n  recipient_email: string\n  recipient_name: string | null\n  tracking_token: string\n  opened: boolean\n  opened_at: string | null\n  opened_count: number\n  clicked: boolean\n  clicked_at: string | null\n  click_count: number\n  last_click_url: string | null\n  delivery_status: EmailDeliveryStatus\n  delivery_timestamp: string | null\n  bounce_reason: string | null\n  message_id: string | null\n  created_at: string\n  updated_at: string\n}\n\nexport interface EmailTemplate {\n  id: string\n  name: string\n  category: EmailCategory\n  subject: string\n  html_body: string\n  plain_text_body: string | null\n  variables: string[]\n  tags: string[]\n  is_active: boolean\n  created_by: string | null\n  created_at: string\n  updated_at: string\n}\n\nexport interface EmailLog {\n  id: string\n  outreach_id: string | null\n  template_id: string | null\n  recipient_email: string\n  recipient_name: string | null\n  sender_email: string\n  subject: string\n  body_preview: string | null\n  status: 'pending' | 'sent' | 'failed' | 'bounced'\n  provider: string\n  provider_message_id: string | null\n  error_message: string | null\n  attempt_count: number\n  last_attempt_at: string | null\n  sent_at: string | null\n  metadata: Record<string, unknown>\n  created_at: string\n}\n\nexport interface EmailPreferences {\n  id: string\n  user_id: string\n  email: string\n  unsubscribed: boolean\n  unsubscribed_at: string | null\n  unsubscribe_reason: string | null\n  unsubscribe_token: string | null\n  bounce_count: number\n  complaint_count: number\n  receives_outreach: boolean\n  receives_proposals: boolean\n  receives_notifications: boolean\n  receives_reminders: boolean\n  receives_marketing: boolean\n  last_email_sent_at: string | null\n  created_at: string\n  updated_at: string\n}\n\nexport interface EmailCampaign {\n  id: string\n  name: string\n  description: string | null\n  template_id: string | null\n  subject: string\n  from_name: string\n  from_email: string\n  status: EmailCampaignStatus\n  scheduled_at: string | null\n  started_at: string | null\n  completed_at: string | null\n  total_recipients: number\n  sent_count: number\n  failed_count: number\n  opened_count: number\n  clicked_count: number\n  unsubscribed_count: number\n  bounce_count: number\n  created_by: string\n  created_at: string\n  updated_at: string\n}\n\nexport interface EmailSendRequest {\n  recipient_email: string\n  recipient_name?: string\n  subject: string\n  html_body: string\n  plain_text_body?: string\n  template_id?: string\n  outreach_id?: string\n  variables?: Record<string, string>\n  tracking_enabled?: boolean\n}\n\nexport interface EmailAnalytics {\n  total_sent: number\n  total_opened: number\n  total_clicked: number\n  open_rate: number\n  click_rate: number\n  bounce_rate: number\n  unsubscribe_rate: number\n  average_open_time?: number\n  most_clicked_link?: string\n  top_email_clients?: Record<string, number>\n}\n"
+// Email types for outreach and tracking
+
+export type EmailCategory = 'outreach' | 'proposal' | 'compliance' | 'notification' | 'reminder' | 'followup'
+export type EmailDeliveryStatus = 'pending' | 'sent' | 'delivered' | 'bounced' | 'failed'
+export type EmailCampaignStatus = 'draft' | 'scheduled' | 'in_progress' | 'completed' | 'paused' | 'cancelled'
+
+export interface EmailTracking {
+  id: string
+  outreach_id: string
+  recipient_email: string
+  recipient_name: string | null
+  tracking_token: string
+  opened: boolean
+  opened_at: string | null
+  opened_count: number
+  clicked: boolean
+  clicked_at: string | null
+  click_count: number
+  last_click_url: string | null
+  delivery_status: EmailDeliveryStatus
+  delivery_timestamp: string | null
+  bounce_reason: string | null
+  message_id: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface EmailTemplate {
+  id: string
+  name: string
+  category: EmailCategory
+  subject: string
+  html_body: string
+  plain_text_body: string | null
+  variables: string[]
+  tags: string[]
+  is_active: boolean
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface EmailLog {
+  id: string
+  outreach_id: string | null
+  template_id: string | null
+  recipient_email: string
+  recipient_name: string | null
+  sender_email: string
+  subject: string
+  body_preview: string | null
+  status: 'pending' | 'sent' | 'failed' | 'bounced'
+  provider: string
+  provider_message_id: string | null
+  error_message: string | null
+  attempt_count: number
+  last_attempt_at: string | null
+  sent_at: string | null
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
+export interface EmailPreferences {
+  id: string
+  user_id: string
+  email: string
+  unsubscribed: boolean
+  unsubscribed_at: string | null
+  unsubscribe_reason: string | null
+  unsubscribe_token: string | null
+  bounce_count: number
+  complaint_count: number
+  receives_outreach: boolean
+  receives_proposals: boolean
+  receives_notifications: boolean
+  receives_reminders: boolean
+  receives_marketing: boolean
+  last_email_sent_at: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface EmailCampaign {
+  id: string
+  name: string
+  description: string | null
+  template_id: string | null
+  subject: string
+  from_name: string
+  from_email: string
+  status: EmailCampaignStatus
+  scheduled_at: string | null
+  started_at: string | null
+  completed_at: string | null
+  total_recipients: number
+  sent_count: number
+  failed_count: number
+  opened_count: number
+  clicked_count: number
+  unsubscribed_count: number
+  bounce_count: number
+  created_by: string
+  created_at: string
+  updated_at: string
+}
+
+export interface EmailSendRequest {
+  recipient_email: string
+  recipient_name?: string
+  subject: string
+  html_body: string
+  plain_text_body?: string
+  template_id?: string
+  outreach_id?: string
+  variables?: Record<string, string>
+  tracking_enabled?: boolean
+}
+
+export interface EmailAnalytics {
+  total_sent: number
+  total_opened: number
+  total_clicked: number
+  open_rate: number
+  click_rate: number
+  bounce_rate: number
+  unsubscribe_rate: number
+  average_open_time?: number
+  most_clicked_link?: string
+  top_email_clients?: Record<string, number>
+}
+

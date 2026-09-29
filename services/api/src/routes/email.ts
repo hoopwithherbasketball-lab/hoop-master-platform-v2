@@ -1,1 +1,198 @@
-import express, { Request, Response } from 'express'\nimport crypto from 'crypto'\nimport { createClient } from '@supabase/supabase-js'\n\nconst router = express.Router()\nconst supabase = createClient(\n  process.env.SUPABASE_URL || '',\n  process.env.SUPABASE_SERVICE_ROLE_KEY || ''\n)\n\n// Send single email\nrouter.post('/send', async (req: Request, res: Response) => {\n  try {\n    const { recipientEmail, recipientName, subject, htmlBody, plainTextBody, outreachId, trackingEnabled } = req.body\n\n    if (!recipientEmail || !subject || !htmlBody) {\n      return res.status(400).json({ error: 'Missing required fields' })\n    }\n\n    // Generate tracking token\n    const trackingToken = crypto.randomBytes(16).toString('hex')\n    const pixelUrl = `${process.env.API_URL || 'http://localhost:3000'}/api/email/pixel/${trackingToken}`\n\n    // Add tracking pixel to HTML\n    const trackingPixel = `<img src=\"${pixelUrl}\" alt=\"\" width=\"1\" height=\"1\" style=\"display:none;\" />`\n    const htmlWithTracking = htmlBody.includes('</body>')\n      ? htmlBody.replace('</body>', `${trackingPixel}</body>`)\n      : htmlBody + trackingPixel\n\n    // Log email\n    const { data: logData, error: logError } = await supabase.from('email_logs').insert([\n      {\n        outreach_id: outreachId,\n        recipient_email: recipientEmail,\n        recipient_name: recipientName,\n        subject,\n        body_preview: htmlBody.substring(0, 200),\n        status: 'sent',\n        sent_at: new Date().toISOString(),\n      },\n    ])\n\n    // Create tracking record\n    if (trackingEnabled !== false && outreachId) {\n      await supabase.from('email_tracking').insert([\n        {\n          outreach_id: outreachId,\n          recipient_email: recipientEmail,\n          recipient_name: recipientName,\n          tracking_token: trackingToken,\n          delivery_status: 'sent',\n          delivery_timestamp: new Date().toISOString(),\n        },\n      ])\n    }\n\n    // In production, send via SendGrid or SMTP\n    console.log(`Email sent to ${recipientEmail} with tracking token ${trackingToken}`)\n\n    res.json({ success: true, messageId: `email-${Date.now()}`, trackingToken })\n  } catch (error: any) {\n    console.error('Email send failed:', error)\n    res.status(500).json({ error: error.message })\n  }\n})\n\n// Send bulk emails\nrouter.post('/send-bulk', async (req: Request, res: Response) => {\n  try {\n    const { recipients, subject, htmlBody, plainTextBody, campaignId, trackingEnabled } = req.body\n\n    if (!recipients || !Array.isArray(recipients)) {\n      return res.status(400).json({ error: 'Invalid recipients array' })\n    }\n\n    let sent = 0\n    let failed = 0\n    const errors: string[] = []\n\n    for (const recipient of recipients) {\n      try {\n        // Replace variables\n        let personalizedHtml = htmlBody\n        let personalizedSubject = subject\n\n        if (recipient.variables) {\n          Object.entries(recipient.variables).forEach(([key, value]) => {\n            const regex = new RegExp(`{{${key}}}`, 'g')\n            personalizedHtml = personalizedHtml.replace(regex, value as string)\n            personalizedSubject = personalizedSubject.replace(regex, value as string)\n          })\n        }\n\n        // Generate tracking token\n        const trackingToken = crypto.randomBytes(16).toString('hex')\n\n        // Log email\n        await supabase.from('email_logs').insert([\n          {\n            recipient_email: recipient.email,\n            recipient_name: recipient.name,\n            subject: personalizedSubject,\n            body_preview: personalizedHtml.substring(0, 200),\n            status: 'sent',\n            sent_at: new Date().toISOString(),\n            metadata: { campaignId },\n          },\n        ])\n\n        sent++\n      } catch (error: any) {\n        failed++\n        errors.push(`${recipient.email}: ${error.message}`)\n      }\n    }\n\n    res.json({ success: failed === 0, sent, failed, errors })\n  } catch (error: any) {\n    res.status(500).json({ error: error.message })\n  }\n})\n\n// Track email open (pixel)\nrouter.get('/pixel/:token', async (req: Request, res: Response) => {\n  try {\n    const { token } = req.params\n\n    // Record the open event\n    await supabase\n      .from('email_tracking')\n      .update({\n        opened: true,\n        opened_at: new Date().toISOString(),\n        opened_count: supabase.rpc('increment_open_count', { tracking_token: token }),\n        updated_at: new Date().toISOString(),\n      })\n      .eq('tracking_token', token)\n\n    // Return 1x1 transparent GIF\n    const gif = Buffer.from(\n      'GIF89a0100010000000ffffffff000000ffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90400000000000000000000000000000000000000000000000000000000000000000000003b',\n      'hex'\n    )\n\n    res.type('image/gif')\n    res.send(gif)\n  } catch (error) {\n    res.status(200).send('')\n  }\n})\n\n// Track email click\nrouter.post('/track-click', async (req: Request, res: Response) => {\n  try {\n    const { token, url } = req.body\n\n    if (!token) {\n      return res.status(400).json({ error: 'Missing tracking token' })\n    }\n\n    await supabase\n      .from('email_tracking')\n      .update({\n        clicked: true,\n        clicked_at: new Date().toISOString(),\n        last_click_url: url || null,\n        updated_at: new Date().toISOString(),\n      })\n      .eq('tracking_token', token)\n\n    res.json({ success: true })\n  } catch (error: any) {\n    res.status(500).json({ error: error.message })\n  }\n})\n\n// Unsubscribe endpoint\nrouter.get('/unsubscribe/:token', async (req: Request, res: Response) => {\n  try {\n    const { token } = req.params\n\n    await supabase\n      .from('email_preferences')\n      .update({\n        unsubscribed: true,\n        unsubscribed_at: new Date().toISOString(),\n        updated_at: new Date().toISOString(),\n      })\n      .eq('unsubscribe_token', token)\n\n    res.send('You have been unsubscribed from HoopWithHer emails.')\n  } catch (error: any) {\n    res.status(500).json({ error: error.message })\n  }\n})\n\nexport default router\n"
+import express, { Request, Response } from 'express'
+import crypto from 'crypto'
+import { createClient } from '@supabase/supabase-js'
+
+const router = express.Router()
+const supabase = createClient(
+  process.env.SUPABASE_URL || '',
+  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+)
+
+// Send single email
+router.post('/send', async (req: Request, res: Response) => {
+  try {
+    const { recipientEmail, recipientName, subject, htmlBody, plainTextBody, outreachId, trackingEnabled } = req.body
+
+    if (!recipientEmail || !subject || !htmlBody) {
+      return res.status(400).json({ error: 'Missing required fields' })
+    }
+
+    // Generate tracking token
+    const trackingToken = crypto.randomBytes(16).toString('hex')
+    const pixelUrl = `${process.env.API_URL || 'http://localhost:3000'}/api/email/pixel/${trackingToken}`
+
+    // Add tracking pixel to HTML
+    const trackingPixel = `<img src="${pixelUrl}" alt="" width="1" height="1" style="display:none;" />`
+    const htmlWithTracking = htmlBody.includes('</body>')
+      ? htmlBody.replace('</body>', `${trackingPixel}</body>`)
+      : htmlBody + trackingPixel
+
+    // Log email
+    const { data: logData, error: logError } = await supabase.from('email_logs').insert([
+      {
+        outreach_id: outreachId,
+        recipient_email: recipientEmail,
+        recipient_name: recipientName,
+        subject,
+        body_preview: htmlBody.substring(0, 200),
+        status: 'sent',
+        sent_at: new Date().toISOString(),
+      },
+    ])
+
+    // Create tracking record
+    if (trackingEnabled !== false && outreachId) {
+      await supabase.from('email_tracking').insert([
+        {
+          outreach_id: outreachId,
+          recipient_email: recipientEmail,
+          recipient_name: recipientName,
+          tracking_token: trackingToken,
+          delivery_status: 'sent',
+          delivery_timestamp: new Date().toISOString(),
+        },
+      ])
+    }
+
+    // In production, send via SendGrid or SMTP
+    console.log(`Email sent to ${recipientEmail} with tracking token ${trackingToken}`)
+
+    res.json({ success: true, messageId: `email-${Date.now()}`, trackingToken })
+  } catch (error: any) {
+    console.error('Email send failed:', error)
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Send bulk emails
+router.post('/send-bulk', async (req: Request, res: Response) => {
+  try {
+    const { recipients, subject, htmlBody, plainTextBody, campaignId, trackingEnabled } = req.body
+
+    if (!recipients || !Array.isArray(recipients)) {
+      return res.status(400).json({ error: 'Invalid recipients array' })
+    }
+
+    let sent = 0
+    let failed = 0
+    const errors: string[] = []
+
+    for (const recipient of recipients) {
+      try {
+        // Replace variables
+        let personalizedHtml = htmlBody
+        let personalizedSubject = subject
+
+        if (recipient.variables) {
+          Object.entries(recipient.variables).forEach(([key, value]) => {
+            const regex = new RegExp(`{{${key}}}`, 'g')
+            personalizedHtml = personalizedHtml.replace(regex, value as string)
+            personalizedSubject = personalizedSubject.replace(regex, value as string)
+          })
+        }
+
+        // Generate tracking token
+        const trackingToken = crypto.randomBytes(16).toString('hex')
+
+        // Log email
+        await supabase.from('email_logs').insert([
+          {
+            recipient_email: recipient.email,
+            recipient_name: recipient.name,
+            subject: personalizedSubject,
+            body_preview: personalizedHtml.substring(0, 200),
+            status: 'sent',
+            sent_at: new Date().toISOString(),
+            metadata: { campaignId },
+          },
+        ])
+
+        sent++
+      } catch (error: any) {
+        failed++
+        errors.push(`${recipient.email}: ${error.message}`)
+      }
+    }
+
+    res.json({ success: failed === 0, sent, failed, errors })
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Track email open (pixel)
+router.get('/pixel/:token', async (req: Request, res: Response) => {
+  try {
+    const { token } = req.params
+
+    // Record the open event
+    await supabase
+      .from('email_tracking')
+      .update({
+        opened: true,
+        opened_at: new Date().toISOString(),
+        opened_count: supabase.rpc('increment_open_count', { tracking_token: token }),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('tracking_token', token)
+
+    // Return 1x1 transparent GIF
+    const gif = Buffer.from(
+      'GIF89a0100010000000ffffffff000000ffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000021f90400000000000000000000000000000000000000000000000000000000000000000000003b',
+      'hex'
+    )
+
+    res.type('image/gif')
+    res.send(gif)
+  } catch (error) {
+    res.status(200).send('')
+  }
+})
+
+// Track email click
+router.post('/track-click', async (req: Request, res: Response) => {
+  try {
+    const { token, url } = req.body
+
+    if (!token) {
+      return res.status(400).json({ error: 'Missing tracking token' })
+    }
+
+    await supabase
+      .from('email_tracking')
+      .update({
+        clicked: true,
+        clicked_at: new Date().toISOString(),
+        last_click_url: url || null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('tracking_token', token)
+
+    res.json({ success: true })
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Unsubscribe endpoint
+router.get('/unsubscribe/:token', async (req: Request, res: Response) => {
+  try {
+    const { token } = req.params
+
+    await supabase
+      .from('email_preferences')
+      .update({
+        unsubscribed: true,
+        unsubscribed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('unsubscribe_token', token)
+
+    res.send('You have been unsubscribed from HoopWithHer emails.')
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+export default router
+

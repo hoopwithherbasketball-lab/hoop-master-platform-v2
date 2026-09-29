@@ -40,7 +40,12 @@
       "import": "./dist/features/src/scouting/index.js",
       "types": "./dist/features/src/scouting/index.d.ts"
     },
-    "./scouting/*": "./dist/features/src/scouting/*"
+    "./scouting/*": "./dist/features/src/scouting/*",
+    "./email": {
+      "import": "./dist/features/src/email/index.js",
+      "types": "./dist/features/src/email/index.d.ts"
+    },
+    "./email/*": "./dist/features/src/email/*"
   },
   "scripts": {
     "lint": "eslint src",
