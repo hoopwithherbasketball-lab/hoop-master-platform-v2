@@ -7,17 +7,28 @@ import { PageShell } from '@hoop-master/ui'
 function usePlatformStats() {
   const [stats, setStats] = useState({ players: 0, coaches: 0, workshops: 0, loaded: false })
   useEffect(() => {
+    const cached = sessionStorage.getItem('platform_stats')
+    const cacheTime = sessionStorage.getItem('platform_stats_time')
+    
+    if (cached && cacheTime && Date.now() - parseInt(cacheTime) < 5 * 60 * 1000) {
+      setStats(JSON.parse(cached))
+      return
+    }
+
     Promise.all([
       supabase.from('player_profiles').select('id', { count: 'exact', head: true }),
       supabase.from('user_roles').select('id', { count: 'exact', head: true }).eq('role', 'coach'),
       supabase.from('events').select('id', { count: 'exact', head: true }).eq('event_type', 'workshop'),
     ]).then(([players, coaches, workshops]) => {
-      setStats({
+      const newStats = {
         players: players.count ?? 0,
         coaches: coaches.count ?? 0,
         workshops: workshops.count ?? 0,
         loaded: true,
-      })
+      }
+      setStats(newStats)
+      sessionStorage.setItem('platform_stats', JSON.stringify(newStats))
+      sessionStorage.setItem('platform_stats_time', Date.now().toString())
     }).catch(() => setStats(s => ({ ...s, loaded: true })))
   }, [])
   return stats

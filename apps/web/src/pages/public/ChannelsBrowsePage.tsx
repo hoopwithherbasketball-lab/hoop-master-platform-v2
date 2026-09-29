@@ -25,6 +25,15 @@ export default function ChannelsBrowsePage() {
 
   useEffect(() => {
     const load = async () => {
+      const cached = sessionStorage.getItem('channels_list')
+      const cacheTime = sessionStorage.getItem('channels_list_time')
+      
+      if (cached && cacheTime && Date.now() - parseInt(cacheTime) < 5 * 60 * 1000) {
+        setChannels(JSON.parse(cached))
+        setLoading(false)
+        return
+      }
+
       try {
         const { data } = await supabase
           .from('media_channels')
@@ -32,7 +41,12 @@ export default function ChannelsBrowsePage() {
           .eq('status', 'active')
           .eq('is_public', true)
           .order('name')
-        setChannels(data ?? [])
+        
+        if (data) {
+          setChannels(data)
+          sessionStorage.setItem('channels_list', JSON.stringify(data))
+          sessionStorage.setItem('channels_list_time', Date.now().toString())
+        }
       } catch (e) { console.error(e) }
       setLoading(false)
     }

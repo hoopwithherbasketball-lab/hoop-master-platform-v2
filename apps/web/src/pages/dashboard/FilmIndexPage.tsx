@@ -26,7 +26,7 @@ export default function FilmIndexPage() {
 
   const load = useCallback(() => {
     if (!profileId) return
-    supabase.from('film_entries').select('*').eq('player_profile_id', profileId).order('created_at', { ascending: false }).then(({ data }) => {
+    supabase.from('film_entries').select('id, title, url, tags, season, created_at').eq('player_profile_id', profileId).order('created_at', { ascending: false }).limit(50).then(({ data }) => {
       setFilms(data ?? [])
       setLoading(false)
     })

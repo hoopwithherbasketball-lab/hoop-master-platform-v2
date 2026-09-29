@@ -20,7 +20,7 @@ export default function AnalyticsPage() {
     if (!user) return
     supabase.from('player_profiles').select('id').eq('user_id', user.id).maybeSingle().then(({ data: profile }) => {
       if (!profile) { setLoading(false); return }
-      supabase.from('player_game_stats').select('ppg, apg, rpg, fg_pct, month_label').eq('player_profile_id', profile.id).order('created_at', { ascending: true }).then(({ data: stats }) => {
+      supabase.from('player_game_stats').select('ppg, apg, rpg, fg_pct, month_label').eq('player_profile_id', profile.id).order('created_at', { ascending: true }).limit(24).then(({ data: stats }) => {
         if (stats && stats.length > 0) {
           setData({
             ppg: stats.map(r => r.ppg ?? 0), apg: stats.map(r => r.apg ?? 0),
