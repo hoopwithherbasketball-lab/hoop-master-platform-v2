@@ -18,6 +18,7 @@
     "clean": "turbo clean",
     "test:nil": "node tests/nil/nil-hub.test.cjs",
     "test:recruiting": "npm run build --workspace=@hoop-master/features && node --test tests/recruiting/*.test.mjs && node tests/recruiting/components.test.cjs",
+    "test:e2e": "turbo test:e2e",
     "agile": "node scripts/hwh-agile.mjs",
     "agile:observe": "node scripts/hwh-agile.mjs --mode observe",
     "agile:test": "node --test scripts/hwh-agile-policy.test.mjs"
