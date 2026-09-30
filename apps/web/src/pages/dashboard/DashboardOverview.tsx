@@ -154,10 +154,10 @@ export default function DashboardOverview() {
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {cards.map(c => (
-              <Link key={c.label} to={c.to} className="card p-5 hover:bg-white/5 transition-colors group">
+              <Link key={c.label} to={c.to} aria-label={`${c.label}: ${c.value}. ${c.note}`} className="card p-5 hover:bg-white/5 transition-colors group">
                 <div className="flex items-center justify-between mb-2">
-                  <span className={c.color}>{c.icon}</span>
-                  <ArrowRight size={14} className="text-slate-600 group-hover:text-slate-400 transition-colors" />
+                  <span aria-hidden="true" className={c.color}>{c.icon}</span>
+                  <ArrowRight aria-hidden="true" size={14} className="text-slate-600 group-hover:text-slate-400 transition-colors" />
                 </div>
                 <p className="text-3xl font-bold text-white mt-1">{c.value}</p>
                 <p className="text-xs text-slate-500 mt-0.5">{c.label}</p>
@@ -171,8 +171,8 @@ export default function DashboardOverview() {
           <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Quick Actions</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {quickLinks.map(l => (
-              <Link key={l.label} to={l.to} className="bg-navy-800 rounded-xl p-4 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all group">
-                <span className={`${l.color} mb-3 block`}>{l.icon}</span>
+              <Link key={l.label} to={l.to} aria-label={`Go to ${l.label}`} className="bg-navy-800 rounded-xl p-4 border border-white/5 hover:border-white/10 hover:bg-white/5 transition-all group">
+                <span aria-hidden="true" className={`${l.color} mb-3 block`}>{l.icon}</span>
                 <p className="text-sm font-semibold text-white">{l.label}</p>
                 <p className="text-xs text-slate-500 mt-0.5">{l.desc}</p>
               </Link>

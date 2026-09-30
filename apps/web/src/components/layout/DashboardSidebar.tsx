@@ -111,13 +111,13 @@ export default function DashboardSidebar({ variant }: Props) {
         </div>
         <nav className="space-y-0.5">
           {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Content Studio</p></div>)}
-          {variant === 'admin' && contentNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
+          {variant === 'admin' && contentNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'} aria-current={isActive(item.to) ? 'page' : undefined}><span aria-hidden="true">{item.icon}</span><span>{item.label}</span></Link>))}
           {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Media Platform</p></div>)}
-          {variant === 'admin' && mediaNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
+          {variant === 'admin' && mediaNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'} aria-current={isActive(item.to) ? 'page' : undefined}><span aria-hidden="true">{item.icon}</span><span>{item.label}</span></Link>))}
           {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">NIL and Sponsorship</p></div>)}
-          {variant === 'admin' && nilNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
+          {variant === 'admin' && nilNav.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'} aria-current={isActive(item.to) ? 'page' : undefined}><span aria-hidden="true">{item.icon}</span><span>{item.label}</span></Link>))}
           {variant === 'admin' && (<div className="mt-8 mb-3 px-4 border-b border-white/10 pb-2"><p className="text-[11px] font-extrabold text-slate-200 uppercase tracking-widest">Operations</p></div>)}
-          {navItems.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'}>{item.icon}<span>{item.label}</span></Link>))}
+          {navItems.map(item => (<Link key={item.to} to={item.to} className={isActive(item.to) ? 'sidebar-link-active' : 'sidebar-link-inactive'} aria-current={isActive(item.to) ? 'page' : undefined}><span aria-hidden="true">{item.icon}</span><span>{item.label}</span></Link>))}
         </nav>
 
         {otherModules.length > 0 && (
