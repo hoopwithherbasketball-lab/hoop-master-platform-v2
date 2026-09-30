@@ -1,3 +1,5 @@
+import { Suspense, lazy } from 'react'
+import { Loader2 } from 'lucide-react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import { AuthProvider, ProtectedRoute } from './lib/auth'
@@ -7,104 +9,111 @@ import ErrorBoundary from './components/ErrorBoundary'
 import ScrollToTop from './components/ScrollToTop'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
-import HomePage from './pages/public/HomePage'
-import ServicesPage from './pages/public/ServicesPage'
-import RecruitingReadinessPage from './pages/public/RecruitingReadinessPage'
-import RecruitingRoadmapPage from './pages/public/RecruitingRoadmapPage'
-import NILReadinessPage from './pages/public/NILReadinessPage'
-import AuditPage from './pages/public/AuditPage'
-import BrowsePage from './pages/public/BrowsePage'
-import PlayerDetailPage from './pages/public/PlayerDetailPage'
-import WorkshopsPage from './pages/public/WorkshopsPage'
-import ContactPage from './pages/public/ContactPage'
-import FAQPage from './pages/public/FAQPage'
-import PublicEventsPage from './pages/public/EventsPage'
-import CheckoutPage from './pages/public/CheckoutPage'
-import CheckoutSuccessPage from './pages/public/CheckoutSuccessPage'
-import UITestPage from "./pages/UITestPage"
-import LoginPage from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
-import DashboardOverview from './pages/dashboard/DashboardOverview'
-import ProfilePage from './pages/dashboard/ProfilePage'
-import ProfileOptimizerPage from './pages/dashboard/ProfileOptimizerPage'
-import ReadinessPage from './pages/dashboard/ReadinessPage'
-import CoachDashboard from './pages/dashboard/CoachDashboard'
-import EventsPage from './pages/dashboard/EventsPage'
-import ServicesOrdersPage from './pages/dashboard/ServicesOrdersPage'
-import ServiceOrderDetailPage from './pages/dashboard/ServiceOrderDetailPage'
-import ServiceIntakePage from './pages/dashboard/ServiceIntakePage'
-import IntakeFormPage from './pages/dashboard/IntakeFormPage'
-import EliteGBBIntakePage from './pages/public/EliteGBBIntakePage'
-import ChannelsBrowsePage from './pages/public/ChannelsBrowsePage'
-import ChannelWatchPage from './pages/public/ChannelWatchPage'
-import PlayerPortalPage from './pages/dashboard/PlayerPortalPage'
-import OnePagerPage from './pages/dashboard/OnePagerPage'
-import ClassTrackingPage from './pages/dashboard/ClassTrackingPage'
-import ResourcesDashboardPage from './pages/dashboard/ResourcesDashboardPage'
-import ParentDashboardPage from './pages/dashboard/ParentDashboardPage'
-import NILRoadmapPage from './pages/dashboard/NILRoadmapPage'
-import CoachDashboardLegacy from './pages/coach/CoachDashboard'
-import CoachSearchPage from './pages/coach/CoachSearchPage'
-import CoachShortlistPage from './pages/coach/CoachShortlistPage'
-import CoachEventsPage from './pages/coach/CoachEventsPage'
-import PlayerEvaluationPage from './pages/coach/PlayerEvaluationPage'
-import ProspectComparisonPage from './pages/coach/ProspectComparisonPage'
-import AdminOverview from './pages/admin/AdminOverview'
-import AdminLeadsPage from './pages/admin/AdminLeadsPage'
-import AdminOrdersPage from './pages/admin/AdminOrdersPage'
-import AdminAuditsPage from './pages/admin/AdminAuditsPage'
-import EliteGBBDashboard from './pages/admin/EliteGBBDashboard'
-import NILOverview from "./pages/nil/NILOverview"
-import CompanyList from "./pages/nil/CompanyList"
-import OpportunityList from "./pages/nil/OpportunityList"
-import AthleteNILProfileList from "./pages/nil/AthleteNILProfileList"
-import OutreachInbox from "./pages/nil/OutreachInbox"
-import ComplianceQueue from "./pages/nil/ComplianceQueue"
-import TaskBoard from "./pages/nil/TaskBoard"
-import NILProposals from "./pages/nil/NILProposals"
-import ProposalBuilderPage from "./pages/nil/ProposalBuilderPage"
-import ProposalEditor from "./pages/nil/ProposalEditor"
-import AdminPlayersPage from './pages/admin/AdminPlayersPage'
-import EliteGBBHubPage from './pages/connectgbb/ConnectGBBHubPage'
-import CommunityFeedPage from './pages/connectgbb/CommunityFeedPage'
-import TrainingHubPage from './pages/connectgbb/TrainingHubPage'
-import ConnectionsPage from './pages/connectgbb/ConnectionsPage'
-import MemberProfilePage from './pages/connectgbb/MemberProfilePage'
-import MessagesPage from './pages/connectgbb/MessagesPage'
-import FilmIndexPage from './pages/dashboard/FilmIndexPage'
-import AnalyticsPage from './pages/dashboard/AnalyticsPage'
-import FundingPage from './pages/dashboard/FundingPage'
-import AdminFundingPage from './pages/admin/AdminFundingPage'
-import AdminEvaluationsPage from './pages/admin/AdminEvaluationsPage'
-import CourtsideCommunicationPage from './pages/admin/CourtsideCommunicationPage'
-import AdminPlayerDetailPage from './pages/admin/AdminPlayerDetailPage'
-import AdminReportsPage from './pages/admin/AdminReportsPage'
-import AdminAuditLogsPage from './pages/admin/AdminAuditLogsPage'
-import AdminTrainingPage from './pages/admin/AdminTrainingPage'
-import AdminRecruitingOutreachPage from './pages/admin/AdminRecruitingOutreachPage'
-import AdminIntakeSubmissionsPage from './pages/admin/AdminIntakeSubmissionsPage'
-import AdminCommunityFeedPage from './pages/admin/AdminCommunityFeedPage'
-import AdminCommunityMembershipsPage from './pages/admin/AdminCommunityMembershipsPage'
-import AdminModerationQueuePage from './pages/admin/AdminModerationQueuePage'
-import AdminChannelsPage from './pages/admin/AdminChannelsPage'
-import AdminAssetsPage from './pages/admin/AdminAssetsPage'
-import AdminSchedulePage from './pages/admin/AdminSchedulePage'
-import AdminAdSlotsPage from './pages/admin/AdminAdSlotsPage'
-import AdminAnalyticsPage from './pages/admin/AdminAnalyticsPage'
-import AdminTenantsPage from './pages/admin/AdminTenantsPage'
-import EmbedPlayerPage from './pages/public/EmbedPlayerPage'
-import EmbedDocsPage from './pages/public/EmbedDocsPage'
-import AdminPageBuilder from './pages/admin/AdminPageBuilder'
-import AdminPageNew from './pages/admin/AdminPageNew'
-import AdminPageEditor from './pages/admin/AdminPageEditor'
-import SponsorsDashboard from './pages/admin/SponsorsDashboard'
-import DynamicPage from './pages/public/DynamicPage'
-import PitchPage from './pages/public/PitchPage'
-import ProfileSettingsPage from './pages/connectgbb/ProfileSettingsPage'
-import PartnerOnboardingPage from './pages/public/PartnerOnboardingPage'
-import NotFoundPage from './pages/public/NotFoundPage'
-import AdminPageBuilderPage from './pages/admin/AdminPageBuilderPage'
-import DynamicPagePreview from './pages/public/DynamicPagePreview'
+const HomePage = lazy(() => import('./pages/public/HomePage'))
+const ServicesPage = lazy(() => import('./pages/public/ServicesPage'))
+const RecruitingReadinessPage = lazy(() => import('./pages/public/RecruitingReadinessPage'))
+const RecruitingRoadmapPage = lazy(() => import('./pages/public/RecruitingRoadmapPage'))
+const NILReadinessPage = lazy(() => import('./pages/public/NILReadinessPage'))
+const AuditPage = lazy(() => import('./pages/public/AuditPage'))
+const BrowsePage = lazy(() => import('./pages/public/BrowsePage'))
+const PlayerDetailPage = lazy(() => import('./pages/public/PlayerDetailPage'))
+const WorkshopsPage = lazy(() => import('./pages/public/WorkshopsPage'))
+const ContactPage = lazy(() => import('./pages/public/ContactPage'))
+const FAQPage = lazy(() => import('./pages/public/FAQPage'))
+const PublicEventsPage = lazy(() => import('./pages/public/EventsPage'))
+const CheckoutPage = lazy(() => import('./pages/public/CheckoutPage'))
+const CheckoutSuccessPage = lazy(() => import('./pages/public/CheckoutSuccessPage'))
+const UITestPage = lazy(() => import('./pages/UITestPage'))
+const LoginPage = lazy(() => import('./pages/LoginPage'))
+const SignupPage = lazy(() => import('./pages/SignupPage'))
+const DashboardOverview = lazy(() => import('./pages/dashboard/DashboardOverview'))
+const ProfilePage = lazy(() => import('./pages/dashboard/ProfilePage'))
+const ProfileOptimizerPage = lazy(() => import('./pages/dashboard/ProfileOptimizerPage'))
+const ReadinessPage = lazy(() => import('./pages/dashboard/ReadinessPage'))
+const CoachDashboard = lazy(() => import('./pages/dashboard/CoachDashboard'))
+const EventsPage = lazy(() => import('./pages/dashboard/EventsPage'))
+const ServicesOrdersPage = lazy(() => import('./pages/dashboard/ServicesOrdersPage'))
+const ServiceOrderDetailPage = lazy(() => import('./pages/dashboard/ServiceOrderDetailPage'))
+const ServiceIntakePage = lazy(() => import('./pages/dashboard/ServiceIntakePage'))
+const IntakeFormPage = lazy(() => import('./pages/dashboard/IntakeFormPage'))
+const EliteGBBIntakePage = lazy(() => import('./pages/public/EliteGBBIntakePage'))
+const ChannelsBrowsePage = lazy(() => import('./pages/public/ChannelsBrowsePage'))
+const ChannelWatchPage = lazy(() => import('./pages/public/ChannelWatchPage'))
+const PlayerPortalPage = lazy(() => import('./pages/dashboard/PlayerPortalPage'))
+const OnePagerPage = lazy(() => import('./pages/dashboard/OnePagerPage'))
+const ClassTrackingPage = lazy(() => import('./pages/dashboard/ClassTrackingPage'))
+const ResourcesDashboardPage = lazy(() => import('./pages/dashboard/ResourcesDashboardPage'))
+const ParentDashboardPage = lazy(() => import('./pages/dashboard/ParentDashboardPage'))
+const NILRoadmapPage = lazy(() => import('./pages/dashboard/NILRoadmapPage'))
+const CoachDashboardLegacy = lazy(() => import('./pages/coach/CoachDashboard'))
+const CoachSearchPage = lazy(() => import('./pages/coach/CoachSearchPage'))
+const CoachShortlistPage = lazy(() => import('./pages/coach/CoachShortlistPage'))
+const CoachEventsPage = lazy(() => import('./pages/coach/CoachEventsPage'))
+const PlayerEvaluationPage = lazy(() => import('./pages/coach/PlayerEvaluationPage'))
+const ProspectComparisonPage = lazy(() => import('./pages/coach/ProspectComparisonPage'))
+const AdminOverview = lazy(() => import('./pages/admin/AdminOverview'))
+const AdminLeadsPage = lazy(() => import('./pages/admin/AdminLeadsPage'))
+const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage'))
+const AdminAuditsPage = lazy(() => import('./pages/admin/AdminAuditsPage'))
+const EliteGBBDashboard = lazy(() => import('./pages/admin/EliteGBBDashboard'))
+const NILOverview = lazy(() => import('./pages/nil/NILOverview'))
+const CompanyList = lazy(() => import('./pages/nil/CompanyList'))
+const OpportunityList = lazy(() => import('./pages/nil/OpportunityList'))
+const AthleteNILProfileList = lazy(() => import('./pages/nil/AthleteNILProfileList'))
+const OutreachInbox = lazy(() => import('./pages/nil/OutreachInbox'))
+const ComplianceQueue = lazy(() => import('./pages/nil/ComplianceQueue'))
+const TaskBoard = lazy(() => import('./pages/nil/TaskBoard'))
+const NILProposals = lazy(() => import('./pages/nil/NILProposals'))
+const ProposalBuilderPage = lazy(() => import('./pages/nil/ProposalBuilderPage'))
+const ProposalEditor = lazy(() => import('./pages/nil/ProposalEditor'))
+const AdminPlayersPage = lazy(() => import('./pages/admin/AdminPlayersPage'))
+const EliteGBBHubPage = lazy(() => import('./pages/connectgbb/ConnectGBBHubPage'))
+const CommunityFeedPage = lazy(() => import('./pages/connectgbb/CommunityFeedPage'))
+const TrainingHubPage = lazy(() => import('./pages/connectgbb/TrainingHubPage'))
+const ConnectionsPage = lazy(() => import('./pages/connectgbb/ConnectionsPage'))
+const MemberProfilePage = lazy(() => import('./pages/connectgbb/MemberProfilePage'))
+const MessagesPage = lazy(() => import('./pages/connectgbb/MessagesPage'))
+const FilmIndexPage = lazy(() => import('./pages/dashboard/FilmIndexPage'))
+const AnalyticsPage = lazy(() => import('./pages/dashboard/AnalyticsPage'))
+const FundingPage = lazy(() => import('./pages/dashboard/FundingPage'))
+const AdminFundingPage = lazy(() => import('./pages/admin/AdminFundingPage'))
+const AdminEvaluationsPage = lazy(() => import('./pages/admin/AdminEvaluationsPage'))
+const CourtsideCommunicationPage = lazy(() => import('./pages/admin/CourtsideCommunicationPage'))
+const AdminPlayerDetailPage = lazy(() => import('./pages/admin/AdminPlayerDetailPage'))
+const AdminReportsPage = lazy(() => import('./pages/admin/AdminReportsPage'))
+const AdminAuditLogsPage = lazy(() => import('./pages/admin/AdminAuditLogsPage'))
+const AdminTrainingPage = lazy(() => import('./pages/admin/AdminTrainingPage'))
+const AdminRecruitingOutreachPage = lazy(() => import('./pages/admin/AdminRecruitingOutreachPage'))
+const AdminIntakeSubmissionsPage = lazy(() => import('./pages/admin/AdminIntakeSubmissionsPage'))
+const AdminCommunityFeedPage = lazy(() => import('./pages/admin/AdminCommunityFeedPage'))
+const AdminCommunityMembershipsPage = lazy(() => import('./pages/admin/AdminCommunityMembershipsPage'))
+const AdminModerationQueuePage = lazy(() => import('./pages/admin/AdminModerationQueuePage'))
+const AdminChannelsPage = lazy(() => import('./pages/admin/AdminChannelsPage'))
+const AdminAssetsPage = lazy(() => import('./pages/admin/AdminAssetsPage'))
+const AdminSchedulePage = lazy(() => import('./pages/admin/AdminSchedulePage'))
+const AdminAdSlotsPage = lazy(() => import('./pages/admin/AdminAdSlotsPage'))
+const AdminAnalyticsPage = lazy(() => import('./pages/admin/AdminAnalyticsPage'))
+const AdminTenantsPage = lazy(() => import('./pages/admin/AdminTenantsPage'))
+const EmbedPlayerPage = lazy(() => import('./pages/public/EmbedPlayerPage'))
+const EmbedDocsPage = lazy(() => import('./pages/public/EmbedDocsPage'))
+const AdminPageBuilder = lazy(() => import('./pages/admin/AdminPageBuilder'))
+const AdminPageNew = lazy(() => import('./pages/admin/AdminPageNew'))
+const AdminPageEditor = lazy(() => import('./pages/admin/AdminPageEditor'))
+const SponsorsDashboard = lazy(() => import('./pages/admin/SponsorsDashboard'))
+const DynamicPage = lazy(() => import('./pages/public/DynamicPage'))
+const PitchPage = lazy(() => import('./pages/public/PitchPage'))
+const ProfileSettingsPage = lazy(() => import('./pages/connectgbb/ProfileSettingsPage'))
+const PartnerOnboardingPage = lazy(() => import('./pages/public/PartnerOnboardingPage'))
+const NotFoundPage = lazy(() => import('./pages/public/NotFoundPage'))
+const AdminPageBuilderPage = lazy(() => import('./pages/admin/AdminPageBuilderPage'))
+const DynamicPagePreview = lazy(() => import('./pages/public/DynamicPagePreview'))
+
+
+const Fallback = () => (
+  <div className="min-h-screen bg-black flex items-center justify-center">
+    <Loader2 className="w-8 h-8 text-[#FF3366] animate-spin" />
+  </div>
+);
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return <UIPublicLayout navbar={<Navbar />} footer={<Footer />}>{children}</UIPublicLayout>
@@ -223,7 +232,7 @@ export default function App() {
       <ScrollToTop />
       <AuthProvider>
         <ErrorBoundary>
-          <AppRoutes />
+          <Suspense fallback={<Fallback />}><AppRoutes /></Suspense>
         </ErrorBoundary>
       </AuthProvider>
       <Toaster theme="dark" position="top-right" richColors />
