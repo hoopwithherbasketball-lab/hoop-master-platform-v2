@@ -4,7 +4,7 @@ test.describe('Public Marketing Pages', () => {
   test('homepage loads successfully', async ({ page }) => {
     await page.goto('/');
     // Check for a generic element that should be on the home page, like the main header
-    await expect(page).toHaveTitle(/HoopMaster/i);
+    await expect(page).toHaveTitle(/HoopWithHer/i);
   });
 
   test('login page is accessible', async ({ page }) => {
