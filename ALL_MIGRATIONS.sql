@@ -39,7 +39,7 @@ DROP INDEX IF EXISTS notifications_created_at_idx;
 -- 2. Fix is_admin() search path
 CREATE OR REPLACE FUNCTION public.is_admin()
 RETURNS boolean LANGUAGE sql SECURITY DEFINER STABLE SET search_path = public
-AS $$ SELECT EXISTS (SELECT 1 FROM profiles WHERE id = (SELECT auth.uid()) AND role = 'admin'); $$;
+AS $$ SELECT EXISTS (SELECT 1 FROM user_roles WHERE user_id = auth.uid() AND role = 'admin'); $$;
 
 -- 3. Consolidate multiple permissive policies
 DROP POLICY IF EXISTS "Admins can view all profiles" ON profiles;
