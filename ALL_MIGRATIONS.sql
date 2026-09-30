@@ -1067,11 +1067,11 @@ ALTER TABLE coach_referral_notes ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "coaches can select referral notes"
   ON coach_referral_notes FOR SELECT
-  USING (true);
+  USING (public.has_role('coach') OR public.has_role('admin') OR auth.uid() = coach_user_id);
 
 CREATE POLICY "coaches can insert referral notes"
   ON coach_referral_notes FOR INSERT
-  WITH CHECK (true);
+  WITH CHECK (auth.uid() = coach_user_id);
 
 CREATE POLICY "coaches can delete own referral notes"
   ON coach_referral_notes FOR DELETE
@@ -1279,7 +1279,7 @@ CREATE POLICY "Coaches can manage their own saved players" ON coach_saved_player
   WITH CHECK (coach_profile_id IN (SELECT id FROM coach_profiles WHERE user_id = auth.uid()));
 
 CREATE POLICY "Coaches can view all saved players" ON coach_saved_players FOR SELECT
-  USING (true);
+  USING (public.has_role('coach') OR public.has_role('admin'));
 
 -- ======== 9. ADD MISSING DML POLICIES ========
 
