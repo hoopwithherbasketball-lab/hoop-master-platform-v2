@@ -86,7 +86,7 @@ export default function AdminOrdersPage() {
             <tbody className="divide-y divide-white/10">
               {orders.map(o => (
                 <tr key={o.id} className="hover:bg-white/5">
-                  <td className="px-4 py-4"><Link to={`/dashboard/services/${o.id}`} className="font-medium text-[#0134BD] hover:underline">{o.id}</Link></td>
+                  <td className="px-4 py-4"><Link to={`/admin/orders/${o.fullId}`} className="font-medium text-[#0134BD] hover:underline">{o.id}</Link></td>
                   <td className="px-4 py-4 text-gray-200">{o.athlete}</td>
                   <td className="px-4 py-4 text-slate-400">{o.service}</td>
                   <td className="px-4 py-4 text-slate-400">{o.package}</td>

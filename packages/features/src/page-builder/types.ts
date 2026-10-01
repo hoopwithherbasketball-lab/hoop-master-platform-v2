@@ -49,12 +49,10 @@ export type PageAudience = 'public' | 'players' | 'coaches' | 'admins'
 
 export type PageBlockType =
   | 'hero'
-  | 'richText'
-  | 'featureGrid'
-  | 'stats'
+  | 'text'
+  | 'features'
   | 'cta'
-  | 'mediaEmbed'
-  | 'leadCapture'
+  | 'media'
 
 export interface PageTheme {
   accent: 'blue' | 'orange' | 'gold' | 'navy'
@@ -75,26 +73,17 @@ export interface HeroBlock extends BasePageBlock {
   secondaryAction?: PageAction
 }
 
-export interface RichTextBlock extends BasePageBlock {
-  type: 'richText'
+export interface TextBlock extends BasePageBlock {
+  type: 'text'
   content: string
 }
 
-export interface FeatureGridBlock extends BasePageBlock {
-  type: 'featureGrid'
+export interface FeaturesBlock extends BasePageBlock {
+  type: 'features'
   items: Array<{
     title: string
     body: string
     icon?: string
-  }>
-}
-
-export interface StatsBlock extends BasePageBlock {
-  type: 'stats'
-  stats: Array<{
-    label: string
-    value: string
-    helper?: string
   }>
 }
 
@@ -103,28 +92,19 @@ export interface CtaBlock extends BasePageBlock {
   action: PageAction
 }
 
-export interface MediaEmbedBlock extends BasePageBlock {
-  type: 'mediaEmbed'
+export interface MediaBlock extends BasePageBlock {
+  type: 'media'
   provider: 'youtube' | 'vimeo' | 'hwh-tv' | 'external'
   embedUrl: string
   caption?: string
 }
 
-export interface LeadCaptureBlock extends BasePageBlock {
-  type: 'leadCapture'
-  formName: string
-  fields: Array<'name' | 'email' | 'phone' | 'athleteName' | 'graduationYear' | 'message'>
-  submitLabel: string
-}
-
 export type PageBlock =
   | HeroBlock
-  | RichTextBlock
-  | FeatureGridBlock
-  | StatsBlock
+  | TextBlock
+  | FeaturesBlock
   | CtaBlock
-  | MediaEmbedBlock
-  | LeadCaptureBlock
+  | MediaBlock
 
 export interface PageAction {
   label: string
@@ -142,9 +122,6 @@ export interface PageDefinition {
   slug: string
   title: string
   status: PageStatus
-  audience: PageAudience
-  theme: PageTheme
-  seo: PageSeo
   blocks: PageBlock[]
   updatedAt: string
   updatedBy: string

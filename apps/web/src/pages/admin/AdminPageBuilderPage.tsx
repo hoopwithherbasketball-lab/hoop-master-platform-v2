@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { PageBuilder } from '@hoop-master/features'
+import { supabase } from '@hoop-master/supabase'
 import DashboardLayout from '../../components/layout/DashboardLayout'
 import PageRenderer from '../../components/page-builder/PageRenderer'
 import { Eye, FileJson, Globe, LayoutTemplate, Plus, Save, ShieldCheck, Wand2 } from 'lucide-react'
@@ -8,24 +9,6 @@ type PageDefinition = PageBuilder.PageDefinition
 type PageBlock = PageBuilder.PageBlock
 
 const defaultEditorEmail = 'admin@hoopwithher.local'
-
-function loadStoredPages(): PageDefinition[] {
-  if (typeof window === 'undefined') return [PageBuilder.createSamplePage(defaultEditorEmail)]
-
-  try {
-    const raw = window.localStorage.getItem(PageBuilder.PAGE_BUILDER_STORAGE_KEY)
-    if (!raw) return [PageBuilder.createSamplePage(defaultEditorEmail)]
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : [PageBuilder.createSamplePage(defaultEditorEmail)]
-  } catch (error) {
-    console.warn('Unable to load page builder pages:', error)
-    return [PageBuilder.createSamplePage(defaultEditorEmail)]
-  }
-}
-
-function persistPages(pages: PageDefinition[]) {
-  window.localStorage.setItem(PageBuilder.PAGE_BUILDER_STORAGE_KEY, JSON.stringify(pages))
-}
 
 function safeParseBlocks(value: string): { blocks: PageBlock[]; error?: string } {
   try {
@@ -38,13 +21,48 @@ function safeParseBlocks(value: string): { blocks: PageBlock[]; error?: string }
 }
 
 export default function AdminPageBuilderPage() {
-  const [pages, setPages] = useState<PageDefinition[]>(() => loadStoredPages())
-  const [selectedId, setSelectedId] = useState(() => pages[0]?.id ?? '')
-  const selectedPage = pages.find(page => page.id === selectedId) ?? pages[0]
-  const [draft, setDraft] = useState<PageDefinition>(selectedPage)
-  const [blocksJson, setBlocksJson] = useState(() => JSON.stringify(selectedPage?.blocks ?? [], null, 2))
+  const [pages, setPages] = useState<PageDefinition[]>([])
+  const [selectedId, setSelectedId] = useState<string>('')
+  const selectedPage = pages.find(page => page.id === selectedId)
+  const [draft, setDraft] = useState<PageDefinition | null>(null)
+  const [blocksJson, setBlocksJson] = useState('[]')
   const [jsonError, setJsonError] = useState<string | undefined>()
   const [savedAt, setSavedAt] = useState<string | undefined>()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadPages() {
+      const { data: pageData } = await supabase.from('page_builder_pages').select('*').order('created_at', { ascending: false })
+      if (!pageData || pageData.length === 0) {
+        setPages([PageBuilder.createSamplePage(defaultEditorEmail)])
+        setSelectedId('page-elite-ready-camp')
+      } else {
+        // Hydrate pages with blocks
+        const fullPages = await Promise.all(pageData.map(async p => {
+          const { data: blocksData } = await supabase.from('page_builder_blocks').select('*').eq('page_id', p.id).order('order_index', { ascending: true })
+          const blocks = blocksData?.map(b => ({
+            ...b.content_json,
+            id: b.id,
+            type: b.type,
+          })) as PageBlock[] || []
+
+          return {
+            id: p.id,
+            slug: p.slug,
+            title: p.title,
+            status: p.status as PageBuilder.PageStatus,
+            blocks,
+            updatedAt: p.updated_at,
+            updatedBy: defaultEditorEmail,
+          }
+        }))
+        setPages(fullPages)
+        setSelectedId(fullPages[0].id)
+      }
+      setLoading(false)
+    }
+    loadPages()
+  }, [])
 
   useEffect(() => {
     if (!selectedPage) return
@@ -60,55 +78,84 @@ export default function AdminPageBuilderPage() {
     return PageBuilder.validatePageDefinition({ ...draft, blocks })
   }, [blocksJson, draft])
 
-  const previewPage = useMemo<PageDefinition>(() => {
+  const previewPage = useMemo<PageDefinition | null>(() => {
+    if (!draft) return null
     const { blocks } = safeParseBlocks(blocksJson)
     return { ...draft, blocks: blocks.length ? blocks : draft.blocks }
   }, [blocksJson, draft])
 
-  const checklist = useMemo(() => PageBuilder.getPublishChecklist(previewPage), [previewPage])
+  const checklist = useMemo(() => previewPage ? PageBuilder.getPublishChecklist(previewPage) : [], [previewPage])
   const canPublish = checklist.every(item => item.passed) && !jsonError
 
   function updateDraft(update: Partial<PageDefinition>) {
-    setDraft(current => ({ ...current, ...update, updatedAt: new Date().toISOString() }))
+    setDraft(current => current ? ({ ...current, ...update, updatedAt: new Date().toISOString() }) : null)
   }
 
-  function saveDraft(nextStatus: PageDefinition['status'] = draft.status) {
+  async function saveDraft(nextStatus?: PageBuilder.PageStatus) {
+    if (!draft) return
+    const status = nextStatus || draft.status
     const { blocks, error } = safeParseBlocks(blocksJson)
     setJsonError(error)
     if (error) return
 
     const nextPage: PageDefinition = {
       ...draft,
-      status: nextStatus,
+      status,
       blocks,
       updatedAt: new Date().toISOString(),
       updatedBy: defaultEditorEmail,
     }
-    const nextPages = pages.map(page => page.id === nextPage.id ? nextPage : page)
-    setPages(nextPages)
-    setDraft(nextPage)
-    persistPages(nextPages)
-    setSavedAt(new Date().toLocaleTimeString())
+
+    // Supabase upsert
+    const { error: pageError } = await supabase.from('page_builder_pages').upsert({
+      id: nextPage.id,
+      slug: nextPage.slug,
+      title: nextPage.title,
+      status: nextPage.status,
+      updated_at: nextPage.updatedAt,
+    })
+
+    if (!pageError) {
+      // Re-insert blocks
+      await supabase.from('page_builder_blocks').delete().eq('page_id', nextPage.id)
+      if (blocks.length > 0) {
+        await supabase.from('page_builder_blocks').insert(blocks.map((b, i) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { id, type, ...content } = b
+          return {
+            id: b.id.startsWith('block') ? undefined : b.id, // Supabase generates UUIDs
+            page_id: nextPage.id,
+            type: b.type,
+            order_index: i,
+            content_json: content,
+          }
+        }))
+      }
+
+      const nextPages = pages.map(page => page.id === nextPage.id ? nextPage : page)
+      if (!pages.find(p => p.id === nextPage.id)) nextPages.push(nextPage)
+      
+      setPages(nextPages)
+      setDraft(nextPage)
+      setSavedAt(new Date().toLocaleTimeString())
+    } else {
+      console.error(pageError)
+    }
   }
 
   function addPage() {
     const sample = PageBuilder.createSamplePage(defaultEditorEmail)
     const nextPage: PageDefinition = {
       ...sample,
-      id: `page-${Date.now().toString(36)}`,
+      id: crypto.randomUUID(),
       slug: `new-page-${pages.length + 1}`,
       title: `New Page ${pages.length + 1}`,
       status: 'draft',
-      seo: {
-        title: `New Page ${pages.length + 1} | Hoop With Her`,
-        description: 'Draft page created in the Hoop With Her page builder. Update this description before publishing.',
-      },
       blocks: [],
       updatedAt: new Date().toISOString(),
     }
     const nextPages = [...pages, nextPage]
     setPages(nextPages)
-    persistPages(nextPages)
     setSelectedId(nextPage.id)
   }
 
@@ -123,15 +170,8 @@ export default function AdminPageBuilderPage() {
     setJsonError(undefined)
   }
 
-  function resetSample() {
-    const sample = PageBuilder.createSamplePage(defaultEditorEmail)
-    setPages([sample])
-    persistPages([sample])
-    setSelectedId(sample.id)
-    setSavedAt(new Date().toLocaleTimeString())
-  }
-
-  if (!draft) return null
+  if (loading) return <div>Loading...</div>
+  if (!draft || !previewPage) return null
 
   return (
     <DashboardLayout
@@ -174,34 +214,6 @@ export default function AdminPageBuilderPage() {
                 <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">Slug</span>
                 <input value={draft.slug} onChange={event => updateDraft({ slug: PageBuilder.normalizeSlug(event.target.value) })} className="w-full rounded-xl border border-white/10 bg-navy-900 px-3 py-2 text-white" />
               </label>
-              <div className="grid grid-cols-2 gap-3">
-                <label className="block text-sm">
-                  <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">Audience</span>
-                  <select value={draft.audience} onChange={event => updateDraft({ audience: event.target.value as PageDefinition['audience'] })} className="w-full rounded-xl border border-white/10 bg-navy-900 px-3 py-2 text-white">
-                    <option value="public">Public</option>
-                    <option value="players">Players</option>
-                    <option value="coaches">Coaches</option>
-                    <option value="admins">Admins</option>
-                  </select>
-                </label>
-                <label className="block text-sm">
-                  <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">Accent</span>
-                  <select value={draft.theme.accent} onChange={event => updateDraft({ theme: { ...draft.theme, accent: event.target.value as PageDefinition['theme']['accent'] } })} className="w-full rounded-xl border border-white/10 bg-navy-900 px-3 py-2 text-white">
-                    <option value="orange">Orange</option>
-                    <option value="blue">Blue</option>
-                    <option value="gold">Gold</option>
-                    <option value="navy">Navy</option>
-                  </select>
-                </label>
-              </div>
-              <label className="block text-sm">
-                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">SEO title</span>
-                <input value={draft.seo.title} onChange={event => updateDraft({ seo: { ...draft.seo, title: event.target.value } })} className="w-full rounded-xl border border-white/10 bg-navy-900 px-3 py-2 text-white" />
-              </label>
-              <label className="block text-sm">
-                <span className="mb-1 block text-xs font-bold uppercase tracking-wider text-slate-500">SEO description</span>
-                <textarea value={draft.seo.description} onChange={event => updateDraft({ seo: { ...draft.seo, description: event.target.value } })} rows={3} className="w-full rounded-xl border border-white/10 bg-navy-900 px-3 py-2 text-white" />
-              </label>
               <div className="flex items-center justify-between rounded-xl bg-white/5 px-3 py-2 text-xs text-slate-400">
                 <span>Status: <strong className="capitalize text-white">{draft.status}</strong></span>
                 <a href={`/p/${draft.slug}`} className="font-semibold text-brand-orange hover:text-orange-300">Open public preview</a>
@@ -222,7 +234,6 @@ export default function AdminPageBuilderPage() {
                 </button>
               ))}
             </div>
-            <button type="button" onClick={resetSample} className="mt-3 w-full rounded-xl border border-white/10 px-3 py-2 text-sm font-semibold text-slate-300 hover:bg-white/5">Reset sample content</button>
           </section>
 
           <section className="rounded-2xl border border-white/10 bg-navy-800 p-5">
@@ -251,7 +262,7 @@ export default function AdminPageBuilderPage() {
                 <FileJson size={18} className="text-royal-300" />
                 <h2 className="font-semibold">Blocks JSON</h2>
               </div>
-              <p className="text-xs text-slate-500">MVP editor stores drafts locally until Supabase persistence is connected.</p>
+              <p className="text-xs text-slate-500">Edit block content directly.</p>
             </div>
             <textarea value={blocksJson} onChange={event => setBlocksJson(event.target.value)} rows={20} spellCheck={false} className="w-full rounded-2xl border border-white/10 bg-navy-950 p-4 font-mono text-xs leading-5 text-slate-200 outline-none focus:border-brand-orange" />
             <div className="mt-4 space-y-2">
@@ -270,7 +281,7 @@ export default function AdminPageBuilderPage() {
               <Eye size={18} className="text-brand-orange" />
               <h2 className="font-semibold">Live preview</h2>
             </div>
-            <div className="max-h-[900px] overflow-auto">
+            <div className="max-h-[900px] overflow-auto bg-white">
               <PageRenderer page={previewPage} preview />
             </div>
           </section>

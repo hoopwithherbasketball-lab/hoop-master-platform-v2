@@ -59,7 +59,7 @@ const adminNav: NavItem[] = [
 ]
 
 const contentNav: NavItem[] = [
-  { label: 'Page Builder', to: '/admin/page-builder', icon: <LayoutTemplate size={16} /> },
+  { label: 'Page Builder', to: '/admin/pages', icon: <LayoutTemplate size={16} /> },
 ]
 
 const mediaNav: NavItem[] = [
@@ -95,7 +95,7 @@ export default function DashboardSidebar({ variant }: Props) {
     if (variant !== 'coach' && hasRole('coach')) modules.push({ label: 'Coach Tools', to: '/coach', icon: <Users size={14} /> })
     if (variant !== 'admin' && hasRole('admin')) modules.push({ label: 'Admin Panel', to: '/admin', icon: <ShieldCheck size={14} /> })
     if (hasRole('admin')) modules.push({ label: 'NIL Hub', to: '/nil', icon: <BookOpen size={14} /> })
-    modules.push({ label: 'EliteGBB', to: '/elitegbb', icon: <Tv size={14} /> })
+    modules.push({ label: 'ConnectGBB', to: '/connectgbb', icon: <Tv size={14} /> })
     return modules
   }
 

@@ -32,7 +32,7 @@ export default function Navbar() {
     if (hasRole('coach')) modules.push({ label: 'Coach Tools', to: '/coach', icon: <Users size={14} />, desc: 'Search, shortlist & evaluate' })
     if (hasRole('admin')) modules.push({ label: 'Admin Panel', to: '/admin', icon: <ShieldCheck size={14} />, desc: 'Platform operations' })
     if (hasRole('admin')) modules.push({ label: 'NIL Hub', to: '/nil', icon: <BookOpen size={14} />, desc: 'Opportunities & outreach' })
-    modules.push({ label: 'EliteGBB', to: '/elitegbb', icon: <Tv size={14} />, desc: 'Community & training' })
+    modules.push({ label: 'ConnectGBB', to: '/connectgbb', icon: <Tv size={14} />, desc: 'Community & training' })
     return modules
   }
 
@@ -45,13 +45,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-14">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center"><span className="text-white font-display font-bold text-sm">GBB</span></div>
-            <div><span className="font-display font-bold text-white text-lg leading-none">Elite GBB</span><span className="block text-xs text-slate-400 leading-none">ProCoach</span></div>
+            <div><span className="font-display font-bold text-white text-lg leading-none">ConnectGBB</span><span className="block text-xs text-slate-400 leading-none">ProCoach</span></div>
           </Link>
           <div className="hidden md:flex items-center gap-1">
             <Link to="/watch" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Watch</Link>
             <Link to="/browse" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Browse Players</Link>
             <Link to="/services" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Services</Link>
-            {!user && <Link to="/elitegbb" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Create Profile</Link>}
+            {!user && <Link to="/connectgbb" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Create Profile</Link>}
             <Link to="/recruiting-roadmap" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Recruiting</Link>
             {!user && <Link to="/partner-onboarding" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Partners</Link>}
             {!user && <Link to="/workshops" className="text-slate-300 hover:text-white px-2.5 py-1.5 text-sm font-medium transition-colors">Workshops</Link>}

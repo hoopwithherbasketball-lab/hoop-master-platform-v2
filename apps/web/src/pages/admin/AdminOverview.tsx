@@ -45,7 +45,7 @@ export default function AdminOverview() {
   ]
 
   return (
-    <DashboardLayout variant="admin" title="Admin Overview" subtitle="Elite GBB ProCoach operations dashboard">
+    <DashboardLayout variant="admin" title="Admin Overview" subtitle="ConnectGBB ProCoach operations dashboard">
       {loading ? (
         <div className="space-y-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5 animate-pulse">{[...Array(4)].map((_, i) => <div key={i} className="card h-28" />)}</div>

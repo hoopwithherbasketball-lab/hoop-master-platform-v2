@@ -18,7 +18,7 @@ interface EvaluationRecord {
   status: string;
 }
 
-export default function EliteGBBDashboard() {
+export default function ConnectGBBDashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRec, setFilterRec] = useState<string | null>(null);
   const [evals, setEvals] = useState<EvaluationRecord[]>([]);
@@ -80,7 +80,7 @@ export default function EliteGBBDashboard() {
     <div className="p-8 space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">EliteGBB Scouting Dashboard</h1>
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">ConnectGBB Scouting Dashboard</h1>
           <p className="text-slate-500 mt-1">Review player evaluations, game stats, and intake submissions.</p>
         </div>
         <div className="flex gap-3">

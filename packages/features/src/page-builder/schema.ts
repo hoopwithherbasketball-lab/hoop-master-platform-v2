@@ -6,12 +6,10 @@ export const PAGE_BUILDER_STORAGE_KEY = 'hwh.pageBuilder.pages.v1'
 
 export const blockTypeLabels: Record<PageBlock['type'], string> = {
   hero: 'Hero',
-  richText: 'Rich text',
-  featureGrid: 'Feature grid',
-  stats: 'Stats',
+  text: 'Text',
+  features: 'Features',
   cta: 'Call to action',
-  mediaEmbed: 'Media embed',
-  leadCapture: 'Lead capture',
+  media: 'Media',
 }
 
 export function createBlockId(prefix = 'block') {
@@ -37,14 +35,6 @@ export function validatePageDefinition(page: PageDefinition): PageValidationIssu
     issues.push({ path: 'slug', message: 'Slug must use lowercase letters, numbers, and hyphens only.', severity: 'error' })
   }
 
-  if (!page.seo.title.trim()) {
-    issues.push({ path: 'seo.title', message: 'SEO title is required before publishing.', severity: 'error' })
-  }
-
-  if (page.seo.description.trim().length < 80) {
-    issues.push({ path: 'seo.description', message: 'SEO description should be at least 80 characters.', severity: 'warning' })
-  }
-
   if (page.blocks.length === 0) {
     issues.push({ path: 'blocks', message: 'Add at least one content block.', severity: 'error' })
   }
@@ -55,29 +45,16 @@ export function validatePageDefinition(page: PageDefinition): PageValidationIssu
       issues.push({ path: `${path}.id`, message: 'Block id is required.', severity: 'error' })
     }
 
-    if (block.type !== 'leadCapture' && block.type !== 'mediaEmbed' && !block.title?.trim()) {
+    if (block.type !== 'media' && !block.title?.trim()) {
       issues.push({ path: `${path}.title`, message: `${blockTypeLabels[block.type]} block should include a title.`, severity: 'warning' })
     }
 
-    if (block.type === 'featureGrid' && block.items.length === 0) {
+    if (block.type === 'features' && block.items.length === 0) {
       issues.push({ path: `${path}.items`, message: 'Feature grid requires at least one item.', severity: 'error' })
     }
 
-    if (block.type === 'stats' && block.stats.length === 0) {
-      issues.push({ path: `${path}.stats`, message: 'Stats block requires at least one metric.', severity: 'error' })
-    }
-
-    if (block.type === 'mediaEmbed' && !block.embedUrl.trim()) {
+    if (block.type === 'media' && !block.embedUrl.trim()) {
       issues.push({ path: `${path}.embedUrl`, message: 'Media embed URL is required.', severity: 'error' })
-    }
-
-    if (block.type === 'leadCapture') {
-      if (!block.formName.trim()) {
-        issues.push({ path: `${path}.formName`, message: 'Lead capture form name is required.', severity: 'error' })
-      }
-      if (block.fields.length === 0) {
-        issues.push({ path: `${path}.fields`, message: 'Lead capture needs at least one field.', severity: 'error' })
-      }
     }
   })
 
@@ -89,7 +66,7 @@ export function getPublishChecklist(page: PageDefinition): PagePublishChecklistI
   const errorCount = issues.filter(issue => issue.severity === 'error').length
   const warningCount = issues.filter(issue => issue.severity === 'warning').length
   const hasHero = page.blocks.some(block => block.type === 'hero')
-  const hasConversion = page.blocks.some(block => block.type === 'cta' || block.type === 'leadCapture')
+  const hasConversion = page.blocks.some(block => block.type === 'cta')
 
   return [
     {
@@ -97,12 +74,6 @@ export function getPublishChecklist(page: PageDefinition): PagePublishChecklistI
       label: 'No blocking validation errors',
       passed: errorCount === 0,
       helper: errorCount === 0 ? 'Page can be published.' : `${errorCount} blocking issue${errorCount === 1 ? '' : 's'} remaining.`,
-    },
-    {
-      id: 'seo-ready',
-      label: 'SEO metadata ready',
-      passed: Boolean(page.seo.title.trim()) && page.seo.description.trim().length >= 80,
-      helper: warningCount === 0 ? 'Metadata is complete.' : 'Review warnings before launch.',
     },
     {
       id: 'hero-present',
@@ -125,12 +96,6 @@ export function createSamplePage(updatedBy = 'admin@hoopwithher.local'): PageDef
     slug: 'elite-ready-camp',
     title: 'Elite Ready Camp',
     status: 'draft',
-    audience: 'public',
-    theme: { accent: 'orange', surface: 'dark' },
-    seo: {
-      title: 'Elite Ready Camp | Hoop With Her',
-      description: 'A focused Hoop With Her camp landing page for athletes who want recruiting guidance, skill development, and measurable next steps.',
-    },
     updatedAt: new Date().toISOString(),
     updatedBy,
     blocks: [
@@ -144,18 +109,8 @@ export function createSamplePage(updatedBy = 'admin@hoopwithher.local'): PageDef
         secondaryAction: { label: 'View services', href: '/services' },
       },
       {
-        id: 'stats-outcomes',
-        type: 'stats',
-        title: 'Built for measurable outcomes',
-        stats: [
-          { value: '3', label: 'training tracks', helper: 'Skill, film, and recruiting readiness' },
-          { value: '24h', label: 'follow-up window', helper: 'Admin-ready lead review process' },
-          { value: '1', label: 'shareable page', helper: 'Public preview for families and coaches' },
-        ],
-      },
-      {
         id: 'features-camp',
-        type: 'featureGrid',
+        type: 'features',
         eyebrow: 'What admins can publish',
         title: 'Reusable blocks for public MVP pages',
         body: 'Start with approved sections, validate content quality, then preview the exact page families will see.',
@@ -164,15 +119,6 @@ export function createSamplePage(updatedBy = 'admin@hoopwithher.local'): PageDef
           { title: 'Outcome metrics', body: 'Show program results without one-off design work.' },
           { title: 'Lead capture briefs', body: 'Define form intent and required fields for future persistence.' },
         ],
-      },
-      {
-        id: 'lead-capture',
-        type: 'leadCapture',
-        title: 'Request camp updates',
-        body: 'Use this block as the admin-authored brief for the connected form workflow.',
-        formName: 'Elite Ready Camp Interest',
-        fields: ['name', 'email', 'athleteName', 'graduationYear', 'message'],
-        submitLabel: 'Join the interest list',
       },
     ],
   }
@@ -190,27 +136,18 @@ export const blockTemplates: PageBlock[] = [
   },
   {
     id: 'template-rich-text',
-    type: 'richText',
+    type: 'text',
     title: 'Content section',
     content: 'Use this block for program details, eligibility requirements, schedule notes, or partner context.',
   },
   {
     id: 'template-feature-grid',
-    type: 'featureGrid',
+    type: 'features',
     title: 'Feature grid title',
     body: 'Group related benefits or requirements into cards.',
     items: [
       { title: 'First feature', body: 'Explain the first value point.' },
       { title: 'Second feature', body: 'Explain the second value point.' },
-    ],
-  },
-  {
-    id: 'template-stats',
-    type: 'stats',
-    title: 'Proof points',
-    stats: [
-      { value: '100%', label: 'Metric label', helper: 'Optional context' },
-      { value: '4', label: 'Sessions', helper: 'Optional context' },
     ],
   },
   {
@@ -222,20 +159,11 @@ export const blockTemplates: PageBlock[] = [
   },
   {
     id: 'template-media',
-    type: 'mediaEmbed',
+    type: 'media',
     title: 'Featured media',
     provider: 'hwh-tv',
     embedUrl: '/watch',
     caption: 'Link to a Hoop With Her TV channel, highlight reel, or external embed.',
-  },
-  {
-    id: 'template-lead',
-    type: 'leadCapture',
-    title: 'Capture interest',
-    body: 'Define the lead form that should be connected to the forms workflow.',
-    formName: 'Campaign Interest',
-    fields: ['name', 'email', 'message'],
-    submitLabel: 'Submit interest',
   },
 ]
 

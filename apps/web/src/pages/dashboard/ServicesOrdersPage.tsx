@@ -48,7 +48,7 @@ export default function ServicesOrdersPage() {
                   <td className="px-4 py-4 text-slate-400">{new Date(o.created_at).toLocaleDateString()}</td>
                 </tr>
               ))}
-              {orders.length === 0 && <tr><td colSpan={4} className="px-4 py-12 text-center text-slate-400">No service orders yet. <Link to="/elitegbb" className="text-royal-400 hover:underline">Create a profile</Link> to get started.</td></tr>}
+              {orders.length === 0 && <tr><td colSpan={4} className="px-4 py-12 text-center text-slate-400">No service orders yet. <Link to="/connectgbb" className="text-royal-400 hover:underline">Create a profile</Link> to get started.</td></tr>}
             </tbody>
           </table>
         </div>

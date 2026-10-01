@@ -36,7 +36,7 @@ const ServicesOrdersPage = lazy(() => import('./pages/dashboard/ServicesOrdersPa
 const ServiceOrderDetailPage = lazy(() => import('./pages/dashboard/ServiceOrderDetailPage'))
 const ServiceIntakePage = lazy(() => import('./pages/dashboard/ServiceIntakePage'))
 const IntakeFormPage = lazy(() => import('./pages/dashboard/IntakeFormPage'))
-const EliteGBBIntakePage = lazy(() => import('./pages/public/EliteGBBIntakePage'))
+const ConnectGBBIntakePage = lazy(() => import('./pages/public/ConnectGBBIntakePage'))
 const ChannelsBrowsePage = lazy(() => import('./pages/public/ChannelsBrowsePage'))
 const ChannelWatchPage = lazy(() => import('./pages/public/ChannelWatchPage'))
 const PlayerPortalPage = lazy(() => import('./pages/dashboard/PlayerPortalPage'))
@@ -54,8 +54,9 @@ const ProspectComparisonPage = lazy(() => import('./pages/coach/ProspectComparis
 const AdminOverview = lazy(() => import('./pages/admin/AdminOverview'))
 const AdminLeadsPage = lazy(() => import('./pages/admin/AdminLeadsPage'))
 const AdminOrdersPage = lazy(() => import('./pages/admin/AdminOrdersPage'))
+const AdminOrderFulfillmentPage = lazy(() => import('./pages/admin/AdminOrderFulfillmentPage'))
 const AdminAuditsPage = lazy(() => import('./pages/admin/AdminAuditsPage'))
-const EliteGBBDashboard = lazy(() => import('./pages/admin/EliteGBBDashboard'))
+const ConnectGBBDashboard = lazy(() => import('./pages/admin/ConnectGBBDashboard'))
 const NILOverview = lazy(() => import('./pages/nil/NILOverview'))
 const CompanyList = lazy(() => import('./pages/nil/CompanyList'))
 const OpportunityList = lazy(() => import('./pages/nil/OpportunityList'))
@@ -67,7 +68,7 @@ const NILProposals = lazy(() => import('./pages/nil/NILProposals'))
 const ProposalBuilderPage = lazy(() => import('./pages/nil/ProposalBuilderPage'))
 const ProposalEditor = lazy(() => import('./pages/nil/ProposalEditor'))
 const AdminPlayersPage = lazy(() => import('./pages/admin/AdminPlayersPage'))
-const EliteGBBHubPage = lazy(() => import('./pages/connectgbb/ConnectGBBHubPage'))
+const ConnectGBBHubPage = lazy(() => import('./pages/connectgbb/ConnectGBBHubPage'))
 const CommunityFeedPage = lazy(() => import('./pages/connectgbb/CommunityFeedPage'))
 const TrainingHubPage = lazy(() => import('./pages/connectgbb/TrainingHubPage'))
 const ConnectionsPage = lazy(() => import('./pages/connectgbb/ConnectionsPage'))
@@ -132,7 +133,7 @@ function AppRoutes() {
       <Route path="/nil-readiness" element={<PublicLayout><NILReadinessPage /></PublicLayout>} />
       <Route path="/audit" element={<PublicLayout><AuditPage /></PublicLayout>} />
       <Route path="/browse" element={<PublicLayout><BrowsePage /></PublicLayout>} />
-      <Route path="/elitegbb" element={<EliteGBBIntakePage />} />
+      
       <Route path="/browse/:id" element={<PublicLayout><PlayerDetailPage /></PublicLayout>} />
       <Route path="/workshops" element={<PublicLayout><WorkshopsPage /></PublicLayout>} />
       <Route path="/ui-test" element={<PublicLayout><UITestPage /></PublicLayout>} />
@@ -178,11 +179,12 @@ function AppRoutes() {
       <Route path="/admin/leads" element={<ProtectedRoute role="admin"><AdminLeadsPage /></ProtectedRoute>} />
       <Route path="/admin/funding" element={<ProtectedRoute role="admin"><AdminFundingPage /></ProtectedRoute>} />
       <Route path="/admin/orders" element={<ProtectedRoute role="admin"><AdminOrdersPage /></ProtectedRoute>} />
+      <Route path="/admin/orders/:id" element={<ProtectedRoute role="admin"><AdminOrderFulfillmentPage /></ProtectedRoute>} />
       <Route path="/admin/audits" element={<ProtectedRoute role="admin"><AdminAuditsPage /></ProtectedRoute>} />
       <Route path="/admin/evaluations" element={<ProtectedRoute role="admin"><AdminEvaluationsPage /></ProtectedRoute>} />
       <Route path="/admin/courtside-communication" element={<ProtectedRoute role="admin"><CourtsideCommunicationPage /></ProtectedRoute>} />
       <Route path="/admin/players" element={<ProtectedRoute role="admin"><AdminPlayersPage /></ProtectedRoute>} />
-      <Route path="/admin/elitegbb" element={<ProtectedRoute role="admin"><EliteGBBDashboard /></ProtectedRoute>} />
+      <Route path="/admin/connectgbb" element={<ProtectedRoute role="admin"><ConnectGBBDashboard /></ProtectedRoute>} />
       <Route path="/admin/players/:id" element={<ProtectedRoute role="admin"><AdminPlayerDetailPage /></ProtectedRoute>} />
       <Route path="/admin/reports" element={<ProtectedRoute role="admin"><AdminReportsPage /></ProtectedRoute>} />
       <Route path="/admin/crm-audit" element={<ProtectedRoute role="admin"><AdminAuditLogsPage /></ProtectedRoute>} />
@@ -214,13 +216,14 @@ function AppRoutes() {
       <Route path="/nil/partner-portal" element={<ProtectedRoute role="admin"><Navigate to="/nil/companies" replace /></ProtectedRoute>} />
       <Route path="/nil/proposals/advanced" element={<ProtectedRoute role="admin"><ProposalBuilderPage /></ProtectedRoute>} />
       <Route path="/nil/proposals/:id/edit" element={<ProtectedRoute role="admin"><ProposalEditor /></ProtectedRoute>} />
-      <Route path="/elitegbb" element={<ProtectedRoute><EliteGBBHubPage /></ProtectedRoute>} />
-      <Route path="/elitegbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
-      <Route path="/elitegbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />
-      <Route path="/elitegbb/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
-      <Route path="/elitegbb/member/:id" element={<ProtectedRoute><MemberProfilePage /></ProtectedRoute>} />
-      <Route path="/elitegbb/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
-      <Route path="/elitegbb/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/apply" element={<ConnectGBBIntakePage />} />
+      <Route path="/connectgbb" element={<ProtectedRoute><ConnectGBBHubPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/feed" element={<ProtectedRoute><CommunityFeedPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/training" element={<ProtectedRoute><TrainingHubPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/member/:id" element={<ProtectedRoute><MemberProfilePage /></ProtectedRoute>} />
+      <Route path="/connectgbb/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
+      <Route path="/connectgbb/settings" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

@@ -93,7 +93,7 @@ export default function PlayerPortalPage() {
             <div className="card p-8 text-center text-slate-400">
               <FileText size={32} className="mx-auto mb-3 text-slate-500" />
               <p>No deliverables yet.</p>
-              <Link to="/elitegbb" className="inline-block mt-2 text-royal-400 hover:underline text-sm">Get started</Link>
+              <Link to="/connectgbb" className="inline-block mt-2 text-royal-400 hover:underline text-sm">Get started</Link>
             </div>
           )}
         </div>

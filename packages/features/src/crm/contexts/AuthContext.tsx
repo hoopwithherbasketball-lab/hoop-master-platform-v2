@@ -4,7 +4,7 @@ import { supabase } from '@hoop-master/supabase';
 import type { UserRole } from '@hoop-master/types';
 import { AuthContext } from './AuthContextValue.js';
 
-const ROLES_KEY = 'elitegbb_roles'
+const ROLES_KEY = 'connectgbb_roles'
 
 interface AuthProviderProps {
   children: ReactNode;

@@ -2,6 +2,8 @@ import React from 'react';
 import { HeroBlock } from './HeroBlock';
 import { TextContentBlock } from './TextContentBlock';
 import { FeaturesBlock } from './FeaturesBlock';
+import { CtaBlock } from './CtaBlock';
+import { MediaBlock } from './MediaBlock';
 
 interface BlockRendererProps {
   block: {
@@ -18,6 +20,10 @@ export function BlockRenderer({ block }: BlockRendererProps) {
       return <TextContentBlock content={block.content_json} />;
     case 'features':
       return <FeaturesBlock content={block.content_json} />;
+    case 'cta':
+      return <CtaBlock content={block.content_json as any} />;
+    case 'media':
+      return <MediaBlock content={block.content_json} />;
     default:
       return <div className="p-4 border border-dashed border-gray-300">Unsupported block type: {block.type}</div>;
   }

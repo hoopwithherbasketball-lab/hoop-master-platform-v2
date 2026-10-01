@@ -2,13 +2,9 @@ import type { PageBuilder } from '@hoop-master/features'
 
 type PageBlock = PageBuilder.PageBlock
 type PageDefinition = PageBuilder.PageDefinition
-type PageTheme = PageBuilder.PageTheme
 
-const accentClasses: Record<PageTheme['accent'], { text: string; bg: string; border: string; button: string }> = {
-  blue: { text: 'text-royal-300', bg: 'bg-royal-500/15', border: 'border-royal-400/30', button: 'bg-royal-600 hover:bg-royal-500' },
+const accentClasses = {
   orange: { text: 'text-brand-orange', bg: 'bg-orange-500/15', border: 'border-orange-400/30', button: 'bg-brand-orange hover:bg-orange-500' },
-  gold: { text: 'text-brand-gold', bg: 'bg-yellow-500/15', border: 'border-yellow-400/30', button: 'bg-brand-gold hover:bg-yellow-500 text-navy-900' },
-  navy: { text: 'text-slate-200', bg: 'bg-navy-700', border: 'border-white/10', button: 'bg-navy-700 hover:bg-navy-600' },
 }
 
 interface Props {
@@ -16,8 +12,8 @@ interface Props {
   preview?: boolean
 }
 
-function ActionLink({ href, label, variant = 'primary', theme }: { href: string; label: string; variant?: 'primary' | 'secondary'; theme: PageTheme }) {
-  const accent = accentClasses[theme.accent]
+function ActionLink({ href, label, variant = 'primary' }: { href: string; label: string; variant?: 'primary' | 'secondary' }) {
+  const accent = accentClasses['orange']
   return (
     <a
       href={href}
@@ -40,8 +36,8 @@ function SectionHeader({ block, centered = false }: { block: PageBlock; centered
   )
 }
 
-function renderBlock(block: PageBlock, theme: PageTheme) {
-  const accent = accentClasses[theme.accent]
+function renderBlock(block: PageBlock) {
+  const accent = accentClasses['orange']
 
   switch (block.type) {
     case 'hero':
@@ -53,20 +49,20 @@ function renderBlock(block: PageBlock, theme: PageTheme) {
             <h1 className="mt-4 font-display text-4xl font-black leading-tight text-white md:text-6xl">{block.title}</h1>
             {block.body && <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">{block.body}</p>}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              {block.primaryAction && <ActionLink {...block.primaryAction} theme={theme} />}
-              {block.secondaryAction && <ActionLink {...block.secondaryAction} theme={theme} variant="secondary" />}
+              {block.primaryAction && <ActionLink {...block.primaryAction} />}
+              {block.secondaryAction && <ActionLink {...block.secondaryAction} variant="secondary" />}
             </div>
           </div>
         </section>
       )
-    case 'richText':
+    case 'text':
       return (
         <section key={block.id} className="rounded-3xl border border-white/10 bg-navy-800 p-6 md:p-10">
           <SectionHeader block={block} />
           <div className="mt-6 whitespace-pre-line text-base leading-8 text-slate-300">{block.content}</div>
         </section>
       )
-    case 'featureGrid':
+    case 'features':
       return (
         <section key={block.id} className="space-y-8">
           <SectionHeader block={block} centered />
@@ -81,29 +77,14 @@ function renderBlock(block: PageBlock, theme: PageTheme) {
           </div>
         </section>
       )
-    case 'stats':
-      return (
-        <section key={block.id} className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-10">
-          <SectionHeader block={block} centered />
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {block.stats.map(stat => (
-              <div key={stat.label} className="rounded-2xl bg-navy-800 p-6 text-center">
-                <p className={`font-display text-4xl font-black ${accent.text}`}>{stat.value}</p>
-                <p className="mt-2 text-sm font-bold text-white">{stat.label}</p>
-                {stat.helper && <p className="mt-1 text-xs text-slate-500">{stat.helper}</p>}
-              </div>
-            ))}
-          </div>
-        </section>
-      )
     case 'cta':
       return (
         <section key={block.id} className={`rounded-3xl border ${accent.border} ${accent.bg} p-8 text-center md:p-12`}>
           <SectionHeader block={block} centered />
-          <div className="mt-8"><ActionLink {...block.action} theme={theme} /></div>
+          <div className="mt-8"><ActionLink {...block.action} /></div>
         </section>
       )
-    case 'mediaEmbed':
+    case 'media':
       return (
         <section key={block.id} className="rounded-3xl border border-white/10 bg-navy-800 p-6 md:p-8">
           <SectionHeader block={block} />
@@ -116,33 +97,13 @@ function renderBlock(block: PageBlock, theme: PageTheme) {
           {block.caption && <p className="mt-3 text-xs text-slate-500">{block.caption}</p>}
         </section>
       )
-    case 'leadCapture':
-      return (
-        <section key={block.id} id={block.id} className="rounded-3xl border border-white/10 bg-navy-800 p-6 md:p-10">
-          <div className="grid gap-8 lg:grid-cols-[1fr_420px] lg:items-start">
-            <SectionHeader block={block} />
-            <div className="rounded-2xl border border-white/10 bg-navy-900 p-5">
-              <p className={`text-xs font-black uppercase tracking-[0.25em] ${accent.text}`}>{block.formName}</p>
-              <div className="mt-5 space-y-3">
-                {block.fields.map(field => (
-                  <div key={field} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm capitalize text-slate-400">
-                    {field.replace(/([A-Z])/g, ' $1')}
-                  </div>
-                ))}
-              </div>
-              <button type="button" className={`mt-5 w-full rounded-xl px-4 py-3 text-sm font-bold text-white ${accent.button}`}>{block.submitLabel}</button>
-              <p className="mt-3 text-xs text-slate-500">Preview only. Persistence connects in the data/forms phase.</p>
-            </div>
-          </div>
-        </section>
-      )
     default:
       return null
   }
 }
 
 export default function PageRenderer({ page, preview = false }: Props) {
-  const surface = page.theme.surface === 'light' ? 'bg-slate-100 text-navy-900' : 'bg-navy-950 text-white'
+  const surface = 'bg-navy-950 text-white'
 
   return (
     <article className={`min-h-screen ${surface}`}>
@@ -152,7 +113,7 @@ export default function PageRenderer({ page, preview = false }: Props) {
         </div>
       )}
       <div className="mx-auto max-w-7xl space-y-10 px-4 py-10 sm:px-6 lg:px-8">
-        {page.blocks.map(block => renderBlock(block, page.theme))}
+        {page.blocks.map(block => renderBlock(block))}
       </div>
     </article>
   )

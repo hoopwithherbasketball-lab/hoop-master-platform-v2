@@ -41,7 +41,7 @@ const initialForm = {
   goal: '', colleges_interest: '', package_selected: '', consent_eval: false, consent_media: false, guardian_signature: '',
 }
 
-export default function EliteGBBIntakePage() {
+export default function ConnectGBBIntakePage() {
   const navigate = useNavigate()
   const [step, setStep] = useState(1)
   const [form, setForm] = useState(initialForm)

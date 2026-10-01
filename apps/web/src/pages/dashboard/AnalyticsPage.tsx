@@ -42,7 +42,7 @@ export default function AnalyticsPage() {
           <TrendingUp size={40} className="mx-auto mb-3 text-slate-500" />
           <p className="text-lg font-medium text-white mb-1">No game stats yet</p>
           <p className="text-sm">Stats will appear here once your coach or admin uploads game data.</p>
-          <Link to="/elitegbb" className="inline-block mt-4 text-royal-400 hover:underline text-sm">Complete your profile</Link>
+          <Link to="/connectgbb" className="inline-block mt-4 text-royal-400 hover:underline text-sm">Complete your profile</Link>
         </div>
       </DashboardLayout>
     )
