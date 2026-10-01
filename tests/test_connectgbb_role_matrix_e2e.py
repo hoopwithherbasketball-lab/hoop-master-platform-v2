@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import sys
 import urllib.parse
 from playwright.async_api import async_playwright
 
@@ -25,7 +26,7 @@ async def run_for_base_url(base_url: str, allowlist_token: str | None = None) ->
 
             context = await browser.new_context(extra_http_headers=headers if headers else None)
             page = await context.new_page()
-            page.on("console", lambda msg: print(f"CONSOLE[{msg.type}]: {msg.text}"))
+            page.on("console", lambda msg: print(f"CONSOLE[{msg.type}]: {msg.text}".encode(sys.stdout.encoding, errors="replace").decode(sys.stdout.encoding)))
             await page.set_viewport_size({"width": 1920, "height": 1080})
             return context, page
 
@@ -42,7 +43,11 @@ async def run_for_base_url(base_url: str, allowlist_token: str | None = None) ->
             await page.get_by_test_id("login-form-email-input").fill(email)
             await page.get_by_test_id("login-form-password-input").fill(password)
             await page.get_by_test_id("login-form-submit-button").click(force=True)
-            await page.wait_for_timeout(2600)
+            # Wait for either successful navigation away from login OR a dashboard/feed indicator
+            try:
+                await page.wait_for_url("**/connectgbb/**", timeout=10000)
+            except Exception:
+                await page.wait_for_timeout(5000)
 
         try:
             # Pending member expectations
@@ -50,8 +55,9 @@ async def run_for_base_url(base_url: str, allowlist_token: str | None = None) ->
             await login(pending_page, PENDING_EMAIL, PENDING_PASSWORD)
             page = pending_page
             await page.goto(append_allowlist(f"{base_url}/connectgbb/feed"), wait_until="domcontentloaded", timeout=60000)
-            await page.wait_for_timeout(1600)
-            if not await page.get_by_test_id("community-feed-membership-locked").is_visible():
+            try:
+                await page.get_by_test_id("community-feed-membership-locked").wait_for(state="visible", timeout=10000)
+            except Exception:
                 failures.append("Pending member should see locked community feed state")
             if await page.get_by_test_id("community-feed-create-post-card").count() > 0:
                 failures.append("Pending member should not see create post card")
@@ -62,11 +68,12 @@ async def run_for_base_url(base_url: str, allowlist_token: str | None = None) ->
             await login(coach_page, COACH_EMAIL, COACH_PASSWORD)
             page = coach_page
             await page.goto(append_allowlist(f"{base_url}/connectgbb/feed"), wait_until="domcontentloaded", timeout=60000)
-            await page.wait_for_timeout(1600)
+            try:
+                await page.get_by_test_id("community-feed-create-post-card").wait_for(state="visible", timeout=10000)
+            except Exception:
+                failures.append("Coach should see create post card")
             if await page.get_by_test_id("community-feed-membership-locked").count() > 0:
                 failures.append("Coach should not see locked feed state")
-            if not await page.get_by_test_id("community-feed-create-post-card").is_visible():
-                failures.append("Coach should see create post card")
             await coach_context.close()
 
             # Admin expectations
@@ -74,13 +81,15 @@ async def run_for_base_url(base_url: str, allowlist_token: str | None = None) ->
             await login(admin_page, ADMIN_EMAIL, ADMIN_PASSWORD)
             page = admin_page
             await page.goto(append_allowlist(f"{base_url}/admin/feed"), wait_until="domcontentloaded", timeout=60000)
-            await page.wait_for_timeout(1800)
-            if not await page.get_by_test_id("admin-community-report-queue-summary").is_visible():
+            try:
+                await page.get_by_test_id("admin-community-report-queue-table").wait_for(state="visible", timeout=10000)
+            except Exception:
                 failures.append("Admin report queue summary missing")
 
             await page.goto(append_allowlist(f"{base_url}/admin/community-memberships"), wait_until="domcontentloaded", timeout=60000)
-            await page.wait_for_timeout(1800)
-            if not await page.get_by_test_id("admin-community-memberships-table-wrapper").is_visible():
+            try:
+                await page.get_by_test_id("admin-community-memberships-table-wrapper").wait_for(state="visible", timeout=10000)
+            except Exception:
                 failures.append("Admin memberships table missing")
             await admin_context.close()
 
@@ -96,6 +105,8 @@ async def run_for_base_url(base_url: str, allowlist_token: str | None = None) ->
             return 0
 
         except Exception as exc:
+            import traceback
+            traceback.print_exc()
             print(f"ROLE MATRIX RESULT: ERROR - {exc}")
             await browser.close()
             return 2
