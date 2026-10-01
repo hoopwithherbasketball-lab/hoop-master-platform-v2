@@ -64,7 +64,6 @@ export function validatePageDefinition(page: PageDefinition): PageValidationIssu
 export function getPublishChecklist(page: PageDefinition): PagePublishChecklistItem[] {
   const issues = validatePageDefinition(page)
   const errorCount = issues.filter(issue => issue.severity === 'error').length
-  const warningCount = issues.filter(issue => issue.severity === 'warning').length
   const hasHero = page.blocks.some(block => block.type === 'hero')
   const hasConversion = page.blocks.some(block => block.type === 'cta')
 

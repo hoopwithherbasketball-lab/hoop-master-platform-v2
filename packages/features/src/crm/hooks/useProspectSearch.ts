@@ -40,7 +40,9 @@ export function useProspectSearch() {
           try {
             const val = localStorage.getItem(`scout_shortlist_${p.id}_rating`)
             if (val) localRating = Number(val)
-          } catch (err) {}
+          } catch {
+            // ignore
+          }
           return {
             id: p.id,
             name: `${p.first_name} ${p.last_name}`.trim() || 'Unknown',

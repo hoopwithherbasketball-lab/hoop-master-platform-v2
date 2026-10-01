@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface CtaBlockContent {
+export interface CtaBlockContent {
   title?: unknown;
   body?: unknown;
   eyebrow?: unknown;

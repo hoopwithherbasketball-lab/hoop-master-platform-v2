@@ -2,7 +2,7 @@ import React from 'react';
 import { HeroBlock } from './HeroBlock';
 import { TextContentBlock } from './TextContentBlock';
 import { FeaturesBlock } from './FeaturesBlock';
-import { CtaBlock } from './CtaBlock';
+import { CtaBlock, type CtaBlockContent } from './CtaBlock';
 import { MediaBlock } from './MediaBlock';
 
 interface BlockRendererProps {
@@ -21,7 +21,7 @@ export function BlockRenderer({ block }: BlockRendererProps) {
     case 'features':
       return <FeaturesBlock content={block.content_json} />;
     case 'cta':
-      return <CtaBlock content={block.content_json as any} />;
+      return <CtaBlock content={block.content_json as unknown as CtaBlockContent} />;
     case 'media':
       return <MediaBlock content={block.content_json} />;
     default:

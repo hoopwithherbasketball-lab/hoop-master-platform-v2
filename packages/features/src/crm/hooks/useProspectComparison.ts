@@ -42,7 +42,9 @@ function generateMockData(id: string) {
   try {
     const val = localStorage.getItem(`scout_shortlist_${id}_rating`)
     if (val) localRating = Number(val)
-  } catch (err) {}
+          } catch {
+            // ignore
+          }
 
   return { stats, strengths, rating: localRating }
 }

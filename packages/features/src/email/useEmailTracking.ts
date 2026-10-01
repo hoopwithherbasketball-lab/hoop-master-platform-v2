@@ -35,12 +35,13 @@ export function useEmailTracking(outreachId?: string) {
 
       // Calculate stats
       if (data && data.length > 0) {
-        const opened = data.filter((t: any) => t.opened).length
-        const clicked = data.filter((t: any) => t.clicked).length
+        const opened = data.filter((t: Record<string, unknown>) => t.opened).length
+        const clicked = data.filter((t: Record<string, unknown>) => t.clicked).length
         const total = data.length
 
-        const statuses = data.reduce((acc: any, t: any) => {
-          acc[t.delivery_status] = (acc[t.delivery_status] || 0) + 1
+        const statuses = data.reduce((acc: Record<string, number>, t: Record<string, unknown>) => {
+          const status = String(t.delivery_status)
+          acc[status] = (acc[status] || 0) + 1
           return acc
         }, {})
 
@@ -53,9 +54,9 @@ export function useEmailTracking(outreachId?: string) {
           deliveryStatus: statuses,
         })
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error('useEmailTracking:', e)
-      setError(e)
+      setError(e instanceof Error ? e : new Error(String(e)))
     } finally {
       setLoading(false)
     }
@@ -69,7 +70,7 @@ export function useEmailTracking(outreachId?: string) {
 }
 
 export function useEmailPreferences() {
-  const [preferences, setPreferences] = useState<any>(null)
+  const [preferences, setPreferences] = useState<Record<string, unknown> | null>(null)
   const [loading, setLoading] = useState(true)
 
   const fetchPreferences = async () => {
@@ -94,7 +95,7 @@ export function useEmailPreferences() {
     fetchPreferences()
   }, [])
 
-  const updatePreferences = async (updates: any) => {
+  const updatePreferences = async (updates: Record<string, unknown>) => {
     try {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
@@ -107,8 +108,8 @@ export function useEmailPreferences() {
       if (error) throw error
       await fetchPreferences()
       return { success: true }
-    } catch (e: any) {
-      return { success: false, error: e.message }
+    } catch (e: unknown) {
+      return { success: false, error: e instanceof Error ? e.message : String(e) }
     }
   }
 
