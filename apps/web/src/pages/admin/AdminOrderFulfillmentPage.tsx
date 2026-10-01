@@ -65,7 +65,7 @@ export default function AdminOrderFulfillmentPage() {
       console.error(error)
     } else {
       toast.success('Order updated successfully')
-      setOrder(prev => ({ ...prev, status, notes }))
+      setOrder({ ...order, status, notes })
     }
     setSaving(false)
   }
@@ -87,7 +87,7 @@ export default function AdminOrderFulfillmentPage() {
     } else {
       toast.success('Order marked as completed!')
       setStatus('completed')
-      setOrder(prev => ({ ...prev, status: 'completed', completed_at: new Date().toISOString() }))
+      setOrder({ ...order, status: 'completed', completed_at: new Date().toISOString() })
     }
     setSaving(false)
   }
