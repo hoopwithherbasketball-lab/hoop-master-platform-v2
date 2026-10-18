@@ -11,6 +11,7 @@ const sections = [
   { title: 'Training Hub', desc: 'Access premium tracks, curated lesson plans, and role-specific development content.', path: '/connectgbb/training', icon: 'T', color: 'border-l-[#FB6C1D]' },
   { title: 'My Connections', desc: 'Build a trusted network with players, coaches, families, and approved programs.', path: '/connectgbb/connections', icon: 'N', color: 'border-l-[#C8A24A]' },
   { title: 'Messages', desc: 'Secure direct messaging across your approved community network.', path: '/connectgbb/messages', icon: 'M', color: 'border-l-[#22c55e]' },
+  { title: 'Recruiting Tracker', desc: 'Privately organize college programs, coach contacts, real interactions and follow-up tasks.', path: '/dashboard/recruiting', icon: 'R', color: 'border-l-[#FB6C1D]' },
 ]
 
 export default function ConnectGBBHubPage() {
