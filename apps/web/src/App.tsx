@@ -30,6 +30,7 @@ const DashboardOverview = lazy(() => import('./pages/dashboard/DashboardOverview
 const ProfilePage = lazy(() => import('./pages/dashboard/ProfilePage'))
 const ProfileOptimizerPage = lazy(() => import('./pages/dashboard/ProfileOptimizerPage'))
 const ReadinessPage = lazy(() => import('./pages/dashboard/ReadinessPage'))
+const RecruitingPipelinePage = lazy(() => import('./pages/dashboard/RecruitingPipelinePage'))
 const CoachDashboard = lazy(() => import('./pages/dashboard/CoachDashboard'))
 const EventsPage = lazy(() => import('./pages/dashboard/EventsPage'))
 const ServicesOrdersPage = lazy(() => import('./pages/dashboard/ServicesOrdersPage'))
@@ -154,6 +155,7 @@ function AppRoutes() {
       <Route path="/dashboard/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
       <Route path="/dashboard/profile/optimizer" element={<ProtectedRoute><ProfileOptimizerPage /></ProtectedRoute>} />
       <Route path="/dashboard/readiness" element={<ProtectedRoute><ReadinessPage /></ProtectedRoute>} />
+      <Route path="/dashboard/recruiting" element={<ProtectedRoute><RecruitingPipelinePage /></ProtectedRoute>} />
       <Route path="/dashboard/events" element={<ProtectedRoute><EventsPage /></ProtectedRoute>} />
       <Route path="/dashboard/services" element={<ProtectedRoute><ServicesOrdersPage /></ProtectedRoute>} />
       <Route path="/dashboard/services/:orderId" element={<ProtectedRoute><ServiceOrderDetailPage /></ProtectedRoute>} />

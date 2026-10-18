@@ -1,5 +1,6 @@
 export * from './emailSequences'
 export * from './roadmap'
+export * from './pipeline'
 
 export const name = 'recruiting'
 

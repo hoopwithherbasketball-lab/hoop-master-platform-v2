@@ -14,6 +14,7 @@ const playerNav: NavItem[] = [
   { label: 'My Profile', to: '/dashboard/profile', icon: <User size={16} /> },
   { label: 'Profile Optimizer', to: '/dashboard/profile/optimizer', icon: <Target size={16} /> },
   { label: 'Readiness Score', to: '/dashboard/readiness', icon: <Star size={16} /> },
+  { label: 'Recruiting Tracker', to: '/dashboard/recruiting', icon: <Target size={16} /> },
   { label: 'Events', to: '/dashboard/events', icon: <Calendar size={16} /> },
   { label: 'Services', to: '/dashboard/services', icon: <ShoppingBag size={16} /> },
   { label: 'Resources', to: '/dashboard/resources', icon: <BookOpen size={16} /> },
